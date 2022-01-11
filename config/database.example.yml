@@ -1,0 +1,30 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: nrdb_api_development
+  username: postgres 
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  host: db 
+  port: 5432
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: nrdb_api_test
+  username: postgres 
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  host: db 
+  port: 5432
+
+# Tailor this to your actual production configuration.
+production:
+  <<: *default
+  database: nrdb_api_production
+  username: nrdb_api
+  password: <%= ENV["NRDB_API_DATABASE_PASSWORD"] %>

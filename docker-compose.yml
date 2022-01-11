@@ -1,0 +1,39 @@
+version: "3.2"
+
+services:
+  # service configuration for our dockerized Rails app
+  app:
+
+    # use the Dockerfile next to this file
+    build: .
+
+    # sources environment variable configuration for our app
+    env_file: .env
+
+    # rely on the RAILS_ENV value of the host machine
+    environment:
+      POSTGRES_PASSWORD: netrunnerdb
+      RAILS_ENV: $RAILS_ENV
+
+    # makes the app container aware of the DB container
+    links:
+      - db
+
+    volumes:
+      - .:/var/www/nrdb-api/
+      - nrdb-api-logs:/var/www/nrdb-api/log
+
+  # service configuration for our database
+  db:
+    image: postgres:14.1
+
+    environment:
+      POSTGRES_PASSWORD: netrunnerdb
+
+    # persist the database between containers by storing it in a volume
+    volumes:
+      - nrdb-api-postgres:/var/lib/postgresql/data
+
+volumes:
+  nrdb-api-logs:
+  nrdb-api-postgres:
