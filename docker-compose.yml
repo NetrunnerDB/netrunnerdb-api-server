@@ -21,6 +21,7 @@ services:
 
     volumes:
       - .:/var/www/nrdb-api/
+      - ../netrunner-cards-json/:/netrunner-cards-json
       - nrdb-api-logs:/var/www/nrdb-api/log
 
   # service configuration for our database
