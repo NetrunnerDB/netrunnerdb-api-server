@@ -94,6 +94,10 @@ GEM
     io-wait (0.2.1)
     irb (1.4.1)
       reline (>= 0.3.0)
+    jsonapi-resources (0.10.6)
+      activerecord (>= 4.1)
+      concurrent-ruby
+      railties (>= 4.1)
     loofah (2.13.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -194,6 +198,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
+  jsonapi-resources
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.1)
