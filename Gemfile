@@ -39,7 +39,6 @@ gem "bootsnap", require: false
 # Used for our import of the card data.
 gem "activerecord-import"
 
-#gem 'jsonapi-rails'
 gem 'jsonapi-resources'
 
 group :development, :test do
