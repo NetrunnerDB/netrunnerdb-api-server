@@ -26,15 +26,15 @@ class Card < ApplicationRecord
     end
   end
 
-#  def type_builder
-#    c_type = "<strong>#{card_type.name}".dup
-#    c_type << if subtypes.present?
-#                ":</strong> #{subtypes}"
-#              else
-#                '</strong>'
-#              end
-#    c_type.freeze
-#  end
+  def type_builder
+    c_type = "<strong>#{card_type.name}".dup
+    c_type << if subtypes.present?
+                ":</strong> #{subtypes}"
+              else
+                '</strong>'
+              end
+    c_type.freeze
+  end
 
   def format_text
     t = text || ''.dup
