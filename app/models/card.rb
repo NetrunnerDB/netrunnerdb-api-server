@@ -1,18 +1,30 @@
 # frozen_string_literal: true
 
 class Card < ApplicationRecord
-  belongs_to :side
-  belongs_to :faction
-  belongs_to :card_type
-  has_and_belongs_to_many :subtype_relations, class_name: 'Subtype'
-  has_many :printings
-  has_many :legality
+  self.primary_key = :code
+
+  belongs_to :side,
+    :primary_key => :code,
+    :foreign_key => :side_code
+  belongs_to :faction,
+    :primary_key => :code,
+    :foreign_key => :faction_code
+  belongs_to :card_type,
+    :primary_key => :code,
+    :foreign_key => :card_type_code
+  has_many :card_subtypes,
+    :primary_key => :code,
+    :foreign_key => :card_code
+  has_many :subtypes, :through => :card_subtypes
+  has_many :printings,
+    :primary_key => :code,
+    :foreign_key => :card_code
 
   validates :code, uniqueness: true
   validates :name, uniqueness: true
 
   def versions
-    printings.includes(nr_set: :nr_cycle).order(date_release: :desc)
+    printings.includes(card_set: :cycle).order(date_release: :desc)
   end
 
   def strength_selector

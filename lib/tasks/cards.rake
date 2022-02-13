@@ -152,13 +152,13 @@ namespace :cards do
   def import_card_subtypes
     subtypes = Subtype.all.index_by(&:code)
     cards = Card.all
-    card_id_to_subtype_id = []
+    card_code_to_subtype_code = []
     cards.each { |c|
       keywords_to_subtype_codes(c.subtypes).each { |k,v|
-        card_id_to_subtype_id << [c.id, subtypes[k].id]
+        card_code_to_subtype_code << [c.code, subtypes[k].code]
       }
     }
-    puts "Have to insert %d card -> subtype mappings." % card_id_to_subtype_id.length
+    puts "Have to insert %d card -> subtype mappings." % card_code_to_subtype_code.length
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
       puts 'Clear out existing card -> subtype mappings'
@@ -168,13 +168,15 @@ namespace :cards do
       end
 
       num_assoc = 0
-      card_id_to_subtype_id.each_slice(250) { |m|
+      card_code_to_subtype_code.each_slice(250) { |m|
         num_assoc += m.length
         puts '  %d card -> subtype associations' % num_assoc
-        sql = "INSERT INTO cards_subtypes (card_id, subtype_id) VALUES " 
+        sql = "INSERT INTO cards_subtypes (card_code, subtype_code) VALUES " 
         vals = []
         m.each { |m|
-         vals << "(%d, %d)" % [m[0], m[1]]
+         # TODO(plural): use the associations object for this or ensure this is safe
+         puts m
+         vals << "('%s', '%s')" % [m[0], m[1]]
         }
         sql << vals.join(", ")
         unless ActiveRecord::Base.connection.execute(sql)
@@ -193,7 +195,7 @@ namespace :cards do
         name: c['name'],
       }
     end
-    NrCycle.import cycles, on_duplicate_key_update: { conflict_target: [ :code ], columns: :all } 
+    Cycle.import cycles, on_duplicate_key_update: { conflict_target: [ :code ], columns: :all } 
   end
 
   def import_set_types
@@ -208,30 +210,30 @@ namespace :cards do
       { code: 'expansion', name: 'Expansion' },
       { code: 'promo', name: 'Promo' }
     ]
-    NrSetType.import set_types, on_duplicate_key_update: { conflict_target: [ :code ], columns: :all }
+    CardSetType.import set_types, on_duplicate_key_update: { conflict_target: [ :code ], columns: :all }
   end
 
   def import_sets(path)
     # TODO(plural): Get mappings into the JSON files.
     set_type_mapping = {
-      "terminal-directive-campaign" => 1, # campaign
-      "revised-core-set" => 2, # core
-      "system-gateway" => 2, # core
-      "system-core-2019" => 2, # core
-      "core-set" => 2, # core
-      "system-update-2021" => 2, # core
-      "reign-and-reverie" => 4, # deluxe 
-      "data-and-destiny" => 4, # deluxe
-      "order-and-chaos" => 4, # deluxe
-      "creation-and-control" => 4, # deluxe
-      "honor-and-profit" => 4, # deluxe
-      "draft" => 5, # draft
-      "magnum-opus" => 6, # expansion 
-      "magnum-opus-reprint" => 6, # expansion
-      "uprising-booster-pack" => 6, # expansion
-      "napd-multiplayer" => 7, # promo
+      "terminal-directive-campaign" => 'campaign',
+      "revised-core-set" => 'core',
+      "system-gateway" => 'core',
+      "system-core-2019" => 'core',
+      "core-set" => 'core',
+      "system-update-2021" => 'core',
+      "reign-and-reverie" => 'deluxe', 
+      "data-and-destiny" => 'deluxe',
+      "order-and-chaos" => 'deluxe',
+      "creation-and-control" => 'deluxe',
+      "honor-and-profit" => 'deluxe',
+      "draft" => 'draft',
+      "magnum-opus" => 'expansion', 
+      "magnum-opus-reprint" => 'expansion',
+      "uprising-booster-pack" => 'expansion',
+      "napd-multiplayer" => 'promo',
     }
-    cycles = NrCycle.all.index_by(&:code)
+    cycles = Cycle.all.index_by(&:code)
     sets = JSON.parse(File.read(path))
     # TODO(plural): Get the updated code values in the JSON files, probably with a new name.
     sets.map! do |s|
@@ -241,11 +243,11 @@ namespace :cards do
           # TODO(plural): Make this a proper date type, not a string.
           "date_release": s["date_release"],
           "size": s["size"], 
-          "nr_cycle_id": cycles[s["cycle_code"]].id,
-          "nr_set_type_id": set_type_mapping.fetch(set_name_to_code(s["name"]), 3)
+          "cycle_code": cycles[s["cycle_code"]].code,
+          "card_set_type_code": set_type_mapping.fetch(set_name_to_code(s["name"]), "data_pack")
       }
     end
-    NrSet.import sets, on_duplicate_key_update: { conflict_target: [ :code ], columns: :all } 
+    CardSet.import sets, on_duplicate_key_update: { conflict_target: [ :code ], columns: :all } 
   end
 
   def import_printings(pack_cards_json, packs_path)
@@ -255,12 +257,12 @@ namespace :cards do
       old_pack_code_to_set_code[r["code"]] = set_name_to_code(r["name"])
     }
     raw_cards = Card.all.index_by(&:code)
-    nr_sets = NrSet.all.index_by(&:code)
+    sets = CardSet.all.index_by(&:code)
 
     new_printings = []
     pack_cards_json.each { |set_card|
       card = raw_cards[stripped_title_to_card_code(set_card["stripped_title"])]
-      nr_set = nr_sets[old_pack_code_to_set_code[set_card["pack_code"]]]
+      set = sets[old_pack_code_to_set_code[set_card["pack_code"]]]
 
       new_printings << Printing.new(
         printed_text: card.text,
@@ -270,9 +272,9 @@ namespace :cards do
         illustrator: set_card["illustrator"],
         position: set_card["position"],
         quantity: set_card["quantity"],
-        date_release: nr_set["date_release"],
+        date_release: set["date_release"],
         card: card,
-        nr_set: nr_set
+        card_set: set
       )
     }
 
@@ -285,41 +287,41 @@ namespace :cards do
   end
 
   task :import, [:json_dir] => [:environment] do |t, args|
-    args.with_defaults(:json_dir => '/netrunner-cards-json/')
-    puts 'Import card data...'
-
-    puts 'Importing Sides...'
-    import_sides(args[:json_dir] + '/sides.json')
-
-    puts 'Import factions...'
-    import_factions(args[:json_dir] + '/factions.json')
-
-    puts 'Importing Types...'
-    import_types(args[:json_dir] + '/types.json')
-
-    # The JSON from the files in packs/ are used by multiple methods.
-    pack_cards_json = load_pack_card_files(args[:json_dir] + '/pack/*.json')
-
-    puts 'Importing Subtypes...,'
-    import_subtypes(pack_cards_json)
-
-    puts 'Importing Cards...'
-    import_cards(pack_cards_json)
-
-    puts 'Importing Cycles...'
-    import_cycles(args[:json_dir] + '/cycles.json')
-
-    puts 'Importing Set Types...'
-    import_set_types()
-
-    puts 'Importing Sets...'
-    import_sets(args[:json_dir] + '/packs.json')
+#    args.with_defaults(:json_dir => '/netrunner-cards-json/')
+#    puts 'Import card data...'
+#
+#    puts 'Importing Sides...'
+#    import_sides(args[:json_dir] + '/sides.json')
+#
+#    puts 'Import factions...'
+#    import_factions(args[:json_dir] + '/factions.json')
+#
+#    puts 'Importing Types...'
+#    import_types(args[:json_dir] + '/types.json')
+#
+#    # The JSON from the files in packs/ are used by multiple methods.
+#    pack_cards_json = load_pack_card_files(args[:json_dir] + '/pack/*.json')
+#
+#    puts 'Importing Subtypes...,'
+#    import_subtypes(pack_cards_json)
+#
+#    puts 'Importing Cards...'
+#    import_cards(pack_cards_json)
+#
+#    puts 'Importing Cycles...'
+#    import_cycles(args[:json_dir] + '/cycles.json')
+#
+#    puts 'Importing Card Set Types...'
+#    import_set_types()
+#
+#    puts 'Importing Sets...'
+#    import_sets(args[:json_dir] + '/packs.json')
 
     puts 'Importing Subtypes for Cards...'
     import_card_subtypes()
 
-    puts('Importing Printings...')
-    import_printings(pack_cards_json, args[:json_dir] + '/packs.json')
+#    puts('Importing Printings...')
+#    import_printings(pack_cards_json, args[:json_dir] + '/packs.json')
 
     puts 'Done!'
   end
