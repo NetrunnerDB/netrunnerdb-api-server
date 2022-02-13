@@ -5,10 +5,10 @@ class CardSubtype < ApplicationRecord
 
   belongs_to :cards,
     :class_name => "Card",
-    :primary_key => :code,
-    :foreign_key => :card_code
+    :primary_key => :id,
+    :foreign_key => :card_id
   belongs_to :subtypes,
     :class_name => "Subtype",
-    :primary_key => :code,
-    :foreign_key => :subtype_code
+    :primary_key => :id,
+    :foreign_key => :subtype_id
 end

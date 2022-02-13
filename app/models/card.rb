@@ -1,26 +1,13 @@
 # frozen_string_literal: true
 
 class Card < ApplicationRecord
-  self.primary_key = :code
-
-  belongs_to :side,
-    :primary_key => :code,
-    :foreign_key => :side_code
-  belongs_to :faction,
-    :primary_key => :code,
-    :foreign_key => :faction_code
-  belongs_to :card_type,
-    :primary_key => :code,
-    :foreign_key => :card_type_code
-  has_many :card_subtypes,
-    :primary_key => :code,
-    :foreign_key => :card_code
+  belongs_to :side
+  belongs_to :faction
+  belongs_to :card_type
+  has_many :card_subtypes
   has_many :subtypes, :through => :card_subtypes
-  has_many :printings,
-    :primary_key => :code,
-    :foreign_key => :card_code
+  has_many :printings
 
-  validates :code, uniqueness: true
   validates :name, uniqueness: true
 
   def versions
@@ -39,15 +26,15 @@ class Card < ApplicationRecord
     end
   end
 
-  def type_builder
-    c_type = "<strong>#{card_type.name}".dup
-    c_type << if subtypes.present?
-                ":</strong> #{subtypes}"
-              else
-                '</strong>'
-              end
-    c_type.freeze
-  end
+#  def type_builder
+#    c_type = "<strong>#{card_type.name}".dup
+#    c_type << if subtypes.present?
+#                ":</strong> #{subtypes}"
+#              else
+#                '</strong>'
+#              end
+#    c_type.freeze
+#  end
 
   def format_text
     t = text || ''.dup
