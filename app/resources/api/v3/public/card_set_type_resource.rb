@@ -4,6 +4,9 @@ module API
       class Api::V3::Public::CardSetTypeResource < JSONAPI::Resource
         attributes :name, :description, :updated_at
         key_type :string
+
+        has_many :card_sets
+        paginator :none
       end
     end
   end
