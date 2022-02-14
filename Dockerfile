@@ -15,21 +15,15 @@ WORKDIR $RAILS_ROOT
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
-# RUN bundle config unset frozen
 
 RUN pwd
 
 COPY Gemfile Gemfile.lock ./
 
-RUN ls -l
-
 RUN bundle install
 
-#
-#COPY . .
-#
 ENTRYPOINT ["./entrypoint.sh"]
 EXPOSE 3000
-#
+
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
