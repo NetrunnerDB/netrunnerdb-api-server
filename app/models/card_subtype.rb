@@ -3,12 +3,10 @@
 class CardSubtype < ApplicationRecord
   self.table_name = "cards_subtypes"
 
-  belongs_to :cards,
-    :class_name => "Card",
+  belongs_to :card,
     :primary_key => :id,
     :foreign_key => :card_id
-  belongs_to :subtypes,
-    :class_name => "Subtype",
+  belongs_to :subtype,
     :primary_key => :id,
     :foreign_key => :subtype_id
 end
