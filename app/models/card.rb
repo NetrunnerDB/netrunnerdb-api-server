@@ -4,15 +4,14 @@ class Card < ApplicationRecord
   belongs_to :side
   belongs_to :faction
   belongs_to :card_type
-  has_and_belongs_to_many :subtype_relations, class_name: 'Subtype'
+  has_many :card_subtypes
+  has_many :subtypes, :through => :card_subtypes
   has_many :printings
-  has_many :legality
 
-  validates :code, uniqueness: true
   validates :name, uniqueness: true
 
   def versions
-    printings.includes(nr_set: :nr_cycle).order(date_release: :desc)
+    printings.includes(card_set: :cycle).order(date_release: :desc)
   end
 
   def strength_selector
