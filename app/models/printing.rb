@@ -2,7 +2,8 @@
 
 class Printing < ApplicationRecord
   belongs_to :card
-  belongs_to :nr_set
+  belongs_to :card_set
+  # TODO(plural): Add an association to cycle.
 
   def format_flavor
     t = flavor || ''
