@@ -200,42 +200,20 @@ namespace :cards do
     CardCycle.import cycles, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_set_types
-    # TODO(plural): Make json files for set types.
-    subtypes = Subtype.all
-    set_types = [
-      { id: 'campaign', name: 'Campaign' },
-      { id: 'core', name: 'Core' },
-      { id: 'data_pack', name: 'Data Pack' },
-      { id: 'deluxe', name: 'Deluxe' },
-      { id: 'draft', name: 'Draft' },
-      { id: 'expansion', name: 'Expansion' },
-      { id: 'promo', name: 'Promo' }
-    ]
+  def import_set_types(path)
+    set_types = JSON.parse(File.read(path))
+    set_types.map! do |t|
+      {
+        id: t['code'],
+        name: t['name'],
+      }
+    end
     CardSetType.import set_types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
   def import_sets(path)
-    # TODO(plural): Get mappings into the JSON files.
-    set_type_mapping = {
-      "terminal-directive-campaign" => 'campaign',
-      "revised-core-set" => 'core',
-      "system-gateway" => 'core',
-      "system-core-2019" => 'core',
-      "core-set" => 'core',
-      "system-update-2021" => 'core',
-      "reign-and-reverie" => 'deluxe',
-      "data-and-destiny" => 'deluxe',
-      "order-and-chaos" => 'deluxe',
-      "creation-and-control" => 'deluxe',
-      "honor-and-profit" => 'deluxe',
-      "draft" => 'draft',
-      "magnum-opus" => 'expansion',
-      "magnum-opus-reprint" => 'expansion',
-      "uprising-booster-pack" => 'expansion',
-      "napd-multiplayer" => 'promo',
-    }
     cycles = CardCycle.all
+    set_types = CardSetType.all
     sets = JSON.parse(File.read(path))
     # TODO(plural): Get the updated code values in the JSON files, probably with a new name.
     sets.map! do |s|
@@ -245,8 +223,8 @@ namespace :cards do
           # TODO(plural): Make this a proper date type, not a string.
           "date_release": s["date_release"],
           "size": s["size"],
-          "card_cycle_id": s["cycle_code"], #cycles[s["cycle_code"]].id,
-          "card_set_type_id": set_type_mapping.fetch(set_name_to_code(s["name"]), "data_pack")
+          "card_cycle_id": s["cycle_code"],
+          "card_set_type_id": s["type"]
       }
     end
     CardSet.import sets, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -317,7 +295,7 @@ namespace :cards do
     import_card_subtypes()
 
     puts 'Importing Card Set Types...'
-    import_set_types()
+    import_set_types(args[:json_dir] + '/set_types.json')
 
     puts 'Importing Sets...'
     import_sets(args[:json_dir] + '/packs.json')
