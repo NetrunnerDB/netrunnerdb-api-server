@@ -42,11 +42,12 @@ gem "activerecord-import"
 gem 'jsonapi-resources'
 
 group :development, :test do
+  gem "bundler-audit", "~> 0.9.0"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem 'rspec-rails'
-  gem 'faker'
   gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rspec-rails'
 end
 
 group :development do
