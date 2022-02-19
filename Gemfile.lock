@@ -70,7 +70,11 @@ GEM
       tzinfo (~> 2.0)
     bootsnap (1.10.3)
       msgpack (~> 1.2)
+    brakeman (5.2.1)
     builder (3.2.4)
+    bundler-audit (0.9.0.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     debug (1.4.0)
@@ -195,6 +199,8 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   bootsnap
+  brakeman (~> 5.2)
+  bundler-audit (~> 0.9.0)
   debug
   factory_bot_rails
   faker
