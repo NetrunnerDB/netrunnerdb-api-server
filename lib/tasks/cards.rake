@@ -68,6 +68,7 @@ namespace :cards do
     factions.map! do |f|
       {
         id: f['code'],
+        side_id: f['side_code'],
         name: f['name'],
         is_mini: f['is_mini']
       }

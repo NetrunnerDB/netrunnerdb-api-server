@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
   create_table "factions", id: :string, force: :cascade do |t|
     t.boolean "is_mini", null: false
     t.text "name", null: false
+    t.text "side_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -118,6 +119,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
   add_foreign_key "cards", "card_types", column: "card_type_id", primary_key: "id"
   add_foreign_key "cards", "factions", column: "faction_id", primary_key: "id"
   add_foreign_key "cards", "sides", column: "side_id", primary_key: "id"
+  add_foreign_key "factions", "sides", column: "side_id", primary_key: "id"
   add_foreign_key "printings", "cards", column: "card_id", primary_key: "id"
   add_foreign_key "printings", "card_sets", column: "card_set_id", primary_key: "id"
 end
