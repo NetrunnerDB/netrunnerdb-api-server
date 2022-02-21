@@ -16,6 +16,7 @@ This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-jso
 
 ```
 echo "RAILS_ENV=development" > .env
+docker-compose build
 cp config/database.example.yml config/database.yml
 docker-compose up -d db
 # Wait until docker-compose logs db | tail shows 'database system is ready to accept connections'
