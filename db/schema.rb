@@ -120,10 +120,22 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "rotations_cycles", id: false, force: :cascade do |t|
+    t.text "card_cycle_id", null: false
+    t.text "rotation_id", null: false
+    t.index ["card_cycle_id", "rotation_id"], name: "index_rotations_cycles_on_card_cycle_id_and_rotation_id"
+  end
+
   create_table "rotations_sets", id: false, force: :cascade do |t|
     t.text "card_set_id", null: false
     t.text "rotation_id", null: false
     t.index ["card_set_id", "rotation_id"], name: "index_rotations_sets_on_card_set_id_and_rotation_id"
+  end
+
+  create_table "rotations_cards", id: false, force: :cascade do |t|
+    t.text "card_id", null: false
+    t.text "rotation_id", null: false
+    t.index ["card_id", "rotation_id"], name: "index_rotations_cards_on_card_id_and_rotation_id"
   end
 
   create_table "formats", id: :string, force: :cascade do |t|
@@ -144,6 +156,10 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
   add_foreign_key "printings", "cards", column: "card_id", primary_key: "id"
   add_foreign_key "printings", "card_sets", column: "card_set_id", primary_key: "id"
   add_foreign_key "rotations", "formats", column: "format_id", primary_key: "id"
+  add_foreign_key "rotations_cards", "cards", column: "card_id", primary_key: "id"
+  add_foreign_key "rotations_cards", "rotations", column: "rotation_id", primary_key: "id"
+  add_foreign_key "rotations_cycles", "card_cycles", column: "card_cycle_id", primary_key: "id"
+  add_foreign_key "rotations_cycles", "rotations", column: "rotation_id", primary_key: "id"
   add_foreign_key "rotations_sets", "card_sets", column: "card_set_id", primary_key: "id"
   add_foreign_key "rotations_sets", "rotations", column: "rotation_id", primary_key: "id"
 end

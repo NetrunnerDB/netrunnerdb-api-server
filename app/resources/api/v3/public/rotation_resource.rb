@@ -8,7 +8,9 @@ module API
         paginator :none
 
         belongs_to :format
+        has_many :card_cycles
         has_many :card_sets
+        has_many :cards
       end
     end
   end
