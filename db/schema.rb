@@ -112,27 +112,6 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "rotations", id: :string, force: :cascade do |t|
-    t.text "name", null: false
-    t.text "date_start", null: false
-    t.text "format_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "rotations_sets", id: false, force: :cascade do |t|
-    t.text "card_set_id", null: false
-    t.text "rotation_id", null: false
-    t.index ["card_set_id", "rotation_id"], name: "index_rotations_sets_on_card_set_id_and_rotation_id"
-  end
-
-  create_table "formats", id: :string, force: :cascade do |t|
-    t.text "name", null: false
-    t.text "active", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   add_foreign_key "card_sets", "card_cycles", column: "card_cycle_id", primary_key: "id"
   add_foreign_key "card_sets", "card_set_types", column: "card_set_type_id", primary_key: "id"
   add_foreign_key "cards_subtypes", "cards", column: "card_id", primary_key: "id"
@@ -143,7 +122,4 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
   add_foreign_key "factions", "sides", column: "side_id", primary_key: "id"
   add_foreign_key "printings", "cards", column: "card_id", primary_key: "id"
   add_foreign_key "printings", "card_sets", column: "card_set_id", primary_key: "id"
-  add_foreign_key "rotations", "formats", column: "format_id", primary_key: "id"
-  add_foreign_key "rotations_sets", "card_sets", column: "card_set_id", primary_key: "id"
-  add_foreign_key "rotations_sets", "rotations", column: "rotation_id", primary_key: "id"
 end
