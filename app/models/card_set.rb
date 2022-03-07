@@ -5,6 +5,4 @@ class CardSet < ApplicationRecord
   belongs_to :card_set_type
 
   has_many :printings
-  has_many :rotation_sets
-  has_many :rotations, :through => :rotation_sets
 end

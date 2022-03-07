@@ -288,85 +288,6 @@ namespace :cards do
     }
   end
 
-  def import_formats(path)
-    formats = JSON.parse(File.read(path))
-    formats.map! do |c|
-      {
-        id: c['code'],
-        name: c['name'],
-        active: c['active']
-      }
-    end
-    Format.import formats, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
-  end
-
-  def import_rotations(path)
-    rotations = []
-    formats = JSON.parse(File.read(path))
-    formats.each do |f|
-      f['rotations'].each do |r|
-        rotations << {
-          id: r['code'],
-          name: r['name'],
-          date_start: r['date_start'],
-          format_id: f['code']
-        }
-      end
-    end
-    Rotation.import rotations, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
-  end
-
-  def import_rotation_sets(path)
-    formats = JSON.parse(File.read(path))
-    rotation_id_to_set_id = []
-    query = []
-    formats.each do |f|
-      f['rotations'].each do |r|
-        # Add card sets directly
-        if r['sets'] != nil
-          r['sets'].each do |s|
-            rotation_id_to_set_id << [r['code'], s]
-          end
-        end
-        # Collect all rotation-cycle mappings to be queried together later
-        if r['cycles'] != nil
-          query << "rotations.id = '#{r['code']}' AND card_cycle_id IN ('#{r['cycles'].join("', '")}')"
-        end
-      end
-    end
-
-    # Convert rotation-cycle mappings into rotation-set mappings
-    CardSet.find_by_sql("SELECT rotations.id as r, card_sets.id as set FROM card_sets INNER JOIN card_cycles ON card_cycle_id = card_cycles.id RIGHT JOIN rotations ON true WHERE #{query.join(' OR ')}").each do |c|
-      rotation_id_to_set_id << [c['r'], c['set']]
-    end
-
-    # Use a transaction since we are deleting the mapping table.
-    ActiveRecord::Base.transaction do
-      puts 'Clear out existing rotation -> card cycle mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM rotations_sets")
-        puts 'Hit an error while deleting rotation -> card set mappings. Rolling back.'
-        raise ActiveRecord::Rollback
-      end
-
-      num_assoc = 0
-      rotation_id_to_set_id.each_slice(250) { |m|
-        num_assoc += m.length
-        puts '  %d rotation -> card set associations' % num_assoc
-        sql = "INSERT INTO rotations_sets (rotation_id, card_set_id) VALUES "
-        vals = []
-        m.each { |m|
-          # TODO(ams): use the associations object for this or ensure this is safe
-          vals << "('%s', '%s')" % [m[0], m[1]]
-        }
-        sql << vals.join(", ")
-        unless ActiveRecord::Base.connection.execute(sql)
-          puts 'Hit an error while inserting rotation -> card cycle mappings. Rolling back.'
-          raise ActiveRecord::Rollback
-        end
-      }
-    end
-  end
-
   task :import, [:json_dir] => [:environment] do |t, args|
     args.with_defaults(:json_dir => '/netrunner-cards-json/')
     puts 'Import card data...'
@@ -403,15 +324,6 @@ namespace :cards do
 
     puts 'Importing Printings...'
     import_printings(pack_cards_json, args[:json_dir] + '/packs.json')
-
-    puts 'Importing Formats...'
-    import_formats(args[:json_dir] + '/formats.json')
-
-    puts 'Importing Rotations...'
-    import_rotations(args[:json_dir] + '/formats.json')
-
-    puts 'Importing Sets for Rotations...'
-    import_rotation_sets(args[:json_dir] + '/formats.json')
 
     puts 'Done!'
   end
