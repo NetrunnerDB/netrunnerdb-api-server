@@ -16,11 +16,14 @@ This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-jso
 
 ```
 echo "RAILS_ENV=development" > .env
+docker-compose build
 cp config/database.example.yml config/database.yml
 docker-compose up -d db
 # Wait until docker-compose logs db | tail shows 'database system is ready to accept connections'
-docker-compose run app rake db:create db:migrate 
+docker-compose run app rake db:reset 
 docker-compose up -d
+# Import the card data from the netrunner-cards-json repo
+docker-compose exec app rails cards:import
 ```
 
 To run tests in your docker container, you will need to override the environment, like so:
