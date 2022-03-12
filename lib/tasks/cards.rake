@@ -226,6 +226,8 @@ namespace :cards do
   end
 
   def import_printings(printings)
+    card_sets = CardSet.all.index_by(&:id)
+
     new_printings = []
     printings.each { |printing|
       new_printings << Printing.new(
@@ -239,6 +241,7 @@ namespace :cards do
         quantity: printing["quantity"],
         card_id: printing["card_id"],
         card_set_id: printing["card_set_id"],
+        date_release: card_sets[printing["card_set_id"]].date_release,
       )
     }
 
