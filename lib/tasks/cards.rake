@@ -127,14 +127,14 @@ namespace :cards do
         influence_limit: card["influence_limit"],
         memory_cost: card["memory_cost"],
         minimum_deck_size: card["minimum_deck_size"],
-        name: card["title"],
+        title: card["title"],
+        stripped_title: card["stripped_title"],
         strength: card["strength"],
+        stripped_text: card["stripped_text"],
         text: card["text"],
         trash_cost: card["trash_cost"],
-        # TODO(plural): Rename fields to match the new JSON.
-        uniqueness: card["is_unique"],
+        is_unique: card["is_unique"],
         keywords: subtype_array_to_keywords(subtypes, card["subtypes"]),
-        # TODO(plural): Add stripped_text and stripped_title fields.
       )
       new_cards << new_card
     end
@@ -215,12 +215,11 @@ namespace :cards do
       {
           "id": s["id"],
           "name": s["name"],
-          # TODO(plural): Make this a proper date type, not a string.
           "date_release": s["date_release"],
           "size": s["size"],
           "card_cycle_id": s["card_cycle_id"],
-          "card_set_type_id": s["card_set_type_id"]
-          # TODO(plural): Add position field.
+          "card_set_type_id": s["card_set_type_id"],
+          "position": s["position"],
       }
     end
     CardSet.import printings, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -229,10 +228,10 @@ namespace :cards do
   def import_printings(printings)
     new_printings = []
     printings.each { |printing|
-      # TODO(plural): Add stripped fields.
       new_printings << Printing.new(
         printed_text: printing["printed_text"],
-        printed_uniqueness: printing["printed_is_unique"],
+        stripped_printed_text: printing["stripped_printed_text"],
+        printed_is_unique: printing["printed_is_unique"],
         id: printing["id"],
         flavor: printing["flavor"],
         illustrator: printing["illustrator"],
