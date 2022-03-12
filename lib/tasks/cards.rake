@@ -1,7 +1,7 @@
 namespace :cards do
   desc 'import card data - json_dir defaults to /netrunner-cards-json/ if not specified.'
 
-  def load_pack_card_files(path)
+  def load_multiple_json_files(path)
     cards = []
     Dir.glob(path) do |f|
       next if File.directory? f
@@ -88,46 +88,42 @@ namespace :cards do
     CardType.import types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_subtypes(packs_json)
-    subtypes = {}
-    packs_json.each { |c|
-      next if c['keywords'] == nil
-      keywords = c['keywords'].split(' - ')
-      keywords.each { |k|
-        subtypes[subtype_name_to_code(k)] = k
-      }
-    }
-    subtypes = subtypes.to_a.map do |k, v|
+  def import_subtypes(path)
+    subtypes = JSON.parse(File.read(path))
+    subtypes.map! do |st|
       {
-        id: k,
-        name: v
+        id: st['id'],
+        name: st['name'],
       }
     end
     Subtype.import subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_cards(cards)
-    new_cards = []
-    seen_cards = {}
-    cards.each do |card|
-      # The pack files contain all the printings, but tests in the JSON repo ensure
-      # that all the text is identical, so we can use the first one we see by title.
-      if seen_cards.key?(card["title"])
-        next
-      end
-      seen_cards[card["title"]] = true
+  def subtype_array_to_keywords(all_subtypes, card_subtypes)
+    return if card_subtypes.nil?
+    subtype_names = []
+    card_subtypes.each do |subtype|
+      subtype_names << all_subtypes[subtype].name
+    end
+    return subtype_names.join(" - ")
+  end
 
+  def import_cards(cards)
+    subtypes = Subtype.all.index_by(&:id)
+
+    new_cards = []
+    cards.each do |card|
       new_card = Card.new(
-        id: stripped_title_to_card_code(card["stripped_title"]),
-        card_type_id: card["type_code"],
-        side_id: card["side_code"],
-        faction_id: card["faction_code"],
-        advancement_requirement: card["advancement_cost"],
+        id: card["id"],
+        card_type_id: card["card_type_id"],
+        side_id: card["side_id"],
+        faction_id: card["faction_id"],
+        advancement_requirement: card["advancement_requirement"],
         agenda_points: card["agenda_points"],
         base_link: card["base_link"],
         cost: card["cost"],
         deck_limit: card["deck_limit"],
-        influence_cost: card["faction_cost"],
+        influence_cost: card["influence_cost"],
         influence_limit: card["influence_limit"],
         memory_cost: card["memory_cost"],
         minimum_deck_size: card["minimum_deck_size"],
@@ -135,8 +131,10 @@ namespace :cards do
         strength: card["strength"],
         text: card["text"],
         trash_cost: card["trash_cost"],
-        uniqueness: card["uniqueness"],
-        keywords: card["keywords"],
+        # TODO(plural): Rename fields to match the new JSON.
+        uniqueness: card["is_unique"],
+        keywords: subtype_array_to_keywords(subtypes, card["subtypes"]),
+        # TODO(plural): Add stripped_text and stripped_title fields.
       )
       new_cards << new_card
     end
@@ -152,15 +150,13 @@ namespace :cards do
 
   # We don't reload JSON files in here because we have already saved all the cards
   # with their subtypes fields and can parse from there.
-  def import_card_subtypes
-    # TODO(plural): Deal with caïssa type.
-    subtypes = Subtype.all.index_by(&:id)
-    cards = Card.all
+  def import_card_subtypes(cards)
     card_id_to_subtype_id = []
     cards.each { |c|
-      keywords_to_subtype_codes(c.keywords).each { |k,v|
-        card_id_to_subtype_id << [c.id, subtypes[k].id]
-      }
+      next if c["subtypes"].nil?
+      c["subtypes"].each do |st|
+        card_id_to_subtype_id << [c["id"], st]
+      end
     }
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
@@ -177,7 +173,6 @@ namespace :cards do
         sql = "INSERT INTO cards_subtypes (card_id, subtype_id) VALUES "
         vals = []
         m.each { |m|
-         # TODO(plural): use the associations object for this or ensure this is safe
          vals << "('%s', '%s')" % [m[0], m[1]]
         }
         sql << vals.join(", ")
@@ -200,83 +195,51 @@ namespace :cards do
     CardCycle.import cycles, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_set_types
-    # TODO(plural): Make json files for set types.
-    subtypes = Subtype.all
-    set_types = [
-      { id: 'campaign', name: 'Campaign' },
-      { id: 'core', name: 'Core' },
-      { id: 'data_pack', name: 'Data Pack' },
-      { id: 'deluxe', name: 'Deluxe' },
-      { id: 'draft', name: 'Draft' },
-      { id: 'expansion', name: 'Expansion' },
-      { id: 'promo', name: 'Promo' }
-    ]
+  def import_set_types(path)
+    set_types = JSON.parse(File.read(path))
+    set_types.map! do |t|
+      {
+        id: t['code'],
+        name: t['name'],
+      }
+    end
     CardSetType.import set_types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
   def import_sets(path)
-    # TODO(plural): Get mappings into the JSON files.
-    set_type_mapping = {
-      "terminal-directive-campaign" => 'campaign',
-      "revised-core-set" => 'core',
-      "system-gateway" => 'core',
-      "system-core-2019" => 'core',
-      "core-set" => 'core',
-      "system-update-2021" => 'core',
-      "reign-and-reverie" => 'deluxe',
-      "data-and-destiny" => 'deluxe',
-      "order-and-chaos" => 'deluxe',
-      "creation-and-control" => 'deluxe',
-      "honor-and-profit" => 'deluxe',
-      "draft" => 'draft',
-      "magnum-opus" => 'expansion',
-      "magnum-opus-reprint" => 'expansion',
-      "uprising-booster-pack" => 'expansion',
-      "napd-multiplayer" => 'promo',
-    }
     cycles = CardCycle.all
-    sets = JSON.parse(File.read(path))
-    # TODO(plural): Get the updated code values in the JSON files, probably with a new name.
-    sets.map! do |s|
+    set_types = CardSetType.all
+    printings = JSON.parse(File.read(path))
+
+    printings.map! do |s|
       {
-          "id": set_name_to_code(s["name"]),
+          "id": s["id"],
           "name": s["name"],
           # TODO(plural): Make this a proper date type, not a string.
           "date_release": s["date_release"],
           "size": s["size"],
-          "card_cycle_id": s["cycle_code"], #cycles[s["cycle_code"]].id,
-          "card_set_type_id": set_type_mapping.fetch(set_name_to_code(s["name"]), "data_pack")
+          "card_cycle_id": s["card_cycle_id"],
+          "card_set_type_id": s["card_set_type_id"]
+          # TODO(plural): Add position field.
       }
     end
-    CardSet.import sets, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    CardSet.import printings, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_printings(pack_cards_json, packs_path)
-    raw_packs = JSON.parse(File.read(packs_path))
-    old_pack_id_to_set_id = {}
-    raw_packs.each{ |r|
-      old_pack_id_to_set_id[r["code"]] = set_name_to_code(r["name"])
-    }
-    raw_cards = Card.all.index_by(&:id)
-    sets = CardSet.all.index_by(&:id)
-
+  def import_printings(printings)
     new_printings = []
-    pack_cards_json.each { |set_card|
-      card = raw_cards[stripped_title_to_card_code(set_card["stripped_title"])]
-      set = sets[old_pack_id_to_set_id[set_card["pack_code"]]]
-
+    printings.each { |printing|
+      # TODO(plural): Add stripped fields.
       new_printings << Printing.new(
-        printed_text: card.text,
-        printed_uniqueness: card.uniqueness,
-        id: set_card["code"],
-        flavor: set_card["flavor"],
-        illustrator: set_card["illustrator"],
-        position: set_card["position"],
-        quantity: set_card["quantity"],
-        date_release: set["date_release"],
-        card: card,
-        card_set: set
+        printed_text: printing["printed_text"],
+        printed_uniqueness: printing["printed_is_unique"],
+        id: printing["id"],
+        flavor: printing["flavor"],
+        illustrator: printing["illustrator"],
+        position: printing["position"],
+        quantity: printing["quantity"],
+        card_id: printing["card_id"],
+        card_set_id: printing["card_set_id"],
       )
     }
 
@@ -293,7 +256,7 @@ namespace :cards do
     puts 'Import card data...'
 
     # The JSON from the files in packs/ are used by multiple methods.
-    pack_cards_json = load_pack_card_files(args[:json_dir] + '/pack/*.json')
+    pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
 
     puts 'Importing Sides...'
     import_sides(args[:json_dir] + '/sides.json')
@@ -304,26 +267,26 @@ namespace :cards do
     puts 'Importing Cycles...'
     import_cycles(args[:json_dir] + '/cycles.json')
 
+    puts 'Importing Card Set Types...'
+    import_set_types(args[:json_dir] + '/set_types.json')
+
+    puts 'Importing Sets...'
+    import_sets(args[:json_dir] + '/printings.json')
+
     puts 'Importing Types...'
     import_types(args[:json_dir] + '/types.json')
 
     puts 'Importing Subtypes...,'
-    import_subtypes(pack_cards_json)
+    import_subtypes(args[:json_dir] + '/subtypes.json')
 
     puts 'Importing Cards...'
-    import_cards(pack_cards_json)
+    import_cards(load_multiple_json_files(args[:json_dir] + '/cards/*.json'))
 
     puts 'Importing Subtypes for Cards...'
-    import_card_subtypes()
-
-    puts 'Importing Card Set Types...'
-    import_set_types()
-
-    puts 'Importing Sets...'
-    import_sets(args[:json_dir] + '/packs.json')
+    import_card_subtypes(load_multiple_json_files(args[:json_dir] + '/cards/*.json'))
 
     puts 'Importing Printings...'
-    import_printings(pack_cards_json, args[:json_dir] + '/packs.json')
+    import_printings(load_multiple_json_files(args[:json_dir] + '/printings/*.json'))
 
     puts 'Done!'
   end
