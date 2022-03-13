@@ -18,17 +18,6 @@ namespace :cards do
     subtype.gsub(/-/, ' ').gsub(/ /, '_').downcase
   end
 
-  # Make a map from subtype code -> name
-  def keywords_to_subtype_codes(keywords)
-    subtypes = {}
-    return subtypes if keywords == nil
-    keywords = keywords.split(' - ')
-    keywords.each { |k|
-      subtypes[subtype_name_to_code(k)] = k
-    }
-    return subtypes
-  end
-
   # Normalize set names by stripping apostrophes and replacing spaces with -.
   def set_name_to_code(name)
     name.gsub(/'/, '').gsub(/ /, '-').downcase
@@ -99,7 +88,7 @@ namespace :cards do
     Subtype.import subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def subtype_array_to_keywords(all_subtypes, card_subtypes)
+  def flatten_subtypes(all_subtypes, card_subtypes)
     return if card_subtypes.nil?
     subtype_names = []
     card_subtypes.each do |subtype|
@@ -134,7 +123,7 @@ namespace :cards do
         text: card["text"],
         trash_cost: card["trash_cost"],
         is_unique: card["is_unique"],
-        keywords: subtype_array_to_keywords(subtypes, card["subtypes"]),
+        display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
       )
       new_cards << new_card
     end

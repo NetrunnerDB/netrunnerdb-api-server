@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.text "text"
     t.integer "trash_cost"
     t.boolean "is_unique"
-    t.text "keywords"
+    t.text "display_subtypes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
