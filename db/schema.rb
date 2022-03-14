@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.integer "size"
     t.text "card_cycle_id"
     t.text "card_set_type_id"
+    t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -39,7 +40,8 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
   end
 
   create_table "cards", id: :string, force: :cascade do |t|
-    t.text "name", null: false
+    t.text "title", null: false
+    t.text "stripped_title", null: false
     t.text "card_type_id", null: false
     t.text "side_id", null: false
     t.text "faction_id", null: false
@@ -53,16 +55,17 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.integer "memory_cost"
     t.integer "minimum_deck_size"
     t.integer "strength"
+    t.text "stripped_text"
     t.text "text"
     t.integer "trash_cost"
-    t.boolean "uniqueness"
-    t.text "keywords"
+    t.boolean "is_unique"
+    t.text "display_subtypes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
-    t.index ["name"], name: "index_cards_unique_name", unique: true
+    t.index ["title"], name: "index_cards_unique_title", unique: true
   end
 
   create_table "cards_subtypes", id: false, force: :cascade do |t|
@@ -90,7 +93,8 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.text "card_id"
     t.text "card_set_id"
     t.text "printed_text"
-    t.boolean "printed_uniqueness"
+    t.text "stripped_printed_text"
+    t.boolean "printed_is_unique"
     t.text "flavor"
     t.text "illustrator"
     t.integer "position"
