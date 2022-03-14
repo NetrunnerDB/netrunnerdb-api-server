@@ -248,7 +248,7 @@ namespace :cards do
       {
         id: c['code'],
         name: c['name'],
-        active: c['active']
+        active_rotation: c['active_rotation']
       }
     end
     Format.import formats, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
