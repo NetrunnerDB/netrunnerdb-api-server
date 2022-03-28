@@ -7,7 +7,9 @@ module API
 
         paginator :none
 
+        has_one :side
         has_many :cards
+        has_many :printings
       end
     end
   end
