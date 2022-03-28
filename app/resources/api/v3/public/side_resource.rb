@@ -7,6 +7,8 @@ module API
 
         paginator :none
 
+        has_many :factions
+        has_many :printings
         has_many :cards
       end
     end

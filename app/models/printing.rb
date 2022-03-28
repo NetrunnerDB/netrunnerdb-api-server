@@ -3,5 +3,7 @@
 class Printing < ApplicationRecord
   belongs_to :card
   belongs_to :card_set
-  # TODO(plural): Add an association to cycle.
+  has_one :faction, :through => :card
+  has_one :card_cycle, :through => :card_set
+  has_one :side, :through => :card
 end

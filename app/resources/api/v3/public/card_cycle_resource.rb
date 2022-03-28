@@ -6,6 +6,9 @@ module API
         key_type :string
 
         has_many :card_sets
+        has_many :printings
+        has_many :cards
+
         paginator :none
       end
     end
