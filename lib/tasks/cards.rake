@@ -85,7 +85,7 @@ namespace :cards do
         name: st['name'],
       }
     end
-    Subtype.import subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    CardSubtype.import subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
   def flatten_subtypes(all_subtypes, card_subtypes)
@@ -98,7 +98,7 @@ namespace :cards do
   end
 
   def import_cards(cards)
-    subtypes = Subtype.all.index_by(&:id)
+    subtypes = CardSubtype.all.index_by(&:id)
 
     new_cards = []
     cards.each do |card|
@@ -150,7 +150,7 @@ namespace :cards do
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
       puts 'Clear out existing card -> subtype mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM cards_subtypes")
+      unless ActiveRecord::Base.connection.delete("DELETE FROM cards_card_subtypes")
         puts 'Hit an error while delete card -> subtype mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
@@ -159,7 +159,7 @@ namespace :cards do
       card_id_to_subtype_id.each_slice(250) { |m|
         num_assoc += m.length
         puts '  %d card -> subtype associations' % num_assoc
-        sql = "INSERT INTO cards_subtypes (card_id, subtype_id) VALUES "
+        sql = "INSERT INTO cards_card_subtypes (card_id, card_subtype_id) VALUES "
         vals = []
         m.each { |m|
          vals << "('%s', '%s')" % [m[0], m[1]]

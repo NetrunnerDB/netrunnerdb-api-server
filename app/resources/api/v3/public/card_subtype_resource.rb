@@ -1,7 +1,7 @@
 module API
   module V3
     module Public
-      class Api::V3::Public::SubtypeResource < JSONAPI::Resource
+      class Api::V3::Public::CardSubtypeResource < JSONAPI::Resource
         attributes :name, :updated_at
         key_type :string
 

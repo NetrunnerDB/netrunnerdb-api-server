@@ -8,7 +8,7 @@ module API
         has_one :card_type
         has_one :faction
         has_one :side
-        has_many :subtypes
+        has_many :card_subtypes
         has_many :printings
       end
     end
