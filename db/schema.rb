@@ -68,10 +68,10 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.index ["title"], name: "index_cards_unique_title", unique: true
   end
 
-  create_table "cards_subtypes", id: false, force: :cascade do |t|
+  create_table "cards_card_subtypes", id: false, force: :cascade do |t|
     t.text "card_id", null: false
-    t.text "subtype_id", null: false
-    t.index ["card_id", "subtype_id"], name: "index_cards_subtypes_on_card_id_and_subtype_id"
+    t.text "card_subtype_id", null: false
+    t.index ["card_id", "card_subtype_id"], name: "index_cards_card_subtypes_on_card_id_and_subtype_id"
   end
 
   create_table "card_cycles", id: :string, force: :cascade do |t|
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "subtypes", id: :string, force: :cascade do |t|
+  create_table "card_subtypes", id: :string, force: :cascade do |t|
     t.text "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
 
   add_foreign_key "card_sets", "card_cycles", column: "card_cycle_id", primary_key: "id"
   add_foreign_key "card_sets", "card_set_types", column: "card_set_type_id", primary_key: "id"
-  add_foreign_key "cards_subtypes", "cards", column: "card_id", primary_key: "id"
-  add_foreign_key "cards_subtypes", "subtypes", column: "subtype_id", primary_key: "id"
+  add_foreign_key "cards_card_subtypes", "cards", column: "card_id", primary_key: "id"
+  add_foreign_key "cards_card_subtypes", "card_subtypes", column: "card_subtype_id", primary_key: "id"
   add_foreign_key "cards", "card_types", column: "card_type_id", primary_key: "id"
   add_foreign_key "cards", "factions", column: "faction_id", primary_key: "id"
   add_foreign_key "cards", "sides", column: "side_id", primary_key: "id"
