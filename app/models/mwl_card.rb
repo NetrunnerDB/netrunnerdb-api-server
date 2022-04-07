@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class RotationCard < ApplicationRecord
-  self.table_name = "rotations_cards"
+class MwlCard < ApplicationRecord
+  self.table_name = "mwls_cards"
 
   belongs_to :card,
     :primary_key => :id,
     :foreign_key => :card_id
-  belongs_to :rotation,
+  belongs_to :mwl,
     :primary_key => :id,
-    :foreign_key => :rotation_id
+    :foreign_key => :mwl_id
 end

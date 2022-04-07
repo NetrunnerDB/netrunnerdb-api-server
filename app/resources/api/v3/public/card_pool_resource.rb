@@ -1,16 +1,16 @@
 module API
   module V3
     module Public
-      class Api::V3::Public::RotationResource < JSONAPI::Resource
-        attributes :name, :date_start, :format_id, :updated_at
+      class Api::V3::Public::CardPoolResource < JSONAPI::Resource
+        attributes :name, :updated_at
         key_type :string
 
         paginator :none
 
-        belongs_to :format
         has_many :card_cycles
         has_many :card_sets
         has_many :cards
+        has_many :snapshots
       end
     end
   end

@@ -128,7 +128,7 @@ namespace :cards do
       new_cards << new_card
     end
 
-    puts 'About to save %d cards...' % new_cards.length
+    puts '  About to save %d cards...' % new_cards.length
     num_cards = 0
     new_cards.each_slice(250) { |s|
       num_cards += s.length
@@ -149,7 +149,7 @@ namespace :cards do
     }
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing card -> subtype mappings'
+      puts '  Clear out existing card -> subtype mappings'
       unless ActiveRecord::Base.connection.delete("DELETE FROM cards_subtypes")
         puts 'Hit an error while delete card -> subtype mappings. rolling back.'
         raise ActiveRecord::Rollback
@@ -171,6 +171,57 @@ namespace :cards do
         end
       }
     end
+  end
+
+  def import_card_keywords
+    cards = Card.all
+    card_id_to_keyword_id = []
+    regex = /[A-Za-z]+(?=\]? →)|(?<=\[)[A-Za-z]{2,}?(?=\])|[Tt]race(?=\[)/
+    all_keywords = []
+    cards.each { |c|
+      if (c.text)
+        keywords = []
+        c.text.scan(regex) { |m|
+          m.downcase!
+          if !keywords.include? m
+            keywords << m
+            card_id_to_keyword_id << [c.id, m]
+          end
+          if !all_keywords.include? m
+            all_keywords << m
+          end
+        }
+        puts ""
+        puts all_keywords
+        puts ""
+      end
+    }
+    puts temp
+    # # Use a transaction since we are deleting the mapping table.
+    # ActiveRecord::Base.transaction do
+    #   puts '  Clear out existing card -> subtype mappings'
+    #   unless ActiveRecord::Base.connection.delete("DELETE FROM cards_subtypes")
+    #     puts 'Hit an error while delete card -> subtype mappings. rolling back.'
+    #     raise ActiveRecord::Rollback
+    #   end
+    #
+    #   num_assoc = 0
+    #   card_id_to_subtype_id.each_slice(250) { |m|
+    #     num_assoc += m.length
+    #     puts '  %d card -> subtype associations' % num_assoc
+    #     sql = "INSERT INTO cards_subtypes (card_id, subtype_id) VALUES "
+    #     vals = []
+    #     m.each { |m|
+    #      # TODO(plural): use the associations object for this or ensure this is safe
+    #      vals << "('%s', '%s')" % [m[0], m[1]]
+    #     }
+    #     sql << vals.join(", ")
+    #     unless ActiveRecord::Base.connection.execute(sql)
+    #       puts 'Hit an error while inserting card -> subtype mappings. rolling back.'
+    #       raise ActiveRecord::Rollback
+    #     end
+    #   }
+    # end
   end
 
   def import_cycles(path)
@@ -247,57 +298,47 @@ namespace :cards do
     formats.map! do |c|
       {
         id: c['code'],
-        name: c['name'],
-        active_rotation: c['active_rotation']
+        name: c['name']
       }
     end
     Format.import formats, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_rotations(path)
-    rotations = []
-    formats = JSON.parse(File.read(path))
-    formats.each do |f|
-      f['rotations'].each do |r|
-        rotations << {
-          id: r['code'],
-          name: r['name'],
-          date_start: r['date_start'],
-          format_id: f['code']
-        }
-      end
-    end
-    Rotation.import rotations, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+  def import_card_pools(card_pools)
+    new_card_pools = []
+    card_pools.each { |p|
+      new_card_pools << CardPool.new(
+        id: p['code'],
+        name: p['name']
+      )
+    }
+    CardPool.import new_card_pools, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_rotation_cycles(path)
-    formats = JSON.parse(File.read(path))
-    rotation_id_to_cycle_id = []
+  def import_card_pool_cycles(card_pools)
+    card_pool_id_to_cycle_id = []
 
-    # Add cycles from json
-    formats.each do |f|
-      f['rotations'].each do |r|
-        if r['cycles'] != nil
-          r['cycles'].each do |s|
-            rotation_id_to_cycle_id << [r['code'], s]
-          end
-        end
+    # Collect each card pool's cycles
+    card_pools.each do |p|
+      next if p['cycles'].nil?
+      p['cycles'].each do |s|
+        card_pool_id_to_cycle_id << [p['code'], s]
       end
     end
 
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing rotation -> cycle mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM rotations_cycles")
-        puts 'Hit an error while deleting rotation -> cycle mappings. Rolling back.'
+      puts '  Clear out existing card_pool -> cycle mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_cycles")
+        puts 'Hit an error while deleting card_pool -> cycle mappings. Rolling back.'
         raise ActiveRecord::Rollback
       end
 
       num_assoc = 0
-      rotation_id_to_cycle_id.each_slice(250) { |m|
+      card_pool_id_to_cycle_id.each_slice(250) { |m|
         num_assoc += m.length
-        puts '  %d rotation -> cycle associations' % num_assoc
-        sql = "INSERT INTO rotations_cycles (rotation_id, card_cycle_id) VALUES "
+        puts '  %d card_pool -> cycle associations' % num_assoc
+        sql = "INSERT INTO card_pools_cycles (card_pool_id, card_cycle_id) VALUES "
         vals = []
         m.each { |m|
           # TODO(ams): use the associations object for this or ensure this is safe
@@ -305,46 +346,42 @@ namespace :cards do
         }
         sql << vals.join(", ")
         unless ActiveRecord::Base.connection.execute(sql)
-          puts 'Hit an error while inserting rotation -> cycle mappings. Rolling back.'
+          puts 'Hit an error while inserting card_pool -> cycle mappings. Rolling back.'
           raise ActiveRecord::Rollback
         end
       }
     end
   end
 
-  def import_rotation_sets(path)
-    formats = JSON.parse(File.read(path))
-    rotation_id_to_set_id = []
+  def import_card_pool_sets(card_pools)
+    card_pool_id_to_set_id = []
 
-    # Get implied sets from cycles in the rotation
-    ActiveRecord::Base.connection.execute('SELECT rotation_id, id FROM rotations_cycles r INNER JOIN card_sets AS s ON r.card_cycle_id = s.card_cycle_id').each do |s|
-      rotation_id_to_set_id << [s['rotation_id'], s['id']]
+    # Get implied sets from cycles in the card_pool
+    ActiveRecord::Base.connection.execute('SELECT card_pool_id, id FROM card_pools_cycles r INNER JOIN card_sets AS s ON r.card_cycle_id = s.card_cycle_id').each do |s|
+      card_pool_id_to_set_id << [s['card_pool_id'], s['id']]
     end
 
-    # Add cards directly from json
-    formats.each do |f|
-      f['rotations'].each do |r|
-        if r['sets'] != nil
-          r['sets'].each do |s|
-            rotation_id_to_set_id << [r['code'], s]
-          end
-        end
+    # Collect each card pool's sets
+    card_pools.each do |p|
+      next if p['sets'].nil?
+      p['sets'].each do |s|
+        card_pool_id_to_set_id << [p['code'], s]
       end
     end
 
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing rotation -> card cycle mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM rotations_sets")
-        puts 'Hit an error while deleting rotation -> card set mappings. Rolling back.'
+      puts '  Clear out existing card_pool -> card cycle mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_sets")
+        puts 'Hit an error while deleting card_pool -> card set mappings. Rolling back.'
         raise ActiveRecord::Rollback
       end
 
       num_assoc = 0
-      rotation_id_to_set_id.each_slice(250) { |m|
+      card_pool_id_to_set_id.each_slice(250) { |m|
         num_assoc += m.length
-        puts '  %d rotation -> card set associations' % num_assoc
-        sql = "INSERT INTO rotations_sets (rotation_id, card_set_id) VALUES "
+        puts '  %d card_pool -> card set associations' % num_assoc
+        sql = "INSERT INTO card_pools_sets (card_pool_id, card_set_id) VALUES "
         vals = []
         m.each { |m|
           # TODO(ams): use the associations object for this or ensure this is safe
@@ -352,47 +389,42 @@ namespace :cards do
         }
         sql << vals.join(", ")
         unless ActiveRecord::Base.connection.execute(sql)
-          puts 'Hit an error while inserting rotation -> card set mappings. Rolling back.'
+          puts 'Hit an error while inserting card_pool -> card set mappings. Rolling back.'
           raise ActiveRecord::Rollback
         end
       }
     end
   end
 
-  def import_rotation_cards(path)
-    formats = JSON.parse(File.read(path))
-    rotation_id_to_card_id = []
-    query = []
+  def import_card_pool_cards(card_pools)
+    card_pool_id_to_card_id = []
 
-    # Get implied cards from sets in the rotation
-    ActiveRecord::Base.connection.execute('SELECT rotation_id, card_id FROM rotations_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id').each do |s|
-      rotation_id_to_card_id << [s['rotation_id'], s['card_id']]
+    # Get implied cards from sets in the card_pool
+    ActiveRecord::Base.connection.execute('SELECT card_pool_id, card_id FROM card_pools_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id').each do |s|
+      card_pool_id_to_card_id << [s['card_pool_id'], s['card_id']]
     end
 
-    # Add cards directly from json
-    formats.each do |f|
-      f['rotations'].each do |r|
-        if r['cards'] != nil
-          r['cards'].each do |s|
-            rotation_id_to_card_id << [r['code'], s]
-          end
-        end
+    # Collect each card pool's cards
+    card_pools.each do |p|
+      next if p['cards'].nil?
+      p['cards'].each do |s|
+        card_pool_id_to_card_id << [p['code'], s]
       end
     end
 
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing rotation -> card mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM rotations_cards")
-        puts 'Hit an error while deleting rotation -> card mappings. Rolling back.'
+      puts '  Clear out existing card_pool -> card mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_cards")
+        puts 'Hit an error while deleting card_pool -> card mappings. Rolling back.'
         raise ActiveRecord::Rollback
       end
 
       num_assoc = 0
-      rotation_id_to_card_id.each_slice(1000) { |m|
+      card_pool_id_to_card_id.each_slice(1000) { |m|
         num_assoc += m.length
-        puts '  %d rotation -> card associations' % num_assoc
-        sql = "INSERT INTO rotations_cards (rotation_id, card_id) VALUES "
+        puts '  %d card_pool -> card associations' % num_assoc
+        sql = "INSERT INTO card_pools_cards (card_pool_id, card_id) VALUES "
         vals = []
         m.each { |m|
           # TODO(ams): use the associations object for this or ensure this is safe
@@ -400,10 +432,97 @@ namespace :cards do
         }
         sql << vals.join(", ")
         unless ActiveRecord::Base.connection.execute(sql)
-          puts 'Hit an error while inserting rotation -> card mappings. Rolling back.'
+          puts 'Hit an error while inserting card_pool -> card mappings. Rolling back.'
           raise ActiveRecord::Rollback
         end
       }
+    end
+  end
+
+  def import_mwls(mwls)
+    new_mwls = []
+    mwls.each { |m|
+      new_mwls << Mwl.new(
+        id: m['code'],
+        name: m['name'],
+        date_start: m['date_start'],
+        point_limit: m['point_limit']
+      )
+    }
+    Mwl.import new_mwls, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+  end
+
+  def import_mwl_cards(mwls)
+    mwl_cards = []
+    mwls.each { |m|
+      next if m['cards'].nil?
+      m['cards'].each do |code, card|
+        mwl_cards << MwlCard.new(
+          id: m['code'] + '_' + code,
+          mwl_id: m['code'],
+          card_id: code,
+          global_penalty: card["global_penalty"] || 0,
+          universal_faction_cost: card["universal_faction_cost"] || 0,
+          is_restricted: card["is_restricted"] || false,
+          is_banned: card["deck_limit"] == 0,
+          points: card["points"] || 0
+        )
+      end
+    }
+    MwlCard.import mwl_cards, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+  end
+
+  def import_mwl_subtypes(mwls)
+    mwl_subtypes = []
+    mwls.each { |m|
+      next if m['subtypes'].nil?
+      m['subtypes'].each do |code, subtype|
+        mwl_subtypes << MwlSubtype.new(
+          id: m['code'] + '_' + code,
+          mwl_id: m['code'],
+          subtype_id: code,
+          global_penalty: subtype["global_penalty"] || 0,
+          universal_faction_cost: subtype["universal_faction_cost"] || 0,
+          is_restricted: subtype["is_restricted"] || false,
+          is_banned: subtype["deck_limit"] == 0,
+          points: subtype["points"] || 0
+        )
+      end
+    }
+    MwlSubtype.import mwl_subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+  end
+
+  def import_snapshots(path)
+    formats = JSON.parse(File.read(path))
+    snapshots = []
+    format_id_to_snapshot_id = []
+    formats.each { |f|
+      i = 0
+      f['snapshots'].each do |s|
+        snapshots << Snapshot.new(
+          id: f['code'] + '_%d' % i,
+          format_id: f['code'],
+          card_pool_id: s['card_pool'],
+          date_start: s['date_start'],
+          mwl_id: s['mwl']
+        )
+        format_id_to_snapshot_id << [f['code'], i]
+        i += 1
+      end
+    }
+
+    # Use a transaction for these since we are deleting the mapping table.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing snapshots'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM snapshots")
+        puts 'Hit an error while deleting snapshots. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      puts '  %d snapshots' % snapshots.length()
+      unless Snapshot.import snapshots, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+        puts 'Hit an error while inserting snapshots. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
@@ -411,8 +530,11 @@ namespace :cards do
     args.with_defaults(:json_dir => '/netrunner-cards-json/')
     puts 'Import card data...'
 
-    # The JSON from the files in packs/ are used by multiple methods.
+    # Preload directories that are used multiple times
+    cards_json = load_multiple_json_files(args[:json_dir] + '/cards/*.json')
     pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
+    card_pools_json = load_multiple_json_files(args[:json_dir] + '/card_pools/*.json')
+    mwls_json = load_multiple_json_files(args[:json_dir] + '/mwls/*.json')
 
     puts 'Importing Sides...'
     import_sides(args[:json_dir] + '/sides.json')
@@ -432,14 +554,17 @@ namespace :cards do
     puts 'Importing Types...'
     import_types(args[:json_dir] + '/types.json')
 
-    puts 'Importing Subtypes...,'
+    puts 'Importing Subtypes...'
     import_subtypes(args[:json_dir] + '/subtypes.json')
 
     puts 'Importing Cards...'
-    import_cards(load_multiple_json_files(args[:json_dir] + '/cards/*.json'))
+    import_cards(cards_json)
+
+    # puts 'Importing Keywords...'
+    # import_card_keywords()
 
     puts 'Importing Subtypes for Cards...'
-    import_card_subtypes(load_multiple_json_files(args[:json_dir] + '/cards/*.json'))
+    import_card_subtypes(cards_json)
 
     puts 'Importing Printings...'
     import_printings(load_multiple_json_files(args[:json_dir] + '/printings/*.json'))
@@ -447,17 +572,29 @@ namespace :cards do
     puts 'Importing Formats...'
     import_formats(args[:json_dir] + '/formats.json')
 
-    puts 'Importing Rotations...'
-    import_rotations(args[:json_dir] + '/formats.json')
+    puts 'Importing Card Pools...'
+    import_card_pools(card_pools_json)
 
-    puts 'Importing Rotations-to-Cycle relations...'
-    import_rotation_cycles(args[:json_dir] + '/formats.json')
+    puts 'Importing Card-Pool-to-Cycle relations...'
+    import_card_pool_cycles(card_pools_json)
 
-    puts 'Importing Rotations-to-Set relations...'
-    import_rotation_sets(args[:json_dir] + '/formats.json')
+    puts 'Importing Card-Pool-to-Set relations...'
+    import_card_pool_sets(card_pools_json)
 
-    puts 'Importing Rotations-to-Card relations...'
-    import_rotation_cards(args[:json_dir] + '/formats.json')
+    puts 'Importing Card-Pool-to-Card relations...'
+    import_card_pool_cards(card_pools_json)
+
+    puts 'Importing MWLs...'
+    import_mwls(mwls_json)
+
+    puts 'Importing MWL Cards...'
+    import_mwl_cards(mwls_json)
+
+    puts 'Importing MWL Subtypes...'
+    import_mwl_subtypes(mwls_json)
+
+    puts 'Importing Format Snapshots...'
+    import_snapshots(args[:json_dir] + '/formats.json')
 
     puts 'Done!'
   end
