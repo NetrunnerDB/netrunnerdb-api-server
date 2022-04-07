@@ -173,57 +173,6 @@ namespace :cards do
     end
   end
 
-  def import_card_keywords
-    cards = Card.all
-    card_id_to_keyword_id = []
-    regex = /[A-Za-z]+(?=\]? →)|(?<=\[)[A-Za-z]{2,}?(?=\])|[Tt]race(?=\[)/
-    all_keywords = []
-    cards.each { |c|
-      if (c.text)
-        keywords = []
-        c.text.scan(regex) { |m|
-          m.downcase!
-          if !keywords.include? m
-            keywords << m
-            card_id_to_keyword_id << [c.id, m]
-          end
-          if !all_keywords.include? m
-            all_keywords << m
-          end
-        }
-        puts ""
-        puts all_keywords
-        puts ""
-      end
-    }
-    puts temp
-    # # Use a transaction since we are deleting the mapping table.
-    # ActiveRecord::Base.transaction do
-    #   puts '  Clear out existing card -> subtype mappings'
-    #   unless ActiveRecord::Base.connection.delete("DELETE FROM cards_subtypes")
-    #     puts 'Hit an error while delete card -> subtype mappings. rolling back.'
-    #     raise ActiveRecord::Rollback
-    #   end
-    #
-    #   num_assoc = 0
-    #   card_id_to_subtype_id.each_slice(250) { |m|
-    #     num_assoc += m.length
-    #     puts '  %d card -> subtype associations' % num_assoc
-    #     sql = "INSERT INTO cards_subtypes (card_id, subtype_id) VALUES "
-    #     vals = []
-    #     m.each { |m|
-    #      # TODO(plural): use the associations object for this or ensure this is safe
-    #      vals << "('%s', '%s')" % [m[0], m[1]]
-    #     }
-    #     sql << vals.join(", ")
-    #     unless ActiveRecord::Base.connection.execute(sql)
-    #       puts 'Hit an error while inserting card -> subtype mappings. rolling back.'
-    #       raise ActiveRecord::Rollback
-    #     end
-    #   }
-    # end
-  end
-
   def import_cycles(path)
     cycles = JSON.parse(File.read(path))
     cycles.map! do |c|
@@ -559,9 +508,6 @@ namespace :cards do
 
     puts 'Importing Cards...'
     import_cards(cards_json)
-
-    # puts 'Importing Keywords...'
-    # import_card_keywords()
 
     puts 'Importing Subtypes for Cards...'
     import_card_subtypes(cards_json)
