@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
 
   create_table "formats", id: :string, force: :cascade do |t|
     t.text "name", null: false
+    t.text "active_snapshot_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

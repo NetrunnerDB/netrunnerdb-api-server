@@ -242,15 +242,15 @@ namespace :cards do
     }
   end
 
-  def import_formats(path)
-    formats = JSON.parse(File.read(path))
-    formats.map! do |c|
+  def import_formats(formats)
+    fs = formats.map do |c|
       {
         id: c['code'],
-        name: c['name']
+        name: c['name'],
+        active_snapshot_id: c['active']
       }
     end
-    Format.import formats, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    Format.import fs, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
   def import_card_pools(card_pools)
@@ -441,10 +441,8 @@ namespace :cards do
     MwlSubtype.import mwl_subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_snapshots(path)
-    formats = JSON.parse(File.read(path))
+  def import_snapshots(formats)
     snapshots = []
-    format_id_to_snapshot_id = []
     formats.each { |f|
       i = 0
       f['snapshots'].each do |s|
@@ -455,7 +453,6 @@ namespace :cards do
           date_start: s['date_start'],
           mwl_id: s['mwl']
         )
-        format_id_to_snapshot_id << [f['code'], i]
         i += 1
       end
     }
@@ -483,6 +480,7 @@ namespace :cards do
     cards_json = load_multiple_json_files(args[:json_dir] + '/cards/*.json')
     pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
     card_pools_json = load_multiple_json_files(args[:json_dir] + '/card_pools/*.json')
+    formats_json = load_multiple_json_files(args[:json_dir] + '/formats/*.json')
     mwls_json = load_multiple_json_files(args[:json_dir] + '/mwls/*.json')
 
     puts 'Importing Sides...'
@@ -516,7 +514,7 @@ namespace :cards do
     import_printings(load_multiple_json_files(args[:json_dir] + '/printings/*.json'))
 
     puts 'Importing Formats...'
-    import_formats(args[:json_dir] + '/formats.json')
+    import_formats(formats_json)
 
     puts 'Importing Card Pools...'
     import_card_pools(card_pools_json)
@@ -540,7 +538,7 @@ namespace :cards do
     import_mwl_subtypes(mwls_json)
 
     puts 'Importing Format Snapshots...'
-    import_snapshots(args[:json_dir] + '/formats.json')
+    import_snapshots(formats_json)
 
     puts 'Done!'
   end
