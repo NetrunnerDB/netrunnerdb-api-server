@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.text "card_pool_id", null: false
     t.text "date_start", null: false
     t.text "mwl_id"
+    t.boolean "active", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

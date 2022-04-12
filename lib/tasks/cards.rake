@@ -242,15 +242,23 @@ namespace :cards do
     }
   end
 
-  def import_formats(formats)
-    fs = formats.map do |c|
-      {
-        id: c['code'],
-        name: c['name'],
-        active_snapshot_id: c['active']
-      }
-    end
-    Format.import fs, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+  def import_formats(formats_json)
+    formats = []
+    formats_json.each { |f|
+      active_id = nil
+      f['snapshots'].each_with_index do |s, i|
+        next if s['active'].nil?
+        raise 'Multiple snapshots marked active in format %s.' % f['name'] unless !active_id
+        active_id = f['code'] + '_%d' % i
+      end
+      raise 'No active snapshot in format %s.' % f['name'] unless active_id
+      formats << Format.new(
+        id: f['code'],
+        name: f['name'],
+        active_snapshot_id: active_id
+      )
+    }
+    Format.import formats, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
   def import_card_pools(card_pools)
@@ -444,16 +452,15 @@ namespace :cards do
   def import_snapshots(formats)
     snapshots = []
     formats.each { |f|
-      i = 0
-      f['snapshots'].each do |s|
+      f['snapshots'].each_with_index do |s, i|
         snapshots << Snapshot.new(
           id: f['code'] + '_%d' % i,
           format_id: f['code'],
           card_pool_id: s['card_pool'],
           date_start: s['date_start'],
-          mwl_id: s['mwl']
+          mwl_id: s['mwl'],
+          active: !!s['active']
         )
-        i += 1
       end
     }
 
