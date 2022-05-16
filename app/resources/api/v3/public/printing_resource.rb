@@ -2,6 +2,8 @@ module API
   module V3
     module Public
       class Api::V3::Public::PrintingResource < JSONAPI::Resource
+        immutable
+
         # Direct printing attributes
         attributes :card_id, :card_set_id, :printed_text, :stripped_printed_text, :printed_is_unique, :flavor, :illustrator, :position, :quantity, :date_release, :updated_at
 
