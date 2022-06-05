@@ -5,12 +5,18 @@ module API
         immutable
 
         # Direct printing attributes
-        attributes :card_id, :card_set_id, :printed_text, :stripped_printed_text, :printed_is_unique, :flavor, :illustrator, :position, :quantity, :date_release, :updated_at
+        attributes :card_id, :card_set_id, :printed_text, :stripped_printed_text
+        attributes :printed_is_unique, :flavor, :illustrator, :position
+        attributes :quantity, :date_release, :updated_at
 
         # Parent Card attributes, included inline to make printings a bit more useful.
-        attributes :advancement_requirement, :agenda_points, :base_link, :card_type_id, :cost, :deck_limit
-        attributes :display_subtypes, :faction_id, :influence_cost, :influence_limit, :is_unique
-        attributes :memory_cost, :minimum_deck_size, :side_id, :strength, :stripped_text, :stripped_title, :text, :title, :trash_cost
+        attributes :advancement_requirement, :agenda_points, :base_link, :card_type_id
+        attributes :cost, :deck_limit, :display_subtypes, :faction_id, :influence_cost
+        attributes :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
+        attributes :side_id, :strength, :stripped_text, :stripped_title, :text
+        attributes :title, :trash_cost
+
+        # Synthesized attributes
         attributes :images
 
         key_type :string
@@ -20,6 +26,62 @@ module API
         has_one :side
         has_one :faction
         has_one :card
+
+        # Printing direct attribute filters
+        filters :card_id, :card_set_id, :printed_is_unique, :illustrator, :position
+        filters :quantity, :date_release
+
+        # Card attribute filters
+        filter :title, apply: ->(records, value, _options){
+          Rails.logger.info(_options)
+          records.joins(:card).where('cards.title = ?', value)
+        }
+        filter :card_type_id, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.card_type_id = ?', value)
+        }
+        filter :side_id, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.side_id = ?', value)
+        }
+        filter :faction_id, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.faction_id= ?', value)
+        }
+
+        filter :advancement_requirement, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.advancement_requirement = ?', value)
+        }
+        filter :agenda_points, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.agenda_points = ?', value)
+        }
+        filter :base_link, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.base_link = ?', value)
+        }
+        filter :cost, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.cost= ?', value)
+        }
+        filter :deck_limit, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.deck_limit= ?', value)
+        }
+        filter :influence_cost, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.influence_cost= ?', value)
+        }
+        filter :influence_limit, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.influence_limit= ?', value)
+        }
+        filter :memory_cost, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.memory_cost= ?', value)
+        }
+        filter :minimum_deck_size, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.minimum_deck_size= ?', value)
+        }
+        filter :strength, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.strength= ?', value)
+        }
+        filter :trash_cost, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.trash_cost= ?', value)
+        }
+        filter :is_unique, apply: ->(records, value, _options){
+          records.joins(:card).where('cards.is_unique= ?', value)
+        }
 
         # Images will return a nested map for different types of images.
         # 'nrdb_classic' represents the JPEGs used for classic netrunnerdb.com.
@@ -32,11 +94,12 @@ module API
           return { "nrdb_classic" => nrdb_classic_images }
         end
         def nrdb_classic_images
+          url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
           return {
-            "tiny" => "%s/tiny/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
-            "small" => "%s/small/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
-            "medium" => "%s/medium/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
-            "large" => "%s/large/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id]
+            "tiny" => "%s/tiny/%s.jpg" % [url_prefix, @model.id],
+            "small" => "%s/small/%s.jpg" % [url_prefix, @model.id],
+            "medium" => "%s/medium/%s.jpg" % [url_prefix, @model.id],
+            "large" => "%s/large/%s.jpg" % [url_prefix, @model.id]
           }
         end
         def advancement_requirement
