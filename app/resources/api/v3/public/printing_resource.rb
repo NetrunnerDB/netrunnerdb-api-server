@@ -11,6 +11,7 @@ module API
         attributes :advancement_requirement, :agenda_points, :base_link, :card_type_id, :cost, :deck_limit
         attributes :display_subtypes, :faction_id, :influence_cost, :influence_limit, :is_unique
         attributes :memory_cost, :minimum_deck_size, :side_id, :strength, :stripped_text, :stripped_title, :text, :title, :trash_cost
+        attributes :images
 
         key_type :string
 
@@ -20,6 +21,24 @@ module API
         has_one :faction
         has_one :card
 
+        # Images will return a nested map for different types of images.
+        # 'nrdb_classic' represents the JPEGs used for classic netrunnerdb.com.
+        # We will likely add other formats like png and webp, as well as various sizes,
+        # which will each get their own key in the map. While we are likely to support
+        # alt-art versions of cards directly, we may not represent those in the printing
+        # directly as we will want to have richer metadata for those images like
+        # Illustrator and storefront/purchase URLs.
+        def images
+          return { "nrdb_classic" => nrdb_classic_images }
+        end
+        def nrdb_classic_images
+          return {
+            "tiny" => "%s/tiny/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
+            "small" => "%s/small/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
+            "medium" => "%s/medium/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
+            "large" => "%s/large/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id]
+          }
+        end
         def advancement_requirement
           @model.card.advancement_requirement
         end
