@@ -177,6 +177,20 @@ namespace :cards do
     CardSetType.import set_types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
+  def update_date_release_for_cycles
+    CardCycle.all().each {|c|
+      if c.id == "draft"
+        # Place Draft after the Core set in release order.
+        core = CardSet.find("core")
+        c.date_release = core.date_release + 1.day
+        c.save
+      else
+        c.date_release = (c.card_sets.min_by {:date_release}).date_release
+        c.save
+      end
+    }  
+  end
+
   def import_sets(path)
     cycles = CardCycle.all
     set_types = CardSetType.all
@@ -242,6 +256,9 @@ namespace :cards do
 
     puts 'Importing Card Set Types...'
     import_set_types(args[:json_dir] + '/set_types.json')
+
+    puts 'Updating date_release for Cycles'
+    update_date_release_for_cycles()
 
     puts 'Importing Sets...'
     import_sets(args[:json_dir] + '/printings.json')
