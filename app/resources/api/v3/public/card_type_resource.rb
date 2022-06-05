@@ -4,11 +4,14 @@ module API
       class Api::V3::Public::CardTypeResource < JSONAPI::Resource
         immutable
 
-        attributes :name, :updated_at
+        attributes :name, :side_id, :updated_at
         key_type :string
 
+        has_one :side
         has_many :cards
         paginator :none
+
+        filter :side_id
       end
     end
   end
