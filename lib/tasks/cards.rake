@@ -13,34 +13,6 @@ namespace :cards do
     cards
   end
 
-  # Valid subtype code characters are limited to [a-z0-9_]
-  def subtype_name_to_code(subtype)
-    subtype.gsub(/-/, ' ').gsub(/ /, '_').downcase
-  end
-
-  # Normalize set names by stripping apostrophes and replacing spaces with -.
-  def set_name_to_code(name)
-    name.gsub(/'/, '').gsub(/ /, '-').downcase
-  end
-
-  def stripped_title_to_card_code(stripped_title)
-    stripped_title
-      .downcase
-      # Characters ! : " , ( ) * are stripped.
-      .gsub(/[!:",\(\)\*]/, '')
-      # Single quotes before or after a space and before a - are removed.
-      # This normalized a word like Earth's to earths which reads better
-      # than earth-s
-      .gsub(/' /, ' ')
-      .gsub(/ '/, ' ')
-      .gsub(/'-/, '-')
-      # Periods followed by a space (Such as in Dr. Lovegood) are removed.
-      .gsub('. ', ' ')
-      # Trailing periods are removed.
-      .gsub(/\.$/, '')
-      .gsub(/[\. '\/\.&;]/, '-')
-  end
-
   def import_sides(sides_path)
     sides = JSON.parse(File.read(sides_path))
     sides.map! do |s|
@@ -253,7 +225,7 @@ namespace :cards do
     puts 'Importing Sides...'
     import_sides(args[:json_dir] + '/sides.json')
 
-    puts 'Import factions...'
+    puts 'Import Factions...'
     import_factions(args[:json_dir] + '/factions.json')
 
     puts 'Importing Cycles...'
