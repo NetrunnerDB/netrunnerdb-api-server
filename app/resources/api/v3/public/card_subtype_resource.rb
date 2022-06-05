@@ -10,6 +10,7 @@ module API
         paginator :none
 
         has_many :cards
+        has_many :printings
       end
     end
   end
