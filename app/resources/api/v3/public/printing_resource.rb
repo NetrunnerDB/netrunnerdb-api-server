@@ -33,10 +33,10 @@ module API
         end
         def nrdb_classic_images
           return {
-            "tiny" => "%s/tiny/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
-            "small" => "%s/small/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
-            "medium" => "%s/medium/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
-            "large" => "%s/large/%d.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id]
+            "tiny" => "%s/tiny/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
+            "small" => "%s/small/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
+            "medium" => "%s/medium/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id],
+            "large" => "%s/large/%s.jpg" % [Rails.configuration.x.printing_images.nrdb_classic_prefix, @model.id]
           }
         end
         def advancement_requirement

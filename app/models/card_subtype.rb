@@ -3,4 +3,5 @@
 class CardSubtype < ApplicationRecord
   has_many :card_card_subtypes
   has_many :cards, :through => :card_card_subtypes
+  has_many :printings, :through => :cards
 end
