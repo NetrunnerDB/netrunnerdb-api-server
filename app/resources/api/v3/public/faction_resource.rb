@@ -12,6 +12,8 @@ module API
         has_one :side
         has_many :cards
         has_many :printings
+
+        filters :side_id, :is_mini
       end
     end
   end
