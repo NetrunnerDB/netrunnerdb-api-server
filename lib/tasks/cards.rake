@@ -72,6 +72,7 @@ namespace :cards do
       {
         id: t['code'],
         name: t['name'],
+        side_id: t['side_code'],
       }
     end
     CardType.import types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -267,7 +268,7 @@ namespace :cards do
     puts 'Importing Types...'
     import_types(args[:json_dir] + '/types.json')
 
-    puts 'Importing Subtypes...,'
+    puts 'Importing Subtypes...'
     import_subtypes(args[:json_dir] + '/subtypes.json')
 
     puts 'Importing Cards...'

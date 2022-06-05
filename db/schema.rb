@@ -10,16 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_13_014409) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_06_05_010704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "card_cycles", id: :string, force: :cascade do |t|
+    t.text "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "card_set_types", id: :string, force: :cascade do |t|
     t.text "name", null: false
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "card_sets", id: :string, force: :cascade do |t|
@@ -29,14 +35,21 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.text "card_cycle_id"
     t.text "card_set_type_id"
     t.integer "position"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "card_subtypes", id: :string, force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "card_types", id: :string, force: :cascade do |t|
     t.text "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "side_id"
   end
 
   create_table "cards", id: :string, force: :cascade do |t|
@@ -60,8 +73,8 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.integer "trash_cost"
     t.boolean "is_unique"
     t.text "display_subtypes"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
@@ -74,19 +87,12 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.index ["card_id", "card_subtype_id"], name: "index_cards_card_subtypes_on_card_id_and_subtype_id"
   end
 
-  create_table "card_cycles", id: :string, force: :cascade do |t|
-    t.text "name", null: false
-    t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "factions", id: :string, force: :cascade do |t|
     t.boolean "is_mini", null: false
     t.text "name", null: false
     t.text "side_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "printings", id: :string, force: :cascade do |t|
@@ -100,30 +106,25 @@ ActiveRecord::Schema.define(version: 2022_02_13_014409) do
     t.integer "position"
     t.integer "quantity"
     t.date "date_release"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sides", id: :string, force: :cascade do |t|
     t.text "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "card_subtypes", id: :string, force: :cascade do |t|
-    t.text "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  add_foreign_key "card_sets", "card_cycles", column: "card_cycle_id", primary_key: "id"
-  add_foreign_key "card_sets", "card_set_types", column: "card_set_type_id", primary_key: "id"
-  add_foreign_key "cards_card_subtypes", "cards", column: "card_id", primary_key: "id"
-  add_foreign_key "cards_card_subtypes", "card_subtypes", column: "card_subtype_id", primary_key: "id"
-  add_foreign_key "cards", "card_types", column: "card_type_id", primary_key: "id"
-  add_foreign_key "cards", "factions", column: "faction_id", primary_key: "id"
-  add_foreign_key "cards", "sides", column: "side_id", primary_key: "id"
-  add_foreign_key "factions", "sides", column: "side_id", primary_key: "id"
-  add_foreign_key "printings", "cards", column: "card_id", primary_key: "id"
-  add_foreign_key "printings", "card_sets", column: "card_set_id", primary_key: "id"
+  add_foreign_key "card_sets", "card_cycles"
+  add_foreign_key "card_sets", "card_set_types"
+  add_foreign_key "card_types", "sides"
+  add_foreign_key "cards", "card_types"
+  add_foreign_key "cards", "factions"
+  add_foreign_key "cards", "sides"
+  add_foreign_key "cards_card_subtypes", "card_subtypes"
+  add_foreign_key "cards_card_subtypes", "cards"
+  add_foreign_key "factions", "sides"
+  add_foreign_key "printings", "card_sets"
+  add_foreign_key "printings", "cards"
 end
