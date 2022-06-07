@@ -25,6 +25,6 @@ module NrdbApi
     config.api_only = true
 
     # Prefix for Printing images.
-    config.x.printing_images.nrdb_classic_prefix = 'https://static.nrdbassets.com/v1'
+    config.x.printing_images.nrdb_classic_prefix = 'https://static.nrdbassets.com/v1/'
   end
 end
