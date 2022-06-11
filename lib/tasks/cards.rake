@@ -257,11 +257,11 @@ namespace :cards do
     puts 'Importing Card Set Types...'
     import_set_types(args[:json_dir] + '/set_types.json')
 
-    puts 'Updating date_release for Cycles'
-    update_date_release_for_cycles()
-
     puts 'Importing Sets...'
     import_sets(args[:json_dir] + '/printings.json')
+
+    puts 'Updating date_release for Cycles'
+    update_date_release_for_cycles()
 
     puts 'Importing Types...'
     import_types(args[:json_dir] + '/types.json')
