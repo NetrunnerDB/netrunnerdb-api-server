@@ -117,15 +117,100 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_05_031732) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "card_sets", "card_cycles"
-  add_foreign_key "card_sets", "card_set_types"
-  add_foreign_key "card_types", "sides"
-  add_foreign_key "cards", "card_types"
-  add_foreign_key "cards", "factions"
-  add_foreign_key "cards", "sides"
-  add_foreign_key "cards_card_subtypes", "card_subtypes"
-  add_foreign_key "cards_card_subtypes", "cards"
-  add_foreign_key "factions", "sides"
-  add_foreign_key "printings", "card_sets"
-  add_foreign_key "printings", "cards"
+  create_table "formats", id: :string, force: :cascade do |t|
+    t.text "name", null: false
+    t.text "active_snapshot_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "snapshots", id: :string, force: :cascade do |t|
+    t.text "format_id", null: false
+    t.text "card_pool_id", null: false
+    t.text "date_start", null: false
+    t.text "mwl_id"
+    t.boolean "active", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "card_pools", id: :string, force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "card_pools_cycles", id: false, force: :cascade do |t|
+    t.text "card_cycle_id", null: false
+    t.text "card_pool_id", null: false
+    t.index ["card_cycle_id", "card_pool_id"], name: "index_card_pools_cycles_on_card_cycle_id_and_card_pool_id"
+  end
+
+  create_table "card_pools_sets", id: false, force: :cascade do |t|
+    t.text "card_set_id", null: false
+    t.text "card_pool_id", null: false
+    t.index ["card_set_id", "card_pool_id"], name: "index_card_pools_sets_on_card_set_id_and_card_pool_id"
+  end
+
+  create_table "card_pools_cards", id: false, force: :cascade do |t|
+    t.text "card_id", null: false
+    t.text "card_pool_id", null: false
+    t.index ["card_id", "card_pool_id"], name: "index_card_pools_cards_on_card_id_and_card_pool_id"
+  end
+
+  create_table "mwls", id: :string, force: :cascade do |t|
+    t.text "name", null: false
+    t.text "date_start", null: false
+    t.integer "point_limit"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mwls_cards", id: :string, force: :cascade do |t|
+    t.text "mwl_id", null: false
+    t.text "card_id", null: false
+    t.integer "global_penalty"
+    t.integer "universal_faction_cost"
+    t.boolean "is_restricted"
+    t.boolean "is_banned"
+    t.integer "points"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mwls_subtypes", id: :string, force: :cascade do |t|
+    t.text "mwl_id", null: false
+    t.text "subtype_id", null: false
+    t.integer "global_penalty"
+    t.integer "universal_faction_cost"
+    t.boolean "is_restricted"
+    t.boolean "is_banned"
+    t.integer "points"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "card_sets", "card_cycles", column: "card_cycle_id", primary_key: "id"
+  add_foreign_key "card_sets", "card_set_types", column: "card_set_type_id", primary_key: "id"
+  add_foreign_key "cards_subtypes", "cards", column: "card_id", primary_key: "id"
+  add_foreign_key "cards_subtypes", "subtypes", column: "subtype_id", primary_key: "id"
+  add_foreign_key "cards", "card_types", column: "card_type_id", primary_key: "id"
+  add_foreign_key "cards", "factions", column: "faction_id", primary_key: "id"
+  add_foreign_key "cards", "sides", column: "side_id", primary_key: "id"
+  add_foreign_key "factions", "sides", column: "side_id", primary_key: "id"
+  add_foreign_key "printings", "cards", column: "card_id", primary_key: "id"
+  add_foreign_key "printings", "card_sets", column: "card_set_id", primary_key: "id"
+  add_foreign_key "snapshots", "formats", column: "format_id", primary_key: "id"
+  add_foreign_key "snapshots", "card_pools", column: "card_pool_id", primary_key: "id"
+  add_foreign_key "snapshots", "mwls", column: "mwl_id", primary_key: "id"
+  add_foreign_key "card_pools_cycles", "card_cycles", column: "card_cycle_id", primary_key: "id"
+  add_foreign_key "card_pools_cycles", "card_pools", column: "card_pool_id", primary_key: "id"
+  add_foreign_key "card_pools_sets", "card_sets", column: "card_set_id", primary_key: "id"
+  add_foreign_key "card_pools_sets", "card_pools", column: "card_pool_id", primary_key: "id"
+  add_foreign_key "card_pools_cards", "cards", column: "card_id", primary_key: "id"
+  add_foreign_key "card_pools_cards", "card_pools", column: "card_pool_id", primary_key: "id"
+  add_foreign_key "mwls_cards", "cards", column: "card_id", primary_key: "id"
+  add_foreign_key "mwls_cards", "mwls", column: "mwl_id", primary_key: "id"
+  add_foreign_key "mwls_subtypes", "mwls", column: "mwl_id", primary_key: "id"
+  add_foreign_key "mwls_subtypes", "subtypes", column: "subtype_id", primary_key: "id"
 end
