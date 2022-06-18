@@ -39,7 +39,6 @@ namespace :cards do
 
   def import_types(path)
     types = JSON.parse(File.read(path))
-    types = types.select {|t| t['is_subtype'] == false && t['side_code'] != nil}
     types.map! do |t|
       {
         id: t['code'],
@@ -47,8 +46,6 @@ namespace :cards do
         side_id: t['side_code'],
       }
     end
-    types.append({ 'id': 'corp_identity', 'name': 'Corp Identity', 'side_id': 'corp'})
-    types.append({ 'id': 'runner_identity', 'name': 'Runner Identity', 'side_id': 'runner'})
     CardType.import types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
@@ -246,37 +243,37 @@ namespace :cards do
     pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
 
     puts 'Importing Sides...'
-    import_sides(args[:json_dir] + '/sides.json')
+    import_sides(args[:json_dir] + '/v2/sides.json')
 
     puts 'Import Factions...'
-    import_factions(args[:json_dir] + '/factions.json')
+    import_factions(args[:json_dir] + '/v2/factions.json')
 
     puts 'Importing Cycles...'
-    import_cycles(args[:json_dir] + '/cycles.json')
+    import_cycles(args[:json_dir] + '/v2/cycles.json')
 
     puts 'Importing Card Set Types...'
-    import_set_types(args[:json_dir] + '/set_types.json')
+    import_set_types(args[:json_dir] + '/v2/set_types.json')
 
     puts 'Importing Sets...'
-    import_sets(args[:json_dir] + '/printings.json')
+    import_sets(args[:json_dir] + '/v2/printings.json')
 
     puts 'Updating date_release for Cycles'
     update_date_release_for_cycles()
 
     puts 'Importing Types...'
-    import_types(args[:json_dir] + '/types.json')
+    import_types(args[:json_dir] + '/v2/types.json')
 
     puts 'Importing Subtypes...'
-    import_subtypes(args[:json_dir] + '/subtypes.json')
+    import_subtypes(args[:json_dir] + '/v2/subtypes.json')
 
     puts 'Importing Cards...'
-    import_cards(load_multiple_json_files(args[:json_dir] + '/cards/*.json'))
+    import_cards(load_multiple_json_files(args[:json_dir] + '/v2/cards/*.json'))
 
     puts 'Importing Subtypes for Cards...'
-    import_card_subtypes(load_multiple_json_files(args[:json_dir] + '/cards/*.json'))
+    import_card_subtypes(load_multiple_json_files(args[:json_dir] + '/v2/cards/*.json'))
 
     puts 'Importing Printings...'
-    import_printings(load_multiple_json_files(args[:json_dir] + '/printings/*.json'))
+    import_printings(load_multiple_json_files(args[:json_dir] + '/v2/printings/*.json'))
 
     puts 'Done!'
   end
