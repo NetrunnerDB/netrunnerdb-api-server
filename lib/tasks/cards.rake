@@ -70,13 +70,6 @@ namespace :cards do
     return subtype_names.join(" - ")
   end
 
-  def identity_card_type(card_type_id, side_id)
-    if card_type_id == "identity"
-      return "%s_%s" % [side_id, card_type_id]
-    end
-    return card_type_id
-  end
-
   def import_cards(cards)
     subtypes = CardSubtype.all.index_by(&:id)
 
@@ -84,7 +77,7 @@ namespace :cards do
     cards.each do |card|
       new_card = Card.new(
         id: card["id"],
-        card_type_id: identity_card_type(card["card_type_id"], card["side_id"]),
+        card_type_id: card["card_type_id"],
         side_id: card["side_id"],
         faction_id: card["faction_id"],
         advancement_requirement: card["advancement_requirement"],
