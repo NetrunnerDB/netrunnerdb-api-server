@@ -4,7 +4,7 @@ module API
       class Api::V3::Public::FactionResource < JSONAPI::Resource
         immutable
 
-        attributes :name, :is_mini, :side_id, :updated_at
+        attributes :name, :description, :is_mini, :side_id, :updated_at
         key_type :string
 
         paginator :none

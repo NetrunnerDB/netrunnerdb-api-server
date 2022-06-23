@@ -29,9 +29,10 @@ namespace :cards do
     factions.map! do |f|
       {
         id: f['code'],
-        side_id: f['side_code'],
+        description: f['description'],
+        is_mini: f['is_mini'],
         name: f['name'],
-        is_mini: f['is_mini']
+        side_id: f['side_code'],
       }
     end
     Faction.import factions, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
