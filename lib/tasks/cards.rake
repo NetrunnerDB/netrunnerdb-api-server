@@ -177,15 +177,8 @@ namespace :cards do
 
   def update_date_release_for_cycles
     CardCycle.all().each {|c|
-      if c.id == "draft"
-        # Place Draft after the Core set in release order.
-        core = CardSet.find("core")
-        c.date_release = core.date_release + 1.day
-        c.save
-      else
-        c.date_release = (c.card_sets.min_by {:date_release}).date_release
-        c.save
-      end
+      c.date_release = (c.card_sets.min_by {:date_release}).date_release
+      c.save
     }  
   end
 
