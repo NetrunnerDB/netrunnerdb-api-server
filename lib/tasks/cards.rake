@@ -1,6 +1,16 @@
 namespace :cards do
   desc 'import card data - json_dir defaults to /netrunner-cards-json/ if not specified.'
 
+  def text_to_id(t)
+    t.downcase
+      .unicode_normalize(:nfd)
+      .gsub(/\P{ASCII}/, '')
+      .gsub(/'s(\p{Space}|\z)/, 's\1')
+      .split(/[\p{Space}\p{Punct}]+/)
+      .reject { |s| s&.strip&.empty? }
+      .join("_")
+  end
+
   def load_multiple_json_files(path)
     cards = []
     Dir.glob(path) do |f|
@@ -124,7 +134,7 @@ namespace :cards do
     ActiveRecord::Base.transaction do
       puts 'Clear out existing card -> subtype mappings'
       unless ActiveRecord::Base.connection.delete("DELETE FROM cards_card_subtypes")
-        puts 'Hit an error while delete card -> subtype mappings. rolling back.'
+        puts 'Hit an error while deleting card -> subtype mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
 
@@ -205,7 +215,7 @@ namespace :cards do
         printed_is_unique: printing["printed_is_unique"],
         id: printing["id"],
         flavor: printing["flavor"],
-        illustrator: printing["illustrator"],
+        display_illustrators: printing["illustrator"],
         position: printing["position"],
         quantity: printing["quantity"],
         card_id: printing["card_id"],
@@ -222,45 +232,93 @@ namespace :cards do
     }
   end
 
+  def import_illustrators()
+    # Use a transaction since we are deleting the illustrator and mapping tables.
+    ActiveRecord::Base.transaction do
+      puts 'Clear out existing illustrator -> printing mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators_printings")
+        puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+  
+      puts 'Clear out existing illustrators'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators")
+        puts 'Hit an error while deleting illustrators. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      illustrators = Set[]
+      illustrators_to_printings = []
+      num_its = 0
+      printings = Printing.all 
+      printings.each { |printing|
+        if printing.display_illustrators then
+          printing.display_illustrators.split(', ').each { |i|
+            illustrators.add(i)
+            num_its += 1
+            illustrators_to_printings << {
+              "illustrator_id": text_to_id(i),
+              "printing_id": printing.id
+            }
+          }
+        end
+      }
+     
+      ill = []
+      illustrators.each { |i|
+        ill << {
+          "id": text_to_id(i),
+          "name": i
+        } 
+      }
+  
+      Illustrator.import ill, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      IllustratorPrinting.import illustrators_to_printings, on_duplicate_key_update: { conflict_target: [ :illustrator_id, :printing_id ], columns: :all }
+    end
+  end
+
   task :import, [:json_dir] => [:environment] do |t, args|
     args.with_defaults(:json_dir => '/netrunner-cards-json/')
     puts 'Import card data...'
 
-    # The JSON from the files in packs/ are used by multiple methods.
-    pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
+#    # The JSON from the files in packs/ are used by multiple methods.
+#    pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
+#
+#    puts 'Importing Sides...'
+#    import_sides(args[:json_dir] + '/v2/sides.json')
+#
+#    puts 'Import Factions...'
+#    import_factions(args[:json_dir] + '/v2/factions.json')
+#
+#    puts 'Importing Cycles...'
+#    import_cycles(args[:json_dir] + '/v2/cycles.json')
+#
+#    puts 'Importing Card Set Types...'
+#    import_set_types(args[:json_dir] + '/v2/set_types.json')
+#
+#    puts 'Importing Sets...'
+#    import_sets(args[:json_dir] + '/v2/printings.json')
+#
+#    puts 'Updating date_release for Cycles'
+#    update_date_release_for_cycles()
+#
+#    puts 'Importing Types...'
+#    import_types(args[:json_dir] + '/v2/types.json')
+#
+#    puts 'Importing Subtypes...'
+#    import_subtypes(args[:json_dir] + '/v2/subtypes.json')
+#
+#    puts 'Importing Cards...'
+#    import_cards(load_multiple_json_files(args[:json_dir] + '/v2/cards/*.json'))
+#
+#    puts 'Importing Subtypes for Cards...'
+#    import_card_subtypes(load_multiple_json_files(args[:json_dir] + '/v2/cards/*.json'))
+#
+#    puts 'Importing Printings...'
+#    import_printings(load_multiple_json_files(args[:json_dir] + '/v2/printings/*.json'))
 
-    puts 'Importing Sides...'
-    import_sides(args[:json_dir] + '/v2/sides.json')
-
-    puts 'Import Factions...'
-    import_factions(args[:json_dir] + '/v2/factions.json')
-
-    puts 'Importing Cycles...'
-    import_cycles(args[:json_dir] + '/v2/cycles.json')
-
-    puts 'Importing Card Set Types...'
-    import_set_types(args[:json_dir] + '/v2/set_types.json')
-
-    puts 'Importing Sets...'
-    import_sets(args[:json_dir] + '/v2/printings.json')
-
-    puts 'Updating date_release for Cycles'
-    update_date_release_for_cycles()
-
-    puts 'Importing Types...'
-    import_types(args[:json_dir] + '/v2/types.json')
-
-    puts 'Importing Subtypes...'
-    import_subtypes(args[:json_dir] + '/v2/subtypes.json')
-
-    puts 'Importing Cards...'
-    import_cards(load_multiple_json_files(args[:json_dir] + '/v2/cards/*.json'))
-
-    puts 'Importing Subtypes for Cards...'
-    import_card_subtypes(load_multiple_json_files(args[:json_dir] + '/v2/cards/*.json'))
-
-    puts 'Importing Printings...'
-    import_printings(load_multiple_json_files(args[:json_dir] + '/v2/printings/*.json'))
+    puts 'Importing Illustrators...'
+    import_illustrators()
 
     puts 'Done!'
   end

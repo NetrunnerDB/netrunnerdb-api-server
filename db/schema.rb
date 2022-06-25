@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_25_170812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -97,6 +97,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
     t.string "description"
   end
 
+  create_table "illustrators", id: :string, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "illustrators_printings", id: false, force: :cascade do |t|
+    t.string "illustrator_id", null: false
+    t.string "printing_id", null: false
+    t.index ["illustrator_id", "printing_id"], name: "index_illustrators_printings_on_illustrator_id_and_printing_id", unique: true
+  end
+
   create_table "printings", id: :string, force: :cascade do |t|
     t.text "card_id"
     t.text "card_set_id"
@@ -104,7 +116,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
     t.text "stripped_printed_text"
     t.boolean "printed_is_unique"
     t.text "flavor"
-    t.text "illustrator"
+    t.text "display_illustrators"
     t.integer "position"
     t.integer "quantity"
     t.date "date_release"

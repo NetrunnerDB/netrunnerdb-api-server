@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         jsonapi_resources :card_types, only: [:index, :show]
         jsonapi_resources :cards, only: [:index, :show]
         jsonapi_resources :factions, only: [:index, :show]
+        jsonapi_resources :illustrators, only: [:index, :show]
         jsonapi_resources :printings, only: [:index, :show]
         jsonapi_resources :sides, only: [:index, :show]
       end
