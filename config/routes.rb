@@ -15,7 +15,6 @@ Rails.application.routes.draw do
         jsonapi_resources :printings, only: [:index, :show]
         jsonapi_resources :sides, only: [:index, :show]
         jsonapi_resources :snapshots, only: [:index, :show]
-        jsonapi_resources :subtypes, only: [:index, :show]
       end
     end
   end

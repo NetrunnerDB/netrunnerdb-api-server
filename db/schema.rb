@@ -181,7 +181,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
 
  create_table "mwls_subtypes", id: :string, force: :cascade do |t|
    t.text "mwl_id", null: false
-   t.text "subtype_id", null: false
+   t.text "card_subtype_id", null: false
    t.integer "global_penalty"
    t.integer "universal_faction_cost"
    t.boolean "is_restricted"
@@ -193,8 +193,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
 
   add_foreign_key "card_sets", "card_cycles"
   add_foreign_key "card_sets", "card_set_types"
-  add_foreign_key "cards_subtypes", "cards"
-  add_foreign_key "cards_subtypes", "subtypes"
   add_foreign_key "card_types", "sides"
   add_foreign_key "cards", "card_types"
   add_foreign_key "cards", "factions"
@@ -216,5 +214,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
   add_foreign_key "mwls_cards", "cards"
   add_foreign_key "mwls_cards", "mwls"
   add_foreign_key "mwls_subtypes", "mwls"
-  add_foreign_key "mwls_subtypes", "subtypes"
+  add_foreign_key "mwls_subtypes", "card_subtypes"
 end

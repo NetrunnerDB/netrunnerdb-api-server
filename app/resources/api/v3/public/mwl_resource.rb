@@ -8,7 +8,7 @@ module API
         paginator :none
 
         has_many :mwl_cards
-        # has_many :mwl_subtypes
+        has_many :mwl_subtypes
       end
     end
   end
