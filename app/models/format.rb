@@ -3,7 +3,7 @@
 class Format < ApplicationRecord
   has_many :snapshots
   has_many :card_pools, :through => :snapshots
-  has_many :mwls, :through => :snapshots
+  has_many :restrictions, :through => :snapshots
 
   validates :name, uniqueness: true
 end

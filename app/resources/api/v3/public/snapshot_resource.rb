@@ -9,7 +9,7 @@ module API
 
         belongs_to :format
         has_one :card_pool
-        has_one :mwl
+        has_one :restriction
       end
     end
   end

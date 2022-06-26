@@ -377,27 +377,27 @@ namespace :cards do
     end
   end
 
-  def import_mwls(mwls)
-    new_mwls = []
-    mwls.each { |m|
-      new_mwls << Mwl.new(
+  def import_restrictions(restrictions)
+    new_restrictions = []
+    restrictions.each { |m|
+      new_restrictions << Restriction.new(
         id: m['code'],
         name: m['name'],
         date_start: m['date_start'],
         point_limit: m['point_limit']
       )
     }
-    Mwl.import new_mwls, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    Restriction.import new_restrictions, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_mwl_cards(mwls)
-    # mwl_cards = []
-    # mwls.each { |m|
+  def import_restriction_cards(restrictions)
+    # restriction_cards = []
+    # restrictions.each { |m|
     #   next if m['cards'].nil?
     #   m['cards'].each do |code, card|
-    #     mwl_cards << MwlCard.new(
+    #     restriction_cards << RestrictionCard.new(
     #       id: m['code'] + '_' + code,
-    #       mwl_id: m['code'],
+    #       restriction_id: m['code'],
     #       card_id: code,
     #       global_penalty: card["global_penalty"] || 0,
     #       universal_faction_cost: card["universal_faction_cost"] || 0,
@@ -407,17 +407,17 @@ namespace :cards do
     #     )
     #   end
     # }
-    # MwlCard.import mwl_cards, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    # RestrictionCard.import restriction_cards, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_mwl_subtypes(mwls)
-    # mwl_subtypes = []
-    # mwls.each { |m|
+  def import_restriction_subtypes(restrictions)
+    # restriction_subtypes = []
+    # restrictions.each { |m|
     #   next if m['subtypes'].nil?
     #   m['subtypes'].each do |code, subtype|
-    #     mwl_subtypes << MwlSubtype.new(
+    #     restriction_subtypes << RestrictionSubtype.new(
     #       id: m['code'] + '_' + code,
-    #       mwl_id: m['code'],
+    #       restriction_id: m['code'],
     #       subtype_id: code,
     #       global_penalty: subtype["global_penalty"] || 0,
     #       universal_faction_cost: subtype["universal_faction_cost"] || 0,
@@ -427,7 +427,7 @@ namespace :cards do
     #     )
     #   end
     # }
-    # MwlSubtype.import mwl_subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    # RestrictionSubtype.import restriction_subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
   def import_snapshots(formats)
@@ -439,7 +439,7 @@ namespace :cards do
           format_id: f['code'],
           card_pool_id: s['card_pool'],
           date_start: s['date_start'],
-          mwl_id: s['mwl'],
+          restriction_id: s['restriction'],
           active: !!s['active']
         )
       end
@@ -457,7 +457,7 @@ namespace :cards do
     pack_cards_json = load_multiple_json_files(args[:json_dir] + '/pack/*.json')
     card_pools_json = load_multiple_json_files(args[:json_dir] + '/card_pools/*.json')
     formats_json = load_multiple_json_files(args[:json_dir] + '/formats/*.json')
-    mwls_json = load_multiple_json_files(args[:json_dir] + '/mwls/*/*.json')
+    restrictions_json = load_multiple_json_files(args[:json_dir] + '/restrictions/*/*.json')
 
     puts 'Importing Sides...'
     import_sides(args[:json_dir] + '/sides.json')
@@ -507,14 +507,14 @@ namespace :cards do
     puts 'Importing Card-Pool-to-Card relations...'
     import_card_pool_cards(card_pools_json)
 
-    puts 'Importing MWLs...'
-    import_mwls(mwls_json)
+    puts 'Importing Restrictions...'
+    import_restrictions(restrictions_json)
 
-    puts 'Importing MWL Cards...'
-    import_mwl_cards(mwls_json)
+    puts 'Importing Restriction Cards...'
+    import_restriction_cards(restrictions_json)
 
-    puts 'Importing MWL Subtypes...'
-    import_mwl_subtypes(mwls_json)
+    puts 'Importing Restriction Subtypes...'
+    import_restriction_subtypes(restrictions_json)
 
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
