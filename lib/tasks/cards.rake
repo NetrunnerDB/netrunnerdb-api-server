@@ -227,10 +227,8 @@ namespace :cards do
       active_id = nil
       f['snapshots'].each_with_index do |s, i|
         next if s['active'].nil?
-        raise 'Multiple snapshots marked active in format %s.' % f['name'] unless !active_id
         active_id = generate_snapshot_code(f, i)
       end
-      raise 'No active snapshot in format %s.' % f['name'] unless active_id
       formats << Format.new(
         id: f['code'],
         name: f['name'],
