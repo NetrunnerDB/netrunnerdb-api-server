@@ -262,7 +262,7 @@ namespace :cards do
     CardPool.import new_card_pools, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_card_pool_cycles(card_pools)
+  def import_card_pool_card_cycles(card_pools)
     card_pool_id_to_cycle_id = []
 
     # Collect each card pool's cycles
@@ -276,7 +276,7 @@ namespace :cards do
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
       puts '  Clear out existing card_pool -> cycle mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_cycles")
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_card_cycles")
         puts 'Hit an error while deleting card_pool -> cycle mappings. Rolling back.'
         raise ActiveRecord::Rollback
       end
@@ -285,7 +285,7 @@ namespace :cards do
       card_pool_id_to_cycle_id.each_slice(250) { |m|
         num_assoc += m.length
         puts '  %d card_pool -> cycle associations' % num_assoc
-        sql = "INSERT INTO card_pools_cycles (card_pool_id, card_cycle_id) VALUES "
+        sql = "INSERT INTO card_pools_card_cycles (card_pool_id, card_cycle_id) VALUES "
         vals = []
         m.each { |m|
           # TODO(ams): use the associations object for this or ensure this is safe
@@ -300,11 +300,11 @@ namespace :cards do
     end
   end
 
-  def import_card_pool_sets(card_pools)
+  def import_card_pool_card_sets(card_pools)
     card_pool_id_to_set_id = []
 
     # Get implied sets from cycles in the card_pool
-    ActiveRecord::Base.connection.execute('SELECT card_pool_id, id FROM card_pools_cycles r INNER JOIN card_sets AS s ON r.card_cycle_id = s.card_cycle_id').each do |s|
+    ActiveRecord::Base.connection.execute('SELECT card_pool_id, id FROM card_pools_card_cycles r INNER JOIN card_sets AS s ON r.card_cycle_id = s.card_cycle_id').each do |s|
       card_pool_id_to_set_id << [s['card_pool_id'], s['id']]
     end
 
@@ -319,7 +319,7 @@ namespace :cards do
     # Use a transaction since we are deleting the mapping table.
     ActiveRecord::Base.transaction do
       puts '  Clear out existing card_pool -> card cycle mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_sets")
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_pools_card_sets")
         puts 'Hit an error while deleting card_pool -> card set mappings. Rolling back.'
         raise ActiveRecord::Rollback
       end
@@ -328,7 +328,7 @@ namespace :cards do
       card_pool_id_to_set_id.each_slice(250) { |m|
         num_assoc += m.length
         puts '  %d card_pool -> card set associations' % num_assoc
-        sql = "INSERT INTO card_pools_sets (card_pool_id, card_set_id) VALUES "
+        sql = "INSERT INTO card_pools_card_sets (card_pool_id, card_set_id) VALUES "
         vals = []
         m.each { |m|
           # TODO(ams): use the associations object for this or ensure this is safe
@@ -347,7 +347,7 @@ namespace :cards do
     card_pool_id_to_card_id = []
 
     # Get implied cards from sets in the card_pool
-    ActiveRecord::Base.connection.execute('SELECT card_pool_id, card_id FROM card_pools_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id').each do |s|
+    ActiveRecord::Base.connection.execute('SELECT card_pool_id, card_id FROM card_pools_card_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id').each do |s|
       card_pool_id_to_card_id << [s['card_pool_id'], s['card_id']]
     end
 
@@ -508,10 +508,10 @@ namespace :cards do
     import_card_pools(card_pools_json)
 
     puts 'Importing Card-Pool-to-Cycle relations...'
-    import_card_pool_cycles(card_pools_json)
+    import_card_pool_card_cycles(card_pools_json)
 
     puts 'Importing Card-Pool-to-Set relations...'
-    import_card_pool_sets(card_pools_json)
+    import_card_pool_card_sets(card_pools_json)
 
     puts 'Importing Card-Pool-to-Card relations...'
     import_card_pool_cards(card_pools_json)

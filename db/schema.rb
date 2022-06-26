@@ -141,16 +141,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
    t.datetime "updated_at", precision: 6, null: false
  end
 
- create_table "card_pools_cycles", id: false, force: :cascade do |t|
+ create_table "card_pools_card_cycles", id: false, force: :cascade do |t|
    t.text "card_cycle_id", null: false
    t.text "card_pool_id", null: false
-   t.index ["card_cycle_id", "card_pool_id"], name: "index_card_pools_cycles_on_card_cycle_id_and_card_pool_id"
+   t.index ["card_cycle_id", "card_pool_id"], name: "index_card_pools_card_cycles_on_card_cycle_id_and_card_pool_id"
  end
 
- create_table "card_pools_sets", id: false, force: :cascade do |t|
+ create_table "card_pools_card_sets", id: false, force: :cascade do |t|
    t.text "card_set_id", null: false
    t.text "card_pool_id", null: false
-   t.index ["card_set_id", "card_pool_id"], name: "index_card_pools_sets_on_card_set_id_and_card_pool_id"
+   t.index ["card_set_id", "card_pool_id"], name: "index_card_pools_card_sets_on_card_set_id_and_card_pool_id"
  end
 
  create_table "card_pools_cards", id: false, force: :cascade do |t|
@@ -205,10 +205,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
   add_foreign_key "snapshots", "formats"
   add_foreign_key "snapshots", "card_pools"
   add_foreign_key "snapshots", "mwls"
-  add_foreign_key "card_pools_cycles", "card_cycles"
-  add_foreign_key "card_pools_cycles", "card_pools"
-  add_foreign_key "card_pools_sets", "card_sets"
-  add_foreign_key "card_pools_sets", "card_pools"
+  add_foreign_key "card_pools_card_cycles", "card_cycles"
+  add_foreign_key "card_pools_card_cycles", "card_pools"
+  add_foreign_key "card_pools_card_sets", "card_sets"
+  add_foreign_key "card_pools_card_sets", "card_pools"
   add_foreign_key "card_pools_cards", "cards"
   add_foreign_key "card_pools_cards", "card_pools"
   add_foreign_key "mwls_cards", "cards"
