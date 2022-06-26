@@ -29,7 +29,7 @@ namespace :cards do
     factions.map! do |f|
       {
         id: f['code'],
-        # description: f['description'],
+        description: f['description'],
         is_mini: f['is_mini'],
         name: f['name'],
         side_id: f['side_code'],
