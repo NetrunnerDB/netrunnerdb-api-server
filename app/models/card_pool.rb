@@ -9,5 +9,9 @@ class CardPool < ApplicationRecord
   has_many :cards, :through => :card_pool_cards
   has_many :snapshots
 
+  belongs_to :format,
+    :primary_key => :id,
+    :foreign_key => :format_id
+
   validates :name, uniqueness: true
 end

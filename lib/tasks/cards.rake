@@ -243,7 +243,8 @@ namespace :cards do
     card_pools.each { |p|
       new_card_pools << CardPool.new(
         id: p['code'],
-        name: p['name']
+        name: p['name'],
+        format_id: p['format_id']
       )
     }
     CardPool.import new_card_pools, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }

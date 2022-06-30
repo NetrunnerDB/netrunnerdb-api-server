@@ -7,6 +7,7 @@ module API
 
         paginator :none
 
+        has_one :format
         has_many :card_cycles
         has_many :card_sets
         has_many :cards

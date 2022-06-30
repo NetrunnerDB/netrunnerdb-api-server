@@ -8,6 +8,7 @@ module API
         paginator :none
 
         has_many :snapshots
+        has_many :card_pools
       end
     end
   end

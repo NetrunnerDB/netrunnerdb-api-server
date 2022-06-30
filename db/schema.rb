@@ -137,6 +137,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
 
  create_table "card_pools", id: :string, force: :cascade do |t|
    t.text "name", null: false
+   t.text "format_id", null: false
    t.datetime "created_at", precision: 6, null: false
    t.datetime "updated_at", precision: 6, null: false
  end
@@ -205,6 +206,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
   add_foreign_key "snapshots", "formats"
   add_foreign_key "snapshots", "card_pools"
   add_foreign_key "snapshots", "restrictions"
+  add_foreign_key "card_pools", "formats"
   add_foreign_key "card_pools_card_cycles", "card_cycles"
   add_foreign_key "card_pools_card_cycles", "card_pools"
   add_foreign_key "card_pools_card_sets", "card_sets"
