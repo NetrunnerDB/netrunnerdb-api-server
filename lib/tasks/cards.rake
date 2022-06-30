@@ -28,7 +28,7 @@ namespace :cards do
     factions = JSON.parse(File.read(path))
     factions.map! do |f|
       {
-        id: f['code'],
+        id: f['id'],
         description: f['description'],
         is_mini: f['is_mini'],
         name: f['name'],
