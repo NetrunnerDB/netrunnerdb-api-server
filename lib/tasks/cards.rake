@@ -225,9 +225,9 @@ namespace :cards do
     formats = []
     formats_json.each { |f|
       active_id = nil
-      f['snapshots'].each_with_index do |s, i|
-        next if s['active'].nil?
-        active_id = generate_snapshot_code(f, i)
+      f['snapshots'].each do |s|
+        next if !s['active']
+        active_id = s['id']
       end
       formats << Format.new(
         id: f['code'],
@@ -236,10 +236,6 @@ namespace :cards do
       )
     }
     Format.import formats, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
-  end
-
-  def generate_snapshot_code(format_json, index)
-    "#{format_json['code']}_#{index}"
   end
 
   def import_card_pools(card_pools)
@@ -433,9 +429,9 @@ namespace :cards do
   def import_snapshots(formats)
     snapshots = []
     formats.each { |f|
-      f['snapshots'].each_with_index do |s, i|
+      f['snapshots'].each do |s|
         snapshots << Snapshot.new(
-          id: generate_snapshot_code(f, i),
+          id: s['id'],
           format_id: f['code'],
           card_pool_id: s['card_pool'],
           date_start: s['date_start'],
