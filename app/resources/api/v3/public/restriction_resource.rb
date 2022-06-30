@@ -6,9 +6,6 @@ module API
         key_type :string
 
         paginator :none
-
-        has_many :restriction_cards
-        has_many :restriction_subtypes
       end
     end
   end
