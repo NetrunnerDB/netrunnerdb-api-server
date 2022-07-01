@@ -4,6 +4,7 @@ module API
       class Api::V3::Public::RestrictionResource < JSONAPI::Resource
         attributes :name, :date_start, :point_limit
         attributes :banned, :restricted, :universal_faction_cost, :global_penalty, :points
+        attribute :banned_subtypes
         attribute :updated_at
         key_type :string
 
@@ -27,6 +28,10 @@ module API
 
         def points
           @model.points_cards.pluck(:value, :card_id)
+        end
+
+        def banned_subtypes
+          @model.banned_subtypes.pluck(:card_subtype_id)
         end
       end
     end

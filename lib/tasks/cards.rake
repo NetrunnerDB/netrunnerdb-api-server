@@ -482,23 +482,30 @@ namespace :cards do
   end
 
   def import_restriction_subtypes(restrictions)
-    # restriction_subtypes = []
-    # restrictions.each { |m|
-    #   next if m['subtypes'].nil?
-    #   m['subtypes'].each do |code, subtype|
-    #     restriction_subtypes << RestrictionSubtype.new(
-    #       id: m['code'] + '_' + code,
-    #       restriction_id: m['code'],
-    #       subtype_id: code,
-    #       global_penalty: subtype["global_penalty"] || 0,
-    #       universal_faction_cost: subtype["universal_faction_cost"] || 0,
-    #       is_restricted: subtype["is_restricted"] || false,
-    #       is_banned: subtype["deck_limit"] == 0,
-    #       points: subtype["points"] || 0
-    #     )
-    #   end
-    # }
-    # RestrictionSubtype.import restriction_subtypes, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    banned = []
+    restrictions.each { |r|
+      subtypes = r['subtypes']
+      next if subtypes.nil?
+      # Banned subtypes
+      if !subtypes['banned'].nil?
+        subtypes['banned'].each do |subtype|
+          banned << RestrictionCardSubtypeBanned.new(
+            restriction_id: r['code'],
+            card_subtype_id: subtype
+          )
+        end
+      end
+    }
+
+    # Use a transaction since we are deleting the restriction mapping table.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing restriction -> subtype mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM restrictions_card_subtypes_banned")
+        puts 'Hit an error while deleting banned subtypes mappings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      RestrictionCardSubtypeBanned.import banned
+    end
   end
 
   def import_snapshots(formats)

@@ -206,7 +206,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
    t.datetime "updated_at", precision: 6, null: false
  end
 
- create_table "restrictions_subtypes_banned", id: false, force: :cascade do |t|
+ create_table "restrictions_card_subtypes_banned", id: false, force: :cascade do |t|
    t.text "restriction_id", null: false
    t.text "card_subtype_id", null: false
    t.datetime "created_at", precision: 6, null: false
@@ -244,6 +244,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
   add_foreign_key "restrictions_cards_global_penalty", "restrictions"
   add_foreign_key "restrictions_cards_points", "cards"
   add_foreign_key "restrictions_cards_points", "restrictions"
-  add_foreign_key "restrictions_subtypes_banned", "restrictions"
-  add_foreign_key "restrictions_subtypes_banned", "card_subtypes"
+  add_foreign_key "restrictions_card_subtypes_banned", "restrictions"
+  add_foreign_key "restrictions_card_subtypes_banned", "card_subtypes"
 end

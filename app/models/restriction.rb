@@ -18,5 +18,8 @@ class Restriction < ApplicationRecord
   has_one :restriction_card_points
   has_many :points_cards, :through => :restriction_card_points, :source => :card
 
+  has_one :restriction_card_subtype_banned
+  has_many :banned_subtypes, :through => :restriction_card_subtype_banned, :source => :card_subtype
+
   validates :name, uniqueness: true
 end
