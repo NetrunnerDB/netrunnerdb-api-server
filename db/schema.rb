@@ -168,26 +168,47 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
    t.datetime "updated_at", precision: 6, null: false
  end
 
- create_table "restrictions_cards", id: :string, force: :cascade do |t|
+ create_table "restrictions_cards_banned", id: false, force: :cascade do |t|
    t.text "restriction_id", null: false
    t.text "card_id", null: false
-   t.integer "global_penalty"
-   t.integer "universal_faction_cost"
-   t.boolean "is_restricted"
-   t.boolean "is_banned"
-   t.integer "points"
    t.datetime "created_at", precision: 6, null: false
    t.datetime "updated_at", precision: 6, null: false
  end
 
- create_table "restrictions_subtypes", id: :string, force: :cascade do |t|
+ create_table "restrictions_cards_restricted", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_universal_faction_cost", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.integer "value", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_global_penalty", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.integer "value", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_points", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.integer "value", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_subtypes_banned", id: false, force: :cascade do |t|
    t.text "restriction_id", null: false
    t.text "card_subtype_id", null: false
-   t.integer "global_penalty"
-   t.integer "universal_faction_cost"
-   t.boolean "is_restricted"
-   t.boolean "is_banned"
-   t.integer "points"
    t.datetime "created_at", precision: 6, null: false
    t.datetime "updated_at", precision: 6, null: false
  end
@@ -213,8 +234,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_18_233411) do
   add_foreign_key "card_pools_card_sets", "card_pools"
   add_foreign_key "card_pools_cards", "cards"
   add_foreign_key "card_pools_cards", "card_pools"
-  add_foreign_key "restrictions_cards", "cards"
-  add_foreign_key "restrictions_cards", "restrictions"
-  add_foreign_key "restrictions_subtypes", "restrictions"
-  add_foreign_key "restrictions_subtypes", "card_subtypes"
+  add_foreign_key "restrictions_cards_banned", "cards"
+  add_foreign_key "restrictions_cards_banned", "restrictions"
+  add_foreign_key "restrictions_cards_restricted", "cards"
+  add_foreign_key "restrictions_cards_restricted", "restrictions"
+  add_foreign_key "restrictions_cards_universal_faction_cost", "cards"
+  add_foreign_key "restrictions_cards_universal_faction_cost", "restrictions"
+  add_foreign_key "restrictions_cards_global_penalty", "cards"
+  add_foreign_key "restrictions_cards_global_penalty", "restrictions"
+  add_foreign_key "restrictions_cards_points", "cards"
+  add_foreign_key "restrictions_cards_points", "restrictions"
+  add_foreign_key "restrictions_subtypes_banned", "restrictions"
+  add_foreign_key "restrictions_subtypes_banned", "card_subtypes"
 end

@@ -388,23 +388,97 @@ namespace :cards do
   end
 
   def import_restriction_cards(restrictions)
-    # restriction_cards = []
-    # restrictions.each { |m|
-    #   next if m['cards'].nil?
-    #   m['cards'].each do |code, card|
-    #     restriction_cards << RestrictionCard.new(
-    #       id: m['code'] + '_' + code,
-    #       restriction_id: m['code'],
-    #       card_id: code,
-    #       global_penalty: card["global_penalty"] || 0,
-    #       universal_faction_cost: card["universal_faction_cost"] || 0,
-    #       is_restricted: card["is_restricted"] || false,
-    #       is_banned: card["deck_limit"] == 0,
-    #       points: card["points"] || 0
-    #     )
-    #   end
-    # }
-    # RestrictionCard.import restriction_cards, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    banned = []
+    restricted = []
+    universal_faction_cost = []
+    global_penalty = []
+    points = []
+    restrictions.each { |r|
+      # Banned cards
+      if !r['banned'].nil?
+        r['banned'].each do |card|
+          banned << RestrictionCardBanned.new(
+            restriction_id: r['code'],
+            card_id: card
+          )
+        end
+      end
+      # Restricted cards
+      if !r['restricted'].nil?
+        r['restricted'].each do |card|
+          restricted << RestrictionCardRestricted.new(
+            restriction_id: r['code'],
+            card_id: card
+          )
+        end
+      end
+      # Cards with a universal faction cost
+      if !r['universal_faction_cost'].nil?
+        r['universal_faction_cost'].each do |cost, cards|
+          cards.each do |card|
+            universal_faction_cost << RestrictionCardUniversalFactionCost.new(
+              restriction_id: r['code'],
+              card_id: card,
+              value: cost
+            )
+          end
+        end
+      end
+      # Cards with a global influence penalty
+      if !r['global_penalty'].nil?
+        r['global_penalty'].each do |cost, cards|
+          cards.each do |card|
+            global_penalty << RestrictionCardGlobalPenalty.new(
+              restriction_id: r['code'],
+              card_id: card,
+              value: cost
+            )
+          end
+        end
+      end
+      # Cards with a points cost
+      if !r['points'].nil?
+        r['points'].each do |cost, cards|
+          cards.each do |card|
+            points << RestrictionCardPoints.new(
+              restriction_id: r['code'],
+              card_id: card,
+              value: cost
+            )
+          end
+        end
+      end
+    }
+
+    # Use a transaction since we are deleting all the restriction mapping tables.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing restriction -> card mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM restrictions_cards_banned")
+        puts 'Hit an error while deleting banned cards mappings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      unless ActiveRecord::Base.connection.delete("DELETE FROM restrictions_cards_restricted")
+        puts 'Hit an error while deleting restricted cards mappings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      unless ActiveRecord::Base.connection.delete("DELETE FROM restrictions_cards_universal_faction_cost")
+        puts 'Hit an error while deleting universal faction cost cards mappings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      unless ActiveRecord::Base.connection.delete("DELETE FROM restrictions_cards_global_penalty")
+        puts 'Hit an error while deleting global penalty cards mappings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      unless ActiveRecord::Base.connection.delete("DELETE FROM restrictions_cards_points")
+        puts 'Hit an error while deleting points cards mappings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      RestrictionCardBanned.import banned
+      RestrictionCardRestricted.import restricted
+      RestrictionCardUniversalFactionCost.import universal_faction_cost
+      RestrictionCardGlobalPenalty.import global_penalty
+      RestrictionCardPoints.import points
+    end
   end
 
   def import_restriction_subtypes(restrictions)
