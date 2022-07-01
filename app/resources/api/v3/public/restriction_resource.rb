@@ -19,15 +19,15 @@ module API
         end
 
         def universal_faction_cost
-          @model.universal_faction_cost_cards.pluck(:value, :card_id)
+          Hash[@model.universal_faction_cost_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
         end
 
         def global_penalty
-          @model.global_penalty_cards.pluck(:value, :card_id)
+          Hash[@model.global_penalty_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
         end
 
         def points
-          @model.points_cards.pluck(:value, :card_id)
+          Hash[@model.points_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
         end
 
         def banned_subtypes
