@@ -2,6 +2,8 @@ module API
   module V3
     module Public
       class Api::V3::Public::RestrictionResource < JSONAPI::Resource
+        immutable
+        
         attributes :name, :date_start, :point_limit
         attributes :banned, :restricted, :universal_faction_cost, :global_penalty, :points
         attribute :banned_subtypes
