@@ -4,7 +4,7 @@ module API
       class Api::V3::Public::SnapshotResource < JSONAPI::Resource
         immutable
         
-        attributes :active, :date_start, :updated_at
+        attributes :format_id, :active, :date_start, :updated_at
         key_type :string
 
         paginator :none
@@ -12,6 +12,7 @@ module API
         belongs_to :format
         has_one :card_pool
         has_one :restriction
+        has_many :cards
       end
     end
   end
