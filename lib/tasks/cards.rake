@@ -27,7 +27,7 @@ namespace :cards do
     sides = JSON.parse(File.read(sides_path))
     sides.map! do |s|
       {
-        id: s['code'],
+        id: s['id'],
         name: s['name'],
       }
     end
@@ -42,7 +42,7 @@ namespace :cards do
         description: f['description'],
         is_mini: f['is_mini'],
         name: f['name'],
-        side_id: f['side_code'],
+        side_id: f['side_id'],
       }
     end
     Faction.import factions, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -52,9 +52,9 @@ namespace :cards do
     types = JSON.parse(File.read(path))
     types.map! do |t|
       {
-        id: t['code'],
+        id: t['id'],
         name: t['name'],
-        side_id: t['side_code'],
+        side_id: t['side_id'],
       }
     end
     CardType.import types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -160,7 +160,7 @@ namespace :cards do
     cycles = JSON.parse(File.read(path))
     cycles.map! do |c|
       {
-        id: c['code'],
+        id: c['id'],
         name: c['name'],
       }
     end
@@ -171,7 +171,7 @@ namespace :cards do
     set_types = JSON.parse(File.read(path))
     set_types.map! do |t|
       {
-        id: t['code'],
+        id: t['id'],
         name: t['name'],
       }
     end
@@ -285,7 +285,7 @@ namespace :cards do
         active_id = s['id']
       end
       formats << Format.new(
-        id: f['code'],
+        id: f['id'],
         name: f['name'],
         active_snapshot_id: active_id
       )
@@ -297,7 +297,7 @@ namespace :cards do
     new_card_pools = []
     card_pools.each { |p|
       new_card_pools << CardPool.new(
-        id: p['code'],
+        id: p['id'],
         name: p['name'],
         format_id: p['format_id']
       )
@@ -312,7 +312,7 @@ namespace :cards do
     card_pools.each do |p|
       next if p['cycles'].nil?
       p['cycles'].each do |s|
-        card_pool_id_to_cycle_id << [p['code'], s]
+        card_pool_id_to_cycle_id << [p['id'], s]
       end
     end
 
@@ -355,7 +355,7 @@ namespace :cards do
     card_pools.each do |p|
       next if p['packs'].nil?
       p['packs'].each do |s|
-        card_pool_id_to_set_id << [p['code'], s]
+        card_pool_id_to_set_id << [p['id'], s]
       end
     end
 
@@ -398,7 +398,7 @@ namespace :cards do
     card_pools.each do |p|
       next if p['cards'].nil?
       p['cards'].each do |s|
-        card_pool_id_to_card_id << [p['code'], s]
+        card_pool_id_to_card_id << [p['id'], s]
       end
     end
 
@@ -433,7 +433,7 @@ namespace :cards do
     new_restrictions = []
     restrictions.each { |m|
       new_restrictions << Restriction.new(
-        id: m['code'],
+        id: m['id'],
         name: m['name'],
         date_start: m['date_start'],
         point_limit: m['point_limit']
@@ -453,7 +453,7 @@ namespace :cards do
       if !r['banned'].nil?
         r['banned'].each do |card|
           banned << RestrictionCardBanned.new(
-            restriction_id: r['code'],
+            restriction_id: r['id'],
             card_id: card
           )
         end
@@ -462,7 +462,7 @@ namespace :cards do
       if !r['restricted'].nil?
         r['restricted'].each do |card|
           restricted << RestrictionCardRestricted.new(
-            restriction_id: r['code'],
+            restriction_id: r['id'],
             card_id: card
           )
         end
@@ -472,7 +472,7 @@ namespace :cards do
         r['universal_faction_cost'].each do |cost, cards|
           cards.each do |card|
             universal_faction_cost << RestrictionCardUniversalFactionCost.new(
-              restriction_id: r['code'],
+              restriction_id: r['id'],
               card_id: card,
               value: cost
             )
@@ -484,7 +484,7 @@ namespace :cards do
         r['global_penalty'].each do |cost, cards|
           cards.each do |card|
             global_penalty << RestrictionCardGlobalPenalty.new(
-              restriction_id: r['code'],
+              restriction_id: r['id'],
               card_id: card,
               value: cost
             )
@@ -496,7 +496,7 @@ namespace :cards do
         r['points'].each do |cost, cards|
           cards.each do |card|
             points << RestrictionCardPoints.new(
-              restriction_id: r['code'],
+              restriction_id: r['id'],
               card_id: card,
               value: cost
             )
@@ -545,7 +545,7 @@ namespace :cards do
       if !subtypes['banned'].nil?
         subtypes['banned'].each do |subtype|
           banned << RestrictionCardSubtypeBanned.new(
-            restriction_id: r['code'],
+            restriction_id: r['id'],
             card_subtype_id: subtype
           )
         end
@@ -569,10 +569,10 @@ namespace :cards do
       f['snapshots'].each do |s|
         snapshots << Snapshot.new(
           id: s['id'],
-          format_id: f['code'],
-          card_pool_id: s['card_pool'],
+          format_id: f['id'],
+          card_pool_id: s['card_pool_id'],
           date_start: s['date_start'],
-          restriction_id: s['restriction'],
+          restriction_id: s['restriction_id'],
           active: !!s['active']
         )
       end
@@ -599,22 +599,22 @@ namespace :cards do
     import_factions(args[:json_dir] + '/factions.json')
 
     puts 'Importing Cycles...'
-    import_cycles(args[:json_dir] + '/cycles.json')
+    import_cycles(args[:json_dir] + '/card_cycles.json')
 
     puts 'Importing Card Set Types...'
-    import_set_types(args[:json_dir] + '/set_types.json')
+    import_set_types(args[:json_dir] + '/card_set_types.json')
 
     puts 'Importing Sets...'
-    import_sets(args[:json_dir] + '/printings.json')
+    import_sets(args[:json_dir] + '/card_sets.json')
 
     puts 'Updating date_release for Cycles'
     update_date_release_for_cycles()
 
     puts 'Importing Types...'
-    import_types(args[:json_dir] + '/types.json')
+    import_types(args[:json_dir] + '/card_types.json')
 
     puts 'Importing Subtypes...'
-    import_subtypes(args[:json_dir] + '/subtypes.json')
+    import_subtypes(args[:json_dir] + '/card_subtypes.json')
 
     puts 'Importing Cards...'
     import_cards(cards_json)
