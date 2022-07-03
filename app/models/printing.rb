@@ -6,4 +6,6 @@ class Printing < ApplicationRecord
   has_one :faction, :through => :card
   has_one :card_cycle, :through => :card_set
   has_one :side, :through => :card
+  has_many :illustrator_printings
+  has_many :illustrators, :through => :illustrator_printings
 end
