@@ -310,8 +310,8 @@ namespace :cards do
 
     # Collect each card pool's cycles
     card_pools.each do |p|
-      next if p['cycles'].nil?
-      p['cycles'].each do |s|
+      next if p['card_cycle_ids'].nil?
+      p['card_cycle_ids'].each do |s|
         card_pool_id_to_cycle_id << [p['id'], s]
       end
     end
@@ -353,8 +353,8 @@ namespace :cards do
 
     # Collect each card pool's sets
     card_pools.each do |p|
-      next if p['packs'].nil?
-      p['packs'].each do |s|
+      next if p['card_set_ids'].nil?
+      p['card_set_ids'].each do |s|
         card_pool_id_to_set_id << [p['id'], s]
       end
     end
