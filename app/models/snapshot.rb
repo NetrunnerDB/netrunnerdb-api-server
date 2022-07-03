@@ -3,5 +3,5 @@
 class Snapshot < ApplicationRecord
   belongs_to :format
   belongs_to :card_pool
-  belongs_to :restriction
+  belongs_to :restriction, optional: :true
 end

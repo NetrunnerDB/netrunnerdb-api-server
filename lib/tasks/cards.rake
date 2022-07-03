@@ -298,8 +298,8 @@ namespace :cards do
 
     # Collect each card pool's sets
     card_pools.each do |p|
-      next if p['sets'].nil?
-      p['sets'].each do |s|
+      next if p['packs'].nil?
+      p['packs'].each do |s|
         card_pool_id_to_set_id << [p['code'], s]
       end
     end
