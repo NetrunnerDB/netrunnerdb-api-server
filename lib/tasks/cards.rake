@@ -231,6 +231,51 @@ namespace :cards do
     }
   end
 
+  def import_illustrators()
+    # Use a transaction since we are deleting the illustrator and mapping tables.
+    ActiveRecord::Base.transaction do
+      puts 'Clear out existing illustrator -> printing mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators_printings")
+        puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts 'Clear out existing illustrators'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators")
+        puts 'Hit an error while deleting illustrators. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      illustrators = Set[]
+      illustrators_to_printings = []
+      num_its = 0
+      printings = Printing.all
+      printings.each { |printing|
+        if printing.display_illustrators then
+          printing.display_illustrators.split(', ').each { |i|
+            illustrators.add(i)
+            num_its += 1
+            illustrators_to_printings << {
+              "illustrator_id": text_to_id(i),
+              "printing_id": printing.id
+            }
+          }
+        end
+      }
+
+      ill = []
+      illustrators.each { |i|
+        ill << {
+          "id": text_to_id(i),
+          "name": i
+        }
+      }
+
+      Illustrator.import ill, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      IllustratorPrinting.import illustrators_to_printings, on_duplicate_key_update: { conflict_target: [ :illustrator_id, :printing_id ], columns: :all }
+    end
+  end
+
   def import_formats(formats_json)
     formats = []
     formats_json.each { |f|
@@ -535,51 +580,6 @@ namespace :cards do
     Snapshot.import snapshots, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_illustrators()
-    # Use a transaction since we are deleting the illustrator and mapping tables.
-    ActiveRecord::Base.transaction do
-      puts 'Clear out existing illustrator -> printing mappings'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators_printings")
-        puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
-        raise ActiveRecord::Rollback
-      end
-  
-      puts 'Clear out existing illustrators'
-      unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators")
-        puts 'Hit an error while deleting illustrators. rolling back.'
-        raise ActiveRecord::Rollback
-      end
-
-      illustrators = Set[]
-      illustrators_to_printings = []
-      num_its = 0
-      printings = Printing.all 
-      printings.each { |printing|
-        if printing.display_illustrators then
-          printing.display_illustrators.split(', ').each { |i|
-            illustrators.add(i)
-            num_its += 1
-            illustrators_to_printings << {
-              "illustrator_id": text_to_id(i),
-              "printing_id": printing.id
-            }
-          }
-        end
-      }
-     
-      ill = []
-      illustrators.each { |i|
-        ill << {
-          "id": text_to_id(i),
-          "name": i
-        } 
-      }
-  
-      Illustrator.import ill, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
-      IllustratorPrinting.import illustrators_to_printings, on_duplicate_key_update: { conflict_target: [ :illustrator_id, :printing_id ], columns: :all }
-    end
-  end
-
   task :import, [:json_dir] => [:environment] do |t, args|
     args.with_defaults(:json_dir => '/netrunner-cards-json/v2/')
     puts 'Import card data...'
@@ -625,6 +625,9 @@ namespace :cards do
     puts 'Importing Printings...'
     import_printings(printings_json)
 
+    puts 'Importing Illustrators...'
+    import_illustrators()
+
     puts 'Importing Formats...'
     import_formats(formats_json)
 
@@ -651,9 +654,6 @@ namespace :cards do
 
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
-
-    puts 'Importing Illustrators...'
-    import_illustrators()
 
     puts 'Done!'
   end
