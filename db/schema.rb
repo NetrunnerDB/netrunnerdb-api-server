@@ -130,6 +130,101 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_170812) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "formats", id: :string, force: :cascade do |t|
+   t.text "name", null: false
+   t.text "active_snapshot_id", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "snapshots", id: :string, force: :cascade do |t|
+   t.text "format_id", null: false
+   t.text "card_pool_id", null: false
+   t.text "date_start", null: false
+   t.text "restriction_id"
+   t.boolean "active", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "card_pools", id: :string, force: :cascade do |t|
+   t.text "name", null: false
+   t.text "format_id", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "card_pools_card_cycles", id: false, force: :cascade do |t|
+   t.text "card_cycle_id", null: false
+   t.text "card_pool_id", null: false
+   t.index ["card_cycle_id", "card_pool_id"], name: "index_card_pools_card_cycles_on_card_cycle_id_and_card_pool_id"
+ end
+
+ create_table "card_pools_card_sets", id: false, force: :cascade do |t|
+   t.text "card_set_id", null: false
+   t.text "card_pool_id", null: false
+   t.index ["card_set_id", "card_pool_id"], name: "index_card_pools_card_sets_on_card_set_id_and_card_pool_id"
+ end
+
+ create_table "card_pools_cards", id: false, force: :cascade do |t|
+   t.text "card_id", null: false
+   t.text "card_pool_id", null: false
+   t.index ["card_id", "card_pool_id"], name: "index_card_pools_cards_on_card_id_and_card_pool_id"
+ end
+
+ create_table "restrictions", id: :string, force: :cascade do |t|
+   t.text "name", null: false
+   t.text "date_start", null: false
+   t.integer "point_limit"
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_banned", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_restricted", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_universal_faction_cost", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.integer "value", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_global_penalty", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.integer "value", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_cards_points", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_id", null: false
+   t.integer "value", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
+ create_table "restrictions_card_subtypes_banned", id: false, force: :cascade do |t|
+   t.text "restriction_id", null: false
+   t.text "card_subtype_id", null: false
+   t.datetime "created_at", precision: 6, null: false
+   t.datetime "updated_at", precision: 6, null: false
+ end
+
   add_foreign_key "card_sets", "card_cycles"
   add_foreign_key "card_sets", "card_set_types"
   add_foreign_key "card_types", "sides"
@@ -141,4 +236,26 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_170812) do
   add_foreign_key "factions", "sides"
   add_foreign_key "printings", "card_sets"
   add_foreign_key "printings", "cards"
+  add_foreign_key "snapshots", "formats"
+  add_foreign_key "snapshots", "card_pools"
+  add_foreign_key "snapshots", "restrictions"
+  add_foreign_key "card_pools", "formats"
+  add_foreign_key "card_pools_card_cycles", "card_cycles"
+  add_foreign_key "card_pools_card_cycles", "card_pools"
+  add_foreign_key "card_pools_card_sets", "card_sets"
+  add_foreign_key "card_pools_card_sets", "card_pools"
+  add_foreign_key "card_pools_cards", "cards"
+  add_foreign_key "card_pools_cards", "card_pools"
+  add_foreign_key "restrictions_cards_banned", "cards"
+  add_foreign_key "restrictions_cards_banned", "restrictions"
+  add_foreign_key "restrictions_cards_restricted", "cards"
+  add_foreign_key "restrictions_cards_restricted", "restrictions"
+  add_foreign_key "restrictions_cards_universal_faction_cost", "cards"
+  add_foreign_key "restrictions_cards_universal_faction_cost", "restrictions"
+  add_foreign_key "restrictions_cards_global_penalty", "cards"
+  add_foreign_key "restrictions_cards_global_penalty", "restrictions"
+  add_foreign_key "restrictions_cards_points", "cards"
+  add_foreign_key "restrictions_cards_points", "restrictions"
+  add_foreign_key "restrictions_card_subtypes_banned", "restrictions"
+  add_foreign_key "restrictions_card_subtypes_banned", "card_subtypes"
 end

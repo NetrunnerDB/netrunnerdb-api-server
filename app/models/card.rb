@@ -7,6 +7,8 @@ class Card < ApplicationRecord
   has_many :card_card_subtypes
   has_many :card_subtypes, :through => :card_card_subtypes
   has_many :printings
+  has_many :card_pool_cards
+  has_many :card_pools, :through => :card_pool_cards
 
   validates :name, uniqueness: true
 end
