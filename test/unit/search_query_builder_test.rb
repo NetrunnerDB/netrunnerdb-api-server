@@ -9,7 +9,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(stripped_text) LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_text) LIKE ?', builder.where 
     assert_equal ['%trash%'], builder.where_values
   end
 
@@ -18,7 +18,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(stripped_text) LIKE ? AND cost = ?', builder.where 
+    assert_equal 'lower(cards.stripped_text) LIKE ? AND cards.cost = ?', builder.where 
     assert_equal ['%trash%', '3'], builder.where_values
   end
 
@@ -27,7 +27,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'trash_cost != ?', builder.where 
+    assert_equal 'cards.trash_cost != ?', builder.where 
     assert_equal ['3'], builder.where_values
   end
 
@@ -36,7 +36,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'trash_cost < ?', builder.where 
+    assert_equal 'cards.trash_cost < ?', builder.where 
     assert_equal ['3'], builder.where_values
   end
 
@@ -45,7 +45,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'trash_cost <= ?', builder.where 
+    assert_equal 'cards.trash_cost <= ?', builder.where 
     assert_equal ['3'], builder.where_values
   end
 
@@ -54,7 +54,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'trash_cost > ?', builder.where 
+    assert_equal 'cards.trash_cost > ?', builder.where 
     assert_equal ['3'], builder.where_values
   end
 
@@ -63,7 +63,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'trash_cost >= ?', builder.where 
+    assert_equal 'cards.trash_cost >= ?', builder.where 
     assert_equal ['3'], builder.where_values
   end
 
@@ -72,7 +72,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(stripped_title) NOT LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where 
     assert_equal ['%sure%'], builder.where_values
   end
 
@@ -105,7 +105,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(stripped_title) LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) LIKE ?', builder.where 
     assert_equal ['%diversion%'], builder.where_values
   end
 
@@ -114,7 +114,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(stripped_title) NOT LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where 
     assert_equal ['%diversion%'], builder.where_values
   end
 
@@ -123,7 +123,7 @@ class SearchQueryBuilderTest < Minitest::Test
     builder = SearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(stripped_title) NOT LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where 
     assert_equal ['%diversion of funds%'], builder.where_values
   end
 

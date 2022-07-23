@@ -51,7 +51,7 @@ class SearchQueryBuilder
     @@term_to_field_map = {
         # 'card_pool' => ''',
         # 'format' => ''',
-        # 'r' => 'release_date',
+        # printing? or minimum release date from printing for the card?  Add release date to the card? 'r' => 'release_date', 
         # 'restriction' => ''',
         # banlist 'b' => '',
         # needs join table 'card_subtype' => ''',
@@ -66,38 +66,43 @@ class SearchQueryBuilder
         # printing flavor 'flavor_text' => ''',
         # printing illustrator 'illustrator' => ''',
         # printing quantity 'y' => ''',
-        # rotation 'z' => ''',
-        # subtypes 's' => ''',
-        '_' => 'stripped_title',
-        'advancement_cost' => 'advancement_requirement',
-        'agenda_points' => 'agenda_points',
-        'base_link' => 'base_link',
-        'card_type' => 'card_type_id',
-        'cost' => 'cost',
-        'd' => 'side_id',
-        'f' => 'faction_id',
-        'faction' => 'faction_id',
-        'g' => 'advancement_requirement',
-        'h' => 'trash_cost',
-        'influence_cost' => 'influence_cost',
-        'is_unique' => 'is_unique',
-        'l' => 'base_link',
-        'm' => 'memory_cost',
-        'memory_usage' => 'memory_cost',
-        'n' => 'influence_cost',
-        'o' => 'cost',
-        'p' => 'strength',
-        'side' => 'card_side_id',
-        'strength' => 'strength',
-        't' => 'card_type_id',
-        'text' => 'stripped_text',
-        'title' => 'stripped_title',
-        'trash_cost' => 'trash_cost',
-        'u' => 'is_unique',
-        'v' => 'agenda_points',
-        'x' => 'stripped_text',
+        # rotation needs format and snapshot? 'z' => ''',
+        # Next: subtypes 's' => ''',
+        #  Card.left_joins(:card_subtypes).merge(CardSubtype.where(name: "Hostile")).size
+        #  SELECT COUNT(*) FROM "cards" LEFT OUTER JOIN "cards_card_subtypes" ON "cards_card_subtypes"."card_id" = "cards"."id" LEFT OUTER JOIN "card_subtypes" ON "card_subtypes"."id" = "cards_card_subtypes"."card_subtype_id" WHERE "card_subtypes"."name" = $1  [["name", "Hostile"]]
+        '_' => 'cards.stripped_title',
+        'advancement_cost' => 'cards.advancement_requirement',
+        'agenda_points' => 'cards.agenda_points',
+        'base_link' => 'cards.base_link',
+        'card_type' => 'cards.card_type_id',
+        'cost' => 'cards.cost',
+        'd' => 'cards.side_id',
+        'f' => 'cards.faction_id',
+        'faction' => 'cards.faction_id',
+        'g' => 'cards.advancement_requirement',
+        'h' => 'cards.trash_cost',
+        'influence_cost' => 'cards.influence_cost',
+        'is_unique' => 'cards.is_unique',
+        'l' => 'cards.base_link',
+        'm' => 'cards.memory_cost',
+        'memory_usage' => 'cards.memory_cost',
+        'n' => 'cards.influence_cost',
+        'o' => 'cards.cost',
+        'p' => 'cards.strength',
+        'side' => 'cards.card_side_id',
+        'strength' => 'cards.strength',
+        't' => 'cards.card_type_id',
+        'text' => 'cards.stripped_text',
+        'title' => 'cards.stripped_title',
+        'trash_cost' => 'cards.trash_cost',
+        'u' => 'cards.is_unique',
+        'v' => 'cards.agenda_points',
+        'x' => 'cards.stripped_text',
     }
 
+    # restriction:
+    # Card.left_joins(:restrictions).merge(Restriction.where.not(id: "standard_mwl_3_4").or(Restriction.where(id: nil))).size
+    # SELECT cards.* FROM "cards" LEFT OUTER JOIN "restrictions_cards_banned" ON "restrictions_cards_banned"."card_id" = "cards"."id" LEFT OUTER JOIN "restrictions" ON "restrictions"."id" = "restrictions_cards_banned"."restriction_id" WHERE ("restrictions"."id" != $1 OR "restrictions"."id" IS NULL)  [["id", "standard_mwl_3_4"]]  
     def initialize(query)
         @query = query
         @parse_error = nil
@@ -118,7 +123,7 @@ class SearchQueryBuilder
             if f.include?(:search_term)
                 keyword = f[:search_term][:keyword].to_s
                 match_type = f[:search_term][:match_type].to_s
-                value = f[:search_term][:value][:string].to_s
+                value = f[:search_term][:value][:string].to_s.downcase
                 if @@boolean_keywords.include?(keyword)
                     operator = ''
                     if @@boolean_operators.include?(match_type)
@@ -155,10 +160,10 @@ class SearchQueryBuilder
 
             # bare/quoted words in the query are automatically mapped to stripped_title
             if f.include?(:string)
-                    value = f[:string].to_s
+                    value = f[:string].to_s.downcase
                     operator = value.start_with?('!') ? 'NOT LIKE' : 'LIKE'
                     value    = value.start_with?('!') ? value[1..] : value
-                    constraints << 'lower(stripped_title) %s ?' % operator
+                    constraints << 'lower(cards.stripped_title) %s ?' % operator
                     where << '%%%s%%' % value 
             end
         }
