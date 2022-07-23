@@ -1,5 +1,6 @@
 require 'search_parser'
 class SearchQueryBuilder
+    @@parser = SearchParser.new
     @@string_keywords = [
         '_',
         'card_type',
@@ -96,16 +97,15 @@ class SearchQueryBuilder
         'v' => 'agenda_points',
         'x' => 'stripped_text',
     }
+
     def initialize(query)
         @query = query
         @parse_error = nil
-        # TODO(plural): Could be a singleton
-        @parser = SearchParser.new
         @parse_tree = nil
         @where = ''
         @where_values = []
         begin
-            @parse_tree = @parser.parse(@query)
+            @parse_tree = @@parser.parse(@query)
         rescue Parslet::ParseFailed => e
             @parse_error = e
         end
@@ -113,45 +113,57 @@ class SearchQueryBuilder
             return
         end
         constraints = []
+        where = []
         @parse_tree[:fragments].each {|f|
             if f.include?(:search_term)
-                if @@boolean_keywords.include?(f[:search_term][:keyword])
+                keyword = f[:search_term][:keyword].to_s
+                match_type = f[:search_term][:match_type].to_s
+                value = f[:search_term][:value][:string].to_s
+                if @@boolean_keywords.include?(keyword)
                     operator = ''
-                    if @@boolean_operators.include?(f[:search_term][:match_type].to_s)
-                        operator = @@boolean_operators[f[:search_term][:match_type].to_s]
+                    if @@boolean_operators.include?(match_type)
+                        operator = @@boolean_operators[match_type]
                     else
-                        # TODO(plural): throw an error earlier for invalid operator
+                        @parse_error = 'Invalid boolean operator "%s"' % match_type
+                        return
                     end
-                    constraints << '%s %s ?' % [@@term_to_field_map[f[:search_term][:keyword].to_s], operator]
-                    @where_values << f[:search_term][:value][:string].to_s
-                elsif @@numeric_keywords.include?(f[:search_term][:keyword].to_s)
+                    constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
+                    where << value
+                elsif @@numeric_keywords.include?(keyword)
                     operator = ''
-                    if @@numeric_operators.include?(f[:search_term][:match_type].to_s)
-                        operator = @@numeric_operators[f[:search_term][:match_type].to_s]
+                    if @@numeric_operators.include?(match_type)
+                        operator = @@numeric_operators[match_type]
                     else
-                        # TODO(plural): throw an error earlier for invalid operator
+                        @parse_error = 'Invalid numeric operator "%s"' % match_type
+                        return
                     end
-                    constraints << '%s %s ?' % [@@term_to_field_map[f[:search_term][:keyword].to_s], operator]
-                    @where_values << f[:search_term][:value][:string].to_s
+                    constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
+                    where << value 
                 else
                     # String fields only support : and !
                     operator = ''
-                    if @@string_operators.include?(f[:search_term][:match_type].to_s)
-                        operator = @@string_operators[f[:search_term][:match_type].to_s]
+                    if @@string_operators.include?(match_type)
+                        operator = @@string_operators[match_type]
                     else
-                        # TODO(plural): throw an error earlier for invalid operator
+                        @parse_error = 'Invalid string operator "%s"' % match_type
+                        return
                     end
-                    constraints << 'lower(%s) %s ?' % [@@term_to_field_map[f[:search_term][:keyword].to_s], operator]
-                    @where_values << '%%%s%%' % f[:search_term][:value][:string].to_s
+                    constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
+                    where << '%%%s%%' % value
                 end
             end
+
             # bare/quoted words in the query are automatically mapped to stripped_title
             if f.include?(:string)
-                    constraints << 'lower(stripped_title) LIKE ?'
-                    @where_values << '%%%s%%' % f[:string].to_s
+                    value = f[:string].to_s
+                    operator = value.start_with?('!') ? 'NOT LIKE' : 'LIKE'
+                    value    = value.start_with?('!') ? value[1..] : value
+                    constraints << 'lower(stripped_title) %s ?' % operator
+                    where << '%%%s%%' % value 
             end
         }
         @where = constraints.join(' AND ')
+        @where_values = where
     end
     def parse_error
         return @parse_error

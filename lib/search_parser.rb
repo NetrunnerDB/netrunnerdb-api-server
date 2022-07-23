@@ -4,7 +4,7 @@ class SearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
   rule(:bare_string) {
-      match('[\w-]').repeat(1).as(:string)
+      match('[!\w-]').repeat(1).as(:string)
   }
   rule(:quoted_string) {
     str('"') >> (

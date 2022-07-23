@@ -76,6 +76,30 @@ class SearchQueryBuilderTest < Minitest::Test
     assert_equal ['%sure%'], builder.where_values
   end
 
+  def test_boolean_field_bad_operators
+    bad_operators = ['<', '<=', '>', '>=']
+    bad_operators.each {|op|
+      input = 'is_unique%strue' % op
+      builder = SearchQueryBuilder.new(input)
+
+      assert_equal 'Invalid boolean operator "%s"' % op, builder.parse_error
+      assert_equal '', builder.where
+      assert_equal [], builder.where_values
+    }
+  end
+
+  def test_string_field_bad_operators
+    bad_operators = ['<', '<=', '>', '>=']
+    bad_operators.each {|op|
+      input = 'title%ssure' % op
+      builder = SearchQueryBuilder.new(input)
+
+      assert_equal 'Invalid string operator "%s"' % op, builder.parse_error
+      assert_equal '', builder.where
+      assert_equal [], builder.where_values
+    }
+  end
+
   def test_bare_word 
     input = %Q{diversion}
     builder = SearchQueryBuilder.new(input)
@@ -85,7 +109,25 @@ class SearchQueryBuilderTest < Minitest::Test
     assert_equal ['%diversion%'], builder.where_values
   end
 
-  def test_bad_query
+  def test_bare_word_negated 
+    input = %Q{!diversion}
+    builder = SearchQueryBuilder.new(input)
+
+    assert_nil builder.parse_error
+    assert_equal 'lower(stripped_title) NOT LIKE ?', builder.where 
+    assert_equal ['%diversion%'], builder.where_values
+  end
+
+  def test_quoted_string_negated 
+    input = %Q{"!diversion of funds"}
+    builder = SearchQueryBuilder.new(input)
+
+    assert_nil builder.parse_error
+    assert_equal 'lower(stripped_title) NOT LIKE ?', builder.where 
+    assert_equal ['%diversion of funds%'], builder.where_values
+  end
+
+  def test_bad_query_bad_operator
     builder = SearchQueryBuilder.new('w:bleargh')
     refute_equal builder.parse_error, nil
   end
