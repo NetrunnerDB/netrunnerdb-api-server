@@ -9,6 +9,8 @@ class Card < ApplicationRecord
   has_many :printings
   has_many :card_pool_cards
   has_many :card_pools, :through => :card_pool_cards
+  has_many :restriction_card_banned
+  has_many :restrictions, :through => :restriction_card_banned
 
   validates :name, uniqueness: true
 end

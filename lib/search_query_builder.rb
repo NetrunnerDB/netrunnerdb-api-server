@@ -162,7 +162,7 @@ class SearchQueryBuilder
                     if ['s', 'card_subtype'].include?(keyword)
                         @left_joins << :card_subtypes
                     elsif ['b', 'banlist'].include?(keyword)
-                        @left_joins << :restrictions_cards_banned
+                        @left_joins << :restriction_card_banned
                     elsif keyword == 'card_pool'
                         @left_joins << :card_pool_cards
                     end
