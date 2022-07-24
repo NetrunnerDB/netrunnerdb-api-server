@@ -9,7 +9,7 @@ module API
 
         paginator :none
 
-        belongs_to :format
+        has_one :format
         has_one :card_pool
         has_one :restriction
 
