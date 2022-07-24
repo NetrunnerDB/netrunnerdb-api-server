@@ -44,7 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_24_222055) do
   create_table "card_pools_cards", id: false, force: :cascade do |t|
     t.text "card_id", null: false
     t.text "card_pool_id", null: false
-    t.index ["card_id", "card_pool_id"], name: "index_card_pools_cards_on_card_id_and_card_pool_id"
+    t.index ["card_id", "card_pool_id"], name: "index_card_pools_cards_on_card_id_and_card_pool_id", unique: true
   end
 
   create_table "card_set_types", id: :string, force: :cascade do |t|
