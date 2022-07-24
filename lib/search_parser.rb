@@ -16,6 +16,7 @@ class SearchParser < Parslet::Parser
     spaces? >> (bare_string | quoted_string) >> spaces?
   }
   rule(:keyword) {
+    str('banlist') |
     str('title') | str('text') | str('flavor_text') |
     str('card_set') | str('card_cycle') | str('card_type') |
     str('faction') | str('card_subtype') | str('side') |

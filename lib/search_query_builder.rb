@@ -49,12 +49,18 @@ class SearchQueryBuilder
     }
     @@boolean_keywords = [ 'is_unique', 'u' ]
     @@term_to_field_map = {
+    # restriction:
+    # Card.left_joins(:restrictions).merge(Restriction.where.not(id: "standard_mwl_3_4").or(Restriction.where(id: nil))).size
+    # SELECT cards.* FROM "cards" LEFT OUTER JOIN "restrictions_cards_banned" ON "restrictions_cards_banned"."card_id" = "cards"."id" LEFT OUTER JOIN "restrictions" ON "restrictions"."id" = "restrictions_cards_banned"."restriction_id" WHERE ("restrictions"."id" != $1 OR "restrictions"."id" IS NULL)  [["id", "standard_mwl_3_4"]]  
+
         # 'card_pool' => ''',
+
+        # format should implicitly use the latest card pool and restriction lists unless another is specified.
         # 'format' => ''',
-        # printing? or minimum release date from printing for the card?  Add release date to the card? 'r' => 'release_date', 
         # 'restriction' => ''',
+
         # banlist 'b' => '',
-        # needs join table 'card_subtype' => ''',
+        # printing? or minimum release date from printing for the card?  Add release date to the card? 'r' => 'release_date', 
         # printing 'a' => 'flavor',
         # printing 'c' => 'card_cycle_id',
         # printing 'card_cycle' => 'card_cycle_id'',
@@ -66,14 +72,15 @@ class SearchQueryBuilder
         # printing flavor 'flavor_text' => ''',
         # printing illustrator 'illustrator' => ''',
         # printing quantity 'y' => ''',
-        # rotation needs format and snapshot? 'z' => ''',
-        # Next: subtypes 's' => ''',
-        #  Card.left_joins(:card_subtypes).merge(CardSubtype.where(name: "Hostile")).size
-        #  SELECT COUNT(*) FROM "cards" LEFT OUTER JOIN "cards_card_subtypes" ON "cards_card_subtypes"."card_id" = "cards"."id" LEFT OUTER JOIN "card_subtypes" ON "card_subtypes"."id" = "cards_card_subtypes"."card_subtype_id" WHERE "card_subtypes"."name" = $1  [["name", "Hostile"]]
+
         '_' => 'cards.stripped_title',
         'advancement_cost' => 'cards.advancement_requirement',
         'agenda_points' => 'cards.agenda_points',
+        'b' => 'restrictions_cards_banned.restriction_id',
+        'banlist' => 'restrictions_cards_banned.restriction_id',
         'base_link' => 'cards.base_link',
+        'card_pool' => 'card_pools_cards.card_pool_id',
+        'card_subtype' => 'card_subtypes.name',
         'card_type' => 'cards.card_type_id',
         'cost' => 'cards.cost',
         'd' => 'cards.side_id',
@@ -92,7 +99,6 @@ class SearchQueryBuilder
         's' => 'card_subtypes.name',
         'side' => 'cards.card_side_id',
         'strength' => 'cards.strength',
-        'card_subtype' => 'card_subtypes.name',
         't' => 'cards.card_type_id',
         'text' => 'cards.stripped_text',
         'title' => 'cards.stripped_title',
@@ -102,9 +108,6 @@ class SearchQueryBuilder
         'x' => 'cards.stripped_text',
     }
 
-    # restriction:
-    # Card.left_joins(:restrictions).merge(Restriction.where.not(id: "standard_mwl_3_4").or(Restriction.where(id: nil))).size
-    # SELECT cards.* FROM "cards" LEFT OUTER JOIN "restrictions_cards_banned" ON "restrictions_cards_banned"."card_id" = "cards"."id" LEFT OUTER JOIN "restrictions" ON "restrictions"."id" = "restrictions_cards_banned"."restriction_id" WHERE ("restrictions"."id" != $1 OR "restrictions"."id" IS NULL)  [["id", "standard_mwl_3_4"]]  
     def initialize(query)
         @query = query
         @parse_error = nil
@@ -158,6 +161,10 @@ class SearchQueryBuilder
                     end
                     if ['s', 'card_subtype'].include?(keyword)
                         @left_joins << :card_subtypes
+                    elsif ['b', 'banlist'].include?(keyword)
+                        @left_joins << :restrictions_cards_banned
+                    elsif keyword == 'card_pool'
+                        @left_joins << :card_pool_cards
                     end
                     constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
                     where << '%%%s%%' % value
