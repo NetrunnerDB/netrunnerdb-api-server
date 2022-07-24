@@ -655,6 +655,10 @@ namespace :cards do
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
 
+    puts 'Refreshing materialized view for restrictions...'
+    Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
+
+
     puts 'Done!'
   end
 end
