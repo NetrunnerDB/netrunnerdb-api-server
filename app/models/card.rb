@@ -12,5 +12,7 @@ class Card < ApplicationRecord
   has_many :restriction_card_banned
   has_many :restrictions, :through => :restriction_card_banned
 
+  has_many :unified_restrictions
+
   validates :name, uniqueness: true
 end

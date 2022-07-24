@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_25_170812) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_24_222055) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -258,4 +258,86 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_170812) do
   add_foreign_key "snapshots", "card_pools"
   add_foreign_key "snapshots", "formats"
   add_foreign_key "snapshots", "restrictions"
+
+  create_view "test_view", sql_definition: <<-SQL
+      WITH cards_cross_restrictions_and_snapshots AS (
+           SELECT cards.faction_id,
+              cards.id AS card_id,
+              restrictions.id AS restriction_id,
+              snapshots.id AS snapshot_id,
+              snapshots.format_id,
+              snapshots.card_pool_id,
+              snapshots.date_start AS snapshot_date_start
+             FROM cards,
+              (restrictions
+               JOIN snapshots ON (((restrictions.id)::text = snapshots.restriction_id)))
+          )
+   SELECT cards_cross_restrictions_and_snapshots.format_id,
+      cards_cross_restrictions_and_snapshots.card_pool_id,
+      cards_cross_restrictions_and_snapshots.snapshot_id,
+      cards_cross_restrictions_and_snapshots.faction_id,
+      cards_cross_restrictions_and_snapshots.card_id,
+      cards_cross_restrictions_and_snapshots.restriction_id,
+      cards_cross_restrictions_and_snapshots.snapshot_date_start,
+          CASE
+              WHEN (restrictions_cards_banned.restriction_id IS NOT NULL) THEN true
+              ELSE false
+          END AS is_banned,
+          CASE
+              WHEN (restrictions_cards_restricted.restriction_id IS NOT NULL) THEN true
+              ELSE false
+          END AS is_restricted,
+      COALESCE(restrictions_cards_points.value, 0) AS eternal_points,
+      COALESCE(restrictions_cards_global_penalty.value, 0) AS global_penalty,
+      COALESCE(restrictions_cards_universal_faction_cost.value, 0) AS universal_faction_cost
+     FROM (((((cards_cross_restrictions_and_snapshots
+       LEFT JOIN restrictions_cards_banned ON (((restrictions_cards_banned.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_banned.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_points ON (((restrictions_cards_points.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_points.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_global_penalty ON (((restrictions_cards_global_penalty.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_global_penalty.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_restricted ON (((restrictions_cards_restricted.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_restricted.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_universal_faction_cost ON (((restrictions_cards_universal_faction_cost.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_universal_faction_cost.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+    ORDER BY cards_cross_restrictions_and_snapshots.faction_id, cards_cross_restrictions_and_snapshots.card_id, cards_cross_restrictions_and_snapshots.format_id, cards_cross_restrictions_and_snapshots.snapshot_date_start;
+  SQL
+  create_view "unified_restrictions", materialized: true, sql_definition: <<-SQL
+      WITH cards_cross_restrictions_and_snapshots AS (
+           SELECT cards.id AS card_id,
+              restrictions.id AS restriction_id,
+              snapshots.id AS snapshot_id,
+              snapshots.format_id,
+              snapshots.card_pool_id,
+              snapshots.date_start AS snapshot_date_start
+             FROM cards,
+              (restrictions
+               JOIN snapshots ON (((restrictions.id)::text = snapshots.restriction_id)))
+          )
+   SELECT cards_cross_restrictions_and_snapshots.format_id,
+      cards_cross_restrictions_and_snapshots.card_pool_id,
+      cards_cross_restrictions_and_snapshots.snapshot_id,
+      cards_cross_restrictions_and_snapshots.snapshot_date_start,
+      cards_cross_restrictions_and_snapshots.restriction_id,
+      cards_cross_restrictions_and_snapshots.card_id,
+          CASE
+              WHEN (restrictions_cards_banned.restriction_id IS NOT NULL) THEN true
+              ELSE false
+          END AS is_banned,
+          CASE
+              WHEN (restrictions_cards_restricted.restriction_id IS NOT NULL) THEN true
+              ELSE false
+          END AS is_restricted,
+      COALESCE(restrictions_cards_points.value, 0) AS eternal_points,
+      COALESCE(restrictions_cards_global_penalty.value, 0) AS global_penalty,
+      COALESCE(restrictions_cards_universal_faction_cost.value, 0) AS universal_faction_cost
+     FROM (((((cards_cross_restrictions_and_snapshots
+       LEFT JOIN restrictions_cards_banned ON (((restrictions_cards_banned.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_banned.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_points ON (((restrictions_cards_points.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_points.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_global_penalty ON (((restrictions_cards_global_penalty.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_global_penalty.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_restricted ON (((restrictions_cards_restricted.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_restricted.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
+       LEFT JOIN restrictions_cards_universal_faction_cost ON (((restrictions_cards_universal_faction_cost.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_universal_faction_cost.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))));
+  SQL
+  add_index "unified_restrictions", ["card_id"], name: "index_unified_restrictions_on_card_id"
+  add_index "unified_restrictions", ["card_pool_id"], name: "index_unified_restrictions_on_card_pool_id"
+  add_index "unified_restrictions", ["format_id"], name: "index_unified_restrictions_on_format_id"
+  add_index "unified_restrictions", ["restriction_id"], name: "index_unified_restrictions_on_restriction_id"
+  add_index "unified_restrictions", ["snapshot_id"], name: "index_unified_restrictions_on_snapshot_id"
+
 end
