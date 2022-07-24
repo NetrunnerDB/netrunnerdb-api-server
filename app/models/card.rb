@@ -10,5 +10,7 @@ class Card < ApplicationRecord
   has_many :card_pool_cards
   has_many :card_pools, :through => :card_pool_cards
 
+  has_many :unified_restrictions
+
   validates :name, uniqueness: true
 end

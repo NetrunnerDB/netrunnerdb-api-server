@@ -40,8 +40,11 @@ gem "rack-cors"
 # Used for our import of the card data.
 gem "activerecord-import"
 
+# Base for our API.
 gem 'jsonapi-resources'
 
+# Views
+gem 'scenic'
 
 group :development, :test do
   gem "brakeman", "~> 5.2"
