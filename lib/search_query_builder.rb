@@ -89,8 +89,10 @@ class SearchQueryBuilder
         'n' => 'cards.influence_cost',
         'o' => 'cards.cost',
         'p' => 'cards.strength',
+        's' => 'card_subtypes.name',
         'side' => 'cards.card_side_id',
         'strength' => 'cards.strength',
+        'card_subtype' => 'card_subtypes.name',
         't' => 'cards.card_type_id',
         'text' => 'cards.stripped_text',
         'title' => 'cards.stripped_title',
@@ -107,6 +109,7 @@ class SearchQueryBuilder
         @query = query
         @parse_error = nil
         @parse_tree = nil
+        @left_joins = []
         @where = ''
         @where_values = []
         begin
@@ -153,6 +156,9 @@ class SearchQueryBuilder
                         @parse_error = 'Invalid string operator "%s"' % match_type
                         return
                     end
+                    if ['s', 'card_subtype'].include?(keyword)
+                        @left_joins << :card_subtypes
+                    end
                     constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
                     where << '%%%s%%' % value
                 end
@@ -178,5 +184,8 @@ class SearchQueryBuilder
     end
     def where_values
         return @where_values
+    end
+    def left_joins
+        return @left_joins
     end
 end
