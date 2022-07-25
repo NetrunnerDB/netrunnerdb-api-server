@@ -390,7 +390,7 @@ namespace :cards do
     card_pool_id_to_card_id = []
 
     # Get implied cards from sets in the card_pool
-    ActiveRecord::Base.connection.execute('SELECT card_pool_id, card_id FROM card_pools_card_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id').each do |s|
+    ActiveRecord::Base.connection.execute('SELECT card_pool_id, card_id FROM card_pools_card_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id GROUP BY 1,2').each do |s|
       card_pool_id_to_card_id << [s['card_pool_id'], s['card_id']]
     end
 
@@ -657,7 +657,6 @@ namespace :cards do
 
     puts 'Refreshing materialized view for restrictions...'
     Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
-
 
     puts 'Done!'
   end
