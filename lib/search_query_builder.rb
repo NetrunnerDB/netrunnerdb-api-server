@@ -60,8 +60,6 @@ class SearchQueryBuilder
         '!' => 'NOT LIKE',
     }
     @@term_to_field_map = {
-        # NEXT 'card_pool' => ''',
-
         # format should implicitly use the currently active card pool and restriction lists unless another is specified.
         # 'format' => '',
         # 'restriction' => '',
