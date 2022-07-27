@@ -142,7 +142,10 @@ class SearchQueryBuilder
                 match_type = f[:search_term][:match_type].to_s
                 value = f[:search_term][:value][:string].to_s.downcase
                 if @@boolean_keywords.include?(keyword)
-                    # TODO(plural): validate t/f, true/false, 1/0 as the only allowed values.
+                    if !['true', 'false', 't', 'f', '1', '0'].include?(value)
+                        @parse_error = 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
+                        return
+                    end
                     operator = ''
                     if @@boolean_operators.include?(match_type)
                         operator = @@boolean_operators[match_type]
@@ -156,7 +159,10 @@ class SearchQueryBuilder
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
                     where << value
                 elsif @@numeric_keywords.include?(keyword)
-                    # TODO(plural): validate integers only for values for numeric fields.
+                    if !value.match?(/\A\d+\Z/)
+                        @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
+                        return
+                    end 
                     operator = ''
                     if ['eternal_points', 'global_penalty', 'universal_faction_cost'].include?(keyword)
                         @left_joins << :unified_restrictions

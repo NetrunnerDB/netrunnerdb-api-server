@@ -225,4 +225,23 @@ class SearchQueryBuilderTest < Minitest::Test
     assert_equal [:card_pool_cards], builder.left_joins
   end
 
+  def test_bad_boolean_value
+    input = %Q{is_banned:nah}
+    builder = SearchQueryBuilder.new(input)
+
+    assert_equal 'Invalid value "nah" for boolean field "is_banned"', builder.parse_error
+    assert_equal '', builder.where
+    assert_equal [], builder.where_values
+    assert_equal [], builder.left_joins
+  end
+
+  def test_bad_numeric_value
+    input = %Q{trash_cost:"too damn high"}
+    builder = SearchQueryBuilder.new(input)
+
+    assert_equal 'Invalid value "too damn high" for integer field "trash_cost"', builder.parse_error
+    assert_equal '', builder.where
+    assert_equal [], builder.where_values
+    assert_equal [], builder.left_joins
+  end
 end
