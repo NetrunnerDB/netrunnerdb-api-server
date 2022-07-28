@@ -135,7 +135,7 @@ class SearchQueryBuilder
         where = []
         # TODO(plural): build in explicit support for requirements
         #   {is_banned,is_restricted,eternal_points,global_penalty,universal_faction_cost} all require restriction_id, would be good to have card_pool_id as well.
-        # TOOO(plural): build in explicit support for smart defaults, like restriction_id should imply is_banned = false.  card_pool_id should imply the latest restriction list. 
+        # TODO(plural): build in explicit support for smart defaults, like restriction_id should imply is_banned = false.  card_pool_id should imply the latest restriction list. 
         @parse_tree[:fragments].each {|f|
             if f.include?(:search_term)
                 keyword = f[:search_term][:keyword].to_s
