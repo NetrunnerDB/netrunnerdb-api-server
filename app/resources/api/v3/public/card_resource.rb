@@ -1,5 +1,3 @@
-require 'search_query_builder'
-
 module API
   module V3
     module Public
@@ -27,9 +25,11 @@ module API
         filter :search, apply: ->(records, value, _options) {
           query_builder = SearchQueryBuilder.new(value[0])
           if query_builder.parse_error.nil?
-              records.left_joins(query_builder.left_joins).where(query_builder.where, *query_builder.where_values)
+              records.left_joins(query_builder.left_joins)
+                  .where(query_builder.where, *query_builder.where_values)
           else
-            raise JSONAPI::Exceptions::BadRequest.new('Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
+            raise JSONAPI::Exceptions::BadRequest.new(
+                'Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
           end
         }
       end
