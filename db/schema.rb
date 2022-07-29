@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_24_222055) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_26_032417) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -327,7 +327,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_24_222055) do
       COALESCE(restrictions_cards_points.value, 0) AS eternal_points,
       COALESCE(restrictions_cards_global_penalty.value, 0) AS global_penalty,
       COALESCE(restrictions_cards_universal_faction_cost.value, 0) AS universal_faction_cost
-     FROM (((((cards_cross_restrictions_and_snapshots
+     FROM ((((((cards_cross_restrictions_and_snapshots
+       JOIN card_pools_cards ON (((card_pools_cards.card_pool_id = cards_cross_restrictions_and_snapshots.card_pool_id) AND (card_pools_cards.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
        LEFT JOIN restrictions_cards_banned ON (((restrictions_cards_banned.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_banned.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
        LEFT JOIN restrictions_cards_points ON (((restrictions_cards_points.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_points.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
        LEFT JOIN restrictions_cards_global_penalty ON (((restrictions_cards_global_penalty.restriction_id = (cards_cross_restrictions_and_snapshots.restriction_id)::text) AND (restrictions_cards_global_penalty.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
