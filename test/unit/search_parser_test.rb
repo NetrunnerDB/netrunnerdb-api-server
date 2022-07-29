@@ -145,48 +145,4 @@ class SearchParserTest < Minitest::Test
     ]}
     assert_equal expected, tree
   end
-
-#
-#  def test_parses_a_word
-#    input = %Q{hello}
-#    parser = SearchParser.new.string
-#    tree = parser.parse_with_debug(input)
-#
-#    expected = {word: "hello"}
-#    assert_equal expected, tree
-#  end
-#
-#  def test_key
-#    input = %Q{ hello: }
-#    parser = SearchParser.new.key
-#    tree = parser.parse_with_debug(input)
-#    refute_equal nil, tree
-#  end
-#
-#  def test_parses_a_key_value_pair
-#    input = %Q{hello: "world"}
-#    parser = SearchParser.new.key_value
-#    tree = parser.parse_with_debug(input)
-#    refute_equal nil, tree
-#
-#    actual = SearchTransformer.new.apply(tree)
-#    expected = {key_value: {key: "hello", val: "world"}}
-#    assert_equal expected, actual
-#  end
-#  def test_parses_a_key_value_pair_2
-#    input = %Q{       hi: "there",}
-#    parser = SearchParser.new.key_value_comma
-#    tree = parser.parse_with_debug(input)
-#    refute_equal nil, tree
-#
-#    actual = SearchTransformer.new.apply(tree)
-#    expected = {key_value: {key: "hi", val: "there"}}
-#    assert_equal expected, actual
-#  end
-#  def test_parses_multiple_key_value_pairs
-#    input = %Q{hello: "world", hi: "there" }
-#    parser = SearchParser.new.named_args
-#    tree = parser.parse_with_debug(input)
-#    refute_equal nil, tree
-#  end
 end
