@@ -1,7 +1,7 @@
 require 'parslet'
 
 # TODO(plural): Add support for | in : and ! operators .
-class SearchParser < Parslet::Parser
+class CardSearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
   rule(:bare_string) {

@@ -1,6 +1,5 @@
-require 'search_parser'
-class SearchQueryBuilder
-    @@parser = SearchParser.new
+class CardSearchQueryBuilder
+    @@parser = CardSearchParser.new
     @@boolean_keywords = [
         'b',
         'banlist',
