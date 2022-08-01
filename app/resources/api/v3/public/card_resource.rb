@@ -23,7 +23,7 @@ module API
         filters :influence_limit, :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique
 
         filter :search, apply: ->(records, value, _options) {
-          query_builder = SearchQueryBuilder.new(value[0])
+          query_builder = CardSearchQueryBuilder.new(value[0])
           if query_builder.parse_error.nil?
               records.left_joins(query_builder.left_joins)
                   .where(query_builder.where, *query_builder.where_values)
