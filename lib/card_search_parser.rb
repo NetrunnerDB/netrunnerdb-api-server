@@ -21,15 +21,12 @@ class CardSearchParser < Parslet::Parser
     str('advancement_cost') |
     str('agenda_points') |
     str('base_link') |
-    str('card_cycle') |
     str('card_pool') |
-    str('card_set') |
     str('card_subtype') |
     str('card_type') |
     str('cost') |
     str('eternal_points') |
     str('faction') |
-    str('flavor_text') |
     str('format') |
     str('global_penalty') |
     str('illustrator') |
@@ -38,8 +35,6 @@ class CardSearchParser < Parslet::Parser
     str('is_restricted') |
     str('is_unique') |
     str('memory_usage') |
-    str('quantity_in_card_set') |
-    str('release_date') |
     str('restriction_id') |
     str('side') |
     str('strength') |
