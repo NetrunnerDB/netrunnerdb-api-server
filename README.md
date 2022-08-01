@@ -30,3 +30,11 @@ To run tests in your docker container, you will need to override the environment
 ```
 docker-compose exec -e RAILS_ENV=test app rails test
 ```
+
+## Getting Started
+
+Once your server is running you can hit the api! 
+ex. http://localhost:3000/api/v3/public/cards/sure_gamble
+
+You can find the full list of routes here:
+http://localhost:3000/rails/info/routes
