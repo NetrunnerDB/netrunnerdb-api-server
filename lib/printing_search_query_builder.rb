@@ -1,5 +1,5 @@
-class CardSearchQueryBuilder
-    @@parser = CardSearchParser.new
+class PrintingSearchQueryBuilder
+    @@parser = PrintingSearchParser.new
     @@boolean_keywords = [
         'b',
         'banlist',
@@ -7,6 +7,10 @@ class CardSearchQueryBuilder
         'is_restricted',
         'is_unique',
         'u',
+    ]
+    @@date_keywords = [
+        'r',
+        'release_date'
     ]
     @@numeric_keywords = [
         'advancement_cost',
@@ -24,10 +28,12 @@ class CardSearchQueryBuilder
         'n',
         'o',
         'p',
+        'quantity',
         'strength',
         'trash_cost',
         'universal_faction_cost',
         'v',
+        'y',
     ]
     @@string_keywords = [
         '_',
@@ -35,6 +41,11 @@ class CardSearchQueryBuilder
         'd',
         'f',
         'faction',
+        'flavor',
+        'i',
+        'illustrator',
+        'r',
+        'release_date',
         'restriction_id',
         'side',
         't',
@@ -45,6 +56,14 @@ class CardSearchQueryBuilder
     @@boolean_operators = {
         ':' => '=',
         '!' => '!=',
+    }
+    @@date_operators = {
+        ':' => '=',
+        '!' => '!=',
+        '<' => '<',
+        '<=' => '<=',
+        '>' => '>',
+        '>=' => '>='
     }
     @@numeric_operators = {
         ':' => '=',
@@ -59,23 +78,30 @@ class CardSearchQueryBuilder
         '!' => 'NOT LIKE',
     }
     @@term_to_field_map = {
-        # format should implicitly use the currently active card pool and restriction lists unless another is specified.
         '_' => 'cards.stripped_title',
+        'a' => 'printings.flavor',
         'advancement_cost' => 'cards.advancement_requirement',
         'agenda_points' => 'cards.agenda_points',
         'base_link' => 'cards.base_link',
+        'c' => 'card_sets.card_cycle_id',
+        'card_cycle' => 'card_sets.card_cycle_id',
         'card_pool' => 'card_pools_cards.card_pool_id',
+        'card_set' => 'printings.card_set_id',
         'card_subtype' => 'card_subtypes.name',
         'card_type' => 'cards.card_type_id',
         'cost' => 'cards.cost',
         'd' => 'cards.side_id',
+        'e' => 'printings.card_set_id',
         'eternal_points' => 'unified_restrictions.eternal_points',
         'f' => 'cards.faction_id',
         'faction' => 'cards.faction_id',
+        'flavor' => 'printings.flavor',
         'format' => 'unified_restrictions.format_id',
         'g' => 'cards.advancement_requirement',
         'global_penalty' => 'unified_restrictions.global_penalty',
         'h' => 'cards.trash_cost',
+        'i' => 'illustrators.name',
+        'illustrator' => 'illustrators.name',
         'influence_cost' => 'cards.influence_cost',
         'is_banned' => 'unified_restrictions.is_banned',
         'is_restricted' => 'unified_restrictions.is_restricted',
@@ -86,6 +112,9 @@ class CardSearchQueryBuilder
         'n' => 'cards.influence_cost',
         'o' => 'cards.cost',
         'p' => 'cards.strength',
+        'quantity' => 'printings.quantity',
+        'r' => 'printings.date_release',
+        'release_date' => 'printings.date_release',
         'restriction_id' => 'unified_restrictions.restriction_id',
         's' => 'card_subtypes.name',
         'side' => 'cards.card_side_id',
@@ -98,19 +127,54 @@ class CardSearchQueryBuilder
         'universal_faction_cost' => 'unified_restrictions.universal_faction_cost',
         'v' => 'cards.agenda_points',
         'x' => 'cards.stripped_text',
+        'y' => 'printings.quantity',
     }
 
+    # TODO(plural): Unify more of this with card_search_query_builder.
     @@term_to_left_join_map = {
+        '_' => :card,
+        'advancement_cost' => :card,
+        'agenda_points' => :card,
+        'base_link' => :card,
+        'c' => :card_set,
+        'card_cycle' => :card_set,
         'card_pool' => :card_pool_cards,
         'card_subtype' => :card_subtypes,
+        'card_type' => :card,
+        'cost' => :card,
+        'd' => :card,
         'eternal_points' => :unified_restrictions,
+        'f' => :card,
+        'faction' => :card,
+        'format' => :unified_restrictions,
+        'g' => :card,
         'global_penalty' => :unified_restrictions,
+        'h' => :card,
+        'i' => :illustrators,
+        'illustrator' => :illustrators,
+        'influence_cost' => :card,
         'is_banned' => :unified_restrictions,
         'is_restricted' => :unified_restrictions,
+        'is_unique' => :card,
+        'l' => :card,
+        'm' => :card,
+        'memory_usage' => :card,
+        'n' => :card,
+        'o' => :card,
+        'p' => :card,
         'restriction_id' => :unified_restrictions,
         's' => :card_subtypes,
+        'side' => :card,
+        'strength' => :card,
+        't' => :card,
+        'text' => :card,
+        'title' => :card,
+        'trash_cost' => :card,
+        'u' => :card,
         'universal_faction_cost' => :unified_restrictions,
-      }
+        'v' => :card,
+        'x' => :card,
+    }
 
     def initialize(query)
         @query = query
@@ -151,13 +215,27 @@ class CardSearchQueryBuilder
                     end
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
                     where << value
-                elsif @@numeric_keywords.include?(keyword)
+                elsif @@date_keywords.include?(keyword)
+                    if !value.match?(/\A(\d{4}-\d{2}-\d{2}|\d{8})\Z/)
+                        @parse_error = 'Invalid value "%s" for date field "%s" - only YYYY-MM-DD or YYYYMMDD are supported.' % [value, keyword]
+                        return
+                    end 
+                    operator = ''
+                    if @@date_operators.include?(match_type)
+                        operator = @@date_operators[match_type]
+                    else
+                        @parse_error = 'Invalid numeric operator "%s"' % match_type
+                        return
+                    end
+                    constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
+                    where << value 
+                 elsif @@numeric_keywords.include?(keyword)
                     if !value.match?(/\A\d+\Z/)
                         @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
                         return
                     end 
                     operator = ''
-                   if @@numeric_operators.include?(match_type)
+                    if @@numeric_operators.include?(match_type)
                         operator = @@numeric_operators[match_type]
                     else
                         @parse_error = 'Invalid numeric operator "%s"' % match_type
@@ -175,7 +253,7 @@ class CardSearchQueryBuilder
                         @parse_error = 'Invalid string operator "%s"' % match_type
                         return
                     end
-                   constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
+                    constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
                     where << '%%%s%%' % value
                 end
                 if @@term_to_left_join_map.include?(keyword)
