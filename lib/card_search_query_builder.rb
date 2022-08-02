@@ -110,7 +110,7 @@ class CardSearchQueryBuilder
         'restriction_id' => :unified_restrictions,
         's' => :card_subtypes,
         'universal_faction_cost' => :unified_restrictions,
-      }
+     }
 
     def initialize(query)
         @query = query

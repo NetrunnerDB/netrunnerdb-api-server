@@ -229,7 +229,7 @@ class PrintingSearchQueryBuilder
                     end
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
                     where << value 
-                 elsif @@numeric_keywords.include?(keyword)
+                elsif @@numeric_keywords.include?(keyword)
                     if !value.match?(/\A\d+\Z/)
                         @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
                         return
@@ -259,7 +259,7 @@ class PrintingSearchQueryBuilder
                 if @@term_to_left_join_map.include?(keyword)
                     @left_joins << @@term_to_left_join_map[keyword]
                 end 
-             end
+            end
 
             # bare/quoted words in the query are automatically mapped to stripped_title
             if f.include?(:string)
