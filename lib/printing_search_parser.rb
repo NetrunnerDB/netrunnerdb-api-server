@@ -1,7 +1,7 @@
 require 'parslet'
 
 # TODO(plural): Add support for | in : and ! operators .
-class CardSearchParser < Parslet::Parser
+class PrintingSearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
   rule(:bare_string) {
@@ -21,12 +21,15 @@ class CardSearchParser < Parslet::Parser
     str('advancement_cost') |
     str('agenda_points') |
     str('base_link') |
+    str('card_cycle') |
     str('card_pool') |
+    str('card_set') |
     str('card_subtype') |
     str('card_type') |
     str('cost') |
     str('eternal_points') |
     str('faction') |
+    str('flavor') |
     str('format') |
     str('global_penalty') |
     str('illustrator') |
@@ -35,6 +38,8 @@ class CardSearchParser < Parslet::Parser
     str('is_restricted') |
     str('is_unique') |
     str('memory_usage') |
+    str('quantity') |
+    str('release_date') |
     str('restriction_id') |
     str('side') |
     str('strength') |

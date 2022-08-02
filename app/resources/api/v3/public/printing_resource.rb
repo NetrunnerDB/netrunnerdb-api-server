@@ -83,7 +83,17 @@ module API
         filter :is_unique, apply: ->(records, value, _options){
           records.joins(:card).where('cards.is_unique= ?', value)
         }
-
+        filter :search, apply: ->(records, value, _options) {
+          query_builder = PrintingSearchQueryBuilder.new(value[0])
+          if query_builder.parse_error.nil?
+              records.left_joins(query_builder.left_joins)
+                  .where(query_builder.where, *query_builder.where_values)
+          else
+            raise JSONAPI::Exceptions::BadRequest.new(
+                'Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
+          end
+        }
+ 
         # Images will return a nested map for different types of images.
         # 'nrdb_classic' represents the JPEGs used for classic netrunnerdb.com.
         # We will likely add other formats like png and webp, as well as various sizes,

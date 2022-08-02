@@ -8,4 +8,8 @@ class Printing < ApplicationRecord
   has_one :side, :through => :card
   has_many :illustrator_printings
   has_many :illustrators, :through => :illustrator_printings
+
+  has_many :unified_restrictions, primary_key: :card_id, foreign_key: :card_id
+  has_many :card_pool_cards, primary_key: :card_id, foreign_key: :card_id
+  has_many :card_pools, :through => :card_pool_cards
 end
