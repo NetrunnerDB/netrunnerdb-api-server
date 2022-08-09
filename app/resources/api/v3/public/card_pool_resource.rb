@@ -3,8 +3,8 @@ module API
     module Public
       class Api::V3::Public::CardPoolResource < JSONAPI::Resource
         immutable
-        
-        attributes :name, :updated_at
+
+        attributes :name, :card_cycle_ids, :card_set_ids, :card_ids, :updated_at
         key_type :string
 
         paginator :none
