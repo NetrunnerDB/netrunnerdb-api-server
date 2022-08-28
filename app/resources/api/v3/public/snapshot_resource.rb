@@ -15,6 +15,8 @@ module API
 
         has_many :cards
 
+        filters :active, :format_id
+
         def card_cycle_ids
           @model.card_pool.card_pool_card_cycles.pluck(:card_cycle_id)
         end
