@@ -4,7 +4,7 @@ module API
       class Api::V3::Public::CardSetResource < JSONAPI::Resource
         immutable
 
-        attributes :name, :date_release, :size, :card_cycle_id, :card_set_type_id, :updated_at
+        attributes :name, :date_release, :size, :card_cycle_id, :card_set_type_id, :legacy_code, :updated_at
         key_type :string
 
         paginator :none

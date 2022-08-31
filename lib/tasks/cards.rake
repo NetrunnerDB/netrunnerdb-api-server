@@ -162,6 +162,7 @@ namespace :cards do
       {
         id: c['id'],
         name: c['name'],
+        legacy_code: c['legacy_code']
       }
     end
     CardCycle.import cycles, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -198,6 +199,7 @@ namespace :cards do
           "card_cycle_id": s["card_cycle_id"],
           "card_set_type_id": s["card_set_type_id"],
           "position": s["position"],
+          "legacy_code": s["legacy_code"]
       }
     end
     CardSet.import printings, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
