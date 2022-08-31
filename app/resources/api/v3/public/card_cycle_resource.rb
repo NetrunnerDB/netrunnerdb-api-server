@@ -4,7 +4,7 @@ module API
       class Api::V3::Public::CardCycleResource < JSONAPI::Resource
         immutable
 
-        attributes :name, :date_release, :updated_at
+        attributes :name, :date_release, :legacy_code, :updated_at
         key_type :string
 
         has_many :card_sets
