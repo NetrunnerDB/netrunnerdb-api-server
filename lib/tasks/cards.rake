@@ -174,6 +174,7 @@ namespace :cards do
       {
         id: t['id'],
         name: t['name'],
+        description: t['description'],
       }
     end
     CardSetType.import set_types, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
