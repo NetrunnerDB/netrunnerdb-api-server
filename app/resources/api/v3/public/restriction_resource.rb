@@ -14,32 +14,12 @@ module API
         paginator :none
 
         def verdicts
-          { 'banned': banned,
-            'restricted': restricted,
-            'universal_faction_cost': universal_faction_cost,
-            'global_penalty': global_penalty,
-            'points': points
+          { 'banned': @model.banned_cards.pluck(:card_id),
+            'restricted': @model.restricted_cards.pluck(:card_id),
+            'universal_faction_cost': Hash[@model.universal_faction_cost_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }],
+            'global_penalty': Hash[@model.global_penalty_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }],
+            'points': Hash[@model.points_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
           }
-        end
-
-        def banned
-          @model.banned_cards.pluck(:card_id)
-        end
-
-        def restricted
-          @model.restricted_cards.pluck(:card_id)
-        end
-
-        def universal_faction_cost
-          Hash[@model.universal_faction_cost_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
-        end
-
-        def global_penalty
-          Hash[@model.global_penalty_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
-        end
-
-        def points
-          Hash[@model.points_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
         end
 
         def banned_subtypes
@@ -47,11 +27,13 @@ module API
         end
 
         def size
-          banned.length() +
-          restricted.length() +
-          universal_faction_cost.map { |_,a| a.length() }.sum() +
-          global_penalty.map { |_,a| a.length() }.sum() +
-          points.map { |_,a| a.length() }.sum()
+          verdicts.reduce(0) do |n, (_,v)|
+            if v.kind_of?(Array) then
+              n + v.length()
+            else
+              n + v.reduce(0) { |m, (_,a)| m + a.length() }
+            end
+          end
         end
       end
     end
