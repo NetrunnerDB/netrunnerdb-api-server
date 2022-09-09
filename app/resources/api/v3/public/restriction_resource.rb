@@ -3,14 +3,24 @@ module API
     module Public
       class Api::V3::Public::RestrictionResource < JSONAPI::Resource
         immutable
-        
+
         attributes :name, :date_start, :point_limit
-        attributes :banned, :restricted, :universal_faction_cost, :global_penalty, :points
+        attribute :verdicts
         attribute :banned_subtypes
+        attribute :size
         attribute :updated_at
         key_type :string
 
         paginator :none
+
+        def verdicts
+          { 'banned': banned,
+            'restricted': restricted,
+            'universal_faction_cost': universal_faction_cost,
+            'global_penalty': global_penalty,
+            'points': points
+          }
+        end
 
         def banned
           @model.banned_cards.pluck(:card_id)
@@ -34,6 +44,14 @@ module API
 
         def banned_subtypes
           @model.banned_subtypes.pluck(:card_subtype_id)
+        end
+
+        def size
+          banned.length() +
+          restricted.length() +
+          universal_faction_cost.map { |_,a| a.length() }.sum() +
+          global_penalty.map { |_,a| a.length() }.sum() +
+          points.map { |_,a| a.length() }.sum()
         end
       end
     end
