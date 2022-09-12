@@ -8,9 +8,8 @@ module API
         attributes :advancement_requirement, :agenda_points, :base_link, :cost
         attributes :deck_limit, :influence_cost, :influence_limit, :memory_cost
         attributes :minimum_deck_size, :strength, :stripped_text, :text, :trash_cost
-        attributes :is_unique, :display_subtypes
+        attributes :is_unique, :display_subtypes, :updated_at
         attribute :latest_printing_id
-        attribute :updated_at
 
         key_type :string
 
