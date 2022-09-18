@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_31_025337) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_17_233220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_31_025337) do
     t.text "display_subtypes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "additional_cost", default: false
+    t.boolean "advanceable", default: false
+    t.boolean "gains_subroutines", default: false
+    t.boolean "interrupt", default: false
+    t.integer "link_provided"
+    t.integer "mu_provided"
+    t.integer "num_printed_subroutines"
+    t.boolean "on_encounter_effect", default: false
+    t.boolean "performs_trace", default: false
+    t.boolean "provides_link", default: false
+    t.boolean "provides_mu", default: false
+    t.boolean "provides_recurring_credits", default: false
+    t.integer "recurring_credits_provided"
+    t.boolean "rez_effect", default: false
+    t.boolean "trash_ability", default: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
