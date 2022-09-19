@@ -9,6 +9,7 @@ module API
         attributes :deck_limit, :influence_cost, :influence_limit, :memory_cost
         attributes :minimum_deck_size, :strength, :stripped_text, :text, :trash_cost
         attributes :is_unique, :display_subtypes, :updated_at
+        attribute :latest_printing_id
 
         key_type :string
 
@@ -17,6 +18,10 @@ module API
         has_one :card_type
         has_many :card_subtypes
         has_many :printings
+
+        def latest_printing_id
+          @model.printings[-1]['id']
+        end
 
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
         filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost
