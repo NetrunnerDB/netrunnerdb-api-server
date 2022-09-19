@@ -112,9 +112,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_17_233220) do
     t.integer "num_printed_subroutines"
     t.boolean "on_encounter_effect", default: false
     t.boolean "performs_trace", default: false
-    t.boolean "provides_link", default: false
-    t.boolean "provides_mu", default: false
-    t.boolean "provides_recurring_credits", default: false
     t.integer "recurring_credits_provided"
     t.boolean "rez_effect", default: false
     t.boolean "trash_ability", default: false

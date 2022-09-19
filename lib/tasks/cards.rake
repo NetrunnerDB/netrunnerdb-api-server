@@ -115,10 +115,8 @@ namespace :cards do
         if m && m.captures.length == 1
           link_provided = m.captures[0]
           puts "provides_link: [%s] [%s] %s\n-----------------\n" % [link_provided, new_card.title, new_card.text]
-          new_card.provides_link = true
-          if link_provided != 'X'
-            new_card.link_provided = link_provided
-          end
+          # Null is equivalent to "does not provide link" and we will use -1 to map to X.
+          new_card.link_provided = link_provided == 'X' ? -1 : link_provided
         end
       end
 
@@ -127,10 +125,8 @@ namespace :cards do
         if m && m.captures.length == 1
           mu_provided = m.captures[0]
           puts "provides_mu: [%s] [%s] %s\n-----------------\n" % [mu_provided, new_card.title, new_card.text]
-          new_card.provides_mu = true
-          if mu_provided != 'X'
-            new_card.mu_provided = mu_provided
-          end
+          # Null is equivalent to "does not provide mu" and we will use -1 to map to X.
+          new_card.mu_provided = mu_provided == 'X' ? -1 : mu_provided
         end
       end
 
@@ -138,12 +134,9 @@ namespace :cards do
         m = new_card.text.match('([X\d]+)\[recurring-credit\]')
         if m && m.captures.length == 1
           num_recurring_credits = m.captures[0]
-          # TODO(plural): should also parse # of recurring credits recurring_credits: null or a #.
           puts "provides_recurring_credits: [%s] [%s] %s\n-----------------\n" % [num_recurring_credits, new_card.title, new_card.text]
-          new_card.provides_recurring_credits = true
-          if num_recurring_credits != 'X'
-            new_card.recurring_credits_provided = num_recurring_credits
-          end
+          # Null is equivalent to "does not provide recurring credits" and we will use -1 to map to X.
+          new_card.recurring_credits_provided = num_recurring_credits == 'X' ? -1 : num_recurring_credits
         end
       end
 
