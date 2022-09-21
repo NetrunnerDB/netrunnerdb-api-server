@@ -20,7 +20,7 @@ module API
         has_many :printings
 
         def latest_printing_id
-          @model.printings[-1]['id']
+          @model.printings.max_by { |p| p.date_release } ['id']
         end
 
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
