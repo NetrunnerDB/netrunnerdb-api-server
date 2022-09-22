@@ -108,6 +108,96 @@ namespace :cards do
         is_unique: card["is_unique"],
         display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
       )
+
+      # Look for specific abilities and attributes:
+      if new_card.text 
+        m = new_card.text.match(/\+([X\d]+)\[link\]/)
+        if m && m.captures.length == 1
+          link_provided = m.captures[0]
+          puts "provides_link: [%s] [%s] %s\n-----------------\n" % [link_provided, new_card.title, new_card.text]
+          # Null is equivalent to "does not provide link" and we will use -1 to map to X.
+          new_card.link_provided = link_provided == 'X' ? -1 : link_provided
+        end
+      end
+
+      if new_card.text 
+        m = new_card.text.match(/\+([X\d]+)\[mu\]/)
+        if m && m.captures.length == 1
+          mu_provided = m.captures[0]
+          puts "provides_mu: [%s] [%s] %s\n-----------------\n" % [mu_provided, new_card.title, new_card.text]
+          # Null is equivalent to "does not provide mu" and we will use -1 to map to X.
+          new_card.mu_provided = mu_provided == 'X' ? -1 : mu_provided
+        end
+      end
+
+      if new_card.text
+        m = new_card.text.match('([X\d]+)\[recurring-credit\]')
+        if m && m.captures.length == 1
+          num_recurring_credits = m.captures[0]
+          puts "provides_recurring_credits: [%s] [%s] %s\n-----------------\n" % [num_recurring_credits, new_card.title, new_card.text]
+          # Null is equivalent to "does not provide recurring credits" and we will use -1 to map to X.
+          new_card.recurring_credits_provided = num_recurring_credits == 'X' ? -1 : num_recurring_credits
+        end
+      end
+
+      if new_card.text && new_card.text.include?('[interrupt] →')
+        puts "has_interrupt: [%s] %s\n-----------------\n" % [new_card.title, new_card.text]
+        new_card.interrupt = true
+      end
+
+      # Geist and Tech trader are more trash *triggers* than abilities.
+      if new_card.text && new_card.text.include?('[trash]')
+        puts "has_trash_ability: [%s] %s\n-----------------\n" % [new_card.title, new_card.text]
+        new_card.trash_ability = true
+      end
+
+      if new_card.text && new_card.card_type_id == 'ice' && new_card.text.include?('[subroutine]')
+        # First look for gains subroutines text, record it and then remove it.
+        # This only works with single gains "[subroutine]" instances, which is fine for now.
+        t = new_card.text
+        m = t.match(/gains "\[subroutine\].*?"/)
+        gains_subroutines = false
+        if m
+          gains_subroutines = true
+          t = t.gsub(/gains "\[subroutine\].*?"/, '')
+        end
+        num_printed_subroutines = t.scan(/\[subroutine\]/).length
+        puts 'subs: [%s] gains_subroutines=%s, num_printed_subroutines=%d : %s' % [new_card.title, gains_subroutines, num_printed_subroutines, new_card.text]
+        new_card.gains_subroutines = gains_subroutines
+        new_card.num_printed_subroutines = num_printed_subroutines
+      end
+
+      if new_card.text && new_card.text.include?(' can be advanced')
+        if new_card.text.match('%s can be advanced' % new_card.title)
+          puts 'advanceable: [%s]: %s' % [new_card.title, new_card.text]
+          new_card.advanceable = true
+        end
+      end
+
+      # leaving this vague to catch things that have and impose additional costs.
+      if new_card.text && new_card.text.include?('As an additional cost to')
+        puts 'additional_cost: [%s]: %s' % [new_card.title, new_card.text]
+        new_card.additional_cost = true
+      end
+
+      if new_card.text && (new_card.text.include?('When the Runner encounters this ice') || new_card.text.include?('When the Runner encounters %s' % new_card.title))
+        puts 'on_encounter_effect: [%s]: %s' % [new_card.title, new_card.text]
+        new_card.on_encounter_effect = true
+      end
+
+      if new_card.text && (new_card.text.include?('When you rez') || new_card.text.include?('%s when it is rezzed' % new_card.title))
+        puts 'rez_effect: [%s]: %s' % [new_card.title, new_card.text]
+        new_card.rez_effect
+      end
+
+      if new_card.text && (new_card.text.match?(/trace(\[\d+| X| \d+)/i) || new_card.text.match?('<trace>'))
+        puts 'performs_trace: [%s]: %s' % [new_card.title, new_card.text]
+        new_card.performs_trace = true
+      end
+
+      # TODO(plural): Add these in as well
+      # - click_ability / click_cost
+      # - [credit] - credit cost or paid ability?
       new_cards << new_card
     end
 
