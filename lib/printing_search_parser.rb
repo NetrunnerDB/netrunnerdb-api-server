@@ -33,6 +33,7 @@ class PrintingSearchParser < Parslet::Parser
     str('format') |
     str('global_penalty') |
     str('illustrator') |
+    str('in_restriction') |
     str('influence_cost') |
     str('is_banned') |
     str('is_restricted') |

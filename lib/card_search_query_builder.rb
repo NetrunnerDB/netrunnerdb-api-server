@@ -3,6 +3,7 @@ class CardSearchQueryBuilder
     @@boolean_keywords = [
         'b',
         'banlist',
+        'in_restriction',
         'is_banned',
         'is_restricted',
         'is_unique',
@@ -76,6 +77,7 @@ class CardSearchQueryBuilder
         'g' => 'cards.advancement_requirement',
         'global_penalty' => 'unified_restrictions.global_penalty',
         'h' => 'cards.trash_cost',
+        'in_restriction' => 'unified_restrictions.in_restriction',
         'influence_cost' => 'cards.influence_cost',
         'is_banned' => 'unified_restrictions.is_banned',
         'is_restricted' => 'unified_restrictions.is_restricted',
@@ -105,6 +107,7 @@ class CardSearchQueryBuilder
         'card_subtype' => :card_subtypes,
         'eternal_points' => :unified_restrictions,
         'global_penalty' => :unified_restrictions,
+        'in_restriction' => :unified_restrictions,
         'is_banned' => :unified_restrictions,
         'is_restricted' => :unified_restrictions,
         'restriction_id' => :unified_restrictions,
