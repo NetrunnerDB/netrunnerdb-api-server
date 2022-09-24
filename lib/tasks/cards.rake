@@ -127,7 +127,6 @@ namespace :cards do
         if m && m.captures.length == 1
           mu_provided = m.captures[0]
           # Null is equivalent to "does not provide mu" and we will use -1 to map to X.
-          puts 'mu_provided for %s is %s' % [new_card.id, mu_provided]
           new_card.mu_provided = (mu_provided == 'X' ? -1 : mu_provided)
         end
       end
