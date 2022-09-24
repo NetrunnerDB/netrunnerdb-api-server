@@ -10,9 +10,9 @@ module API
         attributes :quantity, :date_release, :updated_at
 
         # Parent Card attributes, included inline to make printings a bit more useful.
-        attributes :advancement_requirement, :agenda_points, :base_link, :card_type_id
-        attributes :cost, :deck_limit, :display_subtypes, :faction_id, :influence_cost
-        attributes :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
+        attributes :advancement_requirement, :agenda_points, :base_link, :card_abilities
+        attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :faction_id
+        attributes :influence_cost, :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
         attributes :side_id, :strength, :stripped_text, :stripped_title, :text
         attributes :title, :trash_cost
 
@@ -121,6 +121,21 @@ module API
         end
         def base_link
           @model.card.base_link
+        end
+        def card_abilities
+          {
+            additional_cost: @model.card.additional_cost,
+            advanceable: @model.card.advanceable,
+            gains_subroutines: @model.card.gains_subroutines,
+            interrupt: @model.card.interrupt,
+            link_provided: @model.card.link_provided,
+            mu_provided: @model.card.mu_provided,
+            num_printed_subroutines: @model.card.num_printed_subroutines,
+            on_encounter_effect: @model.card.on_encounter_effect,
+            performs_trace: @model.card.performs_trace,
+            recurring_credits_provided: @model.card.recurring_credits_provided,
+            trash_ability: @model.card.trash_ability,
+          }
         end
         def card_type_id
           @model.card.card_type_id

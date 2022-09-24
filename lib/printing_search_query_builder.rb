@@ -1,12 +1,19 @@
 class PrintingSearchQueryBuilder
     @@parser = PrintingSearchParser.new
     @@boolean_keywords = [
+        'additional_cost',
+        'advanceable',
         'b',
         'banlist',
+        'gains_subroutines',
         'in_restriction',
+        'interrupt',
         'is_banned',
         'is_restricted',
         'is_unique',
+        'on_encounter_effect',
+        'performs_trace',
+        'trash_ability',
         'u',
     ]
     @@date_keywords = [
@@ -24,12 +31,16 @@ class PrintingSearchQueryBuilder
         'h',
         'influence_cost',
         'l',
+        'link_provided',
         'm',
         'memory_usage',
+        'mu_provided',
         'n',
+        'num_printed_subroutines',
         'o',
         'p',
         'quantity',
+        'recurring_credits_provided',
         'strength',
         'trash_cost',
         'universal_faction_cost',
@@ -81,6 +92,8 @@ class PrintingSearchQueryBuilder
     @@term_to_field_map = {
         '_' => 'cards.stripped_title',
         'a' => 'printings.flavor',
+        'additional_cost' => 'cards.additional_cost',
+        'advanceable' => 'cards.advanceable',
         'advancement_cost' => 'cards.advancement_requirement',
         'agenda_points' => 'cards.agenda_points',
         'base_link' => 'cards.base_link',
@@ -99,23 +112,31 @@ class PrintingSearchQueryBuilder
         'flavor' => 'printings.flavor',
         'format' => 'unified_restrictions.format_id',
         'g' => 'cards.advancement_requirement',
+        'gains_subroutines' => 'cards.gains_subroutines',
         'global_penalty' => 'unified_restrictions.global_penalty',
         'h' => 'cards.trash_cost',
         'i' => 'illustrators.name',
         'illustrator' => 'illustrators.name',
         'in_restriction' => 'unified_restrictions.in_restriction',
         'influence_cost' => 'cards.influence_cost',
+        'interrupt' => 'cards.interrupt',
         'is_banned' => 'unified_restrictions.is_banned',
         'is_restricted' => 'unified_restrictions.is_restricted',
         'is_unique' => 'cards.is_unique',
         'l' => 'cards.base_link',
+        'link_provided' => 'cards.link_provided',
         'm' => 'cards.memory_cost',
         'memory_usage' => 'cards.memory_cost',
+        'mu_provided' => 'cards.mu_provided',
         'n' => 'cards.influence_cost',
+        'num_printed_subroutines' => 'cards.num_printed_subroutines',
         'o' => 'cards.cost',
+        'on_encounter_effect' => 'cards.on_encounter_effect',
         'p' => 'cards.strength',
+        'performs_trace' => 'cards.performs_trace',
         'quantity' => 'printings.quantity',
         'r' => 'printings.date_release',
+        'recurring_credits_provided' => 'cards.recurring_credits_provided',
         'release_date' => 'printings.date_release',
         'restriction_id' => 'unified_restrictions.restriction_id',
         's' => 'card_subtypes.name',
@@ -124,6 +145,7 @@ class PrintingSearchQueryBuilder
         't' => 'cards.card_type_id',
         'text' => 'cards.stripped_text',
         'title' => 'cards.stripped_title',
+        'trash_ability' => 'cards.trash_ability',
         'trash_cost' => 'cards.trash_cost',
         'u' => 'cards.is_unique',
         'universal_faction_cost' => 'unified_restrictions.universal_faction_cost',
@@ -135,6 +157,8 @@ class PrintingSearchQueryBuilder
     # TODO(plural): Unify more of this with card_search_query_builder.
     @@term_to_left_join_map = {
         '_' => :card,
+        'additional_cost' => :card,
+        'advanceable' => :card,
         'advancement_cost' => :card,
         'agenda_points' => :card,
         'base_link' => :card,
@@ -150,21 +174,29 @@ class PrintingSearchQueryBuilder
         'faction' => :card,
         'format' => :unified_restrictions,
         'g' => :card,
+        'gains_subroutines' => :card,
         'global_penalty' => :unified_restrictions,
         'h' => :card,
         'i' => :illustrators,
         'illustrator' => :illustrators,
         'in_restriction' => :unified_restrictions,
         'influence_cost' => :card,
+        'interrupt' => :card,
         'is_banned' => :unified_restrictions,
         'is_restricted' => :unified_restrictions,
         'is_unique' => :card,
         'l' => :card,
+        'link_provided' => :card,
         'm' => :card,
         'memory_usage' => :card,
+        'mu_provided' => :card,
         'n' => :card,
+        'num_printed_subroutines' => :card,
         'o' => :card,
+        'on_encounter_effect' => :card,
         'p' => :card,
+        'performs_trace' => :card,
+        'recurring_credits_provided' => :card,
         'restriction_id' => :unified_restrictions,
         's' => :card_subtypes,
         'side' => :card,
@@ -172,6 +204,7 @@ class PrintingSearchQueryBuilder
         't' => :card,
         'text' => :card,
         'title' => :card,
+        'trash_ability' => :card,
         'trash_cost' => :card,
         'u' => :card,
         'universal_faction_cost' => :unified_restrictions,
@@ -233,7 +266,7 @@ class PrintingSearchQueryBuilder
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
                     where << value 
                 elsif @@numeric_keywords.include?(keyword)
-                    if !value.match?(/\A\d+\Z/)
+                    if !value.match?(/\A(\d+|x)\Z/i)
                         @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
                         return
                     end 
@@ -245,7 +278,7 @@ class PrintingSearchQueryBuilder
                         return
                     end
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
-                    where << value 
+                    where << (value.downcase == 'x' ? -1 : value)
                 else
                     # String fields only support : and !, resolving to to {,NOT} LIKE %value%.
                     # TODO(plural): consider ~ for regex matches. 
