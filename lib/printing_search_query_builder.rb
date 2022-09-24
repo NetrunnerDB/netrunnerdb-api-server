@@ -3,6 +3,7 @@ class PrintingSearchQueryBuilder
     @@boolean_keywords = [
         'b',
         'banlist',
+        'in_restriction',
         'is_banned',
         'is_restricted',
         'is_unique',
@@ -102,6 +103,7 @@ class PrintingSearchQueryBuilder
         'h' => 'cards.trash_cost',
         'i' => 'illustrators.name',
         'illustrator' => 'illustrators.name',
+        'in_restriction' => 'unified_restrictions.in_restriction',
         'influence_cost' => 'cards.influence_cost',
         'is_banned' => 'unified_restrictions.is_banned',
         'is_restricted' => 'unified_restrictions.is_restricted',
@@ -152,6 +154,7 @@ class PrintingSearchQueryBuilder
         'h' => :card,
         'i' => :illustrators,
         'illustrator' => :illustrators,
+        'in_restriction' => :unified_restrictions,
         'influence_cost' => :card,
         'is_banned' => :unified_restrictions,
         'is_restricted' => :unified_restrictions,

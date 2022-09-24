@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_17_233220) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_23_032558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -291,6 +291,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_17_233220) do
       cards_cross_restrictions_and_snapshots.snapshot_date_start,
       cards_cross_restrictions_and_snapshots.restriction_id,
       cards_cross_restrictions_and_snapshots.card_id,
+      ((restrictions_cards_banned.restriction_id IS NOT NULL) OR (restrictions_cards_restricted.restriction_id IS NOT NULL) OR (restrictions_cards_points.restriction_id IS NOT NULL) OR (restrictions_cards_global_penalty.restriction_id IS NOT NULL) OR (restrictions_cards_universal_faction_cost.restriction_id IS NOT NULL)) AS in_restriction,
           CASE
               WHEN (restrictions_cards_banned.restriction_id IS NOT NULL) THEN true
               ELSE false
@@ -313,6 +314,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_17_233220) do
   add_index "unified_restrictions", ["card_id"], name: "index_unified_restrictions_on_card_id"
   add_index "unified_restrictions", ["card_pool_id"], name: "index_unified_restrictions_on_card_pool_id"
   add_index "unified_restrictions", ["format_id"], name: "index_unified_restrictions_on_format_id"
+  add_index "unified_restrictions", ["in_restriction"], name: "index_unified_restrictions_on_in_restriction"
   add_index "unified_restrictions", ["restriction_id"], name: "index_unified_restrictions_on_restriction_id"
   add_index "unified_restrictions", ["snapshot_id"], name: "index_unified_restrictions_on_snapshot_id"
 
