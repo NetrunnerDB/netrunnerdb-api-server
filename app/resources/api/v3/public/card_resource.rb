@@ -9,7 +9,7 @@ module API
         attributes :deck_limit, :influence_cost, :influence_limit, :memory_cost
         attributes :minimum_deck_size, :strength, :stripped_text, :text, :trash_cost
         attributes :is_unique, :display_subtypes, :updated_at
-        attribute :latest_printing_id
+        attributes :card_abilities, :latest_printing_id
 
         key_type :string
 
@@ -21,6 +21,22 @@ module API
 
         def latest_printing_id
           @model.printings.max_by { |p| p.date_release } ['id']
+        end
+
+        def card_abilities
+          {
+            additional_cost: @model.additional_cost,
+            advanceable: @model.advanceable,
+            gains_subroutines: @model.gains_subroutines,
+            interrupt: @model.interrupt,
+            link_provided: @model.link_provided,
+            mu_provided: @model.mu_provided,
+            num_printed_subroutines: @model.num_printed_subroutines,
+            on_encounter_effect: @model.on_encounter_effect,
+            performs_trace: @model.performs_trace,
+            recurring_credits_provided: @model.recurring_credits_provided,
+            trash_ability: @model.trash_ability,
+          }
         end
 
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
