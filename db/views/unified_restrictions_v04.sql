@@ -25,6 +25,7 @@ SELECT
     CASE WHEN restrictions_cards_banned.restriction_id IS NOT NULL THEN true ELSE false END AS is_banned,
     CASE WHEN restrictions_cards_restricted.restriction_id IS NOT NULL THEN true ELSE false END AS is_restricted,
     COALESCE(restrictions_cards_points.value, 0) AS eternal_points,
+    CASE WHEN restrictions_cards_global_penalty.restriction_id IS NOT NULL THEN true ELSE false END AS has_global_penalty,
     COALESCE(restrictions_cards_universal_faction_cost.value, 0) AS universal_faction_cost
 FROM
     cards_cross_restrictions_and_snapshots

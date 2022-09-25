@@ -31,7 +31,7 @@ class PrintingSearchParser < Parslet::Parser
     str('faction') |
     str('flavor') |
     str('format') |
-    str('global_penalty') |
+    str('has_global_penalty') |
     str('illustrator') |
     str('in_restriction') |
     str('influence_cost') |
