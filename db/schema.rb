@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_25_113944) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_25_225117) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -300,6 +300,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_113944) do
               ELSE false
           END AS is_restricted,
       COALESCE(restrictions_cards_points.value, 0) AS eternal_points,
+          CASE
+              WHEN (restrictions_cards_global_penalty.restriction_id IS NOT NULL) THEN true
+              ELSE false
+          END AS has_global_penalty,
       COALESCE(restrictions_cards_universal_faction_cost.value, 0) AS universal_faction_cost
      FROM ((((((cards_cross_restrictions_and_snapshots
        JOIN card_pools_cards ON (((card_pools_cards.card_pool_id = cards_cross_restrictions_and_snapshots.card_pool_id) AND (card_pools_cards.card_id = (cards_cross_restrictions_and_snapshots.card_id)::text))))
