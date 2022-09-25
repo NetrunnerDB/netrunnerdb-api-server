@@ -1,13 +1,20 @@
 class CardSearchQueryBuilder
     @@parser = CardSearchParser.new
     @@boolean_keywords = [
+        'additional_cost',
+        'advanceable',
         'b',
         'banlist',
+        'gains_subroutines',
         'has_global_penalty',
         'in_restriction',
+        'interrupt',
         'is_banned',
         'is_restricted',
         'is_unique',
+        'on_encounter_effect',
+        'performs_trace',
+        'trash_ability',
         'u',
     ]
     @@numeric_keywords = [
@@ -20,11 +27,15 @@ class CardSearchQueryBuilder
         'h',
         'influence_cost',
         'l',
+        'link_provided',
         'm',
         'memory_usage',
+        'mu_provided',
         'n',
+        'num_printed_subroutines',
         'o',
         'p',
+        'recurring_credits_provided',
         'strength',
         'trash_cost',
         'universal_faction_cost',
@@ -62,6 +73,8 @@ class CardSearchQueryBuilder
     @@term_to_field_map = {
         # format should implicitly use the currently active card pool and restriction lists unless another is specified.
         '_' => 'cards.stripped_title',
+        'additional_cost' => 'cards.additional_cost',
+        'advanceable' => 'cards.advanceable',
         'advancement_cost' => 'cards.advancement_requirement',
         'agenda_points' => 'cards.agenda_points',
         'base_link' => 'cards.base_link',
@@ -75,19 +88,27 @@ class CardSearchQueryBuilder
         'faction' => 'cards.faction_id',
         'format' => 'unified_restrictions.format_id',
         'g' => 'cards.advancement_requirement',
-        'has_global_penalty' => 'unified_restrictions.has_global_penalty',
+        'gains_subroutines' => 'cards.gains_subroutines',
         'h' => 'cards.trash_cost',
+        'has_global_penalty' => 'unified_restrictions.has_global_penalty',
         'in_restriction' => 'unified_restrictions.in_restriction',
         'influence_cost' => 'cards.influence_cost',
+        'interrupt' => 'cards.interrupt',
         'is_banned' => 'unified_restrictions.is_banned',
         'is_restricted' => 'unified_restrictions.is_restricted',
         'is_unique' => 'cards.is_unique',
         'l' => 'cards.base_link',
+        'link_provided' => 'cards.link_provided',
         'm' => 'cards.memory_cost',
         'memory_usage' => 'cards.memory_cost',
+        'mu_provided' => 'cards.mu_provided',
         'n' => 'cards.influence_cost',
+        'num_printed_subroutines' => 'cards.num_printed_subroutines',
         'o' => 'cards.cost',
+        'on_encounter_effect' => 'cards.on_encounter_effect',
         'p' => 'cards.strength',
+        'performs_trace' => 'cards.performs_trace',
+        'recurring_credits_provided' => 'cards.recurring_credits_provided',
         'restriction_id' => 'unified_restrictions.restriction_id',
         's' => 'card_subtypes.name',
         'side' => 'cards.card_side_id',
@@ -95,6 +116,7 @@ class CardSearchQueryBuilder
         't' => 'cards.card_type_id',
         'text' => 'cards.stripped_text',
         'title' => 'cards.stripped_title',
+        'trash_ability' => 'cards.trash_ability',
         'trash_cost' => 'cards.trash_cost',
         'u' => 'cards.is_unique',
         'universal_faction_cost' => 'unified_restrictions.universal_faction_cost',
@@ -155,19 +177,19 @@ class CardSearchQueryBuilder
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
                     where << value
                 elsif @@numeric_keywords.include?(keyword)
-                    if !value.match?(/\A\d+\Z/)
+                    if !value.match?(/\A(\d+|x)\Z/i)
                         @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
                         return
                     end
                     operator = ''
-                   if @@numeric_operators.include?(match_type)
+                    if @@numeric_operators.include?(match_type)
                         operator = @@numeric_operators[match_type]
                     else
                         @parse_error = 'Invalid numeric operator "%s"' % match_type
                         return
                     end
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
-                    where << value
+                    where << (value.downcase == 'x' ? -1 : value) 
                 else
                     # String fields only support : and !, resolving to to {,NOT} LIKE %value%.
                     # TODO(plural): consider ~ for regex matches.
@@ -178,7 +200,7 @@ class CardSearchQueryBuilder
                         @parse_error = 'Invalid string operator "%s"' % match_type
                         return
                     end
-                   constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
+                    constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
                     where << '%%%s%%' % value
                 end
                 if @@term_to_left_join_map.include?(keyword)
