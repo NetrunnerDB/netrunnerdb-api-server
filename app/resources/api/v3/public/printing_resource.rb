@@ -88,6 +88,7 @@ module API
           if query_builder.parse_error.nil?
               records.left_joins(query_builder.left_joins)
                   .where(query_builder.where, *query_builder.where_values)
+                  .distinct
           else
             raise JSONAPI::Exceptions::BadRequest.new(
                 'Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
