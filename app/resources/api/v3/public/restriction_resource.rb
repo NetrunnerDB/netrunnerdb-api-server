@@ -17,7 +17,7 @@ module API
           { 'banned': @model.banned_cards.pluck(:card_id),
             'restricted': @model.restricted_cards.pluck(:card_id),
             'universal_faction_cost': Hash[@model.universal_faction_cost_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }],
-            'global_penalty': Hash[@model.global_penalty_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }],
+            'global_penalty': @model.global_penalty_cards.pluck(:card_id),
             'points': Hash[@model.points_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
           }
         end
