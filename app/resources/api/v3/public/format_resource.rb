@@ -4,7 +4,7 @@ module API
       class Api::V3::Public::FormatResource < JSONAPI::Resource
         immutable
 
-        attributes :name, :active_snapshot_id, :snapshot_ids, :updated_at
+        attributes :name, :active_snapshot_id, :snapshot_ids, :restriction_ids, :updated_at
         attributes :active_card_pool_id, :active_restriction_id
         key_type :string
 
