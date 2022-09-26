@@ -31,7 +31,7 @@ class CardSearchParser < Parslet::Parser
     str('faction') |
     str('format') |
     str('gains_subroutines') |
-    str('global_penalty') |
+    str('has_global_penalty') |
     str('illustrator') |
     str('in_restriction') |
     str('influence_cost') |

@@ -7,7 +7,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(cards.stripped_text) LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_text) LIKE ?', builder.where
     assert_equal ['%trash%'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -17,17 +17,17 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(cards.stripped_text) LIKE ? AND cards.cost = ?', builder.where 
+    assert_equal 'lower(cards.stripped_text) LIKE ? AND cards.cost = ?', builder.where
     assert_equal ['%trash%', '3'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
 
-  def test_numeric_field_not_equal 
+  def test_numeric_field_not_equal
     input = %Q{trash_cost!3}
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'cards.trash_cost != ?', builder.where 
+    assert_equal 'cards.trash_cost != ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -37,7 +37,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'cards.trash_cost < ?', builder.where 
+    assert_equal 'cards.trash_cost < ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -47,7 +47,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'cards.trash_cost <= ?', builder.where 
+    assert_equal 'cards.trash_cost <= ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -57,7 +57,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'cards.trash_cost > ?', builder.where 
+    assert_equal 'cards.trash_cost > ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -67,7 +67,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'cards.trash_cost >= ?', builder.where 
+    assert_equal 'cards.trash_cost >= ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -77,7 +77,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where
     assert_equal ['%sure%'], builder.where_values
     assert_equal [:card], builder.left_joins
   end
@@ -108,32 +108,32 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     }
   end
 
-  def test_bare_word 
+  def test_bare_word
     input = %Q{diversion}
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(cards.stripped_title) LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) LIKE ?', builder.where
     assert_equal ['%diversion%'], builder.where_values
     assert_equal [], builder.left_joins
   end
 
-  def test_bare_word_negated 
+  def test_bare_word_negated
     input = %Q{!diversion}
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where
     assert_equal ['%diversion%'], builder.where_values
     assert_equal [], builder.left_joins
   end
 
-  def test_quoted_string_negated 
+  def test_quoted_string_negated
     input = %Q{"!diversion of funds"}
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where 
+    assert_equal 'lower(cards.stripped_title) NOT LIKE ?', builder.where
     assert_equal ['%diversion of funds%'], builder.where_values
     assert_equal [], builder.left_joins
   end
@@ -148,7 +148,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.is_banned = ?', builder.where 
+    assert_equal 'unified_restrictions.is_banned = ?', builder.where
     assert_equal ['true'], builder.where_values
     assert_equal [:unified_restrictions], builder.left_joins
   end
@@ -158,7 +158,17 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.is_restricted = ?', builder.where 
+    assert_equal 'unified_restrictions.is_restricted = ?', builder.where
+    assert_equal ['true'], builder.where_values
+    assert_equal [:unified_restrictions], builder.left_joins
+  end
+
+  def test_has_global_penalty_no_restriction_specified
+    input = %Q{has_global_penalty:true}
+    builder = PrintingSearchQueryBuilder.new(input)
+
+    assert_nil builder.parse_error
+    assert_equal 'unified_restrictions.has_global_penalty = ?', builder.where
     assert_equal ['true'], builder.where_values
     assert_equal [:unified_restrictions], builder.left_joins
   end
@@ -168,7 +178,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.is_banned = ? AND lower(unified_restrictions.restriction_id) LIKE ?', builder.where 
+    assert_equal 'unified_restrictions.is_banned = ? AND lower(unified_restrictions.restriction_id) LIKE ?', builder.where
     assert_equal ['true', '%ban_list_foo%'], builder.where_values
     assert_equal [:unified_restrictions], builder.left_joins
   end
@@ -178,7 +188,17 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.is_restricted = ? AND lower(unified_restrictions.restriction_id) LIKE ?', builder.where 
+    assert_equal 'unified_restrictions.is_restricted = ? AND lower(unified_restrictions.restriction_id) LIKE ?', builder.where
+    assert_equal ['true', '%ban_list_foo%'], builder.where_values
+    assert_equal [:unified_restrictions], builder.left_joins
+  end
+
+  def test_has_global_penalty_restriction_specified
+    input = %Q{has_global_penalty:true restriction_id:ban_list_foo}
+    builder = PrintingSearchQueryBuilder.new(input)
+
+    assert_nil builder.parse_error
+    assert_equal 'unified_restrictions.has_global_penalty = ? AND lower(unified_restrictions.restriction_id) LIKE ?', builder.where
     assert_equal ['true', '%ban_list_foo%'], builder.where_values
     assert_equal [:unified_restrictions], builder.left_joins
   end
@@ -188,17 +208,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.eternal_points = ?', builder.where 
-    assert_equal ['3'], builder.where_values
-    assert_equal [:unified_restrictions], builder.left_joins
-  end
-
-  def test_global_penalty
-    input = %Q{global_penalty:3}
-    builder = PrintingSearchQueryBuilder.new(input)
-
-    assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.global_penalty = ?', builder.where 
+    assert_equal 'unified_restrictions.eternal_points = ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:unified_restrictions], builder.left_joins
   end
@@ -208,7 +218,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'unified_restrictions.universal_faction_cost = ?', builder.where 
+    assert_equal 'unified_restrictions.universal_faction_cost = ?', builder.where
     assert_equal ['3'], builder.where_values
     assert_equal [:unified_restrictions], builder.left_joins
   end
@@ -218,7 +228,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(card_pools_cards.card_pool_id) LIKE ?', builder.where 
+    assert_equal 'lower(card_pools_cards.card_pool_id) LIKE ?', builder.where
     assert_equal ['%best_pool%'], builder.where_values
     assert_equal [:card_pool_cards], builder.left_joins
   end

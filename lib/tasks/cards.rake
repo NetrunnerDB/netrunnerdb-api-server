@@ -570,8 +570,7 @@ namespace :cards do
           cards.each do |card|
             global_penalty << RestrictionCardGlobalPenalty.new(
               restriction_id: r['id'],
-              card_id: card,
-              value: cost
+              card_id: card
             )
           end
         end
