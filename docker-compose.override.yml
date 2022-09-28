@@ -3,5 +3,10 @@ version: "3.2"
 services:
   # service configuration for our dockerized Rails app
   app:
+    environment:
+      VIRTUAL_HOST: api-preview.netrunnerdb.com
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: api-preview.netrunnerdb.com
+      LETSENCRYPT_EMAIL: website@nisei.net
     ports:
       - "3000:3000"
