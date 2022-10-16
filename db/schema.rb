@@ -324,7 +324,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
       WITH card_cycles_summary AS (
            SELECT c_1.id,
               array_agg(cc.id ORDER BY cc.id) AS card_cycle_ids,
-              array_agg(cc.name ORDER BY cc.name) AS card_cycle_names
+              array_agg(lower(cc.name) ORDER BY (lower(cc.name))) AS card_cycle_names
              FROM (((cards c_1
                JOIN printings p_1 ON (((c_1.id)::text = p_1.card_id)))
                JOIN card_sets cs ON ((p_1.card_set_id = (cs.id)::text)))
@@ -333,7 +333,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
           ), card_sets_summary AS (
            SELECT c_1.id,
               array_agg(cs.id ORDER BY cs.id) AS card_set_ids,
-              array_agg(cs.name ORDER BY cs.name) AS card_set_names
+              array_agg(lower(cs.name) ORDER BY (lower(cs.name))) AS card_set_names
              FROM ((cards c_1
                JOIN printings p_1 ON (((c_1.id)::text = p_1.card_id)))
                JOIN card_sets cs ON ((p_1.card_set_id = (cs.id)::text)))
@@ -345,7 +345,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
             GROUP BY cards_card_subtypes.card_id
           ), card_subtype_names AS (
            SELECT ccs_1.card_id,
-              array_agg(cs.name ORDER BY cs.name) AS card_subtype_names
+              array_agg(lower(cs.name) ORDER BY (lower(cs.name))) AS card_subtype_names
              FROM (cards_card_subtypes ccs_1
                JOIN card_subtypes cs ON ((ccs_1.card_subtype_id = (cs.id)::text)))
             GROUP BY ccs_1.card_id
@@ -356,33 +356,33 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
             GROUP BY printings.card_id
           ), card_restriction_ids AS (
            SELECT unified_restrictions.card_id,
-              array_agg(unified_restrictions.restriction_id ORDER BY 1::integer) AS restriction_ids
+              array_agg(unified_restrictions.restriction_id ORDER BY unified_restrictions.restriction_id) AS restriction_ids
              FROM unified_restrictions
             WHERE unified_restrictions.in_restriction
             GROUP BY unified_restrictions.card_id
           ), restrictions_banned_summary AS (
            SELECT restrictions_cards_banned.card_id,
-              array_agg(restrictions_cards_banned.restriction_id ORDER BY 1::integer) AS restrictions_banned
+              array_agg(restrictions_cards_banned.restriction_id ORDER BY restrictions_cards_banned.restriction_id) AS restrictions_banned
              FROM restrictions_cards_banned
             GROUP BY restrictions_cards_banned.card_id
           ), restrictions_global_penalty_summary AS (
            SELECT restrictions_cards_global_penalty.card_id,
-              array_agg(restrictions_cards_global_penalty.restriction_id ORDER BY 1::integer) AS restrictions_global_penalty
+              array_agg(restrictions_cards_global_penalty.restriction_id ORDER BY restrictions_cards_global_penalty.restriction_id) AS restrictions_global_penalty
              FROM restrictions_cards_global_penalty
             GROUP BY restrictions_cards_global_penalty.card_id
           ), restrictions_points_summary AS (
            SELECT restrictions_cards_points.card_id,
-              array_agg(ARRAY[restrictions_cards_points.restriction_id, (restrictions_cards_points.value)::text] ORDER BY restrictions_cards_points.restriction_id) AS restrictions_points
+              array_agg(concat(restrictions_cards_points.restriction_id, '-', (restrictions_cards_points.value)::text) ORDER BY (concat(restrictions_cards_points.restriction_id, '-', (restrictions_cards_points.value)::text))) AS restrictions_points
              FROM restrictions_cards_points
             GROUP BY restrictions_cards_points.card_id
           ), restrictions_restricted_summary AS (
            SELECT restrictions_cards_restricted.card_id,
-              array_agg(restrictions_cards_restricted.restriction_id ORDER BY 1::integer) AS restrictions_restricted
+              array_agg(restrictions_cards_restricted.restriction_id ORDER BY restrictions_cards_restricted.restriction_id) AS restrictions_restricted
              FROM restrictions_cards_restricted
             GROUP BY restrictions_cards_restricted.card_id
           ), restrictions_universal_faction_cost_summary AS (
            SELECT restrictions_cards_universal_faction_cost.card_id,
-              array_agg(ARRAY[restrictions_cards_universal_faction_cost.restriction_id, (restrictions_cards_universal_faction_cost.value)::text] ORDER BY restrictions_cards_universal_faction_cost.restriction_id) AS restrictions_universal_faction_cost
+              array_agg(concat(restrictions_cards_universal_faction_cost.restriction_id, '-', (restrictions_cards_universal_faction_cost.value)::text) ORDER BY (concat(restrictions_cards_universal_faction_cost.restriction_id, '-', (restrictions_cards_universal_faction_cost.value)::text))) AS restrictions_universal_faction_cost
              FROM restrictions_cards_universal_faction_cost
             GROUP BY restrictions_cards_universal_faction_cost.card_id
           ), format_ids AS (
@@ -442,11 +442,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
       COALESCE(csi.card_subtype_ids, ARRAY[]::text[]) AS card_subtype_ids,
       COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
       p.printing_ids,
+      array_length(p.printing_ids, 1) AS num_printings,
       ccs.card_cycle_ids,
       ccs.card_cycle_names,
       css.card_set_ids,
       css.card_set_names,
       COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]) AS restriction_ids,
+      (array_length(COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]), 1) > 0) AS in_restriction,
       COALESCE(r_b.restrictions_banned, ARRAY[]::text[]) AS restrictions_banned,
       COALESCE(r_g_p.restrictions_global_penalty, ARRAY[]::text[]) AS restrictions_global_penalty,
       COALESCE(r_p.restrictions_points, ARRAY[]::text[]) AS restrictions_points,

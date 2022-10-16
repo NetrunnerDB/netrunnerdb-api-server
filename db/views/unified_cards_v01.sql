@@ -2,14 +2,10 @@ WITH card_cycles_summary AS (
     SELECT
         c.id,
         ARRAY_AGG(
-            cc.id
-            ORDER BY
-                cc.id
+            cc.id ORDER BY cc.id
         ) as card_cycle_ids,
         ARRAY_AGG(
-            cc.name
-            ORDER BY
-                cc.name
+            LOWER(cc.name) ORDER BY LOWER(cc.name)
         ) as card_cycle_names
     FROM
         cards c
@@ -23,14 +19,10 @@ card_sets_summary AS (
     SELECT
         c.id,
         ARRAY_AGG(
-            cs.id
-            ORDER BY
-                cs.id
+            cs.id ORDER BY cs.id
         ) as card_set_ids,
         ARRAY_AGG(
-            cs.name
-            ORDER BY
-                cs.name
+            LOWER(cs.name) ORDER BY LOWER(cs.name)
         ) as card_set_names
     FROM
         cards c
@@ -56,9 +48,8 @@ card_subtype_names AS (
     SELECT
         ccs.card_id,
         ARRAY_AGG(
-            cs.name
-            ORDER BY
-                cs.name
+            LOWER(cs.name)
+            ORDER BY LOWER(cs.name)
         ) as card_subtype_names
     FROM
         cards_card_subtypes ccs
@@ -70,9 +61,7 @@ card_printing_ids AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            id
-            ORDER BY
-                id DESC
+            id ORDER BY id DESC
         ) as printing_ids
     FROM
         printings
@@ -83,9 +72,7 @@ card_restriction_ids AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            restriction_id
-            ORDER BY
-                1
+            restriction_id ORDER BY restriction_id
         ) as restriction_ids
     FROM
         unified_restrictions
@@ -98,9 +85,7 @@ restrictions_banned_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            restriction_id
-            ORDER BY
-                1
+            restriction_id ORDER BY restriction_id 
         ) as restrictions_banned
     FROM
         restrictions_cards_banned
@@ -111,9 +96,7 @@ restrictions_global_penalty_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            restriction_id
-            ORDER BY
-                1
+            restriction_id ORDER BY restriction_id 
         ) as restrictions_global_penalty
     FROM
         restrictions_cards_global_penalty
@@ -124,9 +107,8 @@ restrictions_points_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            ARRAY [restriction_id, CAST (value AS text)]
-            ORDER BY
-                restriction_id
+            CONCAT(restriction_id, '-', CAST (value AS text))
+            ORDER BY CONCAT(restriction_id, '-', CAST (value AS text))
         ) as restrictions_points
     FROM
         restrictions_cards_points
@@ -137,9 +119,7 @@ restrictions_restricted_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            restriction_id
-            ORDER BY
-                1
+            restriction_id ORDER BY restriction_id 
         ) as restrictions_restricted
     FROM
         restrictions_cards_restricted
@@ -150,9 +130,8 @@ restrictions_universal_faction_cost_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            ARRAY [restriction_id, CAST (value AS text)]
-            ORDER BY
-                restriction_id
+            CONCAT(restriction_id, '-', CAST (value AS text))
+            ORDER BY CONCAT(restriction_id, '-', CAST (value AS text))
         ) as restrictions_universal_faction_cost
     FROM
         restrictions_cards_universal_faction_cost
@@ -163,9 +142,7 @@ format_ids AS (
     SELECT
         cpc.card_id,
         ARRAY_AGG(
-            DISTINCT s.format_id
-            ORDER BY
-                s.format_id
+            DISTINCT s.format_id ORDER BY s.format_id
         ) as format_ids
     FROM
         card_pools_cards cpc
@@ -177,9 +154,7 @@ card_pool_ids AS (
     SELECT
         cpc.card_id,
         ARRAY_AGG(
-            DISTINCT s.card_pool_id
-            ORDER BY
-                s.card_pool_id
+            DISTINCT s.card_pool_id ORDER BY s.card_pool_id
         ) as card_pool_ids
     FROM
         card_pools_cards cpc
@@ -191,9 +166,7 @@ snapshot_ids AS (
     SELECT
         cpc.card_id,
         ARRAY_AGG(
-            DISTINCT s.id
-            ORDER BY
-                s.id
+            DISTINCT s.id ORDER BY s.id
         ) as snapshot_ids
     FROM
         card_pools_cards cpc
@@ -240,11 +213,13 @@ SELECT
     COALESCE(csi.card_subtype_ids, ARRAY [] :: text []) as card_subtype_ids,
     COALESCE(csn.card_subtype_names, ARRAY [] :: text []) as card_subtype_names,
     p.printing_ids,
+    ARRAY_LENGTH(p.printing_ids, 1) AS num_printings,
     ccs.card_cycle_ids,
     ccs.card_cycle_names,
     css.card_set_ids,
     css.card_set_names,
     COALESCE(r.restriction_ids, ARRAY [] :: text []) as restriction_ids,
+    ARRAY_LENGTH(COALESCE(r.restriction_ids, ARRAY [] :: text []), 1) > 0 as in_restriction,
     COALESCE(r_b.restrictions_banned, ARRAY [] :: text []) as restrictions_banned,
     COALESCE(
         r_g_p.restrictions_global_penalty,
