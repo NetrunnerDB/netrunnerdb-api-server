@@ -4,6 +4,8 @@ module API
       class Api::V3::Public::CardResource < JSONAPI::Resource
         immutable
 
+        model_name 'UnifiedCard'
+
         attributes :stripped_title, :title, :card_type_id, :side_id, :faction_id
         attributes :advancement_requirement, :agenda_points, :base_link, :cost
         attributes :deck_limit, :influence_cost, :influence_limit, :memory_cost
@@ -20,7 +22,7 @@ module API
         has_many :printings
 
         def latest_printing_id
-          @model.printings.max_by { |p| p.date_release } ['id']
+          @model.printing_ids[0]
         end
 
         def card_abilities
