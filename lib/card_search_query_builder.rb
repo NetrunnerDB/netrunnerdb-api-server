@@ -1,16 +1,25 @@
 class CardSearchQueryBuilder
     @@parser = CardSearchParser.new
+    @@array_keywords = [
+        'card_pool',
+        'card_subtype',
+        'eternal_points',
+        'format',
+        'has_global_penalty',
+        'is_banned',
+        'is_restricted',
+        'restriction_id',
+        's',
+        'universal_faction_cost',
+    ]
     @@boolean_keywords = [
         'additional_cost',
         'advanceable',
         'b',
         'banlist',
         'gains_subroutines',
-        'has_global_penalty',
         'in_restriction',
         'interrupt',
-        'is_banned',
-        'is_restricted',
         'is_unique',
         'on_encounter_effect',
         'performs_trace',
@@ -33,12 +42,12 @@ class CardSearchQueryBuilder
         'mu_provided',
         'n',
         'num_printed_subroutines',
+        'num_printings',
         'o',
         'p',
         'recurring_credits_provided',
         'strength',
         'trash_cost',
-        'universal_faction_cost',
         'v',
     ]
     @@string_keywords = [
@@ -47,13 +56,16 @@ class CardSearchQueryBuilder
         'd',
         'f',
         'faction',
-        'restriction_id',
         'side',
         't',
         'text',
         'title',
         'x',
     ]
+    @@array_operators = {
+        ':' => '',
+        '!' => 'NOT',
+    }
     @@boolean_operators = {
         ':' => '=',
         '!' => '!=',
@@ -70,72 +82,64 @@ class CardSearchQueryBuilder
         ':' => 'LIKE',
         '!' => 'NOT LIKE',
     }
+    # Add num_printings
     @@term_to_field_map = {
         # format should implicitly use the currently active card pool and restriction lists unless another is specified.
-        '_' => 'cards.stripped_title',
-        'additional_cost' => 'cards.additional_cost',
-        'advanceable' => 'cards.advanceable',
-        'advancement_cost' => 'cards.advancement_requirement',
-        'agenda_points' => 'cards.agenda_points',
-        'base_link' => 'cards.base_link',
-        'card_pool' => 'card_pools_cards.card_pool_id',
-        'card_subtype' => 'card_subtypes.name',
-        'card_type' => 'cards.card_type_id',
-        'cost' => 'cards.cost',
-        'd' => 'cards.side_id',
-        'eternal_points' => 'unified_restrictions.eternal_points',
-        'f' => 'cards.faction_id',
-        'faction' => 'cards.faction_id',
-        'format' => 'unified_restrictions.format_id',
-        'g' => 'cards.advancement_requirement',
-        'gains_subroutines' => 'cards.gains_subroutines',
-        'h' => 'cards.trash_cost',
-        'has_global_penalty' => 'unified_restrictions.has_global_penalty',
-        'in_restriction' => 'unified_restrictions.in_restriction',
-        'influence_cost' => 'cards.influence_cost',
-        'interrupt' => 'cards.interrupt',
-        'is_banned' => 'unified_restrictions.is_banned',
-        'is_restricted' => 'unified_restrictions.is_restricted',
-        'is_unique' => 'cards.is_unique',
-        'l' => 'cards.base_link',
-        'link_provided' => 'cards.link_provided',
-        'm' => 'cards.memory_cost',
-        'memory_usage' => 'cards.memory_cost',
-        'mu_provided' => 'cards.mu_provided',
-        'n' => 'cards.influence_cost',
-        'num_printed_subroutines' => 'cards.num_printed_subroutines',
-        'o' => 'cards.cost',
-        'on_encounter_effect' => 'cards.on_encounter_effect',
-        'p' => 'cards.strength',
-        'performs_trace' => 'cards.performs_trace',
-        'recurring_credits_provided' => 'cards.recurring_credits_provided',
-        'restriction_id' => 'unified_restrictions.restriction_id',
-        's' => 'card_subtypes.name',
-        'side' => 'cards.card_side_id',
-        'strength' => 'cards.strength',
-        't' => 'cards.card_type_id',
-        'text' => 'cards.stripped_text',
-        'title' => 'cards.stripped_title',
-        'trash_ability' => 'cards.trash_ability',
-        'trash_cost' => 'cards.trash_cost',
-        'u' => 'cards.is_unique',
-        'universal_faction_cost' => 'unified_restrictions.universal_faction_cost',
-        'v' => 'cards.agenda_points',
-        'x' => 'cards.stripped_text',
+        '_' => 'unified_cards.stripped_title',
+        'additional_cost' => 'unified_cards.additional_cost',
+        'advanceable' => 'unified_cards.advanceable',
+        'advancement_cost' => 'unified_cards.advancement_requirement',
+        'agenda_points' => 'unified_cards.agenda_points',
+        'base_link' => 'unified_cards.base_link',
+        'card_pool' => 'unified_cards.card_pool_ids',
+        'card_subtype' => 'unified_cards.card_subtype_names',
+        'card_type' => 'unified_cards.card_type_id',
+        'cost' => 'unified_cards.cost',
+        'd' => 'unified_cards.side_id',
+        'eternal_points' => 'unified_cards.restrictions_points',
+        'f' => 'unified_cards.faction_id',
+        'faction' => 'unified_cards.faction_id',
+        'format' => 'unified_cards.format_ids',
+        'g' => 'unified_cards.advancement_requirement',
+        'gains_subroutines' => 'unified_cards.gains_subroutines',
+        'h' => 'unified_cards.trash_cost',
+        'has_global_penalty' => 'unified_cards.restrictions_global_penalty',
+        'in_restriction' => 'unified_cards.in_restriction',
+        'influence_cost' => 'unified_cards.influence_cost',
+        'interrupt' => 'unified_cards.interrupt',
+        'is_banned' => 'unified_cards.restrictions_banned',
+        'is_restricted' => 'unified_cards.restrictions_restricted',
+        'is_unique' => 'unified_cards.is_unique',
+        'l' => 'unified_cards.base_link',
+        'link_provided' => 'unified_cards.link_provided',
+        'm' => 'unified_cards.memory_cost',
+        'memory_usage' => 'unified_cards.memory_cost',
+        'mu_provided' => 'unified_cards.mu_provided',
+        'n' => 'unified_cards.influence_cost',
+        'num_printed_subroutines' => 'unified_cards.num_printed_subroutines',
+        'num_printings' => 'unified_cards.num_printings',
+        'o' => 'unified_cards.cost',
+        'on_encounter_effect' => 'unified_cards.on_encounter_effect',
+        'p' => 'unified_cards.strength',
+        'performs_trace' => 'unified_cards.performs_trace',
+        'recurring_credits_provided' => 'unified_cards.recurring_credits_provided',
+        'restriction_id' => 'unified_cards.restriction_ids',
+        's' => 'unified_cards.card_subtype_names',
+        'side' => 'unified_cards.card_side_id',
+        'strength' => 'unified_cards.strength',
+        't' => 'unified_cards.card_type_id',
+        'text' => 'unified_cards.stripped_text',
+        'title' => 'unified_cards.stripped_title',
+        'trash_ability' => 'unified_cards.trash_ability',
+        'trash_cost' => 'unified_cards.trash_cost',
+        'u' => 'unified_cards.is_unique',
+        'universal_faction_cost' => 'unified_cards.restrictions_universal_faction_cost',
+        'v' => 'unified_cards.agenda_points',
+        'x' => 'unified_cards.stripped_text',
     }
 
     @@term_to_left_join_map = {
-        'card_pool' => :card_pool_cards,
-        'card_subtype' => :card_subtypes,
-        'eternal_points' => :unified_restrictions,
-        'has_global_penalty' => :unified_restrictions,
-        'in_restriction' => :unified_restrictions,
-        'is_banned' => :unified_restrictions,
-        'is_restricted' => :unified_restrictions,
-        'restriction_id' => :unified_restrictions,
-        's' => :card_subtypes,
-        'universal_faction_cost' => :unified_restrictions,
-     }
+    }
 
     def initialize(query)
         @query = query
@@ -162,7 +166,16 @@ class CardSearchQueryBuilder
                 keyword = f[:search_term][:keyword].to_s
                 match_type = f[:search_term][:match_type].to_s
                 value = f[:search_term][:value][:string].to_s.downcase
-                if @@boolean_keywords.include?(keyword)
+                if @@array_keywords.include?(keyword)
+                  if @@array_operators.include?(match_type)
+                    operator = @@array_operators[match_type]
+                  else
+                    @parse_error = 'Invalid 1-dimensional array operator "%s"' % match_type
+                    return
+                  end
+                  constraints << '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]]
+                  where << value
+                elsif @@boolean_keywords.include?(keyword)
                     if !['true', 'false', 't', 'f', '1', '0'].include?(value)
                         @parse_error = 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
                         return

@@ -43,6 +43,7 @@ class CardSearchParser < Parslet::Parser
     str('memory_usage') |
     str('mu_provided') |
     str('num_printed_subroutines') |
+    str('num_printings') |
     str('on_encounter_effect') |
     str('performs_trace') |
     str('recurring_credits_provided') |
