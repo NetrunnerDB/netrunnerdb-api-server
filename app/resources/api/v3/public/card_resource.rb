@@ -8,10 +8,10 @@ module API
 
         attributes :stripped_title, :title, :card_type_id, :side_id, :faction_id
         attributes :advancement_requirement, :agenda_points, :base_link, :cost
-        attributes :deck_limit, :influence_cost, :influence_limit, :memory_cost
-        attributes :minimum_deck_size, :strength, :stripped_text, :text, :trash_cost
-        attributes :is_unique, :display_subtypes, :updated_at
-        attributes :card_abilities, :latest_printing_id
+        attributes :deck_limit, :in_restriction, :influence_cost, :influence_limit, :memory_cost
+        attributes :minimum_deck_size, :latest_printing_id, :num_printings, :printing_ids, :restriction_ids, :restrictions, :strength, :stripped_text, :text, :trash_cost
+        attributes :is_unique, :card_subtype_ids, :display_subtypes, :updated_at
+        attributes :card_abilities, :format_ids, :card_pool_ids, :snapshot_ids
 
         key_type :string
 
@@ -38,6 +38,25 @@ module API
             performs_trace: @model.performs_trace,
             recurring_credits_provided: @model.recurring_credits_provided,
             trash_ability: @model.trash_ability,
+          }
+        end
+
+        def packed_restriction_to_map(packed)
+          m = {}
+          packed.each do |p|
+            x = p.split('-')
+            m[x[0]] = x[1].to_i
+          end
+          return m
+        end
+
+        def restrictions
+          {
+            banned: @model.restrictions_banned,
+            global_penalty: @model.restrictions_global_penalty,
+            points: packed_restriction_to_map(@model.restrictions_points),
+            restricted: @model.restrictions_restricted,
+            universal_faction_cost: packed_restriction_to_map(@model.restrictions_universal_faction_cost)
           }
         end
 
