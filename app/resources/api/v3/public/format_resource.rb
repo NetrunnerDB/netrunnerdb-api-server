@@ -21,6 +21,14 @@ module API
         def active_restriction_id
           @model.snapshots.find_by(active: true).restriction_id
         end
+
+        def snapshot_ids
+          @model.snapshots.sort_by { |s| s.date_start }.map { |s| s.id }
+        end
+
+        def restriction_ids
+          @model.restrictions.sort_by { |r| r.date_start }.map { |r| r.id }
+        end
       end
     end
   end
