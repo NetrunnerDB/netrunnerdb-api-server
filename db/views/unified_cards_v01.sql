@@ -47,9 +47,13 @@ card_subtype_ids AS (
 card_subtype_names AS (
     SELECT
         ccs.card_id,
+        -- lower used for filtering
         ARRAY_AGG(
-            LOWER(cs.name)
-            ORDER BY LOWER(cs.name)
+            LOWER(cs.name) ORDER BY LOWER(cs.name)
+        ) as lower_card_subtype_names,
+        -- proper case used for display
+        ARRAY_AGG(
+            cs.name ORDER BY cs.name
         ) as card_subtype_names
     FROM
         cards_card_subtypes ccs
@@ -61,7 +65,7 @@ card_printing_ids AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            id ORDER BY id DESC
+            id ORDER BY date_release DESC
         ) as printing_ids
     FROM
         printings
@@ -107,8 +111,8 @@ restrictions_points_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            CONCAT(restriction_id, '-', CAST (value AS text))
-            ORDER BY CONCAT(restriction_id, '-', CAST (value AS text))
+            CONCAT(restriction_id, '=', CAST (value AS text))
+            ORDER BY CONCAT(restriction_id, '=', CAST (value AS text))
         ) as restrictions_points
     FROM
         restrictions_cards_points
@@ -130,8 +134,8 @@ restrictions_universal_faction_cost_summary AS (
     SELECT
         card_id,
         ARRAY_AGG(
-            CONCAT(restriction_id, '-', CAST (value AS text))
-            ORDER BY CONCAT(restriction_id, '-', CAST (value AS text))
+            CONCAT(restriction_id, '=', CAST (value AS text))
+            ORDER BY CONCAT(restriction_id, '=', CAST (value AS text))
         ) as restrictions_universal_faction_cost
     FROM
         restrictions_cards_universal_faction_cost
@@ -211,6 +215,7 @@ SELECT
     c.rez_effect,
     c.trash_ability,
     COALESCE(csi.card_subtype_ids, ARRAY [] :: text []) as card_subtype_ids,
+    COALESCE(csn.lower_card_subtype_names, ARRAY [] :: text []) as lower_card_subtype_names,
     COALESCE(csn.card_subtype_names, ARRAY [] :: text []) as card_subtype_names,
     p.printing_ids,
     ARRAY_LENGTH(p.printing_ids, 1) AS num_printings,
@@ -219,7 +224,7 @@ SELECT
     css.card_set_ids,
     css.card_set_names,
     COALESCE(r.restriction_ids, ARRAY [] :: text []) as restriction_ids,
-    ARRAY_LENGTH(COALESCE(r.restriction_ids, ARRAY [] :: text []), 1) > 0 as in_restriction,
+    r.restriction_ids IS NOT NULL as in_restriction,
     COALESCE(r_b.restrictions_banned, ARRAY [] :: text []) as restrictions_banned,
     COALESCE(
         r_g_p.restrictions_global_penalty,
@@ -287,6 +292,7 @@ GROUP BY
     c.rez_effect,
     c.trash_ability,
     csi.card_subtype_ids,
+    csn.lower_card_subtype_names,
     csn.card_subtype_names,
     p.printing_ids,
     ccs.card_cycle_ids,

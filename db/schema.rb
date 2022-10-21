@@ -345,13 +345,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
             GROUP BY cards_card_subtypes.card_id
           ), card_subtype_names AS (
            SELECT ccs_1.card_id,
-              array_agg(lower(cs.name) ORDER BY (lower(cs.name))) AS card_subtype_names
+              array_agg(lower(cs.name) ORDER BY (lower(cs.name))) AS lower_card_subtype_names,
+              array_agg(cs.name ORDER BY cs.name) AS card_subtype_names
              FROM (cards_card_subtypes ccs_1
                JOIN card_subtypes cs ON ((ccs_1.card_subtype_id = (cs.id)::text)))
             GROUP BY ccs_1.card_id
           ), card_printing_ids AS (
            SELECT printings.card_id,
-              array_agg(printings.id ORDER BY printings.id DESC) AS printing_ids
+              array_agg(printings.id ORDER BY printings.date_release DESC) AS printing_ids
              FROM printings
             GROUP BY printings.card_id
           ), card_restriction_ids AS (
@@ -372,7 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
             GROUP BY restrictions_cards_global_penalty.card_id
           ), restrictions_points_summary AS (
            SELECT restrictions_cards_points.card_id,
-              array_agg(concat(restrictions_cards_points.restriction_id, '-', (restrictions_cards_points.value)::text) ORDER BY (concat(restrictions_cards_points.restriction_id, '-', (restrictions_cards_points.value)::text))) AS restrictions_points
+              array_agg(concat(restrictions_cards_points.restriction_id, '=', (restrictions_cards_points.value)::text) ORDER BY (concat(restrictions_cards_points.restriction_id, '=', (restrictions_cards_points.value)::text))) AS restrictions_points
              FROM restrictions_cards_points
             GROUP BY restrictions_cards_points.card_id
           ), restrictions_restricted_summary AS (
@@ -382,7 +383,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
             GROUP BY restrictions_cards_restricted.card_id
           ), restrictions_universal_faction_cost_summary AS (
            SELECT restrictions_cards_universal_faction_cost.card_id,
-              array_agg(concat(restrictions_cards_universal_faction_cost.restriction_id, '-', (restrictions_cards_universal_faction_cost.value)::text) ORDER BY (concat(restrictions_cards_universal_faction_cost.restriction_id, '-', (restrictions_cards_universal_faction_cost.value)::text))) AS restrictions_universal_faction_cost
+              array_agg(concat(restrictions_cards_universal_faction_cost.restriction_id, '=', (restrictions_cards_universal_faction_cost.value)::text) ORDER BY (concat(restrictions_cards_universal_faction_cost.restriction_id, '=', (restrictions_cards_universal_faction_cost.value)::text))) AS restrictions_universal_faction_cost
              FROM restrictions_cards_universal_faction_cost
             GROUP BY restrictions_cards_universal_faction_cost.card_id
           ), format_ids AS (
@@ -440,6 +441,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
       c.rez_effect,
       c.trash_ability,
       COALESCE(csi.card_subtype_ids, ARRAY[]::text[]) AS card_subtype_ids,
+      COALESCE(csn.lower_card_subtype_names, ARRAY[]::text[]) AS lower_card_subtype_names,
       COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
       p.printing_ids,
       array_length(p.printing_ids, 1) AS num_printings,
@@ -448,7 +450,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
       css.card_set_ids,
       css.card_set_names,
       COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]) AS restriction_ids,
-      (array_length(COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]), 1) > 0) AS in_restriction,
+      (r.restriction_ids IS NOT NULL) AS in_restriction,
       COALESCE(r_b.restrictions_banned, ARRAY[]::text[]) AS restrictions_banned,
       COALESCE(r_g_p.restrictions_global_penalty, ARRAY[]::text[]) AS restrictions_global_penalty,
       COALESCE(r_p.restrictions_points, ARRAY[]::text[]) AS restrictions_points,
@@ -472,6 +474,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_010740) do
        LEFT JOIN format_ids f ON (((c.id)::text = f.card_id)))
        LEFT JOIN card_pool_ids cpc ON (((c.id)::text = cpc.card_id)))
        LEFT JOIN snapshot_ids s ON (((c.id)::text = s.card_id)))
-    GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids;
+    GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids;
   SQL
 end
