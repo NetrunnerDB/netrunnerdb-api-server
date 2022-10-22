@@ -24,6 +24,7 @@ class CardSearchParser < Parslet::Parser
     str('agenda_points') |
     str('base_link') |
     str('card_pool') |
+    str('card_subtype_id') |
     str('card_subtype') |
     str('card_type') |
     str('cost') |

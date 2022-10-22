@@ -3,6 +3,7 @@ class CardSearchQueryBuilder
     @@array_keywords = [
         'card_pool',
         'card_subtype',
+        'card_subtype_id',
         'eternal_points',
         'format',
         'has_global_penalty',
@@ -94,6 +95,7 @@ class CardSearchQueryBuilder
         'base_link' => 'unified_cards.base_link',
         'card_pool' => 'unified_cards.card_pool_ids',
         'card_subtype' => 'unified_cards.lower_card_subtype_names',
+        'card_subtype_id' => 'unified_cards.card_subtype_ids',
         'card_type' => 'unified_cards.card_type_id',
         'cost' => 'unified_cards.cost',
         'd' => 'unified_cards.side_id',
