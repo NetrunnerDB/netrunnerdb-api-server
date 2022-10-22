@@ -10,6 +10,7 @@ class CardSearchQueryBuilder
         'is_restricted',
         'restriction_id',
         's',
+        'snapshot',
         'universal_faction_cost',
     ]
     @@boolean_keywords = [
@@ -31,7 +32,6 @@ class CardSearchQueryBuilder
         'agenda_points',
         'base_link',
         'cost',
-        'eternal_points',
         'g',
         'h',
         'influence_cost',
@@ -125,7 +125,8 @@ class CardSearchQueryBuilder
         'recurring_credits_provided' => 'unified_cards.recurring_credits_provided',
         'restriction_id' => 'unified_cards.restriction_ids',
         's' => 'unified_cards.lower_card_subtype_names',
-        'side' => 'unified_cards.card_side_id',
+        'side' => 'unified_cards.side_id',
+        'snapshot' => 'unified_cards.snapshot_ids',
         'strength' => 'unified_cards.strength',
         't' => 'unified_cards.card_type_id',
         'text' => 'unified_cards.stripped_text',
@@ -170,8 +171,11 @@ class CardSearchQueryBuilder
                   if @@array_operators.include?(match_type)
                     operator = @@array_operators[match_type]
                   else
-                    @parse_error = 'Invalid 1-dimensional array operator "%s"' % match_type
+                    @parse_error = 'Invalid array operator "%s"' % match_type
                     return
+                  end
+                  if value.match?(/\A(\w+)-(\d+)\Z/i)
+                    value.gsub!('-', '=')
                   end
                   constraints << '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]]
                   where << value

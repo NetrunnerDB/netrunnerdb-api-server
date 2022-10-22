@@ -49,6 +49,7 @@ class CardSearchParser < Parslet::Parser
     str('recurring_credits_provided') |
     str('restriction_id') |
     str('side') |
+    str('snapshot') |
     str('strength') |
     str('text') |
     str('title') |

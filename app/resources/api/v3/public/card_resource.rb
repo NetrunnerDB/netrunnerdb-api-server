@@ -44,7 +44,7 @@ module API
         def packed_restriction_to_map(packed)
           m = {}
           packed.each do |p|
-            x = p.split('-')
+            x = p.split('=')
             m[x[0]] = x[1].to_i
           end
           return m
