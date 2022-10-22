@@ -86,7 +86,7 @@ class CardSearchQueryBuilder
         ':' => 'LIKE',
         '!' => 'NOT LIKE',
     }
-    # Add num_printings
+    # TODO(plural): figure out how to do name matches that are LIKEs over elements of an array.
     @@term_to_field_map = {
         # format should implicitly use the currently active card pool and restriction lists unless another is specified.
         '_' => 'unified_cards.stripped_title',
