@@ -1,7 +1,9 @@
 class CardSearchQueryBuilder
     @@parser = CardSearchParser.new
     @@array_keywords = [
+        'card_cycle',
         'card_pool',
+        'card_set',
         'card_subtype',
         'card_subtype_id',
         'eternal_points',
@@ -93,7 +95,9 @@ class CardSearchQueryBuilder
         'advancement_cost' => 'unified_cards.advancement_requirement',
         'agenda_points' => 'unified_cards.agenda_points',
         'base_link' => 'unified_cards.base_link',
+        'card_cycle' => 'unified_cards.card_cycle_ids',
         'card_pool' => 'unified_cards.card_pool_ids',
+        'card_set' => 'unified_cards.card_set_ids',
         'card_subtype' => 'unified_cards.lower_card_subtype_names',
         'card_subtype_id' => 'unified_cards.card_subtype_ids',
         'card_type' => 'unified_cards.card_type_id',
