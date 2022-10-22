@@ -46,6 +46,7 @@ class CardSearchParser < Parslet::Parser
     str('num_printings') |
     str('on_encounter_effect') |
     str('performs_trace') |
+    str('printing_id') |
     str('recurring_credits_provided') |
     str('restriction_id') |
     str('side') |
