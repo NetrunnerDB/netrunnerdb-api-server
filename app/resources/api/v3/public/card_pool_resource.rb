@@ -14,7 +14,7 @@ module API
         has_one :format
         has_many :card_cycles
         has_many :card_sets
-        has_many :cards
+        has_many :cards, relation_name: :unified_cards
         has_many :snapshots
 
         def num_cards

@@ -8,7 +8,7 @@ module API
         key_type :string
 
         has_one :side
-        has_many :cards
+        has_many :cards, relation_name: :unified_cards
         paginator :none
 
         filter :side_id
