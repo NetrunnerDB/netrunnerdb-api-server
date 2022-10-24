@@ -10,7 +10,7 @@ module API
         attributes :advancement_requirement, :agenda_points, :base_link, :cost
         attributes :deck_limit, :in_restriction, :influence_cost, :influence_limit, :memory_cost
         attributes :minimum_deck_size, :latest_printing_id, :num_printings, :printing_ids, :restriction_ids, :restrictions, :strength, :stripped_text, :text, :trash_cost
-        attributes :is_unique, :card_subtype_ids, :display_subtypes, :updated_at
+        attributes :is_unique, :card_subtype_ids, :display_subtypes, :attribution, :updated_at
         attributes :card_abilities, :format_ids, :card_pool_ids, :snapshot_ids
 
         key_type :string

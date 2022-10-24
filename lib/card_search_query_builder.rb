@@ -56,6 +56,7 @@ class CardSearchQueryBuilder
     ]
     @@string_keywords = [
         '_',
+        'attribution',
         'card_type',
         'd',
         'f',
@@ -94,6 +95,7 @@ class CardSearchQueryBuilder
         'advanceable' => 'unified_cards.advanceable',
         'advancement_cost' => 'unified_cards.advancement_requirement',
         'agenda_points' => 'unified_cards.agenda_points',
+        'attribution' => 'unified_cards.attribution',
         'base_link' => 'unified_cards.base_link',
         'card_cycle' => 'unified_cards.card_cycle_ids',
         'card_pool' => 'unified_cards.card_pool_ids',
@@ -214,7 +216,7 @@ class CardSearchQueryBuilder
                         return
                     end
                     constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
-                    where << (value.downcase == 'x' ? -1 : value) 
+                    where << (value.downcase == 'x' ? -1 : value)
                 else
                     # String fields only support : and !, resolving to to {,NOT} LIKE %value%.
                     # TODO(plural): consider ~ for regex matches.

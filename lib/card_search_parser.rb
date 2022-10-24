@@ -22,6 +22,7 @@ class CardSearchParser < Parslet::Parser
     str('advanceable') |
     str('advancement_cost') |
     str('agenda_points') |
+    str('attribution') |
     str('base_link') |
     str('card_cycle') |
     str('card_pool') |
