@@ -106,6 +106,7 @@ namespace :cards do
         trash_cost: card["trash_cost"],
         is_unique: card["is_unique"],
         display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
+        attribution: card["attribution"],
       )
 
       if new_card.card_type_id == 'agenda'
@@ -113,7 +114,7 @@ namespace :cards do
       end
 
       # Look for specific abilities and attributes:
-      if new_card.text 
+      if new_card.text
         m = new_card.text.match(/\+([X\d]+)\[link\]/)
         if m && m.captures.length == 1
           link_provided = m.captures[0]
@@ -122,7 +123,7 @@ namespace :cards do
         end
       end
 
-      if new_card.text 
+      if new_card.text
         m = new_card.text.match(/\+([X\d]+)\[mu\]/)
         if m && m.captures.length == 1
           mu_provided = m.captures[0]
