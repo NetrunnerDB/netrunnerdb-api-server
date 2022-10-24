@@ -10,7 +10,7 @@ module API
         paginator :none
 
         has_one :side
-        has_many :cards
+        has_many :cards, relation_name: :unified_cards
         has_many :printings
 
         filters :side_id, :is_mini

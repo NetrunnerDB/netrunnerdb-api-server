@@ -9,7 +9,7 @@ module API
 
         paginator :none
 
-        has_many :cards
+        has_many :cards, relation_name: :unified_cards
         has_many :printings
       end
     end

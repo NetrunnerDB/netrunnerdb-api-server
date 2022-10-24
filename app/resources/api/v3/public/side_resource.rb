@@ -11,7 +11,7 @@ module API
 
         has_many :factions
         has_many :card_types
-        has_many :cards
+        has_many :cards, relation_name: :unified_cards
         has_many :printings
       end
     end

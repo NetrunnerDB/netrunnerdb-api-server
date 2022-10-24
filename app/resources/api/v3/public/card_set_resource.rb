@@ -12,7 +12,7 @@ module API
         has_one :card_cycle
         has_one :card_set_type
         has_many :printings
-        has_many :cards
+        has_many :cards, relation_name: :unified_cards
 
         filters :card_cycle_id, :card_set_type_id
       end

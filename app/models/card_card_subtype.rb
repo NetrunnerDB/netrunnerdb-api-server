@@ -9,4 +9,7 @@ class CardCardSubtype < ApplicationRecord
   belongs_to :card_subtype,
     :primary_key => :id,
     :foreign_key => :card_subtype_id
-end
+  belongs_to :unified_card,
+    :primary_key => :id,
+    :foreign_key => :card_id
+ end
