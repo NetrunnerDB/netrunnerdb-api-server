@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_24_132405) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_26_043658) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -477,5 +477,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_24_132405) do
        LEFT JOIN card_pool_ids cpc ON (((c.id)::text = cpc.card_id)))
        LEFT JOIN snapshot_ids s ON (((c.id)::text = s.card_id)))
     GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids;
+  SQL
+  create_view "unified_printings", materialized: true, sql_definition: <<-SQL
+      SELECT p.id,
+      p.card_id,
+      p.card_set_id,
+      p.printed_text,
+      p.stripped_printed_text,
+      p.printed_is_unique,
+      p.flavor,
+      p.display_illustrators,
+      p."position",
+      p.quantity,
+      p.date_release,
+      p.created_at,
+      p.updated_at
+     FROM printings p;
   SQL
 end
