@@ -1,0 +1,11 @@
+weyland:
+  id: "weyland_consortium"
+  name: "Weyland Consortium"
+  side_id: "corp"
+  is_mini: false
+
+adam:
+  id: "adam"
+  name: "Adam"
+  side_id: "runner"
+  is_mini: true

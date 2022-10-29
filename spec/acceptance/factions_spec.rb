@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "Factions" do
 
+  fixtures :factions
+
   header "Content-Type", "application/json"
   header "Host", "api-preview.netrunnerdb.com"
 
