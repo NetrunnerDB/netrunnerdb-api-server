@@ -54,8 +54,11 @@ jobs:
         run: |
           bin/rails db:create db:schema:load --trace
 
-      - name: Run tests
+      - name: Run rspec tests
         run: bundle exec rspec
+
+      - name: Run rails tests
+        run: bundle exec rails test 
 
   lint:
     name: Lint
