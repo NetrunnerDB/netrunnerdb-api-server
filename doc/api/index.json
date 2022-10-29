@@ -1,9 +1,43 @@
 {
   "resources": [
     {
+      "name": "Card Types",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Card Types",
+          "link": "card_types/all_card_types.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_types",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Type",
+          "link": "card_types/get_a_single_card_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_types/:id",
+          "method": "get"
+        },
+        {
+          "description": "Get Runner Card Types",
+          "link": "card_types/get_runner_card_types.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_types?filter[side_id]=runner",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Factions",
       "explanation": null,
       "examples": [
+        {
+          "description": "All Factions",
+          "link": "factions/all_factions.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions",
+          "method": "get"
+        },
         {
           "description": "Get A Single Faction",
           "link": "factions/get_a_single_faction.json",
@@ -17,12 +51,25 @@
           "groups": "all",
           "route": "/api/v3/public/factions?filter[is_mini]=true",
           "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "Sides",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Sides",
+          "link": "sides/all_sides.json",
+          "groups": "all",
+          "route": "/api/v3/public/sides",
+          "method": "get"
         },
         {
-          "description": "Listing All Factions",
-          "link": "factions/listing_all_factions.json",
+          "description": "Get A Single side",
+          "link": "sides/get_a_single_side.json",
           "groups": "all",
-          "route": "/api/v3/public/factions",
+          "route": "/api/v3/public/sides/:id",
           "method": "get"
         }
       ]

@@ -7,7 +7,7 @@ resource "Factions" do
   header "Host", "api-preview.netrunnerdb.com"
 
   get "/api/v3/public/factions" do
-    example_request "Listing All Factions" do
+    example_request "All Factions" do
       expect(status).to eq 200
     end
   end
@@ -23,7 +23,7 @@ resource "Factions" do
   end
 
   get "/api/v3/public/factions?filter[is_mini]=true" do
-    route_summary 'Retrieve all Mini Factions'
+    route_summary 'Only Mini Factions'
     route_description 'is_mini is a filter that allows you to include or exclude Mini Factions'
 
     example_request "Get Mini Factions" do
