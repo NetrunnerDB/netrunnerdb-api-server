@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Card Types" do
-  fixtures :card_types
+  fixtures :all
 
   header "Content-Type", "application/json"
   header "Host", "api-preview.netrunnerdb.com"

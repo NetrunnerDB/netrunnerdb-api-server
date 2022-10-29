@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Sides" do
-  fixtures :sides
+  fixtures :all
 
   header "Content-Type", "application/json"
   header "Host", "api-preview.netrunnerdb.com"
