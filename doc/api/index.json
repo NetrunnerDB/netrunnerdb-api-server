@@ -1,0 +1,31 @@
+{
+  "resources": [
+    {
+      "name": "Factions",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "Get A Single Faction",
+          "link": "factions/get_a_single_faction.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions/:id",
+          "method": "get"
+        },
+        {
+          "description": "Get Mini Factions",
+          "link": "factions/get_mini_factions.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions?filter[is_mini]=true",
+          "method": "get"
+        },
+        {
+          "description": "Listing All Factions",
+          "link": "factions/listing_all_factions.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions",
+          "method": "get"
+        }
+      ]
+    }
+  ]
+}
