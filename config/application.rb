@@ -2,6 +2,8 @@ require_relative "boot"
 
 require "rails/all"
 
+require "sprockets/railtie"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -26,5 +28,7 @@ module NrdbApi
 
     # Prefix for Printing images.
     config.x.printing_images.nrdb_classic_prefix = 'https://static.nrdbassets.com/v1'
+
+    config.encoding = 'utf-8'
   end
 end
