@@ -5,4 +5,5 @@ class Faction < ApplicationRecord
   has_many :cards
   has_many :printings, :through => :cards
   has_many :unified_cards
+  has_many :unified_printings, :through => :cards
 end
