@@ -1,0 +1,7 @@
+corp:
+  id: corp
+  name: Corp
+
+runner:
+  id: runner
+  name: Runner

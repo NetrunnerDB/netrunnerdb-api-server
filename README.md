@@ -24,6 +24,8 @@ docker-compose run app rake db:reset
 docker-compose up -d
 # Import the card data from the netrunner-cards-json repo
 docker-compose exec app rails cards:import
+# Generate API documentation and ensure doc serving is all set up.
+docker-compose run app bundle exec rake docs:generate
 ```
 
 To run tests in your docker container, you will need to override the environment, like so:
@@ -34,7 +36,10 @@ docker-compose exec -e RAILS_ENV=test app rails test
 ## Getting Started
 
 Once your server is running you can hit the api! 
-ex. http://localhost:3000/api/v3/public/cards/sure_gamble
+ex. `http://localhost:3000/api/v3/public/cards/sure_gamble`
 
 You can find the full list of routes here:
-http://localhost:3000/rails/info/routes
+`http://localhost:3000/rails/info/routes`
+
+API Documentation will be available at `http://localhost:3000/api/docs/`
+after the `rake docs:generate` step has been completed.

@@ -240,7 +240,7 @@ class CardSearchQueryBuilder
                     value = f[:string].to_s.downcase
                     operator = value.start_with?('!') ? 'NOT LIKE' : 'LIKE'
                     value    = value.start_with?('!') ? value[1..] : value
-                    constraints << 'lower(cards.stripped_title) %s ?' % operator
+                    constraints << 'lower(unified_cards.stripped_title) %s ?' % operator
                     where << '%%%s%%' % value
             end
         }

@@ -1,0 +1,14 @@
+operation:
+  id: "operation"
+  name: "Operation"
+  side_id: "corp"
+
+upgrade:
+  id: "upgrade"
+  name: "Upgrade"
+  side_id: "corp"
+
+event:
+  id: "event"
+  name: "Event"
+  side_id: "runner"

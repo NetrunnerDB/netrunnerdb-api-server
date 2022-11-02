@@ -48,6 +48,10 @@ gem 'jsonapi-resources'
 # Views
 gem 'scenic'
 
+gem "sprockets-rails"
+gem 'rspec_api_documentation'
+gem "apitome"
+
 group :development, :test do
   gem "brakeman", "~> 5.2"
   gem "bundler-audit", "~> 0.9.0"
