@@ -29,74 +29,28 @@ module API
         has_one :faction
         has_many :illustrators
         has_one :side
-#
-#        # Printing direct attribute filters
-#        filters :card_id, :card_set_id, :printed_is_unique, :display_illustrators, :position
-#        filters :quantity, :date_release
-#
-#        # Card attribute filters
-#        filter :title, apply: ->(records, value, _options){
-#          Rails.logger.info(_options)
-#          records.joins(:card).where('cards.title = ?', value)
-#        }
-#        filter :card_type_id, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.card_type_id = ?', value)
-#        }
-#        filter :side_id, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.side_id = ?', value)
-#        }
-#        filter :faction_id, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.faction_id= ?', value)
-#        }
-#
-#        filter :advancement_requirement, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.advancement_requirement = ?', value)
-#        }
-#        filter :agenda_points, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.agenda_points = ?', value)
-#        }
-#        filter :base_link, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.base_link = ?', value)
-#        }
-#        filter :cost, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.cost= ?', value)
-#        }
-#        filter :deck_limit, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.deck_limit= ?', value)
-#        }
-#        filter :influence_cost, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.influence_cost= ?', value)
-#        }
-#        filter :influence_limit, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.influence_limit= ?', value)
-#        }
-#        filter :memory_cost, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.memory_cost= ?', value)
-#        }
-#        filter :minimum_deck_size, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.minimum_deck_size= ?', value)
-#        }
-#        filter :strength, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.strength= ?', value)
-#        }
-#        filter :trash_cost, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.trash_cost= ?', value)
-#        }
-#        filter :is_unique, apply: ->(records, value, _options){
-#          records.joins(:card).where('cards.is_unique= ?', value)
-#        }
-#        filter :search, apply: ->(records, value, _options) {
-#          query_builder = PrintingSearchQueryBuilder.new(value[0])
-#          if query_builder.parse_error.nil?
-#              records.left_joins(query_builder.left_joins)
-#                  .where(query_builder.where, *query_builder.where_values)
-#                  .distinct
-#          else
-#            raise JSONAPI::Exceptions::BadRequest.new(
-#                'Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
-#          end
-#        }
-# 
+
+        # Printing direct attribute filters
+        filters :card_id, :card_set_id, :printed_is_unique, :display_illustrators, :position
+        filters :quantity, :date_release
+
+        # Card attribute filters
+        filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
+        filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost, :influence_limit
+        filters :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique
+
+        filter :search, apply: ->(records, value, _options) {
+          query_builder = PrintingSearchQueryBuilder.new(value[0])
+          if query_builder.parse_error.nil?
+              records.left_joins(query_builder.left_joins)
+                  .where(query_builder.where, *query_builder.where_values)
+                  .distinct
+          else
+            raise JSONAPI::Exceptions::BadRequest.new(
+                'Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
+          end
+        }
+ 
         # Images will return a nested map for different types of images.
         # 'nrdb_classic' represents the JPEGs used for classic netrunnerdb.com.
         # We will likely add other formats like png and webp, as well as various sizes,
