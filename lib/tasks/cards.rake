@@ -746,6 +746,9 @@ namespace :cards do
     puts 'Refreshing materialized view for cards...'
     Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
 
+    puts 'Refreshing materialized view for printings...'
+    Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
+
     puts 'Done!'
   end
 end
