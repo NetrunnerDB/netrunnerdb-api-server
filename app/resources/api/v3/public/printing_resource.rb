@@ -9,19 +9,21 @@ module API
         key_type :string
 
         # Direct printing attributes
-        attributes :card_id, :card_set_id, :printed_text, :stripped_printed_text
-        attributes :printed_is_unique, :flavor, :display_illustrators, :position
+        attributes :card_id, :card_cycle_id, :card_cycle_name, :card_set_id, :card_set_name
+        attributes :printed_text, :stripped_printed_text
+        attributes :printed_is_unique, :flavor, :display_illustrators, :illustrator_ids, :illustrator_names, :position
         attributes :quantity, :date_release, :updated_at
 
         # Parent Card attributes, included inline to make printings a bit more useful.
         attributes :advancement_requirement, :agenda_points, :base_link, :card_abilities
-        attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :faction_id
+        attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :card_subtype_ids, :card_subtype_names, :faction_id
         attributes :influence_cost, :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
         attributes :side_id, :strength, :stripped_text, :stripped_title, :text
-        attributes :title, :trash_cost
+        attributes :title, :trash_cost, :printing_ids, :num_printings, :restriction_ids, :in_restriction
+        attributes :format_ids, :card_pool_ids, :snapshot_ids, :attribution
 
         # Synthesized attributes
-        attributes :images
+        attributes :card_abilities, :images, :latest_printing_id, :restrictions
 
         has_one :card, relation_name: :unified_card
         has_one :card_cycle
@@ -29,6 +31,46 @@ module API
         has_one :faction
         has_many :illustrators
         has_one :side
+
+        def latest_printing_id
+          @model.printing_ids[0]
+        end
+
+        def card_abilities
+          {
+            additional_cost: @model.additional_cost,
+            advanceable: @model.advanceable,
+            gains_subroutines: @model.gains_subroutines,
+            interrupt: @model.interrupt,
+            link_provided: @model.link_provided,
+            mu_provided: @model.mu_provided,
+            num_printed_subroutines: @model.num_printed_subroutines,
+            on_encounter_effect: @model.on_encounter_effect,
+            performs_trace: @model.performs_trace,
+            recurring_credits_provided: @model.recurring_credits_provided,
+            rez_effect: @model.rez_effect,
+            trash_ability: @model.trash_ability,
+          }
+        end
+
+        def packed_restriction_to_map(packed)
+          m = {}
+          packed.each do |p|
+            x = p.split('=')
+            m[x[0]] = x[1].to_i
+          end
+          return m
+        end
+
+        def restrictions
+          {
+            banned: @model.restrictions_banned,
+            global_penalty: @model.restrictions_global_penalty,
+            points: packed_restriction_to_map(@model.restrictions_points),
+            restricted: @model.restrictions_restricted,
+            universal_faction_cost: packed_restriction_to_map(@model.restrictions_universal_faction_cost)
+          }
+        end
 
         # Printing direct attribute filters
         filters :card_id, :card_set_id, :printed_is_unique, :display_illustrators, :position
@@ -68,22 +110,6 @@ module API
             "small" => "%s/small/%s.jpg" % [url_prefix, @model.id],
             "medium" => "%s/medium/%s.jpg" % [url_prefix, @model.id],
             "large" => "%s/large/%s.jpg" % [url_prefix, @model.id]
-          }
-        end
-
-        def card_abilities
-          {
-            additional_cost: @model.additional_cost,
-            advanceable: @model.advanceable,
-            gains_subroutines: @model.gains_subroutines,
-            interrupt: @model.interrupt,
-            link_provided: @model.link_provided,
-            mu_provided: @model.mu_provided,
-            num_printed_subroutines: @model.num_printed_subroutines,
-            on_encounter_effect: @model.on_encounter_effect,
-            performs_trace: @model.performs_trace,
-            recurring_credits_provided: @model.recurring_credits_provided,
-            trash_ability: @model.trash_ability,
           }
         end
       end
