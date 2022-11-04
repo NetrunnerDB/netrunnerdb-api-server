@@ -26,6 +26,7 @@ class PrintingSearchParser < Parslet::Parser
     str('card_cycle') |
     str('card_pool') |
     str('card_set') |
+    str('card_subtype_id') |
     str('card_subtype') |
     str('card_type') |
     str('cost') |
@@ -35,6 +36,7 @@ class PrintingSearchParser < Parslet::Parser
     str('format') |
     str('gains_subroutines') |
     str('has_global_penalty') |
+    str('illustrator_id') |
     str('illustrator') |
     str('in_restriction') |
     str('influence_cost') |
