@@ -1,4 +1,3 @@
-# TODO(plural): Add attribution to printings.
 class PrintingSearchQueryBuilder
     @@parser = PrintingSearchParser.new
     @@array_keywords = [
@@ -49,6 +48,7 @@ class PrintingSearchQueryBuilder
         'mu_provided',
         'n',
         'num_printed_subroutines',
+        'num_printings',
         'o',
         'p',
         'quantity',
@@ -60,6 +60,7 @@ class PrintingSearchQueryBuilder
     ]
     @@string_keywords = [
         '_',
+        'attribution',
         'card_type',
         'd',
         'f',
@@ -110,6 +111,7 @@ class PrintingSearchQueryBuilder
         'advanceable' => 'unified_printings.advanceable',
         'advancement_cost' => 'unified_printings.advancement_requirement',
         'agenda_points' => 'unified_printings.agenda_points',
+        'attribution' => 'unified_printings.attribution',
         'base_link' => 'unified_printings.base_link',
         'c' => 'unified_printings.card_cycle_id',
         'card_cycle' => 'unified_printings.card_cycle_id',
@@ -146,6 +148,7 @@ class PrintingSearchQueryBuilder
         'mu_provided' => 'unified_printings.mu_provided',
         'n' => 'unified_printings.influence_cost',
         'num_printed_subroutines' => 'unified_printings.num_printed_subroutines',
+        'num_printings' => 'unified_printings.num_printings',
         'o' => 'unified_printings.cost',
         'on_encounter_effect' => 'unified_printings.on_encounter_effect',
         'p' => 'unified_printings.strength',
