@@ -9,9 +9,12 @@ module API
         attributes :stripped_title, :title, :card_type_id, :side_id, :faction_id
         attributes :advancement_requirement, :agenda_points, :base_link, :cost
         attributes :deck_limit, :in_restriction, :influence_cost, :influence_limit, :memory_cost
-        attributes :minimum_deck_size, :latest_printing_id, :num_printings, :printing_ids, :restriction_ids, :restrictions, :strength, :stripped_text, :text, :trash_cost
+        attributes :minimum_deck_size, :num_printings, :printing_ids, :restriction_ids, :strength, :stripped_text, :text, :trash_cost
         attributes :is_unique, :card_subtype_ids, :display_subtypes, :attribution, :updated_at
-        attributes :card_abilities, :format_ids, :card_pool_ids, :snapshot_ids
+        attributes :format_ids, :card_pool_ids, :snapshot_ids
+
+        # Synthesized attributes
+        attributes :card_abilities, :latest_printing_id, :restrictions
 
         key_type :string
 
@@ -37,6 +40,7 @@ module API
             on_encounter_effect: @model.on_encounter_effect,
             performs_trace: @model.performs_trace,
             recurring_credits_provided: @model.recurring_credits_provided,
+            rez_effect: @model.rez_effect,
             trash_ability: @model.trash_ability,
           }
         end
