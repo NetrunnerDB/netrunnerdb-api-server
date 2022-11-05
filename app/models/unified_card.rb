@@ -1,5 +1,7 @@
 class UnifiedCard < ApplicationRecord
-    self.primary_key = :id 
+    include CardAbilities
+
+    self.primary_key = :id
 
     has_many :unified_printings,
       :primary_key => :id,

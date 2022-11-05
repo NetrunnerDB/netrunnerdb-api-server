@@ -28,23 +28,6 @@ module API
           @model.printing_ids[0]
         end
 
-        def card_abilities
-          {
-            additional_cost: @model.additional_cost,
-            advanceable: @model.advanceable,
-            gains_subroutines: @model.gains_subroutines,
-            interrupt: @model.interrupt,
-            link_provided: @model.link_provided,
-            mu_provided: @model.mu_provided,
-            num_printed_subroutines: @model.num_printed_subroutines,
-            on_encounter_effect: @model.on_encounter_effect,
-            performs_trace: @model.performs_trace,
-            recurring_credits_provided: @model.recurring_credits_provided,
-            rez_effect: @model.rez_effect,
-            trash_ability: @model.trash_ability,
-          }
-        end
-
         def packed_restriction_to_map(packed)
           m = {}
           packed.each do |p|
