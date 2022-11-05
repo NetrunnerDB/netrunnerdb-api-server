@@ -4,85 +4,66 @@ module API
       class Api::V3::Public::PrintingResource < JSONAPI::Resource
         immutable
 
-        # Direct printing attributes
-        attributes :card_id, :card_set_id, :printed_text, :stripped_printed_text
-        attributes :printed_is_unique, :flavor, :display_illustrators, :position
-        attributes :quantity, :date_release, :updated_at
-
-        # Parent Card attributes, included inline to make printings a bit more useful.
-        attributes :advancement_requirement, :agenda_points, :base_link, :card_abilities
-        attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :faction_id
-        attributes :influence_cost, :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
-        attributes :side_id, :strength, :stripped_text, :stripped_title, :text
-        attributes :title, :trash_cost
-
-        # Synthesized attributes
-        attributes :images
+        model_name 'UnifiedPrinting'
 
         key_type :string
 
-        has_one :card
+        # Direct printing attributes
+        attributes :card_id, :card_cycle_id, :card_cycle_name, :card_set_id, :card_set_name
+        attributes :printed_text, :stripped_printed_text
+        attributes :printed_is_unique, :flavor, :display_illustrators, :illustrator_ids, :illustrator_names, :position
+        attributes :quantity, :date_release, :updated_at
+
+        # Parent Card attributes, included inline to make printings a bit more useful.
+        attributes :advancement_requirement, :agenda_points, :base_link
+        attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :card_subtype_ids, :card_subtype_names, :faction_id
+        attributes :influence_cost, :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
+        attributes :side_id, :strength, :stripped_text, :stripped_title, :text
+        attributes :title, :trash_cost, :printing_ids, :num_printings, :restriction_ids, :in_restriction
+        attributes :format_ids, :card_pool_ids, :snapshot_ids, :attribution
+
+        # Synthesized attributes
+        attributes :card_abilities, :images, :latest_printing_id, :restrictions
+
+        has_one :card, relation_name: :unified_card
         has_one :card_cycle
         has_one :card_set
         has_one :faction
         has_many :illustrators
         has_one :side
 
+        def latest_printing_id
+          @model.printing_ids[0]
+        end
+
+        def packed_restriction_to_map(packed)
+          m = {}
+          packed.each do |p|
+            x = p.split('=')
+            m[x[0]] = x[1].to_i
+          end
+          return m
+        end
+
+        def restrictions
+          {
+            banned: @model.restrictions_banned,
+            global_penalty: @model.restrictions_global_penalty,
+            points: packed_restriction_to_map(@model.restrictions_points),
+            restricted: @model.restrictions_restricted,
+            universal_faction_cost: packed_restriction_to_map(@model.restrictions_universal_faction_cost)
+          }
+        end
+
         # Printing direct attribute filters
         filters :card_id, :card_set_id, :printed_is_unique, :display_illustrators, :position
         filters :quantity, :date_release
 
         # Card attribute filters
-        filter :title, apply: ->(records, value, _options){
-          Rails.logger.info(_options)
-          records.joins(:card).where('cards.title = ?', value)
-        }
-        filter :card_type_id, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.card_type_id = ?', value)
-        }
-        filter :side_id, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.side_id = ?', value)
-        }
-        filter :faction_id, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.faction_id= ?', value)
-        }
+        filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
+        filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost, :influence_limit
+        filters :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique
 
-        filter :advancement_requirement, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.advancement_requirement = ?', value)
-        }
-        filter :agenda_points, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.agenda_points = ?', value)
-        }
-        filter :base_link, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.base_link = ?', value)
-        }
-        filter :cost, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.cost= ?', value)
-        }
-        filter :deck_limit, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.deck_limit= ?', value)
-        }
-        filter :influence_cost, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.influence_cost= ?', value)
-        }
-        filter :influence_limit, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.influence_limit= ?', value)
-        }
-        filter :memory_cost, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.memory_cost= ?', value)
-        }
-        filter :minimum_deck_size, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.minimum_deck_size= ?', value)
-        }
-        filter :strength, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.strength= ?', value)
-        }
-        filter :trash_cost, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.trash_cost= ?', value)
-        }
-        filter :is_unique, apply: ->(records, value, _options){
-          records.joins(:card).where('cards.is_unique= ?', value)
-        }
         filter :search, apply: ->(records, value, _options) {
           query_builder = PrintingSearchQueryBuilder.new(value[0])
           if query_builder.parse_error.nil?
@@ -113,81 +94,6 @@ module API
             "medium" => "%s/medium/%s.jpg" % [url_prefix, @model.id],
             "large" => "%s/large/%s.jpg" % [url_prefix, @model.id]
           }
-        end
-        def advancement_requirement
-          @model.card.advancement_requirement
-        end
-        def agenda_points
-          @model.card.agenda_points
-        end
-        def base_link
-          @model.card.base_link
-        end
-        def card_abilities
-          {
-            additional_cost: @model.card.additional_cost,
-            advanceable: @model.card.advanceable,
-            gains_subroutines: @model.card.gains_subroutines,
-            interrupt: @model.card.interrupt,
-            link_provided: @model.card.link_provided,
-            mu_provided: @model.card.mu_provided,
-            num_printed_subroutines: @model.card.num_printed_subroutines,
-            on_encounter_effect: @model.card.on_encounter_effect,
-            performs_trace: @model.card.performs_trace,
-            recurring_credits_provided: @model.card.recurring_credits_provided,
-            trash_ability: @model.card.trash_ability,
-          }
-        end
-        def card_type_id
-          @model.card.card_type_id
-        end
-        def cost
-          @model.card.cost
-        end
-        def deck_limit
-          @model.card.deck_limit
-        end
-        def display_subtypes
-          @model.card.display_subtypes
-        end
-        def faction_id
-          @model.card.faction_id
-        end
-        def influence_cost
-          @model.card.influence_cost
-        end
-        def influence_limit
-          @model.card.influence_limit
-        end
-        def is_unique
-          @model.card.is_unique
-        end
-        def memory_cost
-          @model.card.memory_cost
-        end
-        def minimum_deck_size
-          @model.card.minimum_deck_size
-        end
-        def side_id
-          @model.card.side_id
-        end
-        def strength
-          @model.card.strength
-        end
-        def stripped_text
-          @model.card.stripped_text
-        end
-        def stripped_title
-          @model.card.stripped_title
-        end
-        def text
-          @model.card.text
-        end
-        def title
-          @model.card.title
-        end
-        def trash_cost
-          @model.card.trash_cost
         end
       end
     end

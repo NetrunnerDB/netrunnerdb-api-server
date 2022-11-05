@@ -9,4 +9,7 @@ class IllustratorPrinting < ApplicationRecord
   belongs_to :printing,
     primary_key: :id,
     foreign_key: :printing_id
+  belongs_to :unified_printing,
+    primary_key: :id,
+    foreign_key: :printing_id
 end

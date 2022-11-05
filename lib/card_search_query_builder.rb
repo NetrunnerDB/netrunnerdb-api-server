@@ -1,3 +1,4 @@
+# TODO(plural): Add attribution to cards.
 class CardSearchQueryBuilder
     @@parser = CardSearchParser.new
     @@array_keywords = [
