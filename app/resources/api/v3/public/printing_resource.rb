@@ -15,7 +15,7 @@ module API
         attributes :quantity, :date_release, :updated_at
 
         # Parent Card attributes, included inline to make printings a bit more useful.
-        attributes :advancement_requirement, :agenda_points, :base_link, :card_abilities
+        attributes :advancement_requirement, :agenda_points, :base_link
         attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :card_subtype_ids, :card_subtype_names, :faction_id
         attributes :influence_cost, :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
         attributes :side_id, :strength, :stripped_text, :stripped_title, :text
