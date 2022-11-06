@@ -177,7 +177,7 @@ class CardSearchQueryBuilder
         when :title
             return parse_pair('_', ':', [node[key][:string]])
         else
-            raise IOError.new 'Unknown identifier "%s"' % key
+            raise IOError.new 'Unrecognised identifier "%s"' % key
         end
     end
 
