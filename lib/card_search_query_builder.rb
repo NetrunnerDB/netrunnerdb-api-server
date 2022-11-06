@@ -177,7 +177,7 @@ class CardSearchQueryBuilder
         when :title
             return parse_pair('_', ':', [node[key][:string]])
         else
-            return '?'
+            raise IOError.new 'Unknown identifier "%s"' % key
         end
     end
 
@@ -187,8 +187,7 @@ class CardSearchQueryBuilder
             if @@array_operators.include?(operator)
                 operator = @@array_operators[operator]
             else
-                @parse_error = 'Invalid array operator "%s"' % operator
-                return
+                raise IOError.new 'Invalid array operator "%s"' % operator
             end
             values.map! { |value|
                 if value.match?(/\A(\w+)-(\d+)\Z/i)
@@ -200,32 +199,28 @@ class CardSearchQueryBuilder
         elsif @@boolean_keywords.include?(keyword)
             values.each { |value|
                 if !['true', 'false', 't', 'f', '1', '0'].include?(value)
-                    @parse_error = 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
-                    return
+                    raise IOError.new 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
                 end
             }
             dbOp = ''
             if @@boolean_operators.include?(operator)
                 dbOp = @@boolean_operators[operator]
             else
-                @parse_error = 'Invalid boolean operator "%s"' % operator
-                return
+                raise IOError.new 'Invalid boolean operator "%s"' % operator
             end
             where_values.concat(values)
             out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
         elsif @@numeric_keywords.include?(keyword)
             values.each { |value|
                 if !value.match?(/\A(\d+|x)\Z/i)
-                    @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
-                    return
+                    raise IOError.new 'Invalid value "%s" for integer field "%s"' % [value, keyword]
                 end
             }
             dbOp = ''
             if @@numeric_operators.include?(operator)
                 dbOp = @@numeric_operators[operator]
             else
-                @parse_error = 'Invalid numeric operator "%s"' % operator
-                return
+                raise IOError.new 'Invalid numeric operator "%s"' % operator
             end
             where_values.concat(values.map { |value| value.downcase == 'x' ? -1 : value })
             out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
@@ -236,8 +231,7 @@ class CardSearchQueryBuilder
             if @@string_operators.include?(operator)
                 dbOp = @@string_operators[operator]
             else
-                @parse_error = 'Invalid string operator "%s"' % operator
-                return
+                raise IOError.new 'Invalid string operator "%s"' % operator
             end
             where_values.concat(values.map { |value| '%%%s%%' % value })
             out = values.map { |_| 'lower(%s) %s ?' % [@@term_to_field_map[keyword], dbOp] }
@@ -265,14 +259,14 @@ class CardSearchQueryBuilder
             @parse_tree = @@parser.parse(@query)
         rescue Parslet::ParseFailed => e
             @parse_error = e
+            return
         end
 
         # Parse the AST into a databse query
-        @where = parse_node(@parse_tree)
-
-        # Raise errors
-        if @parse_error != nil
-            return
+        begin
+            @where = parse_node(@parse_tree)
+        rescue IOError => e
+            @parse_error = e
         end
 
         # TODO(plural): build in explicit support for requirements
