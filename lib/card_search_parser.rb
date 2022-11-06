@@ -64,11 +64,23 @@ class CardSearchParser < Parslet::Parser
     # Single letter 'short codes'
     match('[_abcdefghilmnoprstuvxyz]')
   }
-  rule(:match_type) { str('<=') | str('>=') | match('[:!<>]') }
-  rule(:operator) { keyword >> match_type}
-  rule(:search_term) { keyword.as(:keyword) >> match_type.as(:match_type) >> (string).as(:value) }
-  rule(:query) {
-    (spaces? >> (search_term.as(:search_term) | string)  >> spaces?).repeat.as(:fragments)
-  }
+
+  rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> values.as(:values) }
+  rule(:operator) { str('<=') | str('>=') | match('[:!<>]') }
+  rule(:values) { string >> (str('|') >> string).repeat(0) }
+
+  rule(:unary) { (str('-') >> unary).as(:negate) | term }
+  rule(:term) { pair.as(:pair) | string.as(:title) | bracketed }
+  rule(:bracketed) { str('(') >> expr >> str(')') }
+
+  rule(:ands) { (unary >> conjunction.repeat(0)).as(:ands) }
+  rule(:conjunction) { spaces? >> str('and') >> spaces? >> unary }
+
+  rule(:ors) { (ands >> disjunction.repeat(0)).as(:ors) }
+  rule(:disjunction) { spaces? >> str('or') >> spaces? >> ands }
+
+  rule(:expr) { ors }
+
+  rule(:query) { expr }
   root :query
 end

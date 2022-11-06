@@ -153,6 +153,105 @@ class CardSearchQueryBuilder
     @@term_to_left_join_map = {
     }
 
+    def parse_node(node)
+        key = node.keys[0]
+        case key
+        when :ors
+            children = node[key].kind_of?(Array) ? node[key] : [node[key]]
+            children.map! { |child| parse_node(child) }
+            return '(' + children.join(' OR ') + ')'
+        when :ands
+            children = node[key].kind_of?(Array) ? node[key] : [node[key]]
+            children.map! { |child| parse_node(child) }
+            return '(' + children.join(' AND ') + ')'
+        when :negate
+            child = node[key]
+            return '(NOT ' + parse_node(child) + ')'
+        when :pair
+            pair = node[key]
+            keyword = pair[:keyword].to_s
+            operator = pair[:operator].to_s
+            values = pair[:values].kind_of?(Array) ? pair[:values] : [pair[:values]]
+            values.map! { |v| v[:string].to_s }
+            return parse_pair(keyword, operator, values)
+        when :title
+            return parse_pair('_', ':', [node[key][:string]])
+        else
+            return '?'
+        end
+    end
+
+    def parse_pair(keyword, operator, values)
+        out = []
+        if @@array_keywords.include?(keyword)
+            if @@array_operators.include?(operator)
+                operator = @@array_operators[operator]
+            else
+                @parse_error = 'Invalid array operator "%s"' % operator
+                return
+            end
+            values.map! { |value|
+                if value.match?(/\A(\w+)-(\d+)\Z/i)
+                    value.gsub!('-', '=')
+                end
+            }
+            where_values.concat(values)
+            out = values.map { |_| '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]] }
+        elsif @@boolean_keywords.include?(keyword)
+            values.each { |value|
+                if !['true', 'false', 't', 'f', '1', '0'].include?(value)
+                    @parse_error = 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
+                    return
+                end
+            }
+            dbOp = ''
+            if @@boolean_operators.include?(operator)
+                dbOp = @@boolean_operators[operator]
+            else
+                @parse_error = 'Invalid boolean operator "%s"' % operator
+                return
+            end
+            where_values.concat(values)
+            out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
+        elsif @@numeric_keywords.include?(keyword)
+            values.each { |value|
+                if !value.match?(/\A(\d+|x)\Z/i)
+                    @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
+                    return
+                end
+            }
+            dbOp = ''
+            if @@numeric_operators.include?(operator)
+                dbOp = @@numeric_operators[operator]
+            else
+                @parse_error = 'Invalid numeric operator "%s"' % operator
+                return
+            end
+            where_values.concat(values.map { |value| value.downcase == 'x' ? -1 : value })
+            out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
+        else
+            # String fields only support : and !, resolving to to {,NOT} LIKE %value%.
+            # TODO(plural): consider ~ for regex matches.
+            dbOp = ''
+            if @@string_operators.include?(operator)
+                dbOp = @@string_operators[operator]
+            else
+                @parse_error = 'Invalid string operator "%s"' % operator
+                return
+            end
+            where_values.concat(values.map { |value| '%%%s%%' % value })
+            out = values.map { |_| 'lower(%s) %s ?' % [@@term_to_field_map[keyword], dbOp] }
+        end
+
+        # Not sure what this is for
+        if @@term_to_left_join_map.include?(keyword)
+            @left_joins << @@term_to_left_join_map[keyword]
+        end
+
+        # Format output
+        return out.join(operator == '!' ? ' and ' : ' or ')
+    end
+
     def initialize(query)
         @query = query
         @parse_error = nil
@@ -160,93 +259,25 @@ class CardSearchQueryBuilder
         @left_joins = Set.new
         @where = ''
         @where_values = []
+
+        # Parse the input into an AST
         begin
             @parse_tree = @@parser.parse(@query)
         rescue Parslet::ParseFailed => e
             @parse_error = e
         end
+
+        # Parse the AST into a databse query
+        @where = parse_node(@parse_tree)
+
+        # Raise errors
         if @parse_error != nil
             return
         end
-        constraints = []
-        where = []
+
         # TODO(plural): build in explicit support for requirements
         #   {is_banned,is_restricted,eternal_points,has_global_penalty,universal_faction_cost} all require restriction_id, would be good to have card_pool_id as well.
         # TODO(plural): build in explicit support for smart defaults, like restriction_id should imply is_banned = false.  card_pool_id should imply the latest restriction list.
-        @parse_tree[:fragments].each {|f|
-            if f.include?(:search_term)
-                keyword = f[:search_term][:keyword].to_s
-                match_type = f[:search_term][:match_type].to_s
-                value = f[:search_term][:value][:string].to_s.downcase
-                if @@array_keywords.include?(keyword)
-                  if @@array_operators.include?(match_type)
-                    operator = @@array_operators[match_type]
-                  else
-                    @parse_error = 'Invalid array operator "%s"' % match_type
-                    return
-                  end
-                  if value.match?(/\A(\w+)-(\d+)\Z/i)
-                    value.gsub!('-', '=')
-                  end
-                  constraints << '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]]
-                  where << value
-                elsif @@boolean_keywords.include?(keyword)
-                    if !['true', 'false', 't', 'f', '1', '0'].include?(value)
-                        @parse_error = 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
-                        return
-                    end
-                    operator = ''
-                    if @@boolean_operators.include?(match_type)
-                        operator = @@boolean_operators[match_type]
-                    else
-                        @parse_error = 'Invalid boolean operator "%s"' % match_type
-                        return
-                    end
-                    constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
-                    where << value
-                elsif @@numeric_keywords.include?(keyword)
-                    if !value.match?(/\A(\d+|x)\Z/i)
-                        @parse_error = 'Invalid value "%s" for integer field "%s"' % [value, keyword]
-                        return
-                    end
-                    operator = ''
-                    if @@numeric_operators.include?(match_type)
-                        operator = @@numeric_operators[match_type]
-                    else
-                        @parse_error = 'Invalid numeric operator "%s"' % match_type
-                        return
-                    end
-                    constraints << '%s %s ?' % [@@term_to_field_map[keyword], operator]
-                    where << (value.downcase == 'x' ? -1 : value)
-                else
-                    # String fields only support : and !, resolving to to {,NOT} LIKE %value%.
-                    # TODO(plural): consider ~ for regex matches.
-                    operator = ''
-                    if @@string_operators.include?(match_type)
-                        operator = @@string_operators[match_type]
-                    else
-                        @parse_error = 'Invalid string operator "%s"' % match_type
-                        return
-                    end
-                    constraints << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], operator]
-                    where << '%%%s%%' % value
-                end
-                if @@term_to_left_join_map.include?(keyword)
-                    @left_joins << @@term_to_left_join_map[keyword]
-                end
-             end
-
-            # bare/quoted words in the query are automatically mapped to stripped_title
-            if f.include?(:string)
-                    value = f[:string].to_s.downcase
-                    operator = value.start_with?('!') ? 'NOT LIKE' : 'LIKE'
-                    value    = value.start_with?('!') ? value[1..] : value
-                    constraints << 'lower(unified_cards.stripped_title) %s ?' % operator
-                    where << '%%%s%%' % value
-            end
-        }
-        @where = constraints.join(' AND ')
-        @where_values = where
     end
     def parse_error
         return @parse_error
