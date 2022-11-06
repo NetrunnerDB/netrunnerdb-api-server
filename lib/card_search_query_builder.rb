@@ -88,6 +88,10 @@ class CardSearchQueryBuilder
         ':' => 'LIKE',
         '!' => 'NOT LIKE',
     }
+    @@regex_operators = {
+        ':' => '~*',
+        '!' => '!~*',
+    }
     # TODO(plural): figure out how to do name matches that are LIKEs over elements of an array.
     @@term_to_field_map = {
         # format should implicitly use the currently active card pool and restriction lists unless another is specified.
@@ -172,12 +176,19 @@ class CardSearchQueryBuilder
             keyword = pair[:keyword].to_s
             operator = pair[:operator].to_s
             values = pair[:values].kind_of?(Array) ? pair[:values] : [pair[:values]]
-            values.map! { |v| v[:string].to_s }
             return parse_pair(keyword, operator, values)
         when :title
-            return parse_pair('_', ':', [node[key][:string]])
+            return parse_pair('_', ':', [node[key]])
         else
             raise IOError.new 'Unrecognised identifier "%s"' % key
+        end
+    end
+
+    def value_to_string(value, field)
+        if value.key?(:string)
+            value[:string].to_s
+        else
+            raise IOError.new '%s field does not accept regular expressions but was passed /%s/' % [field, value[:regex]]
         end
     end
 
@@ -189,6 +200,7 @@ class CardSearchQueryBuilder
             else
                 raise IOError.new 'Invalid array operator "%s"' % operator
             end
+            values.map! { |v| value_to_string(v, 'Array') }
             values.map! { |value|
                 if value.match?(/\A(\w+)-(\d+)\Z/i)
                     value.gsub!('-', '=')
@@ -197,6 +209,7 @@ class CardSearchQueryBuilder
             where_values.concat(values)
             out = values.map { |_| '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]] }
         elsif @@boolean_keywords.include?(keyword)
+            values.map! { |v| value_to_string(v, 'Boolean') }
             values.each { |value|
                 if !['true', 'false', 't', 'f', '1', '0'].include?(value)
                     raise IOError.new 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
@@ -211,6 +224,7 @@ class CardSearchQueryBuilder
             where_values.concat(values)
             out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
         elsif @@numeric_keywords.include?(keyword)
+            values.map! { |v| value_to_string(v, 'Integer') }
             values.each { |value|
                 if !value.match?(/\A(\d+|x)\Z/i)
                     raise IOError.new 'Invalid value "%s" for integer field "%s"' % [value, keyword]
@@ -225,16 +239,25 @@ class CardSearchQueryBuilder
             where_values.concat(values.map { |value| value.downcase == 'x' ? -1 : value })
             out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
         else
-            # String fields only support : and !, resolving to to {,NOT} LIKE %value%.
-            # TODO(plural): consider ~ for regex matches.
-            dbOp = ''
-            if @@string_operators.include?(operator)
-                dbOp = @@string_operators[operator]
-            else
-                raise IOError.new 'Invalid string operator "%s"' % operator
-            end
-            where_values.concat(values.map { |value| '%%%s%%' % value })
-            out = values.map { |_| 'lower(%s) %s ?' % [@@term_to_field_map[keyword], dbOp] }
+            values.each { |value|
+                dbOp = ''
+                if value.key?(:string)
+                    if @@string_operators.include?(operator)
+                        dbOp = @@string_operators[operator]
+                        where_values << '%%%s%%' % value[:string].to_s.downcase
+                    else
+                        raise IOError.new 'Invalid string operator "%s"' % operator
+                    end
+                else
+                    if @@regex_operators.include?(operator)
+                        dbOp = @@regex_operators[operator]
+                        where_values << "%s" % value[:regex].to_s
+                    else
+                        raise IOError.new 'Invalid regex operator "%s"' % operator
+                    end
+                end
+                out << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], dbOp]
+            }
         end
 
         # Not sure what this is for

@@ -5,7 +5,7 @@ class CardSearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
   rule(:bare_string) {
-      match('[!\w-]').repeat(1).as(:string)
+    match('[!\w-]').repeat(1).as(:string)
   }
   rule(:quoted_string) {
     str('"') >> (
@@ -15,6 +15,12 @@ class CardSearchParser < Parslet::Parser
   rule(:string) {
     spaces? >> (bare_string | quoted_string) >> spaces?
   }
+  rule(:regex) {
+    str('/') >> (
+      str('/').absent? >> any
+    ).repeat.as(:regex) >> str('/')
+  }
+
   # Note that while this list should generally be kept sorted, an entry that is a prefix of
   # a later entry will clobber the later entries and throw an error parsing text with the later entries.
   rule(:keyword) {
@@ -67,16 +73,17 @@ class CardSearchParser < Parslet::Parser
 
   rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> values.as(:values) }
   rule(:operator) { str('<=') | str('>=') | match('[:!<>]') }
-  rule(:values) { string >> (str('|') >> string).repeat(0) }
+  rule(:values) { value >> (str('|') >> value).repeat }
+  rule(:value) { string | regex }
 
   rule(:unary) { (str('-') >> unary).as(:negate) | term }
   rule(:term) { pair.as(:pair) | string.as(:title) | bracketed }
   rule(:bracketed) { str('(') >> expr >> str(')') }
 
-  rule(:ands) { (unary >> conjunction.repeat(0)).as(:ands) }
-  rule(:conjunction) { spaces? >> str('and') >> spaces? >> unary }
+  rule(:ands) { (unary >> conjunction.repeat).as(:ands) }
+  rule(:conjunction) { spaces? >> (str('and') >> spaces?).maybe >> unary }
 
-  rule(:ors) { (ands >> disjunction.repeat(0)).as(:ors) }
+  rule(:ors) { (ands >> disjunction.repeat).as(:ors) }
   rule(:disjunction) { spaces? >> str('or') >> spaces? >> ands }
 
   rule(:expr) { ors }
