@@ -21,8 +21,12 @@ class CardSearchParser < Parslet::Parser
   }
   rule(:string) { quoted_string | bare_string }
 
-  rule(:regex) {
-    str('/') >> match('([^\\\/]*((\\\/)|\\)?)*').as(:regex) >> str('/')
+  rule(:regex) { # /(((\\\/)|\\)[^\/])*/
+    str('/') >> (
+      (str('\\/') |
+      str('\\')) |
+      match('[^/]')
+    ).repeat >> str('/')
   }
 
   # Note that while this list should generally be kept sorted, an entry that is a prefix of
