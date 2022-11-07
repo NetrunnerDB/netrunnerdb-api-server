@@ -1,24 +1,28 @@
 require 'parslet'
 
-# TODO(plural): Add support for | in : and ! operators .
 class CardSearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
-  rule(:bare_string) {
-    match('[!\w-]').repeat(1).as(:string)
-  }
-  rule(:quoted_string) {
+
+  rule(:quoted_string) { double_quoted_string | single_quoted_string }
+  rule(:double_quoted_string) {
     str('"') >> (
       str('"').absent? >> any
     ).repeat.as(:string) >> str('"')
   }
-  rule(:string) {
-    spaces? >> (bare_string | quoted_string) >> spaces?
+  rule(:single_quoted_string) {
+    str("'") >> (
+      str("'").absent? >> any
+    ).repeat.as(:string) >> str("'")
   }
+
+  rule(:bare_string) {
+    match('[!\w-]').repeat(1).as(:string)
+  }
+  rule(:string) { quoted_string | bare_string }
+
   rule(:regex) {
-    str('/') >> (
-      str('/').absent? >> any
-    ).repeat.as(:regex) >> str('/')
+    str('/') >> match('([^\\\/]*((\\\/)|\\)?)*').as(:regex) >> str('/')
   }
 
   # Note that while this list should generally be kept sorted, an entry that is a prefix of
@@ -81,10 +85,13 @@ class CardSearchParser < Parslet::Parser
   rule(:bracketed) { str('(') >> expr >> str(')') }
 
   rule(:ands) { (unary >> conjunction.repeat).as(:ands) }
-  rule(:conjunction) { spaces? >> (str('and') >> spaces?).maybe >> unary }
+  rule(:conjunction) {
+    (spaces >> str('and') >> spaces >> unary) |
+    (spaces >> str('or ').absent? >> unary)
+  }
 
   rule(:ors) { (ands >> disjunction.repeat).as(:ors) }
-  rule(:disjunction) { spaces? >> str('or') >> spaces? >> ands }
+  rule(:disjunction) { spaces >> str('or') >> spaces >> ands }
 
   rule(:expr) { ors }
 
