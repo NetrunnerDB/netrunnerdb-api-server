@@ -31,4 +31,38 @@ resource "Factions" do
       expect(status).to eq 200
     end
   end
+
+  get "/api/v3/public/factions/:id/relationships/side" do
+    route_summary "Retrieve side for a faction"
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'weyland_consortium' }
+    example_request "Relationship - Get Side for a Faction" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/factions/:id/relationships/cards" do
+    route_summary "Retrieve Cards for a Faction"
+
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'weyland_consortium' }
+    example_request "Relationship - Get Cards for a Faction" do
+      explanation "TODO(plural): Add Card Fixtures"
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/factions/:id/relationships/printings" do
+    route_summary "Retrieve Printings for a Faction"
+
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'adam' }
+    example_request "Relationship - Get Printings for a Faction" do
+      explanation "TODO(plural): Add Printing Fixtures"
+      expect(status).to eq 200
+    end
+  end
 end

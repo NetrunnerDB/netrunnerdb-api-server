@@ -1,0 +1,41 @@
+{
+  "resource": "Sides",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/sides/:id/relationships/cards",
+  "description": "Relationship - Get Cards for a Side",
+  "explanation": "TODO(plural): Add Card Fixtures",
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/sides/corp/relationships/cards",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n\n  ],\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/relationships/cards\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/cards\"\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/sides/corp/relationships/cards\" -X GET "
+    }
+  ]
+}

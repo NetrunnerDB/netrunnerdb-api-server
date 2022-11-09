@@ -31,4 +31,17 @@ resource "Card Types" do
       expect(status).to eq 200
     end
   end
+
+  get "/api/v3/public/card_types/:id/relationships/cards" do
+    route_summary "Retrieve Cards for a Card Subtype"
+
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'upgrade' }
+    example_request "Relationship - Get Cards for a Card Type" do
+      explanation "TODO(plural): Add Card Fixtures"
+      expect(status).to eq 200
+    end
+  end
+
 end
