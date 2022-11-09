@@ -22,7 +22,7 @@ module API
         has_one :faction
         has_one :card_type
         has_many :card_subtypes
-        has_many :printings
+        has_many :printings, relation_name: :unified_printings
 
         def latest_printing_id
           @model.printing_ids[0]
