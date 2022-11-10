@@ -26,7 +26,7 @@ class CardSearchParser < Parslet::Parser
       (str('\\/') |
       str('\\')) |
       match('[^/]')
-    ).repeat >> str('/')
+    ).repeat.as(:regex) >> str('/')
   }
 
   # Note that while this list should generally be kept sorted, an entry that is a prefix of
@@ -81,11 +81,13 @@ class CardSearchParser < Parslet::Parser
 
   rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> values.as(:values) }
   rule(:operator) { str('<=') | str('>=') | match('[:!<>]') }
-  rule(:values) { value >> (str('|') >> value).repeat }
-  rule(:value) { string | regex }
+  rule(:values) { (value >> (str('|') >> value).repeat) }
+  rule(:value) { value_bracketed | regex | string }
+  rule(:value_bracketed) { str('(') >> values >> str(')') }
 
-  rule(:unary) { (str('-') >> unary).as(:negate) | term }
-  rule(:term) { pair.as(:pair) | string.as(:title) | bracketed }
+  rule(:unary) { (str('-') >> term).as(:negate) | term }
+  rule(:term) { pair | singular | bracketed }
+  rule(:singular) { (regex | string).as(:singular) }
   rule(:bracketed) { str('(') >> expr >> str(')') }
 
   rule(:ands) { (unary >> conjunction.repeat).as(:ands) }

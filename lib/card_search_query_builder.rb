@@ -68,30 +68,6 @@ class CardSearchQueryBuilder
         'title',
         'x',
     ]
-    @@array_operators = {
-        ':' => '',
-        '!' => 'NOT',
-    }
-    @@boolean_operators = {
-        ':' => '=',
-        '!' => '!=',
-    }
-    @@numeric_operators = {
-        ':' => '=',
-        '!' => '!=',
-        '<' => '<',
-        '<=' => '<=',
-        '>' => '>',
-        '>=' => '>='
-    }
-    @@string_operators = {
-        ':' => 'LIKE',
-        '!' => 'NOT LIKE',
-    }
-    @@regex_operators = {
-        ':' => '~*',
-        '!' => '!~*',
-    }
     # TODO(plural): figure out how to do name matches that are LIKEs over elements of an array.
     @@term_to_field_map = {
         # format should implicitly use the currently active card pool and restriction lists unless another is specified.
@@ -157,116 +133,169 @@ class CardSearchQueryBuilder
     @@term_to_left_join_map = {
     }
 
-    def parse_node(node)
-        key = node.keys[0]
-        case key
-        when :ors
-            children = node[key].kind_of?(Array) ? node[key] : [node[key]]
-            children.map! { |child| parse_node(child) }
-            return '(' + children.join(' OR ') + ')'
-        when :ands
-            children = node[key].kind_of?(Array) ? node[key] : [node[key]]
-            children.map! { |child| parse_node(child) }
-            return '(' + children.join(' AND ') + ')'
-        when :negate
-            child = node[key]
-            return '(NOT ' + parse_node(child) + ')'
-        when :pair
-            pair = node[key]
-            keyword = pair[:keyword].to_s
-            operator = pair[:operator].to_s
-            values = pair[:values].kind_of?(Array) ? pair[:values] : [pair[:values]]
-            return parse_pair(keyword, operator, values)
-        when :title
-            return parse_pair('_', ':', [node[key]])
-        else
-            raise IOError.new 'Unrecognised identifier "%s"' % key
-        end
+    @@array_operators = {
+        ':' => '',
+        '!' => 'NOT',
+    }
+    @@boolean_operators = {
+        ':' => '=',
+        '!' => '!=',
+    }
+    @@numeric_operators = {
+        ':' => '=',
+        '!' => '!=',
+        '<' => '<',
+        '<=' => '<=',
+        '>' => '>',
+        '>=' => '>='
+    }
+    @@string_operators = {
+        ':' => 'LIKE',
+        '!' => 'NOT LIKE',
+    }
+    @@regex_operators = {
+        ':' => '~*',
+        '!' => '!~*',
+    }
+
+    class Node < Struct
+      def construct_clause(parameters)
+        raise 'construct_clause not implemented in ' + self.class.name
+      end
     end
 
-    def value_to_string(value, field)
-        if value.key?(:string)
-            value[:string].to_s
-        else
-            raise IOError.new '%s field does not accept regular expressions but was passed /%s/' % [field, value[:regex]]
-        end
+    NodeLiteral = Node.new(:value, :is_regex) do
+      def construct_clause(parameters)
+        value
+      end
     end
 
-    def parse_pair(keyword, operator, values)
+    NodeKeyword = Node.new(:name) do
+      def construct_clause(parameters)
+        name
+      end
+    end
+
+    NodeNegate = Node.new(:child) do
+      def construct_clause(parameters)
+        'not ' + child.construct_clause(parameters)
+      end
+    end
+
+    NodeOperator = Node.new(:operator) do
+      def is_negative
+        operator == '!'
+      end
+      def construct_clause(parameters)
+        operator
+      end
+    end
+
+    NodePair = Node.new(:keyword_node, :operator_node, :value_nodes) do
+      def construct_clause(parameters)
+        regex_value = value_nodes.find { |v| v.is_regex }
+        regex_present = regex_value != nil
+
+        keyword = keyword_node.construct_clause(parameters)
+        operator = operator_node.construct_clause(parameters)
+        values = value_nodes.map { |v| v.construct_clause(parameters) }
+
         out = []
+
+        # Array fields
         if @@array_keywords.include?(keyword)
-            if @@array_operators.include?(operator)
-                operator = @@array_operators[operator]
-            else
-                raise IOError.new 'Invalid array operator "%s"' % operator
+          if regex_present
+            raise 'Array field does not accept regular expressions but was passed %s' % regex_value
+          elsif @@array_operators.include?(operator)
+            operator = @@array_operators[operator]
+          else
+            raise 'Invalid array operator "%s"' % operator
+          end
+          values.map! { |value|
+            if value.match?(/\A(\w+)-(\d+)\Z/i)
+              value.gsub!('-', '=')
             end
-            values.map! { |v| value_to_string(v, 'Array') }
-            values.map! { |value|
-                if value.match?(/\A(\w+)-(\d+)\Z/i)
-                    value.gsub!('-', '=')
-                end
-            }
-            where_values.concat(values)
-            out = values.map { |_| '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]] }
+          }
+          parameters.concat(values)
+          out = values.map { |_| '%s (? = ANY(%s))' % [operator, @@term_to_field_map[keyword]] }
+
+        # Boolean fields
         elsif @@boolean_keywords.include?(keyword)
-            values.map! { |v| value_to_string(v, 'Boolean') }
-            values.each { |value|
-                if !['true', 'false', 't', 'f', '1', '0'].include?(value)
-                    raise IOError.new 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
-                end
-            }
-            dbOp = ''
-            if @@boolean_operators.include?(operator)
-                dbOp = @@boolean_operators[operator]
-            else
-                raise IOError.new 'Invalid boolean operator "%s"' % operator
+          if regex_present
+            raise 'Boolean field does not accept regular expressions but was passed %s' % regex_value
+          end
+          values.each { |value|
+            if !['true', 'false', 't', 'f', '1', '0'].include?(value)
+              raise 'Invalid value "%s" for boolean field "%s"' % [value, keyword]
             end
-            where_values.concat(values)
-            out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
+          }
+          if @@boolean_operators.include?(operator)
+            operator = @@boolean_operators[operator]
+          else
+            raise 'Invalid boolean operator "%s"' % operator
+          end
+          parameters.concat(values)
+          out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], operator] }
+
+        # Integer fields
         elsif @@numeric_keywords.include?(keyword)
-            values.map! { |v| value_to_string(v, 'Integer') }
-            values.each { |value|
-                if !value.match?(/\A(\d+|x)\Z/i)
-                    raise IOError.new 'Invalid value "%s" for integer field "%s"' % [value, keyword]
-                end
-            }
-            dbOp = ''
-            if @@numeric_operators.include?(operator)
-                dbOp = @@numeric_operators[operator]
-            else
-                raise IOError.new 'Invalid numeric operator "%s"' % operator
+          if regex_present
+            raise 'Integer field does not accept regular expressions but was passed %s' % regex_value
+          end
+          values.each { |value|
+            if !value.match?(/\A(\d+|x)\Z/i)
+              raise 'Invalid value "%s" for integer field "%s"' % [value, keyword]
             end
-            where_values.concat(values.map { |value| value.downcase == 'x' ? -1 : value })
-            out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], dbOp] }
+          }
+          if @@numeric_operators.include?(operator)
+            operator = @@numeric_operators[operator]
+          else
+            raise 'Invalid numeric operator "%s"' % operator
+          end
+          parameters.concat(values.map { |value| value.downcase == 'x' ? -1 : value })
+          out = values.map { |_| '%s %s ?' % [@@term_to_field_map[keyword], operator] }
+
+        # String fields
         else
-            values.each { |value|
-                dbOp = ''
-                if value.key?(:string)
-                    if @@string_operators.include?(operator)
-                        dbOp = @@string_operators[operator]
-                        where_values << '%%%s%%' % value[:string].to_s.downcase
-                    else
-                        raise IOError.new 'Invalid string operator "%s"' % operator
-                    end
-                else
-                    if @@regex_operators.include?(operator)
-                        dbOp = @@regex_operators[operator]
-                        where_values << "%s" % value[:regex].to_s
-                    else
-                        raise IOError.new 'Invalid regex operator "%s"' % operator
-                    end
-                end
-                out << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], dbOp]
-            }
+          value_nodes.each_with_index { |v,i|
+            if v.is_regex
+              if @@regex_operators.include?(operator)
+                op = @@regex_operators[operator]
+                parameters << "%s" % values[i]
+              else
+                raise 'Invalid regex operator "%s"' % op
+              end
+            else
+              if @@string_operators.include?(operator)
+                op = @@string_operators[operator]
+                parameters << '%%%s%%' % values[i].downcase
+              else
+                raise 'Invalid string operator "%s"' % op
+              end
+            end
+            out << 'lower(%s) %s ?' % [@@term_to_field_map[keyword], op]
+          }
         end
 
-        # Not sure what this is for
-        if @@term_to_left_join_map.include?(keyword)
-            @left_joins << @@term_to_left_join_map[keyword]
-        end
+        # Return
+        bracs = values.length > 1 ? ['(', ')'] : ['', '']
+        connector = operator_node.is_negative ? ' and ' : ' or '
+        bracs[0] + out.join(connector) + bracs[1]
+      end
+    end
 
-        # Format output
-        return out.join(operator == '!' ? ' and ' : ' or ')
+    NodeAnd = Node.new(:children) do
+      def construct_clause(parameters)
+        bracs = children.length > 1 ? ['(', ')'] : ['', '']
+        bracs[0] + children.map { |c| c.construct_clause(parameters) }.join(' and ') + bracs[1]
+      end
+    end
+
+    NodeOr = Node.new(:children) do
+      def construct_clause(parameters)
+        bracs = children.length > 1 ? ['(', ')'] : ['', '']
+        bracs[0] + children.map { |c| c.construct_clause(parameters) }.join(' or ') + bracs[1]
+      end
     end
 
     def initialize(query)
@@ -285,12 +314,39 @@ class CardSearchQueryBuilder
             return
         end
 
-        # Parse the AST into a databse query
-        begin
-            @where = parse_node(@parse_tree)
-        rescue IOError => e
-            @parse_error = e
+        # Convert raw parse tree into an AST
+        transform = Parslet::Transform.new do
+          # Match literals
+          rule(:string => simple(:s)) { NodeLiteral.new(s.to_s) }
+          rule(:regex => simple(:r)) { NodeLiteral.new(r.to_s, true) }
+
+          # Match title queries
+          rule(:singular => simple(:s)) { NodePair.new(NodeKeyword.new('_'), NodeOperator.new(':'), [s]) }
+
+          # Match pairs
+          rule(:keyword => simple(:k), :operator => simple(:o), :values => simple(:v)) {
+            NodePair.new(
+              NodeKeyword.new(k.to_s), NodeOperator.new(o.to_s), [v]
+            )
+          }
+          rule(:keyword => simple(:k), :operator => simple(:o), :values => sequence(:vs)) {
+            NodePair.new(
+              NodeKeyword.new(k.to_s), NodeOperator.new(o.to_s), vs
+            )
+          }
+
+          # Match negation
+          rule(:negate => simple(:u)) { NodeNegate.new(u) }
+
+          # Match conjunctions
+          rule(:ands => simple(:a)) { NodeAnd.new([a]) }
+          rule(:ands => sequence(:as)) { NodeAnd.new(as) }
+          rule(:ors => simple(:o)) { NodeOr.new([o]) }
+          rule(:ors => sequence(:os)) { NodeOr.new(os) }
         end
+
+        # Generate SQL query and parameters from AST
+        @where = transform.apply(@parse_tree).construct_clause(@where_values)
 
         # TODO(plural): build in explicit support for requirements
         #   {is_banned,is_restricted,eternal_points,has_global_penalty,universal_faction_cost} all require restriction_id, would be good to have card_pool_id as well.
