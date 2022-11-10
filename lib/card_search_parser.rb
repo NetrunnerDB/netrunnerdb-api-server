@@ -79,11 +79,12 @@ class CardSearchParser < Parslet::Parser
     match('[_abcdefghilmnoprstuvxyz]')
   }
 
-  rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> values.as(:values) }
+  rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> value_ors.as(:values) }
   rule(:operator) { str('<=') | str('>=') | match('[:!<>]') }
-  rule(:values) { (value >> (str('|') >> value).repeat) }
+  rule(:value_ors) { (value_ands >> (str('|') >> value_ands).repeat).as(:value_ors) }
+  rule(:value_ands) { (value >> (str('&') >> value).repeat).as(:value_ands) }
   rule(:value) { value_bracketed | regex | string }
-  rule(:value_bracketed) { str('(') >> values >> str(')') }
+  rule(:value_bracketed) { str('(') >> value_ors >> str(')') }
 
   rule(:unary) { (str('-') >> term).as(:negate) | term }
   rule(:term) { pair | singular | bracketed }
