@@ -207,33 +207,33 @@ class CardSearchQueryBuilder
         @@keyword = keyword.construct_clause
         @@negative_op = operator.is_negative
         @@query_type = ''
-        if @@array_keywords.include?(keyword)
+        if @@array_keywords.include?(@@keyword)
           @@query_type = 'Array'
           if @@array_operators.include?(raw_operator)
             @@operator = @@array_operators[raw_operator]
           else
-            raise 'Invalid array operator "%s"' % operator
+            raise 'Invalid array operator "%s"' % raw_operator
           end
-        elsif @@boolean_keywords.include?(keyword)
+        elsif @@boolean_keywords.include?(@@keyword)
           @@query_type = 'Boolean'
           if @@boolean_operators.include?(raw_operator)
             @@operator = @@boolean_operators[raw_operator]
           else
-            raise 'Invalid boolean operator "%s"' % operator
+            raise 'Invalid boolean operator "%s"' % raw_operator
           end
-        elsif @@numeric_keywords.include?(keyword)
+        elsif @@numeric_keywords.include?(@@keyword)
           @@query_type = 'Integer'
           if @@numeric_operators.include?(raw_operator)
             @@operator = @@numeric_operators[raw_operator]
           else
-            raise 'Invalid integer operator "%s"' % operator
+            raise 'Invalid integer operator "%s"' % raw_operator
           end
         else
           @@query_type = 'String'
           if @@string_operators.include?(raw_operator)
             @@operator = @@string_operators[raw_operator]
           else
-            raise 'Invalid string operator "%s"' % operator
+            raise 'Invalid string operator "%s"' % raw_operator
           end
         end
 
