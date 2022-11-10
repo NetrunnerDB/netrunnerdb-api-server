@@ -244,9 +244,8 @@ class CardSearchQueryBuilder
 
     NodeValueAnd = Node.new(:children) do
       def construct_clause
-        connector = @@negative_op ? ' or ' : ' and '
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause }.join(connector) + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause }.join(' and ') + bracs[1]
       end
     end
 
