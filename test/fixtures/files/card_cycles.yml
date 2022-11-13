@@ -1,0 +1,13 @@
+core:
+  id: core
+  name: Core Set
+  description: The Original Core Set! 
+  date_release: 2012-09-06
+  legacy_code: core
+
+borealis:
+  id: borealis
+  name: Borealis
+  description: Borealis
+  date_release: 2022-07-22
+  legacy_code: borealis

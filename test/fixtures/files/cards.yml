@@ -1,0 +1,31 @@
+hedge_fund:
+  id: hedge_fund
+  title: Hedge Fund
+  stripped_title: Hedge Fund
+  side_id: corp
+  faction_id: neutral_corp
+  card_type_id: operation
+
+prisec:
+  id: prisec
+  title: Prisec
+  stripped_title: Prisec
+  side_id: corp
+  faction_id: neutral_corp
+  card_type_id: upgrade
+
+sure_gamble:
+  id: sure_gamble
+  title: Sure Gamble
+  stripped_title: Sure Gamble
+  side_id: runner
+  faction_id: neutral_runner
+  card_type_id: event
+
+adonis_campaign:
+  id: adonis_campaign
+  title: Adonis Campaign 
+  stripped_title: Adonis Campaign 
+  side_id: corp
+  faction_id: haas_bioroid 
+  card_type_id: asset 

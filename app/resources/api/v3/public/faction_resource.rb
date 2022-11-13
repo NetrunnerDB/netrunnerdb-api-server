@@ -11,7 +11,7 @@ module API
 
         has_one :side
         has_many :cards, relation_name: :unified_cards
-        has_many :printings
+        has_many :printings, relation_name: :unified_printings
 
         filters :side_id, :is_mini
       end

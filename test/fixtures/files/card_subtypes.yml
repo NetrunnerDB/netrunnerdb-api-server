@@ -1,0 +1,11 @@
+advertisement:
+  id: advertisement
+  name: Advertisement
+
+code_gate:
+  id: code_gate
+  name: Code Gate
+
+next:
+  id: next
+  name: Next

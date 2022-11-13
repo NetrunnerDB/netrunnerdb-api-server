@@ -1,3 +1,8 @@
+asset:
+  id: "asset"
+  name: "Asset"
+  side_id: "corp"
+
 operation:
   id: "operation"
   name: "Operation"

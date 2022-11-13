@@ -1,0 +1,24 @@
+core:
+  id: core
+  name: Core
+  date_release: 2012-09-06
+  size: 113
+  position: 1
+  card_cycle_id: core
+
+midnight_sun:
+  id: midnight_sun
+  name: Midnight Sun
+  date_release: 2022-07-22
+  size: 65
+  position: 33
+  card_cycle_id: borealis
+
+parhelion:
+  id: parhelion 
+  name: Parhelion 
+  date_release: 2022-12-12
+  size: 65
+  position: 34
+  card_cycle_id: borealis
+    
