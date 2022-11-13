@@ -82,39 +82,37 @@ class CardSearchQueryBuilder
     @@term_to_left_join_map = {
     }
 
-    class Node < Struct
-      def construct_clause
-        raise 'construct_clause not implemented in ' + self.class.name
-      end
-    end
+    # Represents the context within a key:values pair
+    # Types: string, string, bool, FieldData
+    Context = Struct.new(:keyword, :operator, :negative_op, :field)
 
-    NodeAnd = Node.new(:children) do
+    NodeAnd = Struct.new(:children) do
       def construct_clause
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
         bracs[0] + children.map { |c| c.construct_clause }.join(' and ') + bracs[1]
       end
     end
 
-    NodeOr = Node.new(:children) do
+    NodeOr = Struct.new(:children) do
       def construct_clause
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
         bracs[0] + children.map { |c| c.construct_clause }.join(' or ') + bracs[1]
       end
     end
 
-    NodeNegate = Node.new(:child) do
+    NodeNegate = Struct.new(:child) do
       def construct_clause
-        'not ' + child.construct_clause
+        'not ' + child.construct_clause(context)
       end
     end
 
-    NodeKeyword = Node.new(:name) do
+    NodeKeyword = Struct.new(:name) do
       def construct_clause
         name
       end
     end
 
-    NodeOperator = Node.new(:operator) do
+    NodeOperator = Struct.new(:operator) do
       def is_negative
         operator == '!'
       end
@@ -123,56 +121,59 @@ class CardSearchQueryBuilder
       end
     end
 
-    NodePair = Node.new(:keyword, :operator, :values) do
+    NodePair = Struct.new(:keyword, :operator, :values) do
       def construct_clause
-        # Determine the type of query and update the global context
-        @@keyword = keyword.construct_clause
-        @@operator = operator.construct_clause
-        @@negative_op = operator.is_negative
-        @@field = @@fields.find { |f| f.keywords.include?(@@keyword) }
+        # Determine the context of the query
+        keyword_c = keyword.construct_clause
+        context = Context.new(
+          keyword_c,
+          operator.construct_clause,
+          operator.is_negative,
+          @@fields.find { |f| f.keywords.include?(keyword_c) }
+        )
 
         # Check a field was found
-        if @@field == nil
-          raise 'Unknown keyword %s' % @@keyword
+        if context.field == nil
+          raise 'Unknown keyword %s' % context.keyword
         end
 
         # Validate the operator (relies on strings and regexes having the same operators)
-        if !@@operators[@@field.type].include?(@@operator)
-          raise 'Invalid %s operator "%s"' % [@@field.type, @@operator]
+        if !@@operators[context.field.type].include?(context.operator)
+          raise 'Invalid %s operator "%s"' % [context.field.type, context.operator]
         end
 
         # Construct the subtree within the new context
-        values.construct_clause
+        values.construct_clause(context)
       end
     end
 
-    NodeValueAnd = Node.new(:children) do
-      def construct_clause
+    NodeValueAnd = Struct.new(:children) do
+      def construct_clause(context)
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause }.join(' and ') + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause(context) }.join(' and ') + bracs[1]
       end
     end
 
-    NodeValueOr = Node.new(:children) do
-      def construct_clause
-        connector = @@negative_op ? ' and ' : ' or '
+    NodeValueOr = Struct.new(:children) do
+      def construct_clause(context)
+        connector = context.negative_op ? ' and ' : ' or '
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause }.join(connector) + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause(context) }.join(connector) + bracs[1]
       end
     end
 
-    NodeLiteral = Node.new(:value, :is_regex) do
-      def construct_clause
+    NodeLiteral = Struct.new(:value, :is_regex) do
+      def construct_clause(context)
         # Only accept regex values for string fields
-        if @@field.type != :string and is_regex != nil
-          raise '%s field does not accept regular expressions but was passed %s' % [@@field.type, value]
+        if context.field.type != :string and is_regex != nil
+          raise '%s field does not accept regular expressions but was passed %s' % [context.field.type, value]
         end
 
         # Determine the operator (manually catch regexes)
-        sql_operator = @@operators[is_regex ? :regex : @@field.type][@@operator]
+        sql_operator = @@operators[is_regex ? :regex : context.field.type][context.operator]
 
         # Format as appropriate for the query type
-        case @@field.type
+        case context.field.type
 
         # Arrays
         when :array
@@ -180,23 +181,23 @@ class CardSearchQueryBuilder
             value.gsub!('-', '=')
           end
           @@parameters << value
-          return '%s (? = ANY(%s))' % [sql_operator, @@field.sql]
+          return '%s (? = ANY(%s))' % [sql_operator, context.field.sql]
 
         # Booleans
         when :boolean
           if !['true', 'false', 't', 'f', '1', '0'].include?(value)
-            raise 'Invalid value "%s" for boolean field "%s"' % [value, @@keyword]
+            raise 'Invalid value "%s" for boolean field "%s"' % [value, context.keyword]
           end
           @@parameters << value
-          return '%s %s ?' % [@@field.sql, sql_operator]
+          return '%s %s ?' % [context.field.sql, sql_operator]
 
         # Integers
         when :integer
           if !value.match?(/\A(\d+|x)\Z/i)
-            raise 'Invalid value "%s" for integer field "%s"' % [value, @@keyword]
+            raise 'Invalid value "%s" for integer field "%s"' % [value, context.keyword]
           end
           @@parameters << value.downcase == 'x' ? -1 : value
-          return '%s %s ?' % [@@field.sql, sql_operator]
+          return '%s %s ?' % [context.field.sql, sql_operator]
 
         # Strings
         when :string
@@ -205,11 +206,11 @@ class CardSearchQueryBuilder
           else
             @@parameters << '%%%s%%' % value.downcase
           end
-          return 'lower(%s) %s ?' % [@@field.sql, sql_operator]
+          return 'lower(%s) %s ?' % [context.field.sql, sql_operator]
 
         # Error
         else
-          raise 'Unknown query type "%s"' %  @@field.type
+          raise 'Unknown query type "%s"' %  context.field.type
         end
       end
     end
@@ -218,14 +219,6 @@ class CardSearchQueryBuilder
         @query = query
         @parse_tree = nil
         @left_joins = Set.new
-
-        # AST context variables
-        # This context is set for each pair node
-        # Since pairs aren't recursive it's safe to reset these values each time
-        @@keyword = ''
-        @@operator = ''
-        @@negative_op = false
-        @@query_type = ''
 
         # Output
         @parse_error = nil
