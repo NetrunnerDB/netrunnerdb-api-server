@@ -1,161 +1,85 @@
 # TODO(plural): Add attribution to cards.
 class CardSearchQueryBuilder
-    @@parser = CardSearchParser.new
-    @@array_keywords = [
-        'card_cycle',
-        'card_pool',
-        'card_set',
-        'card_subtype',
-        'card_subtype_id',
-        'eternal_points',
-        'format',
-        'has_global_penalty',
-        'is_banned',
-        'is_restricted',
-        'printing_id',
-        'restriction_id',
-        's',
-        'snapshot',
-        'universal_faction_cost',
-    ]
-    @@boolean_keywords = [
-        'additional_cost',
-        'advanceable',
-        'b',
-        'banlist',
-        'gains_subroutines',
-        'in_restriction',
-        'interrupt',
-        'is_unique',
-        'on_encounter_effect',
-        'performs_trace',
-        'trash_ability',
-        'u',
-    ]
-    @@numeric_keywords = [
-        'advancement_cost',
-        'agenda_points',
-        'base_link',
-        'cost',
-        'g',
-        'h',
-        'influence_cost',
-        'l',
-        'link_provided',
-        'm',
-        'memory_usage',
-        'mu_provided',
-        'n',
-        'num_printed_subroutines',
-        'num_printings',
-        'o',
-        'p',
-        'recurring_credits_provided',
-        'strength',
-        'trash_cost',
-        'v',
-    ]
-    @@string_keywords = [
-        '_',
-        'attribution',
-        'card_type',
-        'd',
-        'f',
-        'faction',
-        'side',
-        't',
-        'text',
-        'title',
-        'x',
-    ]
+
+    # :type is one of :array, :boolean, :integer, :string
+    FieldData = Struct.new(:type, :sql, :keywords)
+
     # TODO(plural): figure out how to do name matches that are LIKEs over elements of an array.
-    @@term_to_field_map = {
-        # format should implicitly use the currently active card pool and restriction lists unless another is specified.
-        '_' => 'unified_cards.stripped_title',
-        'additional_cost' => 'unified_cards.additional_cost',
-        'advanceable' => 'unified_cards.advanceable',
-        'advancement_cost' => 'unified_cards.advancement_requirement',
-        'agenda_points' => 'unified_cards.agenda_points',
-        'attribution' => 'unified_cards.attribution',
-        'base_link' => 'unified_cards.base_link',
-        'card_cycle' => 'unified_cards.card_cycle_ids',
-        'card_pool' => 'unified_cards.card_pool_ids',
-        'card_set' => 'unified_cards.card_set_ids',
-        'card_subtype' => 'unified_cards.lower_card_subtype_names',
-        'card_subtype_id' => 'unified_cards.card_subtype_ids',
-        'card_type' => 'unified_cards.card_type_id',
-        'cost' => 'unified_cards.cost',
-        'd' => 'unified_cards.side_id',
-        'eternal_points' => 'unified_cards.restrictions_points',
-        'f' => 'unified_cards.faction_id',
-        'faction' => 'unified_cards.faction_id',
-        'format' => 'unified_cards.format_ids',
-        'g' => 'unified_cards.advancement_requirement',
-        'gains_subroutines' => 'unified_cards.gains_subroutines',
-        'h' => 'unified_cards.trash_cost',
-        'has_global_penalty' => 'unified_cards.restrictions_global_penalty',
-        'in_restriction' => 'unified_cards.in_restriction',
-        'influence_cost' => 'unified_cards.influence_cost',
-        'interrupt' => 'unified_cards.interrupt',
-        'is_banned' => 'unified_cards.restrictions_banned',
-        'is_restricted' => 'unified_cards.restrictions_restricted',
-        'is_unique' => 'unified_cards.is_unique',
-        'l' => 'unified_cards.base_link',
-        'link_provided' => 'unified_cards.link_provided',
-        'm' => 'unified_cards.memory_cost',
-        'memory_usage' => 'unified_cards.memory_cost',
-        'mu_provided' => 'unified_cards.mu_provided',
-        'n' => 'unified_cards.influence_cost',
-        'num_printed_subroutines' => 'unified_cards.num_printed_subroutines',
-        'num_printings' => 'unified_cards.num_printings',
-        'o' => 'unified_cards.cost',
-        'on_encounter_effect' => 'unified_cards.on_encounter_effect',
-        'p' => 'unified_cards.strength',
-        'performs_trace' => 'unified_cards.performs_trace',
-        'printing_id' => 'unified_cards.printing_ids',
-        'recurring_credits_provided' => 'unified_cards.recurring_credits_provided',
-        'restriction_id' => 'unified_cards.restriction_ids',
-        's' => 'unified_cards.lower_card_subtype_names',
-        'side' => 'unified_cards.side_id',
-        'snapshot' => 'unified_cards.snapshot_ids',
-        'strength' => 'unified_cards.strength',
-        't' => 'unified_cards.card_type_id',
-        'text' => 'unified_cards.stripped_text',
-        'title' => 'unified_cards.stripped_title',
-        'trash_ability' => 'unified_cards.trash_ability',
-        'trash_cost' => 'unified_cards.trash_cost',
-        'u' => 'unified_cards.is_unique',
-        'universal_faction_cost' => 'unified_cards.restrictions_universal_faction_cost',
-        'v' => 'unified_cards.agenda_points',
-        'x' => 'unified_cards.stripped_text',
-    }
-
-    @@term_to_left_join_map = {
-    }
-
-    @@array_operators = {
+    # format should implicitly use the currently active card pool and restriction lists unless another is specified.
+    @@fields = [
+      FieldData.new(:array, 'unified_cards.card_cycle_ids', ['card_cycle']),
+      FieldData.new(:array, 'unified_cards.card_pool_ids', ['card_pool']),
+      FieldData.new(:array, 'unified_cards.card_set_ids', ['card_set']),
+      FieldData.new(:array, 'unified_cards.lower_card_subtype_names', ['card_subtype']),
+      FieldData.new(:array, 'unified_cards.card_subtype_ids', ['card_subtype_id']),
+      FieldData.new(:array, 'unified_cards.restrictions_points', ['eternal_points']),
+      FieldData.new(:array, 'unified_cards.format_ids', ['format']),
+      FieldData.new(:array, 'unified_cards.restrictions_global_penalty', ['has_global_penalty']),
+      FieldData.new(:array, 'unified_cards.restrictions_banned', ['is_banned']),
+      FieldData.new(:array, 'unified_cards.restrictions_restricted', ['is_restricted']),
+      FieldData.new(:array, 'unified_cards.printing_ids', ['printing_id']),
+      FieldData.new(:array, 'unified_cards.restriction_ids', ['restriction_id']),
+      FieldData.new(:array, 'unified_cards.snapshot_ids', ['snapshot']),
+      FieldData.new(:array, 'unified_cards.restrictions_universal_faction_cost', ['universal_faction_cost']),
+      FieldData.new(:boolean, 'unified_cards.additional_cost', ['additional_cost']),
+      FieldData.new(:boolean, 'unified_cards.advanceable', ['advanceable']),
+      FieldData.new(:boolean, 'unified_cards.gains_subroutines', ['gains_subroutines']),
+      FieldData.new(:boolean, 'unified_cards.in_restriction', ['in_restriction']),
+      FieldData.new(:boolean, 'unified_cards.interrupt', ['interrupt']),
+      FieldData.new(:boolean, 'unified_cards.is_unique', ['is_unique']),
+      FieldData.new(:boolean, 'unified_cards.on_encounter_effect', ['on_encounter_effect']),
+      FieldData.new(:boolean, 'unified_cards.performs_trace', ['performs_trace']),
+      FieldData.new(:boolean, 'unified_cards.trash_ability', ['trash_ability']),
+      FieldData.new(:integer, 'unified_cards.advancement_requirement', ['advancement_cost']),
+      FieldData.new(:integer, 'unified_cards.agenda_points', ['agenda_points']),
+      FieldData.new(:integer, 'unified_cards.base_link', ['base_link']),
+      FieldData.new(:integer, 'unified_cards.cost', ['cost']),
+      FieldData.new(:integer, 'unified_cards.influence_cost', ['influence_cost']),
+      FieldData.new(:integer, 'unified_cards.link_provided', ['link_provided']),
+      FieldData.new(:integer, 'unified_cards.memory_cost', ['memory_usage']),
+      FieldData.new(:integer, 'unified_cards.mu_provided', ['mu_provided']),
+      FieldData.new(:integer, 'unified_cards.num_printed_subroutines', ['num_printed_subroutines']),
+      FieldData.new(:integer, 'unified_cards.num_printings', ['num_printings']),
+      FieldData.new(:integer, 'unified_cards.recurring_credits_provided', ['recurring_credits_provided']),
+      FieldData.new(:integer, 'unified_cards.strength', ['strength']),
+      FieldData.new(:integer, 'unified_cards.trash_cost', ['trash_cost']),
+      FieldData.new(:string, 'unified_cards.attribution', ['attribution']),
+      FieldData.new(:string, 'unified_cards.card_type_id', ['card_type', 't']),
+      FieldData.new(:string, 'unified_cards.faction_id', ['faction', 'f']),
+      FieldData.new(:string, 'unified_cards.side_id', ['side', 'd']),
+      FieldData.new(:string, 'unified_cards.stripped_text', ['text', 'x']),
+      FieldData.new(:string, 'unified_cards.stripped_title', ['title', '_'])
+    ]
+    @@operators = {
+      :array => {
         ':' => '',
         '!' => 'NOT',
-    }
-    @@boolean_operators = {
+      },
+      :boolean => {
         ':' => '=',
         '!' => '!=',
-    }
-    @@numeric_operators = {
+      },
+      :integer => {
         ':' => '=',
         '!' => '!=',
         '<' => '<',
         '<=' => '<=',
         '>' => '>',
         '>=' => '>='
-    }
-    @@string_operators = {
+      },
+      :string => {
         ':' => 'LIKE',
         '!' => 'NOT LIKE',
-    }
-    @@regex_operators = {
+      },
+      :regex => {
         ':' => '~*',
         '!' => '!~*',
+      },
+    }
+
+    @@parser = CardSearchParser.new
+
+    @@term_to_left_join_map = {
     }
 
     class Node < Struct
@@ -201,40 +125,20 @@ class CardSearchQueryBuilder
 
     NodePair = Node.new(:keyword, :operator, :values) do
       def construct_clause
-        raw_operator = operator.construct_clause
-
         # Determine the type of query and update the global context
         @@keyword = keyword.construct_clause
+        @@operator = operator.construct_clause
         @@negative_op = operator.is_negative
-        @@query_type = ''
-        if @@array_keywords.include?(@@keyword)
-          @@query_type = 'Array'
-          if @@array_operators.include?(raw_operator)
-            @@operator = @@array_operators[raw_operator]
-          else
-            raise 'Invalid array operator "%s"' % raw_operator
-          end
-        elsif @@boolean_keywords.include?(@@keyword)
-          @@query_type = 'Boolean'
-          if @@boolean_operators.include?(raw_operator)
-            @@operator = @@boolean_operators[raw_operator]
-          else
-            raise 'Invalid boolean operator "%s"' % raw_operator
-          end
-        elsif @@numeric_keywords.include?(@@keyword)
-          @@query_type = 'Integer'
-          if @@numeric_operators.include?(raw_operator)
-            @@operator = @@numeric_operators[raw_operator]
-          else
-            raise 'Invalid integer operator "%s"' % raw_operator
-          end
-        else
-          @@query_type = 'String'
-          if @@string_operators.include?(raw_operator)
-            @@operator = @@string_operators[raw_operator]
-          else
-            raise 'Invalid string operator "%s"' % raw_operator
-          end
+        @@field = @@fields.find { |f| f.keywords.include?(@@keyword) }
+
+        # Check a field was found
+        if @@field == nil
+          raise 'Unknown keyword %s' % @@keyword
+        end
+
+        # Validate the operator (relies on strings and regexes having the same operators)
+        if !@@operators[@@field.type].include?(@@operator)
+          raise 'Invalid %s operator "%s"' % [@@field.type, @@operator]
         end
 
         # Construct the subtree within the new context
@@ -260,49 +164,52 @@ class CardSearchQueryBuilder
     NodeLiteral = Node.new(:value, :is_regex) do
       def construct_clause
         # Only accept regex values for string fields
-        if @@query_type != 'String' and is_regex != nil
-          raise '%s field does not accept regular expressions but was passed %s' % [@@query_type, value]
+        if @@field.type != :string and is_regex != nil
+          raise '%s field does not accept regular expressions but was passed %s' % [@@field.type, value]
         end
 
+        # Determine the operator (manually catch regexes)
+        sql_operator = @@operators[is_regex ? :regex : @@field.type][@@operator]
+
         # Format as appropriate for the query type
-        case @@query_type
+        case @@field.type
 
         # Arrays
-        when 'Array'
+        when :array
           if value.match?(/\A(\w+)-(\d+)\Z/i)
             value.gsub!('-', '=')
           end
           @@parameters << value
-          return '%s (? = ANY(%s))' % [@@operator, @@term_to_field_map[@@keyword]]
+          return '%s (? = ANY(%s))' % [sql_operator, @@field.sql]
 
         # Booleans
-        when 'Boolean'
+        when :boolean
           if !['true', 'false', 't', 'f', '1', '0'].include?(value)
             raise 'Invalid value "%s" for boolean field "%s"' % [value, @@keyword]
           end
           @@parameters << value
-          return '%s %s ?' % [@@term_to_field_map[@@keyword], @@operator]
+          return '%s %s ?' % [@@field.sql, sql_operator]
 
         # Integers
-        when 'Integer'
+        when :integer
           if !value.match?(/\A(\d+|x)\Z/i)
             raise 'Invalid value "%s" for integer field "%s"' % [value, @@keyword]
           end
           @@parameters << value.downcase == 'x' ? -1 : value
-          return '%s %s ?' % [@@term_to_field_map[@@keyword], @@operator]
+          return '%s %s ?' % [@@field.sql, sql_operator]
 
         # Strings
-        when 'String'
+        when :string
           if is_regex
             @@parameters << "%s" % value
           else
             @@parameters << '%%%s%%' % value.downcase
           end
-          return 'lower(%s) %s ?' % [@@term_to_field_map[@@keyword], @@operator]
+          return 'lower(%s) %s ?' % [@@field.sql, sql_operator]
 
         # Error
         else
-          raise 'Unknown query type "%s"' %  @@query_type
+          raise 'Unknown query type "%s"' %  @@field.type
         end
       end
     end
