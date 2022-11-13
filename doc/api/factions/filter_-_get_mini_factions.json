@@ -1,0 +1,44 @@
+{
+  "resource": "Factions",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/factions?filter[is_mini]=:is_mini",
+  "description": "Filter - Get Mini Factions",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "boolean",
+      "required": true,
+      "name": "is_mini",
+      "description": "Is mini"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/factions?filter[is_mini]=true",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+        "filter": {
+          "is_mini": "true"
+        }
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"adam\",\n      \"type\": \"factions\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam\"\n      },\n      \"attributes\": {\n        \"name\": \"Adam\",\n        \"description\": null,\n        \"is_mini\": true,\n        \"side_id\": \"runner\",\n        \"updated_at\": \"2022-11-13T02:29:42.009Z\"\n      },\n      \"relationships\": {\n        \"side\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam/relationships/side\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam/side\"\n          }\n        },\n        \"cards\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam/relationships/cards\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam/cards\"\n          }\n        },\n        \"printings\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam/relationships/printings\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/adam/printings\"\n          }\n        }\n      }\n    }\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/factions?filter[is_mini]=true\" -X GET "
+    }
+  ]
+}

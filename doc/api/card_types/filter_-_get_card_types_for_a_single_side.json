@@ -1,0 +1,44 @@
+{
+  "resource": "Card Types",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/card_types?filter[side_id]=:side_id",
+  "description": "Filter - Get Card Types for a single Side",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "side_id",
+      "description": "Side"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/card_types?filter[side_id]=runner",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+        "filter": {
+          "side_id": "runner"
+        }
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"event\",\n      \"type\": \"card_types\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_types/event\"\n      },\n      \"attributes\": {\n        \"name\": \"Event\",\n        \"side_id\": \"runner\",\n        \"updated_at\": \"2022-11-13T02:29:41.254Z\"\n      },\n      \"relationships\": {\n        \"side\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_types/event/relationships/side\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_types/event/side\"\n          }\n        },\n        \"cards\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_types/event/relationships/cards\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_types/event/cards\"\n          }\n        }\n      }\n    }\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_types?filter[side_id]=runner\" -X GET "
+    }
+  ]
+}
