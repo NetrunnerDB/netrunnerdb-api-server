@@ -8,9 +8,8 @@ module API
         key_type :string
 
         has_many :card_sets
-        has_many :printings
-
         has_many :cards, relation_name: :unified_cards
+        has_many :printings, relation_name: :unified_printings
 
         paginator :none
       end

@@ -1,6 +1,68 @@
 {
   "resources": [
     {
+      "name": "Card Cycles",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Card Cycles",
+          "link": "card_cycles/all_card_cycles.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Cycle",
+          "link": "card_cycles/get_a_single_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card IDs for a Card Cycle",
+          "link": "card_cycles/relationship_-_get_card_ids_for_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id/relationships/cards",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Set IDs for a Card Cycle",
+          "link": "card_cycles/relationship_-_get_card_set_ids_for_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id/relationships/card_sets",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Sets for a Card Cycle",
+          "link": "card_cycles/relationship_-_get_card_sets_for_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id/card_sets",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Cards for a Card Cycle",
+          "link": "card_cycles/relationship_-_get_cards_for_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id/cards",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printing IDs for a Card Cycle",
+          "link": "card_cycles/relationship_-_get_printing_ids_for_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id/relationships/printings",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for a Card Cycle",
+          "link": "card_cycles/relationship_-_get_printings_for_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id/printings",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Card Subypes",
       "explanation": null,
       "examples": [
