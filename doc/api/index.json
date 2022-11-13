@@ -63,6 +63,40 @@
       ]
     },
     {
+      "name": "Card Set Types",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Card Set Types",
+          "link": "card_set_types/all_card_set_types.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_set_types",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Set Type",
+          "link": "card_set_types/get_a_single_card_set_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_set_types/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Set IDs for a Card Set Type",
+          "link": "card_set_types/relationship_-_get_card_set_ids_for_a_card_set_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_set_types/:id/relationships/card_sets",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Sets for a Card Set Type",
+          "link": "card_set_types/relationship_-_get_card_sets_for_a_card_set_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_set_types/:id/card_sets",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Card Sets",
       "explanation": null,
       "examples": [
