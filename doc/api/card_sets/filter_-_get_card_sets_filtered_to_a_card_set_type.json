@@ -1,0 +1,44 @@
+{
+  "resource": "Card Sets",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id",
+  "description": "Filter - Get Card Sets filtered to a Card Set Type",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "card_set_type_id",
+      "description": "Card set type"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/card_sets?filter[card_set_type_id]=%3Acard_set_type_id",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+        "filter": {
+          "card_set_type_id": ":card_set_type_id"
+        }
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_sets?filter[card_set_type_id]=%3Acard_set_type_id\" -X GET "
+    }
+  ]
+}

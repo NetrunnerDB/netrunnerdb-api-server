@@ -26,11 +26,22 @@ resource "Factions" do
     end
   end
 
-  get "/api/v3/public/factions?filter[is_mini]=true" do
-    route_summary 'Only Mini Factions'
-    route_description 'is_mini is a filter that allows you to include or exclude Mini Factions'
+  get "/api/v3/public/factions?filter[side_id]=:side_id" do
+    route_summary 'Filter - Side'
+    parameter :side_id, type: :string, required: true
 
-    example_request "Get Mini Factions" do
+    let(:side_id) { 'runner' }
+    example_request "Filter - Get Factions for a single Side" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/factions?filter[is_mini]=:is_mini" do
+    route_summary 'Filter - Mini Factions'
+    parameter :is_mini, type: :boolean, required: true
+
+    let(:is_mini) { true }
+    example_request "Filter - Get Mini Factions" do
       expect(status).to eq 200
     end
   end

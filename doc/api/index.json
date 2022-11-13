@@ -108,6 +108,20 @@
           "method": "get"
         },
         {
+          "description": "Filter - Get Card Sets filtered to a Card Cycle",
+          "link": "card_sets/filter_-_get_card_sets_filtered_to_a_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets?filter[card_cycle_id]=:card_cycle_id",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get Card Sets filtered to a Card Set Type",
+          "link": "card_sets/filter_-_get_card_sets_filtered_to_a_card_set_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id",
+          "method": "get"
+        },
+        {
           "description": "Get A Single Card Set",
           "link": "card_sets/get_a_single_card_set.json",
           "groups": "all",
@@ -232,17 +246,17 @@
           "method": "get"
         },
         {
+          "description": "Filter - Get Card Types for a single Side",
+          "link": "card_types/filter_-_get_card_types_for_a_single_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_types?filter[side_id]=:side_id",
+          "method": "get"
+        },
+        {
           "description": "Get A Single Card Type",
           "link": "card_types/get_a_single_card_type.json",
           "groups": "all",
           "route": "/api/v3/public/card_types/:id",
-          "method": "get"
-        },
-        {
-          "description": "Get Runner Card Types",
-          "link": "card_types/get_runner_card_types.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_types?filter[side_id]=runner",
           "method": "get"
         },
         {
@@ -287,17 +301,24 @@
           "method": "get"
         },
         {
+          "description": "Filter - Get Factions for a single Side",
+          "link": "factions/filter_-_get_factions_for_a_single_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions?filter[side_id]=:side_id",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get Mini Factions",
+          "link": "factions/filter_-_get_mini_factions.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions?filter[is_mini]=:is_mini",
+          "method": "get"
+        },
+        {
           "description": "Get A Single Faction",
           "link": "factions/get_a_single_faction.json",
           "groups": "all",
           "route": "/api/v3/public/factions/:id",
-          "method": "get"
-        },
-        {
-          "description": "Get Mini Factions",
-          "link": "factions/get_mini_factions.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions?filter[is_mini]=true",
           "method": "get"
         },
         {

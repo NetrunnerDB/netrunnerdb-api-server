@@ -26,6 +26,26 @@ resource "Card Sets" do
     end
   end
 
+  get "/api/v3/public/card_sets?filter[card_cycle_id]=:card_cycle_id" do
+    route_summary 'Filter - Card Cycle ID'
+    parameter :card_cycle_id, type: :string, required: true
+
+    let(:side_id) { 'borealis' }
+    example_request "Filter - Get Card Sets filtered to a Card Cycle" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id" do
+    route_summary 'Filter - Card Set Type ID'
+    parameter :card_set_type_id, type: :string, required: true
+
+    let(:side_id) { 'core' }
+    example_request "Filter - Get Card Sets filtered to a Card Set Type" do
+      expect(status).to eq 200
+    end
+  end
+
   get "/api/v3/public/card_sets/:id/relationships/card_cycle" do
     route_summary "Retrieve Card Cycle ID for a Card Set"
     parameter :id, type: :string, required: true
