@@ -1,7 +1,6 @@
 require 'parslet'
-# require_relative "search_parser"
 
-class CardSearchParser < Parslet::Parser
+class SearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
 
