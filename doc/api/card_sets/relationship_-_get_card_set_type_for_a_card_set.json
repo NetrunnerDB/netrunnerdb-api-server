@@ -1,0 +1,41 @@
+{
+  "resource": "Card Sets",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/card_sets/:id/card_set_type",
+  "description": "Relationship - Get Card Set Type for a Card Set",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/card_sets/midnight_sun/card_set_type",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"booster_pack\",\n    \"type\": \"card_set_types\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/booster_pack\"\n    },\n    \"attributes\": {\n      \"name\": \"Booster Pack\",\n      \"description\": \"A booster pack released as a subset of a larger release.\",\n      \"updated_at\": \"2022-11-13T01:40:16.251Z\"\n    },\n    \"relationships\": {\n      \"card_sets\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/booster_pack/relationships/card_sets\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/booster_pack/card_sets\"\n        }\n      }\n    }\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/card_set_type\" -X GET "
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "resource": "Card Cycles",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/card_cycles/:id/card_sets",
+  "description": "Relationship - Get Card Sets for a Card Cycle",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/card_cycles/borealis/card_sets",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"midnight_sun\",\n      \"type\": \"card_sets\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun\"\n      },\n      \"attributes\": {\n        \"name\": \"Midnight Sun\",\n        \"date_release\": \"2022-07-22\",\n        \"size\": 65,\n        \"card_cycle_id\": \"borealis\",\n        \"card_set_type_id\": \"booster_pack\",\n        \"legacy_code\": null,\n        \"updated_at\": \"2022-11-13T01:40:15.274Z\"\n      },\n      \"relationships\": {\n        \"card_cycle\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/relationships/card_cycle\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/card_cycle\"\n          }\n        },\n        \"card_set_type\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/relationships/card_set_type\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/card_set_type\"\n          }\n        },\n        \"printings\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/relationships/printings\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/printings\"\n          }\n        },\n        \"cards\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/relationships/cards\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/midnight_sun/cards\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"parhelion\",\n      \"type\": \"card_sets\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion\"\n      },\n      \"attributes\": {\n        \"name\": \"Parhelion\",\n        \"date_release\": \"2022-12-12\",\n        \"size\": 65,\n        \"card_cycle_id\": \"borealis\",\n        \"card_set_type_id\": \"booster_pack\",\n        \"legacy_code\": null,\n        \"updated_at\": \"2022-11-13T01:40:15.274Z\"\n      },\n      \"relationships\": {\n        \"card_cycle\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/relationships/card_cycle\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/card_cycle\"\n          }\n        },\n        \"card_set_type\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/relationships/card_set_type\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/card_set_type\"\n          }\n        },\n        \"printings\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/relationships/printings\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/printings\"\n          }\n        },\n        \"cards\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/relationships/cards\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_sets/parhelion/cards\"\n          }\n        }\n      }\n    }\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_cycles/borealis/card_sets\" -X GET "
+    }
+  ]
+}

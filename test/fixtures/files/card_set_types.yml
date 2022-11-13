@@ -1,0 +1,9 @@
+core:
+  id: core
+  name: "Core"
+  description: "A core set, or set that makes up part of the core selection of cards."
+
+booster_pack:
+  id: booster_pack
+  name: "Booster Pack"
+  description: "A booster pack released as a subset of a larger release."

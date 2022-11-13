@@ -5,6 +5,7 @@ core:
   size: 113
   position: 1
   card_cycle_id: core
+  card_set_type_id: core
 
 midnight_sun:
   id: midnight_sun
@@ -13,6 +14,7 @@ midnight_sun:
   size: 65
   position: 33
   card_cycle_id: borealis
+  card_set_type_id: booster_pack
 
 parhelion:
   id: parhelion 
@@ -21,4 +23,5 @@ parhelion:
   size: 65
   position: 34
   card_cycle_id: borealis
-    
+  card_set_type_id: booster_pack
+ 
