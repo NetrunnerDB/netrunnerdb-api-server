@@ -63,47 +63,123 @@
       ]
     },
     {
-      "name": "Card Subypes",
+      "name": "Card Sets",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Card Sets",
+          "link": "card_sets/all_card_sets.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Set",
+          "link": "card_sets/get_a_single_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Cycle ID for a Card Set",
+          "link": "card_sets/relationship_-_get_card_cycle_id_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/relationships/card_cycle",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Cycle for a Card Set",
+          "link": "card_sets/relationship_-_get_card_cycle_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/card_cycle",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card IDs for a Card Set",
+          "link": "card_sets/relationship_-_get_card_ids_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/relationships/cards",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Set ID for a Card Set",
+          "link": "card_sets/relationship_-_get_card_set_id_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/relationships/card_set_type",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Set Type for a Card Set",
+          "link": "card_sets/relationship_-_get_card_set_type_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/card_set_type",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Cards for a Card Set",
+          "link": "card_sets/relationship_-_get_cards_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/cards",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printing IDs for a Card Set",
+          "link": "card_sets/relationship_-_get_printing_ids_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/relationships/printings",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for a Card Set",
+          "link": "card_sets/relationship_-_get_printings_for_a_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id/printings",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "Card Subtypes",
       "explanation": null,
       "examples": [
         {
           "description": "All Card Subtypes",
-          "link": "card_subypes/all_card_subtypes.json",
+          "link": "card_subtypes/all_card_subtypes.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes",
           "method": "get"
         },
         {
           "description": "Get A Single Card Subtype",
-          "link": "card_subypes/get_a_single_card_subtype.json",
+          "link": "card_subtypes/get_a_single_card_subtype.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes/:id",
           "method": "get"
         },
         {
           "description": "Relationship - Get Card IDs for a Card Subtype",
-          "link": "card_subypes/relationship_-_get_card_ids_for_a_card_subtype.json",
+          "link": "card_subtypes/relationship_-_get_card_ids_for_a_card_subtype.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes/:id/relationships/cards",
           "method": "get"
         },
         {
           "description": "Relationship - Get Cards for a Card Subtype",
-          "link": "card_subypes/relationship_-_get_cards_for_a_card_subtype.json",
+          "link": "card_subtypes/relationship_-_get_cards_for_a_card_subtype.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes/:id/cards",
           "method": "get"
         },
         {
           "description": "Relationship - Get Printing IDs for a Card Subtype",
-          "link": "card_subypes/relationship_-_get_printing_ids_for_a_card_subtype.json",
+          "link": "card_subtypes/relationship_-_get_printing_ids_for_a_card_subtype.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes/:id/relationships/printings",
           "method": "get"
         },
         {
           "description": "Relationship - Get Printings for a Card Subtype",
-          "link": "card_subypes/relationship_-_get_printings_for_a_card_subtype.json",
+          "link": "card_subtypes/relationship_-_get_printings_for_a_card_subtype.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes/:id/printings",
           "method": "get"
