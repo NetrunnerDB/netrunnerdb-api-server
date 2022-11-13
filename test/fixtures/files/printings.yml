@@ -11,6 +11,19 @@ prisec:
   quantity: 3
   date_release: 2012-09-06
 
+hedge_fund_core_set:
+  id: "01110"
+  card_id: hedge_fund
+  card_set_id: core
+  printed_text: "Gain money as a corp"
+  stripped_printed_text: "Gain money as a corp"
+  printed_is_unique: false
+  flavor: "Hedge funds are run by jagoffs"
+  display_illustrators: "Ann Illustrator"
+  position: 110
+  quantity: 3
+  date_release: 2012-09-06
+
 sure_gamble_core_set:
   id: "01050"
   card_id: sure_gamble

@@ -290,6 +290,96 @@
       ]
     },
     {
+      "name": "Cards",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Cards",
+          "link": "cards/all_cards.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card",
+          "link": "cards/get_a_single_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Subtype IDs for a Card",
+          "link": "cards/relationship_-_get_card_subtype_ids_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/relationships/card_subtypes",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Subtypes for a Card",
+          "link": "cards/relationship_-_get_card_subtypes_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/card_subtypes",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Type ID for a Card",
+          "link": "cards/relationship_-_get_card_type_id_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/relationships/card_type",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Type for a Card",
+          "link": "cards/relationship_-_get_card_type_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/card_type",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Faction ID for a Card",
+          "link": "cards/relationship_-_get_faction_id_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/relationships/faction",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Faction for a Card",
+          "link": "cards/relationship_-_get_faction_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/faction",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printing IDs for a Card",
+          "link": "cards/relationship_-_get_printing_ids_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/relationships/printings",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for a Card",
+          "link": "cards/relationship_-_get_printings_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/printings",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Side ID for a Card",
+          "link": "cards/relationship_-_get_side_id_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/relationships/side",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Side for a Card",
+          "link": "cards/relationship_-_get_side_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/side",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Factions",
       "explanation": null,
       "examples": [
