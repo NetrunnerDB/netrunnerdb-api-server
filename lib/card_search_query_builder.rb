@@ -264,8 +264,7 @@ class CardSearchQueryBuilder
         end
 
         # Generate SQL query and parameters from AST
-        # Note: this has the side effect of adding the query parameters to
-        # @@parameters
+        # This has the side effect of adding the SQL parameters to @where_values
         @where_values = []
         @where = transform.apply(@parse_tree).construct_clause(@where_values)
 
