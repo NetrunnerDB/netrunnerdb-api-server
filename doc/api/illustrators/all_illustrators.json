@@ -1,0 +1,36 @@
+{
+  "resource": "Illustrators",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/illustrators",
+  "description": "All Illustrators",
+  "explanation": null,
+  "parameters": [
+
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/illustrators",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"ann_illustrator\",\n      \"type\": \"illustrators\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator\"\n      },\n      \"attributes\": {\n        \"name\": \"Ann Illustrator\",\n        \"updated_at\": \"2022-11-13T02:03:43.173Z\"\n      },\n      \"relationships\": {\n        \"printings\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator/relationships/printings\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator/printings\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"good_drawers\",\n      \"type\": \"illustrators\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/good_drawers\"\n      },\n      \"attributes\": {\n        \"name\": \"Good Drawers\",\n        \"updated_at\": \"2022-11-13T02:03:43.173Z\"\n      },\n      \"relationships\": {\n        \"printings\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/good_drawers/relationships/printings\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/good_drawers/printings\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"tom_of_netrunner\",\n      \"type\": \"illustrators\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/tom_of_netrunner\"\n      },\n      \"attributes\": {\n        \"name\": \"Tom of Netrunner\",\n        \"updated_at\": \"2022-11-13T02:03:43.173Z\"\n      },\n      \"relationships\": {\n        \"printings\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/tom_of_netrunner/relationships/printings\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/tom_of_netrunner/printings\"\n          }\n        }\n      }\n    }\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/illustrators\" -X GET "
+    }
+  ]
+}

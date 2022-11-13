@@ -345,6 +345,40 @@
       ]
     },
     {
+      "name": "Illustrators",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Illustrators",
+          "link": "illustrators/all_illustrators.json",
+          "groups": "all",
+          "route": "/api/v3/public/illustrators",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Illustrator",
+          "link": "illustrators/get_a_single_illustrator.json",
+          "groups": "all",
+          "route": "/api/v3/public/illustrators/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printing IDs for an Illustrator",
+          "link": "illustrators/relationship_-_get_printing_ids_for_an_illustrator.json",
+          "groups": "all",
+          "route": "/api/v3/public/illustrators/:id/relationships/printings",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for an Illustrator",
+          "link": "illustrators/relationship_-_get_printings_for_an_illustrator.json",
+          "groups": "all",
+          "route": "/api/v3/public/illustrators/:id/printings",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Sides",
       "explanation": null,
       "examples": [
