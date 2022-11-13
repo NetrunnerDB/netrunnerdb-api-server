@@ -87,27 +87,27 @@ class CardSearchQueryBuilder
     Context = Struct.new(:keyword, :operator, :negative_op, :field)
 
     NodeAnd = Struct.new(:children) do
-      def construct_clause
+      def construct_clause(parameters)
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause }.join(' and ') + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause(parameters) }.join(' and ') + bracs[1]
       end
     end
 
     NodeOr = Struct.new(:children) do
-      def construct_clause
+      def construct_clause(parameters)
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause }.join(' or ') + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause(parameters) }.join(' or ') + bracs[1]
       end
     end
 
     NodeNegate = Struct.new(:child) do
-      def construct_clause
-        'not ' + child.construct_clause(context)
+      def construct_clause(parameters)
+        'not ' + child.construct_clause(parameters)
       end
     end
 
     NodeKeyword = Struct.new(:name) do
-      def construct_clause
+      def construct_clause(parameters)
         name
       end
     end
@@ -116,18 +116,18 @@ class CardSearchQueryBuilder
       def is_negative
         operator == '!'
       end
-      def construct_clause
+      def construct_clause(parameters)
         operator
       end
     end
 
     NodePair = Struct.new(:keyword, :operator, :values) do
-      def construct_clause
+      def construct_clause(parameters)
         # Determine the context of the query
-        keyword_c = keyword.construct_clause
+        keyword_c = keyword.construct_clause(parameters)
         context = Context.new(
           keyword_c,
-          operator.construct_clause,
+          operator.construct_clause(parameters),
           operator.is_negative,
           @@fields.find { |f| f.keywords.include?(keyword_c) }
         )
@@ -143,27 +143,27 @@ class CardSearchQueryBuilder
         end
 
         # Construct the subtree within the new context
-        values.construct_clause(context)
+        values.construct_clause(parameters, context)
       end
     end
 
     NodeValueAnd = Struct.new(:children) do
-      def construct_clause(context)
+      def construct_clause(parameters, context)
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause(context) }.join(' and ') + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause(parameters, context) }.join(' and ') + bracs[1]
       end
     end
 
     NodeValueOr = Struct.new(:children) do
-      def construct_clause(context)
+      def construct_clause(parameters, context)
         connector = context.negative_op ? ' and ' : ' or '
         bracs = children.length > 1 ? ['(', ')'] : ['', '']
-        bracs[0] + children.map { |c| c.construct_clause(context) }.join(connector) + bracs[1]
+        bracs[0] + children.map { |c| c.construct_clause(parameters, context) }.join(connector) + bracs[1]
       end
     end
 
     NodeLiteral = Struct.new(:value, :is_regex) do
-      def construct_clause(context)
+      def construct_clause(parameters, context)
         # Only accept regex values for string fields
         if context.field.type != :string and is_regex != nil
           raise '%s field does not accept regular expressions but was passed %s' % [context.field.type, value]
@@ -180,7 +180,7 @@ class CardSearchQueryBuilder
           if value.match?(/\A(\w+)-(\d+)\Z/i)
             value.gsub!('-', '=')
           end
-          @@parameters << value
+          parameters << value
           return '%s (? = ANY(%s))' % [sql_operator, context.field.sql]
 
         # Booleans
@@ -188,7 +188,7 @@ class CardSearchQueryBuilder
           if !['true', 'false', 't', 'f', '1', '0'].include?(value)
             raise 'Invalid value "%s" for boolean field "%s"' % [value, context.keyword]
           end
-          @@parameters << value
+          parameters << value
           return '%s %s ?' % [context.field.sql, sql_operator]
 
         # Integers
@@ -196,15 +196,15 @@ class CardSearchQueryBuilder
           if !value.match?(/\A(\d+|x)\Z/i)
             raise 'Invalid value "%s" for integer field "%s"' % [value, context.keyword]
           end
-          @@parameters << value.downcase == 'x' ? -1 : value
+          parameters << value.downcase == 'x' ? -1 : value
           return '%s %s ?' % [context.field.sql, sql_operator]
 
         # Strings
         when :string
           if is_regex
-            @@parameters << "%s" % value
+            parameters << "%s" % value
           else
-            @@parameters << '%%%s%%' % value.downcase
+            parameters << '%%%s%%' % value.downcase
           end
           return 'lower(%s) %s ?' % [context.field.sql, sql_operator]
 
@@ -266,9 +266,8 @@ class CardSearchQueryBuilder
         # Generate SQL query and parameters from AST
         # Note: this has the side effect of adding the query parameters to
         # @@parameters
-        @@parameters = []
-        @where = transform.apply(@parse_tree).construct_clause
-        @where_values = @@parameters
+        @where_values = []
+        @where = transform.apply(@parse_tree).construct_clause(@where_values)
 
         # TODO(plural): build in explicit support for requirements
         #   {is_banned,is_restricted,eternal_points,has_global_penalty,universal_faction_cost} all require restriction_id, would be good to have card_pool_id as well.
@@ -281,7 +280,7 @@ class CardSearchQueryBuilder
         return @where
     end
     def where_values
-        return @@parameters
+        return @where_values
     end
     def left_joins
         return @left_joins.to_a
