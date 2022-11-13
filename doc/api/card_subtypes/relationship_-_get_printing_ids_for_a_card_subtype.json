@@ -1,5 +1,5 @@
 {
-  "resource": "Card Subypes",
+  "resource": "Card Subtypes",
   "resource_explanation": null,
   "http_method": "GET",
   "route": "/api/v3/public/card_subtypes/:id/relationships/printings",
