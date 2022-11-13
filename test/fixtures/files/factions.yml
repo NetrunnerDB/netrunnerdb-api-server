@@ -1,3 +1,21 @@
+neutral_corp:
+  id: neutral_corp
+  name: Neutral Corp
+  side_id: "corp"
+  is_mini: false
+
+neutral_runner:
+  id: neutral_runner
+  name: Neutral Runner 
+  side_id: "runner"
+  is_mini: false
+
+haas_bioroid:
+  id: "haas_bioroid"
+  name: "Haas-Bioroid"
+  side_id: "corp"
+  is_mini: false
+
 weyland:
   id: "weyland_consortium"
   name: "Weyland Consortium"

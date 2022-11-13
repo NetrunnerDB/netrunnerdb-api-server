@@ -3,6 +3,9 @@ require 'rspec_api_documentation/dsl'
 
 resource "Factions" do
   fixtures :all
+  Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
+  Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
+  Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
 
   header "Content-Type", "application/json"
   header "Host", "api-preview.netrunnerdb.com"
@@ -33,7 +36,17 @@ resource "Factions" do
   end
 
   get "/api/v3/public/factions/:id/relationships/side" do
-    route_summary "Retrieve side for a faction"
+    route_summary "Retrieve Side ID for a faction"
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'weyland_consortium' }
+    example_request "Relationship - Get Side ID for a Faction" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/factions/:id/side" do
+    route_summary "Retrieve Side for a Faction"
     parameter :id, type: :string, required: true
 
     let(:id) { 'weyland_consortium' }
@@ -43,25 +56,45 @@ resource "Factions" do
   end
 
   get "/api/v3/public/factions/:id/relationships/cards" do
+    route_summary "Retrieve Card Ids for a Faction"
+
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'neutral_runner' }
+    example_request "Relationship - Get Card Ids for a Faction" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/factions/:id/cards" do
     route_summary "Retrieve Cards for a Faction"
 
     parameter :id, type: :string, required: true
 
-    let(:id) { 'weyland_consortium' }
+    let(:id) { 'neutral_runner' }
     example_request "Relationship - Get Cards for a Faction" do
-      explanation "TODO(plural): Add Card Fixtures"
       expect(status).to eq 200
     end
   end
 
   get "/api/v3/public/factions/:id/relationships/printings" do
+    route_summary "Retrieve Printing Ids for a Faction"
+
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'neutral_corp' }
+    example_request "Relationship - Get Printing Ids for a Faction" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/factions/:id/printings" do
     route_summary "Retrieve Printings for a Faction"
 
     parameter :id, type: :string, required: true
 
-    let(:id) { 'adam' }
+    let(:id) { 'neutral_corp' }
     example_request "Relationship - Get Printings for a Faction" do
-      explanation "TODO(plural): Add Printing Fixtures"
       expect(status).to eq 200
     end
   end

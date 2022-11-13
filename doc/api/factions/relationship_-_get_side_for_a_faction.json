@@ -2,7 +2,7 @@
   "resource": "Factions",
   "resource_explanation": null,
   "http_method": "GET",
-  "route": "/api/v3/public/factions/:id/relationships/side",
+  "route": "/api/v3/public/factions/:id/side",
   "description": "Relationship - Get Side for a Faction",
   "explanation": null,
   "parameters": [
@@ -19,7 +19,7 @@
   "requests": [
     {
       "request_method": "GET",
-      "request_path": "/api/v3/public/factions/weyland_consortium/relationships/side",
+      "request_path": "/api/v3/public/factions/weyland_consortium/side",
       "request_body": null,
       "request_headers": {
         "Content-Type": "application/json",
@@ -30,12 +30,12 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"type\": \"sides\",\n    \"id\": \"corp\"\n  },\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/weyland_consortium/relationships/side\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/factions/weyland_consortium/side\"\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"corp\",\n    \"type\": \"sides\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp\"\n    },\n    \"attributes\": {\n      \"name\": \"Corp\",\n      \"updated_at\": \"2022-11-13T00:57:27.944Z\"\n    },\n    \"relationships\": {\n      \"factions\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/relationships/factions\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/factions\"\n        }\n      },\n      \"card_types\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/relationships/card_types\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/card_types\"\n        }\n      },\n      \"cards\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/relationships/cards\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/cards\"\n        }\n      },\n      \"printings\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/relationships/printings\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/corp/printings\"\n        }\n      }\n    }\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json"
       },
       "response_content_type": "application/vnd.api+json",
-      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/factions/weyland_consortium/relationships/side\" -X GET "
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/factions/weyland_consortium/side\" -X GET "
     }
   ]
 }
