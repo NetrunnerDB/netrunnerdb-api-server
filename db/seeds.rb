@@ -1,15 +1,8 @@
 require 'rake'
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
-if Rails.env != 'test'
-  puts 'Not seeding any data for non-test environment.'
-else
-  puts "It's me!  The test environment!  Let's seed, friends!"
-#  Rails.application.load_tasks
+
+# Load up all the fixtures when seeding in the test environment.
+# For the public data, this works great because we can rely on that
+# data for all the tests and the API doc generation.
+if Rails.env == 'test'
   Rake::Task["db:fixtures:load"].invoke
 end
