@@ -52,7 +52,7 @@ jobs:
 
       - name: Set up database schema
         run: |
-          bin/rails db:create db:schema:load --trace
+          bin/rails db:reset --trace
 
       - name: Run rspec tests
         run: bundle exec rspec
