@@ -2,11 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Factions" do
-  fixtures :all
-  Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
-  Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
-  Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
-
   header "Content-Type", "application/json"
   header "Host", "api-preview.netrunnerdb.com"
 
