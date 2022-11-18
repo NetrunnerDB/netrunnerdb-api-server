@@ -144,19 +144,19 @@ class SearchQueryBuilder
 
   NodeAnd = Struct.new(:children) do
     def construct_clause(parameters, fields)
-      children.map { |c| c.construct_clause(parameters, fields) }.join(' and ')
+      children.map { |c| c.construct_clause(parameters, fields) }.join(' AND ')
     end
   end
 
   NodeOr = Struct.new(:children) do
     def construct_clause(parameters, fields)
-      children.map { |c| c.construct_clause(parameters, fields) }.join(' or ')
+      children.map { |c| c.construct_clause(parameters, fields) }.join(' OR ')
     end
   end
 
   NodeNegate = Struct.new(:child) do
     def construct_clause(parameters, fields)
-      'not ' + child.construct_clause(parameters, fields)
+      'NOT ' + child.construct_clause(parameters, fields)
     end
   end
 
