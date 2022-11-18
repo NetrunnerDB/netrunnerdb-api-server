@@ -91,6 +91,9 @@ class SearchQueryBuilder
           )
         }
 
+        # Match brackets
+        rule(:bracketed => simple(:b)) { NodeBracketed.new(b) }
+
         # Match value subtrees
         rule(:value_ands => simple(:a)) { NodeValueAnd.new([a]) }
         rule(:value_ands => sequence(:as)) { NodeValueAnd.new(as) }
@@ -141,21 +144,26 @@ class SearchQueryBuilder
 
   NodeAnd = Struct.new(:children) do
     def construct_clause(parameters, fields)
-      bracs = children.length > 1 ? ['(', ')'] : ['', '']
-      bracs[0] + children.map { |c| c.construct_clause(parameters, fields) }.join(' and ') + bracs[1]
+      children.map { |c| c.construct_clause(parameters, fields) }.join(' and ')
     end
   end
 
   NodeOr = Struct.new(:children) do
     def construct_clause(parameters, fields)
-      bracs = children.length > 1 ? ['(', ')'] : ['', '']
-      bracs[0] + children.map { |c| c.construct_clause(parameters, fields) }.join(' or ') + bracs[1]
+      children.map { |c| c.construct_clause(parameters, fields) }.join(' or ')
     end
   end
 
   NodeNegate = Struct.new(:child) do
     def construct_clause(parameters, fields)
       'not ' + child.construct_clause(parameters, fields)
+    end
+  end
+
+  NodeBracketed = Struct.new(:child) do
+    def construct_clause(parameters, fields)
+      bracs = child.instance_of?(NodeBracketed) ? '' : '()'
+      bracs[0] + child.construct_clause(parameters, fields) + bracs[1]
     end
   end
 

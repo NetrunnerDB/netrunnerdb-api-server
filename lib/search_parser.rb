@@ -44,7 +44,7 @@ class SearchParser < Parslet::Parser
   rule(:unary) { (str('-') >> term).as(:negate) | term }
   rule(:term) { pair | singular | bracketed }
   rule(:singular) { (regex | string).as(:singular) }
-  rule(:bracketed) { str('(') >> expr >> str(')') }
+  rule(:bracketed) { str('(') >> expr.as(:bracketed) >> str(')') }
 
   rule(:ands) { (unary >> conjunction.repeat).as(:ands) }
   rule(:conjunction) {
