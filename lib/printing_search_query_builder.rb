@@ -28,7 +28,7 @@ class PrintingSearchQueryBuilder < SearchQueryBuilder
     FieldData.new(:boolean, 'unified_printings.on_encounter_effect', ['on_encounter_effect']),
     FieldData.new(:boolean, 'unified_printings.performs_trace', ['performs_trace']),
     FieldData.new(:boolean, 'unified_printings.trash_ability', ['trash_ability']),
-    FieldData.new(:date, 'unified_printings.date_release', ['date_release', 'r']),
+    FieldData.new(:date, 'unified_printings.date_release', ['release_date', 'date_release', 'r']),
     FieldData.new(:integer, 'unified_printings.advancement_requirement', ['advancement_cost', 'g']),
     FieldData.new(:integer, 'unified_printings.agenda_points', ['agenda_points', 'v']),
     FieldData.new(:integer, 'unified_printings.base_link', ['base_link', 'l']),
