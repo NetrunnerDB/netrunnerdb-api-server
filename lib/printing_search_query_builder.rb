@@ -47,7 +47,7 @@ class PrintingSearchQueryBuilder < SearchQueryBuilder
     FieldData.new(:string, 'unified_printings.card_type_id', ['card_type', 't']),
     FieldData.new(:string, 'unified_printings.faction_id', ['faction', 'f']),
     FieldData.new(:string, 'unified_printings.flavor', ['flavor', 'flavour', 'a']),
-    FieldData.new(:string, 'unified_printings.flavor', ['illustrator', 'i']),
+    FieldData.new(:string, 'unified_printings.display_illustrators', ['illustrator', 'i']),
     FieldData.new(:string, 'unified_printings.side_id', ['side', 'd']),
     FieldData.new(:string, 'unified_printings.stripped_text', ['text', 'x']),
     FieldData.new(:string, 'unified_printings.stripped_title', ['title', '_'])
