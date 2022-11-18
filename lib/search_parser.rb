@@ -41,7 +41,7 @@ class SearchParser < Parslet::Parser
   rule(:value) { value_bracketed | regex | string }
   rule(:value_bracketed) { str('(') >> value_ors >> str(')') }
 
-  rule(:unary) { (str('-') >> term).as(:negate) | term }
+  rule(:unary) { (match('[!-]') >> term).as(:negate) | term }
   rule(:term) { pair | singular | bracketed }
   rule(:singular) { (regex | string).as(:singular) }
   rule(:bracketed) { str('(') >> expr.as(:bracketed) >> str(')') }
