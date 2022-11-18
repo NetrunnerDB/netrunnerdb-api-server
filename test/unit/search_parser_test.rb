@@ -11,15 +11,17 @@ class SearchParserTest < Minitest::Test
   end
 
   def test_fails_with_non_keyword
-    input = %Q{w}
+    inputs = [%Q{...}, %Q{1}]
     parser = SearchParser.new.keyword
-    tree = nil
-    begin
-      tree = parser.parse(input)
-      refute(true, 'parser unexpectedly passed')
-    rescue Parslet::ParseFailed => e
-      assert tree.nil?
-    end
+    inputs.each {|i|
+      tree = nil
+      begin
+        tree = parser.parse(i)
+        refute(true, 'parser unexpectedly passed')
+      rescue Parslet::ParseFailed => e
+        assert tree.nil?
+      end
+    }
   end
 
   def test_parses_an_operator
