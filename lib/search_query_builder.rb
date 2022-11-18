@@ -254,10 +254,11 @@ class SearchQueryBuilder
 
       # Dates
       when :date
-        if ['now'].include?(value.downcase)
+        value.downcase!
+        if ['now'].include?(value)
           @value = Time.now.strftime("%Y-%m-%d")
         elsif !value.match?(/\d{4}-\d{2}-\d{2}|\d{8}/)
-          raise 'Invalid date format for field %s - expected YYYY-MM-DD but got %s' % [context.keyword, value]
+          raise 'Invalid value "%s" for date field "%s" - only YYYY-MM-DD or YYYYMMDD are supported.' % [value, context.keyword]
         end
         parameters << value
         return '%s %s ?' % [context.field.sql, sql_operator]
