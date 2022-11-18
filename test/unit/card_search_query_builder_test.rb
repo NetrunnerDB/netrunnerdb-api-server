@@ -86,12 +86,12 @@ class CardSearchQueryBuilderTest < Minitest::Test
     bad_operators = ['<', '<=', '>', '>=']
     bad_operators.each {|op|
       input = 'is_unique%strue' % op
-      builder = CardSearchQueryBuilder.new(input)
-
-      assert_equal 'Invalid boolean operator "%s"' % op, builder.parse_error
-      assert_equal '', builder.where
-      assert_equal [], builder.where_values
-      assert_equal [], builder.left_joins
+      begin
+        builder = CardSearchQueryBuilder.new(input)
+        refute(true, 'parser unexpectedly passed')
+      rescue RuntimeError => e
+        assert_equal 'Invalid boolean operator "%s"' % op, e.message
+      end
     }
   end
 
@@ -99,12 +99,12 @@ class CardSearchQueryBuilderTest < Minitest::Test
     bad_operators = ['<', '<=', '>', '>=']
     bad_operators.each {|op|
       input = 'title%ssure' % op
-      builder = CardSearchQueryBuilder.new(input)
-
-      assert_equal 'Invalid string operator "%s"' % op, builder.parse_error
-      assert_equal '', builder.where
-      assert_equal [], builder.where_values
-      assert_equal [], builder.left_joins
+      begin
+        builder = CardSearchQueryBuilder.new(input)
+        refute(true, 'parser unexpectedly passed')
+      rescue RuntimeError => e
+        assert_equal 'Invalid string operator "%s"' % op, e.message
+      end
     }
   end
 
@@ -123,24 +123,28 @@ class CardSearchQueryBuilderTest < Minitest::Test
     builder = CardSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(unified_cards.stripped_title) NOT LIKE ?', builder.where
+    assert_equal 'NOT lower(unified_cards.stripped_title) LIKE ?', builder.where
     assert_equal ['%diversion%'], builder.where_values
     assert_equal [], builder.left_joins
   end
 
   def test_quoted_string_negated
-    input = %Q{"!diversion of funds"}
+    input = %Q{!"diversion of funds"}
     builder = CardSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal 'lower(unified_cards.stripped_title) NOT LIKE ?', builder.where
+    assert_equal 'NOT lower(unified_cards.stripped_title) LIKE ?', builder.where
     assert_equal ['%diversion of funds%'], builder.where_values
     assert_equal [], builder.left_joins
   end
 
   def test_bad_query_bad_operator
-    builder = CardSearchQueryBuilder.new('w:bleargh')
-    refute_equal builder.parse_error, nil
+    input = %Q{'asdfasdf'}
+    begin
+      builder = CardSearchQueryBuilder.new(input + ':bleargh')
+    rescue RuntimeError => e
+      assert_equal 'Unknown keyword "%s"' % input, e.message
+    end
   end
 
   def test_is_banned_no_restriction_specified
@@ -235,21 +239,19 @@ class CardSearchQueryBuilderTest < Minitest::Test
 
   def test_bad_boolean_value
     input = %Q{additional_cost:nah}
-    builder = CardSearchQueryBuilder.new(input)
-
-    assert_equal 'Invalid value "nah" for boolean field "additional_cost"', builder.parse_error
-    assert_equal '', builder.where
-    assert_equal [], builder.where_values
-    assert_equal [], builder.left_joins
+    begin
+      builder = CardSearchQueryBuilder.new(input)
+    rescue RuntimeError => e
+      assert_equal 'Invalid value "nah" for boolean field "additional_cost"', e.message
+    end
   end
 
   def test_bad_numeric_value
     input = %Q{trash_cost:"too damn high"}
-    builder = CardSearchQueryBuilder.new(input)
-
-    assert_equal 'Invalid value "too damn high" for integer field "trash_cost"', builder.parse_error
-    assert_equal '', builder.where
-    assert_equal [], builder.where_values
-    assert_equal [], builder.left_joins
+    begin
+      builder = CardSearchQueryBuilder.new(input)
+    rescue RuntimeError => e
+      assert_equal 'Invalid value "too damn high" for integer field "trash_cost"', e.message
+    end
   end
 end
