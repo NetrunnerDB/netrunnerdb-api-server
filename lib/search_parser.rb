@@ -33,7 +33,8 @@ class SearchParser < Parslet::Parser
   # a later entry will clobber the later entries and throw an error parsing text with the later entries.
   rule(:keyword) { match('[_abcdefghilmnoprstuvxyz]').repeat(1) }
 
-  rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> value_ors.as(:values) }
+  rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> values.as(:values) }
+  rule(:values) { value_ors }
   rule(:operator) { str('<=') | str('>=') | match('[:!<>]') }
   rule(:value_ors) { (value_ands >> (str('|') >> value_ands).repeat).as(:value_ors) }
   rule(:value_ands) { (value >> (str('&') >> value).repeat).as(:value_ands) }
