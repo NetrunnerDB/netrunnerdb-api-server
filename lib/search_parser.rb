@@ -31,7 +31,7 @@ class SearchParser < Parslet::Parser
 
   # Note that while this list should generally be kept sorted, an entry that is a prefix of
   # a later entry will clobber the later entries and throw an error parsing text with the later entries.
-  rule(:keyword) { match('[_abcdefghilmnoprstuvxyz]').repeat(1) }
+  rule(:keyword) { match('[_a-z]').repeat(1) }
 
   rule(:pair) { keyword.as(:keyword) >> operator.as(:operator) >> values.as(:values) }
   rule(:values) { value_ors }
