@@ -256,7 +256,7 @@ class SearchQueryBuilder
       when :date
         if ['now'].include?(value.downcase)
           @value = Time.now.strftime("%Y-%m-%d")
-        elsif !value.match?(/\d\d\d\d-\d\d-\d\d/)
+        elsif !value.match?(/\d{4}-\d{2}-\d{2}|\d{8}/)
           raise 'Invalid date format for field %s - expected YYYY-MM-DD but got %s' % [context.keyword, value]
         end
         parameters << value
