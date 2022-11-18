@@ -55,7 +55,7 @@ class SearchParser < Parslet::Parser
   rule(:ors) { (ands >> disjunction.repeat).as(:ors) }
   rule(:disjunction) { spaces >> str('or') >> spaces >> ands }
 
-  rule(:expr) { ors }
+  rule(:expr) { spaces? >> ors >> spaces? }
 
   rule(:query) { expr }
   root :query
