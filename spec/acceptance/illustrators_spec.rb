@@ -12,7 +12,6 @@ resource "Illustrators" do
   end
 
   get "/api/v3/public/illustrators/:id" do
-    route_summary 'Retrieve a single Illustrator by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'ann_illustrator' }
@@ -22,8 +21,6 @@ resource "Illustrators" do
   end
 
   get "/api/v3/public/illustrators/:id/relationships/printings" do
-    route_summary "Retrieve Printing IDs for an Illustrator"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'tom_of_netrunner' }
@@ -33,8 +30,6 @@ resource "Illustrators" do
   end
 
   get "/api/v3/public/illustrators/:id/printings" do
-    route_summary "Retrieve Printings for an Illustrator"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'tom_of_netrunner' }

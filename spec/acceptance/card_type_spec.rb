@@ -12,7 +12,6 @@ resource "Card Types" do
   end
 
   get "/api/v3/public/card_types/:id" do
-    route_summary 'Retrieve a single Card Type by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'upgrade' }
@@ -22,7 +21,6 @@ resource "Card Types" do
   end
 
   get "/api/v3/public/card_types?filter[side_id]=:side_id" do
-    route_summary 'Filter - Side'
     parameter :side_id, type: :string, required: true
 
     let(:side_id) { 'runner' }
@@ -32,8 +30,6 @@ resource "Card Types" do
   end
 
   get "/api/v3/public/card_types/:id/relationships/cards" do
-    route_summary "Retrieve Card IDs for a Card Type"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'upgrade' }
@@ -43,8 +39,6 @@ resource "Card Types" do
   end
 
   get "/api/v3/public/card_types/:id/cards" do
-    route_summary "Retrieve Cards for a Card Type"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'upgrade' }
@@ -54,8 +48,6 @@ resource "Card Types" do
   end
 
   get "/api/v3/public/card_types/:id/relationships/side" do
-    route_summary "Retrieve Side ID for a Card Type"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'upgrade' }
@@ -65,8 +57,6 @@ resource "Card Types" do
   end
 
   get "/api/v3/public/card_types/:id/side" do
-    route_summary "Retrieve Side for a Card Subtype"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'upgrade' }
