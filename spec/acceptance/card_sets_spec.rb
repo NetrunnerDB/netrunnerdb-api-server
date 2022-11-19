@@ -12,7 +12,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id" do
-    route_summary 'Retrieve a single Card Set by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'midnight_sun' }
@@ -22,7 +21,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets?filter[card_cycle_id]=:card_cycle_id" do
-    route_summary 'Filter - Card Cycle ID'
     parameter :card_cycle_id, type: :string, required: true
 
     let(:side_id) { 'borealis' }
@@ -32,7 +30,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id" do
-    route_summary 'Filter - Card Set Type ID'
     parameter :card_set_type_id, type: :string, required: true
 
     let(:side_id) { 'core' }
@@ -42,7 +39,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/relationships/card_cycle" do
-    route_summary "Retrieve Card Cycle ID for a Card Set"
     parameter :id, type: :string, required: true
 
     let(:id) { 'parhelion' }
@@ -52,7 +48,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/card_cycle" do
-    route_summary "Retrieve Card Cycle for a Card Set"
     parameter :id, type: :string, required: true
 
     let(:id) { 'parhelion' }
@@ -62,7 +57,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/relationships/card_set_type" do
-    route_summary "Retrieve Card Set Type ID for a Card Set"
     parameter :id, type: :string, required: true
 
     let(:id) { 'midnight_sun' }
@@ -72,7 +66,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/card_set_type" do
-    route_summary "Retrieve Card Set Type for a Card Set"
     parameter :id, type: :string, required: true
 
     let(:id) { 'midnight_sun' }
@@ -82,8 +75,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/relationships/cards" do
-    route_summary "Retrieve Card IDs for a Card Set"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -93,8 +84,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/cards" do
-    route_summary "Retrieve Cards for a Card Set"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -104,8 +93,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/relationships/printings" do
-    route_summary "Retrieve Printing IDs for a Card Set"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -115,8 +102,6 @@ resource "Card Sets" do
   end
 
   get "/api/v3/public/card_sets/:id/printings" do
-    route_summary "Retrieve Printings for a Card Set"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }

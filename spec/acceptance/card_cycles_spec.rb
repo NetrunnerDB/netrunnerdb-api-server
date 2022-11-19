@@ -12,7 +12,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id" do
-    route_summary 'Retrieve a single Card Cycle by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'borealis' }
@@ -22,7 +21,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id/relationships/card_sets" do
-    route_summary "Retrieve Card Set IDs for a Card Cycle"
     parameter :id, type: :string, required: true
 
     let(:id) { 'borealis' }
@@ -32,7 +30,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id/card_sets" do
-    route_summary "Retrieve Card Sets for a Card Cycle"
     parameter :id, type: :string, required: true
 
     let(:id) { 'borealis' }
@@ -42,8 +39,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id/relationships/cards" do
-    route_summary "Retrieve Card IDs for a Card Cycle"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -53,8 +48,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id/cards" do
-    route_summary "Retrieve Cards for a Card Cycle"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -64,8 +57,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id/relationships/printings" do
-    route_summary "Retrieve Printing IDs for a Card Cycle"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -75,8 +66,6 @@ resource "Card Cycles" do
   end
 
   get "/api/v3/public/card_cycles/:id/printings" do
-    route_summary "Retrieve Printings for a Card Cycle"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }

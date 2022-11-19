@@ -12,7 +12,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id" do
-    route_summary 'Retrieve a single Side by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'runner' }
@@ -22,7 +21,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/relationships/card_types" do
-    route_summary "Retrieve Card Type IDs for a side"
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -32,7 +30,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/card_types" do
-    route_summary "Retrieve Card Types for a side"
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -42,7 +39,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/relationships/factions" do
-    route_summary "Retrieve Faction IDs for a side"
     parameter :id, type: :string, required: true
 
     let(:id) { 'runner' }
@@ -52,7 +48,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/factions" do
-    route_summary "Retrieve Factions for a side"
     parameter :id, type: :string, required: true
 
     let(:id) { 'runner' }
@@ -62,8 +57,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/relationships/cards" do
-    route_summary "Retrieve Card IDs for a side"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -73,8 +66,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/cards" do
-    route_summary "Retrieve Cards for a side"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -84,8 +75,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/relationships/printings" do
-    route_summary "Retrieve Printing IDs for a Side"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -95,8 +84,6 @@ resource "Sides" do
   end
 
   get "/api/v3/public/sides/:id/printings" do
-    route_summary "Retrieve Printings for a Side"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }

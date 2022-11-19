@@ -12,7 +12,6 @@ resource "Card Subtypes" do
   end
 
   get "/api/v3/public/card_subtypes/:id" do
-    route_summary 'Retrieve a single Card Subtype by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'code_gate' }
@@ -22,8 +21,6 @@ resource "Card Subtypes" do
   end
 
   get "/api/v3/public/card_subtypes/:id/relationships/cards" do
-    route_summary "Retrieve Card IDs for a Card Subtype"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'advertisement' }
@@ -33,8 +30,6 @@ resource "Card Subtypes" do
   end
 
   get "/api/v3/public/card_subtypes/:id/cards" do
-    route_summary "Retrieve Cards for a Card Subtype"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'advertisement' }
@@ -44,8 +39,6 @@ resource "Card Subtypes" do
   end
 
   get "/api/v3/public/card_subtypes/:id/relationships/printings" do
-    route_summary "Retrieve Printing IDs for a Card Subtype"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'advertisement' }
@@ -55,8 +48,6 @@ resource "Card Subtypes" do
   end
 
   get "/api/v3/public/card_subtypes/:id/printings" do
-    route_summary "Retrieve Printings for a Card Subtype"
-
     parameter :id, type: :string, required: true
 
     let(:id) { 'advertisement' }

@@ -12,7 +12,6 @@ resource "Card Set Types" do
   end
 
   get "/api/v3/public/card_set_types/:id" do
-    route_summary 'Retrieve a single Card Set Type by ID'
     parameter :id, type: :string, required: true
 
     let(:id) { 'core' }
@@ -22,7 +21,6 @@ resource "Card Set Types" do
   end
 
   get "/api/v3/public/card_set_types/:id/relationships/card_sets" do
-    route_summary "Retrieve Card Set IDs for a Card Set Type"
     parameter :id, type: :string, required: true
 
     let(:id) { 'booster_pack' }
@@ -32,7 +30,6 @@ resource "Card Set Types" do
   end
 
   get "/api/v3/public/card_set_types/:id/card_sets" do
-    route_summary "Retrieve Card Sets for a Card Set Type"
     parameter :id, type: :string, required: true
 
     let(:id) { 'booster_pack' }
