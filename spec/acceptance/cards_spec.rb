@@ -24,8 +24,10 @@ resource "Cards" do
     parameter :query, type: :string, required: true
 
     fields = CardSearchQueryBuilder.fields.map {|x| "* **%s**: Type: %s%s" % [x.keywords.join(', '), x.type.to_s, x.documentation.nil? ? '' : "\n  * %s" % x.documentation]}
-    # TODO(plural): Enforce sort order by type and primary field name.
-    explanation <<-EOM
+    let(:query) { 'gamble' }
+    example_request "Filter - Card Search Operator" do
+      # TODO(plural): Enforce sort order by type and primary field name.
+      explanation <<-EOM
 ### Card Search Syntax
 
 There are 4 types of fields in the Search Filter:
@@ -37,10 +39,8 @@ There are 4 types of fields in the Search Filter:
 
 #### Fields and their types
 #{fields.join("\n")}
-    EOM
+      EOM
 
-    let(:query) { 'gamble' }
-    example_request "Filter - Card Search Operator" do
       expect(status).to eq 200
     end
   end
