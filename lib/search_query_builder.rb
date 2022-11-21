@@ -2,7 +2,7 @@ class SearchQueryBuilder
 
   # A struct for representing an accepted field and its properties
   # :type is one of :array, :boolean, :date, :integer, :string
-  FieldData = Struct.new(:type, :sql, :keywords)
+  FieldData = Struct.new(:type, :sql, :keywords, :documentation)
 
   # Override this in child classes to define the valid fields for each builder
   @fields = []
@@ -268,7 +268,7 @@ class SearchQueryBuilder
         if !value.match?(/\A(\d+|x)\Z/i)
           raise 'Invalid value "%s" for integer field "%s"' % [value, context.keyword]
         end
-        parameters << value.downcase == 'x' ? -1 : value
+        parameters << (value.downcase == 'x' ? -1 : value)
         return '%s %s ?' % [context.field.sql, sql_operator]
 
       # Strings

@@ -301,6 +301,13 @@
           "method": "get"
         },
         {
+          "description": "Filter - Card Search Operator",
+          "link": "cards/filter_-_card_search_operator.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards?filter[search]=:query",
+          "method": "get"
+        },
+        {
           "description": "Get A Single Card",
           "link": "cards/get_a_single_card.json",
           "groups": "all",
