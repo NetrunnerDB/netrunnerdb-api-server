@@ -20,6 +20,32 @@ resource "Printings" do
     end
   end
 
+  get "/api/v3/public/printings?filter[search]=:query" do
+    parameter :query, type: :string, required: true
+
+    fields = PrintingSearchQueryBuilder.fields.map {|x| "* **%s**: Type: %s%s" % [x.keywords.join(', '), x.type.to_s, x.documentation.nil? ? '' : "\n  * %s" % x.documentation]}
+    let(:query) { 'flavor:boi' }
+    example_request "Filter - Printing Search Operator" do
+      # TODO(plural): Enforce sort order by type and primary field name.
+      explanation <<-EOM
+### Printing Search Syntax
+
+There are 5 types of fields in the Search Filter:
+
+* **Array** - supports the `:` (an element in the array is an exact match) and `!` (an element in the array is not an exact match) operators.
+* **Boolean** - supports the `:` (match) and `!` (negated match) operators.  `true`, `false`, `t`, `f``, `1`', and `0`` are all acceptable values.
+* **Date** - supports the `:` (match),  `!` (negated match), `<`, `<=`, `>`, and `>=` operators.  Requires date in `YYYY-MM-DD` format.
+* **Integer** - supports the `:` (match),  `!` (negated match), `<`, `<=`, `>`, and `>=` operators.  Requires simple integer input.
+* **String** - supports the `:` (LIKE) and `!` (NOT LIKE) operators. Input is transformed to lower case and the `%` decorations are added automatically, turning a query like `title:street` into a SQL fragment like `LOWER(stripped_title) LIKE '%street%`.
+
+#### Fields and their types
+#{fields.join("\n")}
+      EOM
+
+      expect(status).to eq 200
+    end
+  end
+
   get "/api/v3/public/printings/:id/relationships/card" do
     parameter :id, type: :string, required: true
 
