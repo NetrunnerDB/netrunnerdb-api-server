@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root to: redirect('/api/docs/', status: 302)
   namespace :api do
     namespace :v3 do
       namespace :public, defaults: { format: :json } do
