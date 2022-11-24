@@ -25,6 +25,48 @@ class SearchQueryBuilder
     {:c => card_field(field), :p => printing_field(field)}
   end
 
+  @@search_filter_docs = <<-EOM
+Note: The search syntax is the same between the `Card` and `Printing` endpoints aside from some fields that only exist in one or the other. 
+
+In constructed URLs for calls to the API, ensure that you URL Encode the value to the `filter[search]` argument. 
+
+* A search query is a series of one or more conditions separated by one or more spaces (which acts as an implicit `and`) or explicit conjuctions (`and` and `or`):
+  * `condition1 condition2 condition3` - gets all cards that meet the requirements of all three conditions
+* Multiple values for a given term can be provided with `|` ( acts as `or`) or `&`. 
+  * `text:"Runner is tagged"&meat` will return all cards with both `Runner is tagged` and `meat` in their text. 
+  * `text:"Runner is tagged"|meat` will return all cards with either `Runner is tagged` or `meat` in their text.
+* Each condition must be some or all of the name of a card or a criteria search:
+  * `Street` - gets all cards with "Street" in their name
+  * `x:credit` - gets all cards with "credit" in their ability text (see below for the full list of accepted criteria)
+* Note that conditions containing spaces must be surrounded with quotation marks:
+  * `"Street Magic"` or `x:"take all credits"`
+* Negation operators
+  * In addition to using a match or negated match operator (like `faction!anarch`), you can preface any condition with `!` or `-` to negate the whole condition.
+  * `f:adam -card_type:resource` will return all non-resource Adam cards.
+  * `f:apex !card_type:event` will return all non-event Apex cards.
+* Conjunctions and grouping
+  * Explicit `and` and `or` conjunctions are supported by the Search Syntax.
+    * `t:identity and f:criminal` will return all Criminal Identities.
+  * Explicit parenthesis will control grouping.
+    * `(f:criminal or f:shaper) and t:identity` or `(f:criminal or f:shaper) t:identity` will return all Criminal or Shaper Identities.
+  * A literal `and` or one using a space will have a higher precedence than an `or`.
+    * `f:criminal or f:shaper and t:identity` and `f:criminal or f:shaper t:identity` will return all Criminal cards and Shaper Identities.
+
+There are 4 types of fields in the Search Filter:
+
+* **Array** - supports the `:` (an element in the array is an exact match) and `!` (an element in the array is not an exact match) operators.
+  * `card_pool_ids:eternal|snapshot` returns all cards in the eternal or snapshot card pools. 
+  * `card_pool!snapshot` returns all cards not in the snapshot card pool.
+* **Boolean** - supports the `:` (match) and `!` (negated match) operators.  `true`, `false`, `t`, `f`, `1`, and `0` are all acceptable values.
+  * `advanceable:true`, `advanceable:t`, and `advanceable:1` will all return all results where advanceable is true.
+* **Integer** - supports the `:` (match),  `!` (negated match), `<`, `<=`, `>`, and `>=` operators.  Requires simple integer input.
+  * For cards that have an X value, you can match with X, like `cost:X` (case insensitive).  an X value is treated as -1 behind the scenes.
+* **String** - supports the `:` (LIKE) and `!` (NOT LIKE) operators. Input is transformed to lower case and the `%` decorations are added automatically, turning a query like `title:street` into a SQL fragment like `LOWER(stripped_title) LIKE '%street%`.
+  * `title:clearance` returns everything with clearance in the title.
+  * `title!clearance` returns everything without clearance in the title.
+
+  EOM
+
   # Since UnifiedPrinting contains so much of UnifiedCard, centralize the field
   # definitions with an indication of if they apply to one or both.
   # The documentation string here will be passed on to the generated API docs as well.
@@ -138,6 +180,9 @@ class SearchQueryBuilder
     FieldData.new(:string, both('stripped_title'), ['title', '_'],
       'The title of a card for a printing, stripped of all formatting symbols and marks.')
   ]
+  def self.search_filter_docs
+    @@search_filter_docs
+  end
 
   # This lets us use the inherited instance of @fields
   class << self
