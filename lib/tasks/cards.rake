@@ -339,6 +339,7 @@ namespace :cards do
 
       illustrators = Set[]
       illustrators_to_printings = []
+      illustrator_num_printings = {}
       num_its = 0
       printings = Printing.all
       printings.each { |printing|
@@ -350,6 +351,10 @@ namespace :cards do
               "illustrator_id": text_to_id(i),
               "printing_id": printing.id
             }
+            if !illustrator_num_printings.key?(i)
+              illustrator_num_printings[i] = 0
+            end
+            illustrator_num_printings[i] += 1
           }
         end
       }
@@ -358,7 +363,8 @@ namespace :cards do
       illustrators.each { |i|
         ill << {
           "id": text_to_id(i),
-          "name": i
+          "name": i,
+          "num_printings": illustrator_num_printings[i]
         }
       }
 

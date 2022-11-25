@@ -4,7 +4,7 @@ module API
       class Api::V3::Public::IllustratorResource < JSONAPI::Resource
         immutable
 
-        attributes :name, :updated_at
+        attributes :name, :num_printings, :updated_at
         key_type :string
 
         paginator :none
