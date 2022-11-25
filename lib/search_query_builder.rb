@@ -130,15 +130,9 @@ There are 5 types of fields in the Search Filter:
     FieldData.new(:boolean, both('rez_effect'), ['rez_effect'],
       'Does the card have a rez effect?'),
     FieldData.new(:boolean, both('trash_ability'), ['trash_ability'],
-<<<<<<< HEAD
-      'Does the card for a printing provide a trash ability?'),
+      'Does the card provide a trash ability?'),
     FieldData.new(:date, both('date_release'), ['release_date', 'date_release', 'r'],
       'The earliest release date for a card or the release date for the set for a printing.'),
-=======
-      'Does the card provide a trash ability?'),
-    FieldData.new(:date, printing('date_release'), ['release_date', 'date_release', 'r'],
-      'The release date for the set for a printing or the earliest release date of a card.'),
->>>>>>> main
     FieldData.new(:integer, both('advancement_requirement'), ['advancement_cost', 'g'],
       'The `advancement_cost` value for an agenda. Accepts positive integers and X (case-insensitive).'),
     FieldData.new(:integer, both('agenda_points'), ['agenda_points', 'v'],
