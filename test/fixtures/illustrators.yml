@@ -1,11 +1,14 @@
 good_drawers:
   id: good_drawers
   name: "Good Drawers"
+  num_printings: 1
 
 ann_illustrator:
   id: ann_illustrator
   name: "Ann Illustrator"
+  num_printings: 1
 
 tom_of_netrunner:
   id: tom_of_netrunner
   name: "Tom of Netrunner"
+  num_printings: 1
