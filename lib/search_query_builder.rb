@@ -127,7 +127,7 @@ There are 5 types of fields in the Search Filter:
       'Does the card text for a printing specify an on encounter effect?'),
     FieldData.new(:boolean, both('performs_trace'), ['performs_trace'],
       'Does the card for a printing perform a trace?'),
-    FieldData.new(:boolean, card('rez_effect'), ['rez_effect'],
+    FieldData.new(:boolean, both('rez_effect'), ['rez_effect'],
       'Does the card have a rez effect?'),
     FieldData.new(:boolean, both('trash_ability'), ['trash_ability'],
       'Does the card for a printing provide a trash ability?'),
