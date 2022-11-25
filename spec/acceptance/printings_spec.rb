@@ -20,6 +20,19 @@ resource "Printings" do
     end
   end
 
+  get "/api/v3/public/printings?filter[search]=:query" do
+    parameter :query, type: :string, required: true
+
+    # TODO(plural): Enforce sort order by type and primary field name.
+    fields = PrintingSearchQueryBuilder.fields.map {|x| "* **%s**: Type: %s%s" % [x.keywords.join(', '), x.type.to_s, x.documentation.nil? ? '' : "\n  * %s" % x.documentation]}
+    let(:query) { 'flavor:boi' }
+    example_request "Filter - Printing Search Operator" do
+      explanation "%s\n### Fields and their types\n%s" % [SearchQueryBuilder.search_filter_docs, fields.join("\n")]
+
+      expect(status).to eq 200
+    end
+  end
+
   get "/api/v3/public/printings/:id/relationships/card" do
     parameter :id, type: :string, required: true
 

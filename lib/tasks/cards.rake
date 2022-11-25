@@ -92,6 +92,7 @@ namespace :cards do
         faction_id: card["faction_id"],
         agenda_points: card["agenda_points"],
         base_link: card["base_link"],
+        # TODO(plural): Ensure that any cards with cost X have that reflected properly.
         cost: card["cost"],
         deck_limit: card["deck_limit"],
         influence_cost: card["influence_cost"],
@@ -119,6 +120,7 @@ namespace :cards do
         if m && m.captures.length == 1
           link_provided = m.captures[0]
           # Null is equivalent to "does not provide link" and we will use -1 to map to X.
+          # TODO(plural): Ensure that any cards that match this condition end up with -1
           new_card.link_provided = link_provided == 'X' ? -1 : link_provided
         end
       end
