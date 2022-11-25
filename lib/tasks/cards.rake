@@ -92,8 +92,6 @@ namespace :cards do
         faction_id: card["faction_id"],
         agenda_points: card["agenda_points"],
         base_link: card["base_link"],
-        # TODO(plural): Ensure that any cards with cost X have that reflected properly.
-        cost: card["cost"],
         deck_limit: card["deck_limit"],
         influence_cost: card["influence_cost"],
         influence_limit: card["influence_limit"],
@@ -109,6 +107,9 @@ namespace :cards do
         display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
         attribution: card["attribution"],
       )
+      if card.key?("cost")
+        new_card.cost = (card["cost"].nil? ? -1 : card["cost"])
+      end
 
       if new_card.card_type_id == 'agenda'
         new_card.advancement_requirement = (card["advancement_requirement"].nil? ? -1 : card["advancement_requirement"])
