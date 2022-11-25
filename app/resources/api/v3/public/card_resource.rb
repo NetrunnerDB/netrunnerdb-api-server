@@ -6,11 +6,11 @@ module API
 
         model_name 'UnifiedCard'
 
-        attributes :stripped_title, :title, :card_type_id, :side_id, :faction_id
-        attributes :advancement_requirement, :agenda_points, :base_link, :cost
-        attributes :deck_limit, :in_restriction, :influence_cost, :influence_limit, :memory_cost
-        attributes :minimum_deck_size, :num_printings, :printing_ids, :restriction_ids, :strength, :stripped_text, :text, :trash_cost
-        attributes :is_unique, :card_subtype_ids, :display_subtypes, :attribution, :updated_at
+        attributes :stripped_title, :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
+        attributes :agenda_points, :base_link, :cost, :deck_limit, :in_restriction, :influence_cost
+        attributes :influence_limit, :memory_cost, :minimum_deck_size, :num_printings, :printing_ids
+        attributes :date_release, :restriction_ids, :strength, :stripped_text, :text, :trash_cost, :is_unique
+        attributes :card_subtype_ids, :display_subtypes, :attribution, :updated_at
         attributes :format_ids, :card_pool_ids, :snapshot_ids
 
         # Synthesized attributes
