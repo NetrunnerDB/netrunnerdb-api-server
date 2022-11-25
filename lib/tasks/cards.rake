@@ -183,7 +183,7 @@ namespace :cards do
       end
 
       if new_card.text && (new_card.text.include?('When you rez') || new_card.text.include?('%s when it is rezzed' % new_card.title))
-        new_card.rez_effect
+        new_card.rez_effect = true
       end
 
       if new_card.text && (new_card.text.match?(/trace(\[\d+| X| \d+)/i) || new_card.text.match?('<trace>'))
