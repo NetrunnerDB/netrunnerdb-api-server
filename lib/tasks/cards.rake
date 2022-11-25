@@ -99,7 +99,6 @@ namespace :cards do
         minimum_deck_size: card["minimum_deck_size"],
         title: card["title"],
         stripped_title: card["stripped_title"],
-        strength: card["strength"],
         stripped_text: card["stripped_text"],
         text: card["text"],
         trash_cost: card["trash_cost"],
@@ -109,6 +108,9 @@ namespace :cards do
       )
       if card.key?("cost")
         new_card.cost = (card["cost"].nil? ? -1 : card["cost"])
+      end
+      if card.key?("strength")
+        new_card.strength = (card["strength"].nil? ? -1 : card["strength"])
       end
 
       if new_card.card_type_id == 'agenda'
