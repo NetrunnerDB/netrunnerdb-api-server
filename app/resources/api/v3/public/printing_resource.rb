@@ -76,7 +76,7 @@ module API
           end
         }
 
-        filter :distinct, apply: ->(records, value, _options) {
+        filter :distinct_cards, apply: ->(records, value, _options) {
             records.where(id: records.order(date_release: :desc).uniq{ |r| r.card_id }.map(&:id))
         }
 
