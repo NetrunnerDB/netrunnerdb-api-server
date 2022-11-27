@@ -77,7 +77,7 @@ module API
         }
 
         filter :distinct_cards, apply: ->(records, value, _options) {
-            records.where(id: records.order(date_release: :desc).uniq{ |r| r.card_id }.map(&:id))
+            records.where('id = printing_ids[1]')
         }
 
         # Images will return a nested map for different types of images.
