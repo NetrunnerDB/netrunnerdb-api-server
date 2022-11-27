@@ -515,6 +515,13 @@
           "method": "get"
         },
         {
+          "description": "Filter - Distinct Cards",
+          "link": "printings/filter_-_distinct_cards.json",
+          "groups": "all",
+          "route": "/api/v3/public/printings?filter[distinct_cards]",
+          "method": "get"
+        },
+        {
           "description": "Get A Single Printing",
           "link": "printings/get_a_single_printing.json",
           "groups": "all",
