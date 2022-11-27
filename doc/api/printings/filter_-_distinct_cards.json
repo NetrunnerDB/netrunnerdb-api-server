@@ -1,0 +1,36 @@
+{
+  "resource": "Printings",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/printings?filter[distinct_cards]",
+  "description": "Filter - Distinct Cards",
+  "explanation": null,
+  "parameters": [
+
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/printings?filter[card_id]=test_run&filter[distinct_cards]",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\"data\":[{\"id\":\"31028\",\"type\":\"printings\",\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028\"},\"attributes\":{\"card_id\":\"test_run\",\"card_cycle_id\":\"system_update_2021\",\"card_cycle_name\":\"System Update 2021\",\"card_set_id\":\"system_update_2021\",\"card_set_name\":\"System Update 2021\",\"printed_text\":\"Search either your stack or your heap for 1 program. <em>(Shuffle your stack if you searched it.)</em> Install that program, ignoring all costs. When your turn ends, if that program has not been uninstalled, add it to the top of your stack.\",\"stripped_printed_text\":\"Search either your stack or your heap for 1 program. (Shuffle your stack if you searched it.) Install that program, ignoring all costs. When your turn ends, if that program has not been uninstalled, add it to the top of your stack.\",\"printed_is_unique\":false,\"flavor\":\"No code survives contact with the user.\",\"display_illustrators\":\"Nedliv Audiovisuell\",\"illustrator_ids\":[\"nedliv_audiovisuell\"],\"illustrator_names\":[\"Nedliv Audiovisuell\"],\"position\":28,\"quantity\":3,\"date_release\":\"2021-03-28\",\"updated_at\":\"2022-11-25T08:05:24.967Z\",\"advancement_requirement\":null,\"agenda_points\":null,\"base_link\":null,\"card_type_id\":\"event\",\"cost\":3,\"deck_limit\":3,\"display_subtypes\":null,\"card_subtype_ids\":[],\"card_subtype_names\":[],\"faction_id\":\"shaper\",\"influence_cost\":3,\"influence_limit\":null,\"is_unique\":false,\"memory_cost\":null,\"minimum_deck_size\":null,\"side_id\":\"runner\",\"strength\":null,\"stripped_text\":\"Search either your stack or your heap for 1 program. (Shuffle your stack if you searched it.) Install that program, ignoring all costs. When your turn ends, if that program has not been uninstalled, add it to the top of your stack.\",\"stripped_title\":\"Test Run\",\"text\":\"Search either your stack or your heap for 1 program. <em>(Shuffle your stack if you searched it.)</em> Install that program, ignoring all costs. When your turn ends, if that program has not been uninstalled, add it to the top of your stack.\",\"title\":\"Test Run\",\"trash_cost\":null,\"printing_ids\":[\"31028\",\"25045\",\"20042\",\"02047\"],\"num_printings\":4,\"restriction_ids\":[],\"in_restriction\":false,\"format_ids\":[\"eternal\",\"ram\",\"snapshot\",\"standard\",\"startup\"],\"card_pool_ids\":[\"eternal\",\"ram_2\",\"ram_4\",\"snapshot\",\"pre_rotation\",\"rotation_2017\",\"rotation_2018\",\"rotation_2019\",\"rotation_2020\",\"rotation_2021\",\"rotation_2022\",\"startup_ashes\",\"startup_ashes_plus\",\"startup_ashes_plus_midnight_sun\"],\"snapshot_ids\":[\"eternal_0\",\"eternal_1\",\"eternal_2\",\"eternal_3\",\"ram_2\",\"ram_4\",\"snapshot_0\",\"standard_0\",\"standard_1\",\"standard_10\",\"standard_11\",\"standard_12\",\"standard_13\",\"standard_14\",\"standard_15\",\"standard_16\",\"standard_17\",\"standard_18\",\"standard_19\",\"standard_2\",\"standard_20\",\"standard_21\",\"standard_22\",\"standard_3\",\"standard_4\",\"standard_5\",\"standard_6\",\"standard_7\",\"standard_8\",\"standard_9\",\"startup_0\",\"startup_1\",\"startup_2\"],\"attribution\":null,\"card_abilities\":{\"additional_cost\":false,\"advanceable\":false,\"gains_subroutines\":false,\"interrupt\":false,\"link_provided\":null,\"mu_provided\":null,\"num_printed_subroutines\":null,\"on_encounter_effect\":false,\"performs_trace\":false,\"recurring_credits_provided\":null,\"rez_effect\":false,\"trash_ability\":false},\"images\":{\"nrdb_classic\":{\"tiny\":\"https://static.nrdbassets.com/v1/tiny/31028.jpg\",\"small\":\"https://static.nrdbassets.com/v1/small/31028.jpg\",\"medium\":\"https://static.nrdbassets.com/v1/medium/31028.jpg\",\"large\":\"https://static.nrdbassets.com/v1/large/31028.jpg\"}},\"latest_printing_id\":\"31028\",\"restrictions\":{\"banned\":[],\"global_penalty\":[],\"points\":{},\"restricted\":[],\"universal_faction_cost\":{}}},\"relationships\":{\"card\":{\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028/relationships/card\",\"related\":\"http://localhost:3000/api/v3/public/printings/31028/card\"}},\"card_cycle\":{\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028/relationships/card_cycle\",\"related\":\"http://localhost:3000/api/v3/public/printings/31028/card_cycle\"}},\"card_set\":{\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028/relationships/card_set\",\"related\":\"http://localhost:3000/api/v3/public/printings/31028/card_set\"}},\"faction\":{\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028/relationships/faction\",\"related\":\"http://localhost:3000/api/v3/public/printings/31028/faction\"}},\"illustrators\":{\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028/relationships/illustrators\",\"related\":\"http://localhost:3000/api/v3/public/printings/31028/illustrators\"}},\"side\":{\"links\":{\"self\":\"http://localhost:3000/api/v3/public/printings/31028/relationships/side\",\"related\":\"http://localhost:3000/api/v3/public/printings/31028/side\"}}}}],\"links\":{\"first\":\"http://localhost:3000/api/v3/public/printings?filter%5Bcard_id%5D=test_run&filter%5Bdistinct_cards%5D=&page%5Blimit%5D=100&page%5Boffset%5D=0\",\"last\":\"http://localhost:3000/api/v3/public/printings?filter%5Bcard_id%5D=test_run&filter%5Bdistinct_cards%5D=&page%5Blimit%5D=100&page%5Boffset%5D=0\"}}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/printings?filter[card_id]=test_run&filter[distinct_cards]\" -X GET "
+    }
+  ]
+}

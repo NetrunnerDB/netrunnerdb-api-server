@@ -75,7 +75,11 @@ module API
                 'Invalid search query: [%s] / %s' % [value[0], query_builder.parse_error])
           end
         }
- 
+
+        filter :distinct_cards, apply: ->(records, value, _options) {
+            records.where('id = printing_ids[1]')
+        }
+
         # Images will return a nested map for different types of images.
         # 'nrdb_classic' represents the JPEGs used for classic netrunnerdb.com.
         # We will likely add other formats like png and webp, as well as various sizes,
