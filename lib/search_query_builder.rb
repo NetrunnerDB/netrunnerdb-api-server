@@ -28,16 +28,16 @@ class SearchQueryBuilder
   @@search_filter_docs = <<-EOM
 #### Notes
 
-The search syntax is the same between the `Card` and `Printing` endpoints aside from some fields that only exist in one or the other. 
+The search syntax is the same between the `Card` and `Printing` endpoints aside from some fields that only exist in one or the other.
 
-In constructed URLs for calls to the API, ensure that you URL Encode the value to the `filter[search]` argument. 
+In constructed URLs for calls to the API, ensure that you URL Encode the value to the `filter[search]` argument.
 
 #### Search Query Structure
 
 * A search query is a series of one or more conditions separated by one or more spaces (which acts as an implicit `and`) or explicit conjuctions (`and` and `or`):
   * `condition1 condition2 condition3` - gets all cards that meet the requirements of all three conditions
-* Multiple values for a given term can be provided with `|` ( acts as `or`) or `&`. 
-  * `text:"Runner is tagged"&meat` will return all cards with both `Runner is tagged` and `meat` in their text. 
+* Multiple values for a given term can be provided with `|` ( acts as `or`) or `&`.
+  * `text:"Runner is tagged"&meat` will return all cards with both `Runner is tagged` and `meat` in their text.
   * `text:"Runner is tagged"|meat` will return all cards with either `Runner is tagged` or `meat` in their text.
 * Each condition must be some or all of the name of a card or a criteria search:
   * `Street` - gets all cards with "Street" in their name
@@ -61,7 +61,7 @@ In constructed URLs for calls to the API, ensure that you URL Encode the value t
 There are 5 types of fields in the Search Filter:
 
 * **Array** - supports the `:` (an element in the array is an exact match) and `!` (an element in the array is not an exact match) operators.
-  * `card_pool_ids:eternal|snapshot` returns all cards in the eternal or snapshot card pools. 
+  * `card_pool_ids:eternal|snapshot` returns all cards in the eternal or snapshot card pools.
   * `card_pool!snapshot` returns all cards not in the snapshot card pool.
 * **Boolean** - supports the `:` (match) and `!` (negated match) operators.  `true`, `false`, `t`, `f`, `1`, and `0` are all acceptable values.
   * `advanceable:true`, `advanceable:t`, and `advanceable:1` will all return all results where advanceable is true.
@@ -81,13 +81,13 @@ There are 5 types of fields in the Search Filter:
   # Note: this does not yet have arrays of name fields supported due to complications with
   #       needing to UNNEST array fields to handle LIKE queries for array field elements.
   @@full_fields = [
-    FieldData.new(:array, card('card_cycle_ids'), ['card_cycle'],
+    FieldData.new(:array, card('card_cycle_ids'), ['card_cycle', 'c'],
       '`card_cycle_id`s for printings of a card.'),
     FieldData.new(:array, both('card_pool_ids'), ['card_pool'],
       '`card_pool_id`s for a card pool containing a card.'),
-    FieldData.new(:array, card('card_set_ids'), ['card_set'],
+    FieldData.new(:array, card('card_set_ids'), ['card_set', 'e'],
       '`card_set_id` for a card, pulled in via printing.'),
-    FieldData.new(:array, both('lower_card_subtype_names'), ['card_subtype'],
+    FieldData.new(:array, both('lower_card_subtype_names'), ['card_subtype', 's'],
       'text names for card subtypes, matched as lowercase.'),
     FieldData.new(:array, both('card_subtype_ids'), ['card_subtype_id'],
       '`card_subtype_id`s for the card.'),
@@ -105,7 +105,7 @@ There are 5 types of fields in the Search Filter:
       '`restriction_id` specifying the card as banned, like `is_restricted:standard_mwl_3_4_b`.'),
     FieldData.new(:array, card('printing_ids'), ['printing_id'],
       '`printing_id` for any printing of this card.'),
-    FieldData.new(:array, both('restriction_ids'), ['restriction_id'],
+    FieldData.new(:array, both('restriction_ids'), ['restriction_id', 'b'],
       '`restriction_id` specifying the card for any reason, like: `restriction_id:eternal_points_list_22_09`'),
     FieldData.new(:array, both('snapshot_ids'), ['snapshot'],
       '`snapshot_id` of a snapshot containing a card.'),
@@ -165,14 +165,12 @@ There are 5 types of fields in the Search Filter:
       'The trash cost of this card.'),
     FieldData.new(:string, both('attribution'), ['attribution'],
       'The designer of this card text, if specified.'),
-    FieldData.new(:array, printing('card_cycle_id'), ['card_cycle'],
+    FieldData.new(:array, printing('card_cycle_id'), ['card_cycle', 'c'],
       '`card_cycle_id` for a printing.'),
     FieldData.new(:array, printing('card_id'), ['card_id'],
       '`card_id` for a printing.'),
-    FieldData.new(:array, printing('card_set_id'), ['card_set'],
+    FieldData.new(:array, printing('card_set_id'), ['card_set', 'e'],
       '`card_set_id` for printing.'),
-    FieldData.new(:string, printing('card_type_id'), ['card_type', 't'],
-      '`card_type_id` of this card.'),
     FieldData.new(:string, both('card_type_id'), ['card_type', 't'],
       '`card_type_id` of this card.'),
     FieldData.new(:string, both('faction_id'), ['faction', 'f'],
