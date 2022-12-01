@@ -10,6 +10,8 @@ prisec:
   position: 5
   quantity: 3
   date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 hedge_fund_core_set:
   id: "01110"
@@ -23,6 +25,8 @@ hedge_fund_core_set:
   position: 110
   quantity: 3
   date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 sure_gamble_core_set:
   id: "01050"
@@ -36,6 +40,8 @@ sure_gamble_core_set:
   position: 50
   quantity: 3
   date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 adonis_campaign_core_set:
   id: "01056"
@@ -49,4 +55,5 @@ adonis_campaign_core_set:
   position: 56
   quantity: 3
   date_release: 2012-09-06
-
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
