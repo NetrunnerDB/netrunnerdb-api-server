@@ -2,12 +2,12 @@ core:
   id: core
   name: "Core"
   description: "A core set, or set that makes up part of the core selection of cards."
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 booster_pack:
   id: booster_pack
   name: "Booster Pack"
   description: "A booster pack released as a subset of a larger release."
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

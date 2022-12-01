@@ -5,8 +5,8 @@ hedge_fund:
   side_id: corp
   faction_id: neutral_corp
   card_type_id: operation
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 prisec:
   id: prisec
@@ -15,8 +15,8 @@ prisec:
   side_id: corp
   faction_id: neutral_corp
   card_type_id: upgrade
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 sure_gamble:
   id: sure_gamble
@@ -25,8 +25,8 @@ sure_gamble:
   side_id: runner
   faction_id: neutral_runner
   card_type_id: event
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 adonis_campaign:
   id: adonis_campaign
@@ -35,5 +35,5 @@ adonis_campaign:
   side_id: corp
   faction_id: haas_bioroid 
   card_type_id: asset 
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
