@@ -30,7 +30,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"ann_illustrator\",\n    \"type\": \"illustrators\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator\"\n    },\n    \"attributes\": {\n      \"name\": \"Ann Illustrator\",\n      \"num_printings\": 1,\n      \"updated_at\": \"2022-11-25T22:52:21.616Z\"\n    },\n    \"relationships\": {\n      \"printings\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator/relationships/printings\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator/printings\"\n        }\n      }\n    }\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"ann_illustrator\",\n    \"type\": \"illustrators\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator\"\n    },\n    \"attributes\": {\n      \"name\": \"Ann Illustrator\",\n      \"num_printings\": 1,\n      \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n    },\n    \"relationships\": {\n      \"printings\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator/relationships/printings\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator/printings\"\n        }\n      }\n    }\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json"
       },
