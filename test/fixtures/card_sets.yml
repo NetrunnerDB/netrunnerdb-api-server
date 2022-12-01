@@ -6,6 +6,8 @@ core:
   position: 1
   card_cycle_id: core
   card_set_type_id: core
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 midnight_sun:
   id: midnight_sun
@@ -15,6 +17,8 @@ midnight_sun:
   position: 33
   card_cycle_id: borealis
   card_set_type_id: booster_pack
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 parhelion:
   id: parhelion 
@@ -24,4 +28,5 @@ parhelion:
   position: 34
   card_cycle_id: borealis
   card_set_type_id: booster_pack
- 
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>

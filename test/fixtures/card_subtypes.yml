@@ -1,11 +1,17 @@
 advertisement:
   id: advertisement
   name: Advertisement
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 code_gate:
   id: code_gate
   name: Code Gate
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 next:
   id: next
   name: Next
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>

@@ -2,18 +2,26 @@ asset:
   id: "asset"
   name: "Asset"
   side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 operation:
   id: "operation"
   name: "Operation"
   side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 upgrade:
   id: "upgrade"
   name: "Upgrade"
   side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 event:
   id: "event"
   name: "Event"
   side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>

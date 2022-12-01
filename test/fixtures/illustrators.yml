@@ -2,13 +2,19 @@ good_drawers:
   id: good_drawers
   name: "Good Drawers"
   num_printings: 1
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 ann_illustrator:
   id: ann_illustrator
   name: "Ann Illustrator"
   num_printings: 1
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 tom_of_netrunner:
   id: tom_of_netrunner
   name: "Tom of Netrunner"
   num_printings: 1
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>

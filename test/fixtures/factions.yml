@@ -3,27 +3,37 @@ neutral_corp:
   name: Neutral Corp
   side_id: "corp"
   is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 neutral_runner:
   id: neutral_runner
   name: Neutral Runner 
   side_id: "runner"
   is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 haas_bioroid:
   id: "haas_bioroid"
   name: "Haas-Bioroid"
   side_id: "corp"
   is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 weyland:
   id: "weyland_consortium"
   name: "Weyland Consortium"
   side_id: "corp"
   is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
 
 adam:
   id: "adam"
   name: "Adam"
   side_id: "runner"
   is_mini: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_s(:db) %>
