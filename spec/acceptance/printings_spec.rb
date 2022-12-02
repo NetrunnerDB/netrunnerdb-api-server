@@ -33,6 +33,12 @@ resource "Printings" do
     end
   end
 
+  get "/api/v3/public/printings?filter[distinct_cards]" do
+    example_request "Filter - Distinct Cards" do
+      expect(status).to eq 200
+    end
+  end
+
   get "/api/v3/public/printings/:id/relationships/card" do
     parameter :id, type: :string, required: true
 
