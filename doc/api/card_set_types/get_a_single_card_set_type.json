@@ -30,7 +30,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"core\",\n    \"type\": \"card_set_types\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/core\"\n    },\n    \"attributes\": {\n      \"name\": \"Core\",\n      \"description\": \"A core set, or set that makes up part of the core selection of cards.\",\n      \"updated_at\": \"2022-12-02T22:22:41.429Z\"\n    },\n    \"relationships\": {\n      \"card_sets\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/core/relationships/card_sets\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/core/card_sets\"\n        }\n      }\n    }\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"core\",\n    \"type\": \"card_set_types\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/core\"\n    },\n    \"attributes\": {\n      \"name\": \"Core\",\n      \"description\": \"A core set, or set that makes up part of the core selection of cards.\",\n      \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n    },\n    \"relationships\": {\n      \"card_sets\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/core/relationships/card_sets\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_set_types/core/card_sets\"\n        }\n      }\n    }\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json"
       },
