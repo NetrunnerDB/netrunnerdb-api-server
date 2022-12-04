@@ -508,6 +508,13 @@
           "method": "get"
         },
         {
+          "description": "Filter - Distinct Cards",
+          "link": "printings/filter_-_distinct_cards.json",
+          "groups": "all",
+          "route": "/api/v3/public/printings?filter[distinct_cards]",
+          "method": "get"
+        },
+        {
           "description": "Filter - Printing Search Operator",
           "link": "printings/filter_-_printing_search_operator.json",
           "groups": "all",
