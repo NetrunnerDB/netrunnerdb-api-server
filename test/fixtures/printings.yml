@@ -2,7 +2,6 @@ prisec:
   id: "12345"
   card_id: "prisec"
   card_set_id: "core"
-  printed_is_unique: false
   flavor: "Don't mess with these bad people."
   display_illustrators: "Good Drawers"
   position: 5
@@ -15,7 +14,6 @@ hedge_fund_core_set:
   id: "01110"
   card_id: hedge_fund
   card_set_id: core
-  printed_is_unique: false
   flavor: "Hedge funds are run by jagoffs"
   display_illustrators: "Ann Illustrator"
   position: 110
@@ -28,7 +26,6 @@ sure_gamble_core_set:
   id: "01050"
   card_id: sure_gamble
   card_set_id: core
-  printed_is_unique: false
   flavor: "Andy is cool and sneaky"
   display_illustrators: "Ann Illustrator"
   position: 50
@@ -41,7 +38,6 @@ adonis_campaign_core_set:
   id: "01056"
   card_id: adonis_campaign 
   card_set_id: core
-  printed_is_unique: false
   flavor: "Beefy Boi"
   display_illustrators: "Tom of Netrunner"
   position: 56
