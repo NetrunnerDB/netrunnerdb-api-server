@@ -300,9 +300,6 @@ namespace :cards do
     new_printings = []
     printings.each { |printing|
       new_printings << Printing.new(
-        printed_text: printing["printed_text"],
-        stripped_printed_text: printing["stripped_printed_text"],
-        printed_is_unique: printing["printed_is_unique"],
         id: printing["id"],
         flavor: printing["flavor"],
         display_illustrators: printing["illustrator"],

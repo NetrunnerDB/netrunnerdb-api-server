@@ -10,8 +10,7 @@ module API
 
         # Direct printing attributes
         attributes :card_id, :card_cycle_id, :card_cycle_name, :card_set_id, :card_set_name
-        attributes :printed_text, :stripped_printed_text
-        attributes :printed_is_unique, :flavor, :display_illustrators, :illustrator_ids, :illustrator_names, :position
+        attributes :flavor, :display_illustrators, :illustrator_ids, :illustrator_names, :position
         attributes :quantity, :date_release, :updated_at
 
         # Parent Card attributes, included inline to make printings a bit more useful.
@@ -56,7 +55,7 @@ module API
         end
 
         # Printing direct attribute filters
-        filters :card_id, :card_set_id, :printed_is_unique, :display_illustrators, :position
+        filters :card_id, :card_set_id, :display_illustrators, :position
         filters :quantity, :date_release
 
         # Card attribute filters
