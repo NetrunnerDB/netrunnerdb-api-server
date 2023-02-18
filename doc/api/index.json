@@ -63,6 +63,96 @@
       ]
     },
     {
+      "name": "Card Pools",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Card Pools",
+          "link": "card_pools/all_card_pools.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Pool",
+          "link": "card_pools/get_a_single_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Cycle IDs for a Card Pool",
+          "link": "card_pools/relationship_-_get_card_cycle_ids_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/relationships/card_cycles",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Cycles for a Card Pool",
+          "link": "card_pools/relationship_-_get_card_cycles_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/card_cycles",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card IDs for a Card Pool",
+          "link": "card_pools/relationship_-_get_card_ids_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/relationships/cards",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Set IDs for a Card Pool",
+          "link": "card_pools/relationship_-_get_card_set_ids_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/relationships/card_sets",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Sets for a Card Pool",
+          "link": "card_pools/relationship_-_get_card_sets_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/card_sets",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Cards for a Card Pool",
+          "link": "card_pools/relationship_-_get_cards_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/cards",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Format ID for a Card Pool",
+          "link": "card_pools/relationship_-_get_format_id_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/relationships/format",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Format for a Card Pool",
+          "link": "card_pools/relationship_-_get_format_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/format",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Snapshot IDs for a Card Pool",
+          "link": "card_pools/relationship_-_get_snapshot_ids_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/relationships/snapshots",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Snapshots for a Card Pool",
+          "link": "card_pools/relationship_-_get_snapshots_for_a_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id/snapshots",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Card Set Types",
       "explanation": null,
       "examples": [
@@ -463,6 +553,68 @@
       ]
     },
     {
+      "name": "Formats",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Formats",
+          "link": "formats/all_formats.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Format",
+          "link": "formats/get_a_single_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Pool IDs for a Format",
+          "link": "formats/relationship_-_get_card_pool_ids_for_a_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id/relationships/card_pools",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Pools for a Format",
+          "link": "formats/relationship_-_get_card_pools_for_a_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id/card_pools",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Restriction IDs for a Format",
+          "link": "formats/relationship_-_get_restriction_ids_for_a_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id/relationships/restrictions",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Restrictions for a Format",
+          "link": "formats/relationship_-_get_restrictions_for_a_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id/restrictions",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Snapshot IDs for a Format",
+          "link": "formats/relationship_-_get_snapshot_ids_for_a_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id/relationships/restrictions",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Snapshots for a Format",
+          "link": "formats/relationship_-_get_snapshots_for_a_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id/snapshots",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Illustrators",
       "explanation": null,
       "examples": [
@@ -615,6 +767,26 @@
       ]
     },
     {
+      "name": "Restrictions",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Restrictions",
+          "link": "restrictions/all_restrictions.json",
+          "groups": "all",
+          "route": "/api/v3/public/restrictions",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Restriction",
+          "link": "restrictions/get_a_single_restriction.json",
+          "groups": "all",
+          "route": "/api/v3/public/restrictions/:id",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Sides",
       "explanation": null,
       "examples": [
@@ -686,6 +858,82 @@
           "link": "sides/relationship_-_get_printings_for_a_side.json",
           "groups": "all",
           "route": "/api/v3/public/sides/:id/printings",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "Snapshots",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Snapshots",
+          "link": "snapshots/all_snapshots.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get Snapshots filtered by Active Status",
+          "link": "snapshots/filter_-_get_snapshots_filtered_by_active_status.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots?filter[active]=:active",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get Snapshots filtered by Format Id",
+          "link": "snapshots/filter_-_get_snapshots_filtered_by_format_id.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots?filter[format_id]=:format_id",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Snapshot",
+          "link": "snapshots/get_a_single_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Pool ID for a Snapshot",
+          "link": "snapshots/relationship_-_get_card_pool_id_for_a_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id/relationships/card_pool",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Pool for a Snapshot",
+          "link": "snapshots/relationship_-_get_card_pool_for_a_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id/card_pool",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Format ID for a Snapshot",
+          "link": "snapshots/relationship_-_get_format_id_for_a_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id/relationships/format",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Format for a Snapshot",
+          "link": "snapshots/relationship_-_get_format_for_a_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id/format",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Restriction ID for a Snapshot",
+          "link": "snapshots/relationship_-_get_restriction_id_for_a_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id/relationships/restriction",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Restriction for a Snapshot",
+          "link": "snapshots/relationship_-_get_restriction_for_a_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id/restriction",
           "method": "get"
         }
       ]

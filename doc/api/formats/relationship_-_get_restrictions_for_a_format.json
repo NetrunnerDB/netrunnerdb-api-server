@@ -1,0 +1,41 @@
+{
+  "resource": "Formats",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/formats/:id/restrictions",
+  "description": "Relationship - Get Restrictions for a Format",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/formats/standard/restrictions",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"standard_banlist\",\n      \"type\": \"restrictions\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/restrictions/standard_banlist\"\n      },\n      \"attributes\": {\n        \"name\": \"Standard Banlist 2022 Edition\",\n        \"date_start\": \"2022-01-01\",\n        \"point_limit\": null,\n        \"verdicts\": {\n          \"banned\": [\n            \"adonis_campaign\"\n          ],\n          \"restricted\": [\n\n          ],\n          \"universal_faction_cost\": {\n          },\n          \"global_penalty\": [\n\n          ],\n          \"points\": {\n          }\n        },\n        \"banned_subtypes\": [\n\n        ],\n        \"size\": 1,\n        \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n      }\n    }\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/formats/standard/restrictions\" -X GET "
+    }
+  ]
+}
