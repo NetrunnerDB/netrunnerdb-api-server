@@ -1,0 +1,64 @@
+standard_01_prisec:
+  card_id: prisec
+  card_pool_id: standard_01
+
+standard_01_hedge_fund:
+  card_id: hedge_fund 
+  card_pool_id: standard_01
+
+standard_01_sure_gamble:
+  card_id: sure_gamble 
+  card_pool_id: standard_01
+
+standard_01_adonis_campaign:
+  card_id: adonis_campaign 
+  card_pool_id: standard_01
+
+standard_02_prisec:
+  card_id: prisec
+  card_pool_id: standard_02
+
+standard_02_hedge_fund:
+  card_id: hedge_fund 
+  card_pool_id: standard_02
+
+standard_02_sure_gamble:
+  card_id: sure_gamble 
+  card_pool_id: standard_02
+
+standard_02_adonis_campaign:
+  card_id: adonis_campaign 
+  card_pool_id: standard_02
+
+startup_01_prisec:
+  card_id: prisec
+  card_pool_id: startup_01
+
+startup_01_hedge_fund:
+  card_id: hedge_fund 
+  card_pool_id: startup_01
+
+startup_01_sure_gamble:
+  card_id: sure_gamble 
+  card_pool_id: startup_01
+
+startup_01_adonis_campaign:
+  card_id: adonis_campaign 
+  card_pool_id: startup_01
+
+startup_02_prisec:
+  card_id: prisec
+  card_pool_id: startup_02
+
+startup_02_hedge_fund:
+  card_id: hedge_fund 
+  card_pool_id: startup_02
+
+startup_02_sure_gamble:
+  card_id: sure_gamble 
+  card_pool_id: startup_02
+
+startup_02_adonis_campaign:
+  card_id: adonis_campaign 
+  card_pool_id: startup_02
+
