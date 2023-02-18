@@ -1,0 +1,27 @@
+standard_01_core:
+  card_set_id: core
+  card_pool_id: standard_01
+
+standard_02_core:
+  card_set_id: core
+  card_pool_id: standard_02
+
+standard_02_midnight_sun:
+  card_set_id: midnight_sun
+  card_pool_id: standard_02
+
+standard_02_parhelion:
+  card_set_id: parhelion
+  card_pool_id: standard_02
+
+startup_01_core:
+  card_set_id: core
+  card_pool_id: startup_01
+
+startup_02_midnight_sun:
+  card_set_id: midnight_sun
+  card_pool_id: startup_02
+
+startup_02_parhelion:
+  card_set_id: parhelion
+  card_pool_id: startup_02

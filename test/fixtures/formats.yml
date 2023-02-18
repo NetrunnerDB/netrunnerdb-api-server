@@ -1,0 +1,13 @@
+startup:
+  id: startup
+  name: "Startup"
+  active_snapshot_id: "startup_02"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard:
+  id: standard
+  name: "Standard"
+  active_snapshot_id: "standard_02"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

@@ -1,0 +1,6 @@
+standard_banlist_adonis:
+  restriction_id: standard_banlist
+  card_id: adonis_campaign
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+

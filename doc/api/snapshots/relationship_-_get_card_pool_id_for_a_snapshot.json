@@ -1,0 +1,41 @@
+{
+  "resource": "Snapshots",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/snapshots/:id/relationships/card_pool",
+  "description": "Relationship - Get Card Pool ID for a Snapshot",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/snapshots/standard_02/relationships/card_pool",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"type\": \"card_pools\",\n    \"id\": \"standard_02\"\n  },\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/snapshots/standard_02/relationships/card_pool\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/snapshots/standard_02/card_pool\"\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/snapshots/standard_02/relationships/card_pool\" -X GET "
+    }
+  ]
+}

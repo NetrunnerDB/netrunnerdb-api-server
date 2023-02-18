@@ -1,0 +1,27 @@
+startup_01:
+  id: startup_01
+  name: "Startup Card Pool #1"
+  format_id: "startup"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+startup_02:
+  id: startup_02
+  name: "Startup Card Pool #2"
+  format_id: "startup"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_01:
+  id: standard_01
+  name: "Standard Card Pool #1"
+  format_id: "standard"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_02:
+  id: standard_02
+  name: "Standard Card Pool #2"
+  format_id: "standard"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
