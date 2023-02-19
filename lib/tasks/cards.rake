@@ -673,6 +673,18 @@ namespace :cards do
     Snapshot.import snapshots, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
+  def import_ruling_sources(ruling_sources_path)
+    ruling_sources = JSON.parse(File.read(ruling_sources_path))
+    ruling_sources.map! do |s|
+      {
+        id: s['id'],
+        name: s['name'],
+        url: s['url']
+      }
+    end
+    RulingSource.import ruling_sources, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+  end
+
   task :import, [:json_dir] => [:environment] do |t, args|
     args.with_defaults(:json_dir => '/netrunner-cards-json/v2/')
     puts 'Import card data...'
@@ -747,6 +759,9 @@ namespace :cards do
 
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
+
+    puts 'Importing Ruling Sources...'
+    import_ruling_sources(args[:json_dir] + '/ruling_sources.json')
 
     puts 'Refreshing materialized view for restrictions...'
     Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)

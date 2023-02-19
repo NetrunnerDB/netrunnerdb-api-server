@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_01_230016) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_19_191118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -220,6 +220,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_01_230016) do
     t.text "restriction_id", null: false
     t.text "card_id", null: false
     t.integer "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ruling_sources", id: :string, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -567,7 +574,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_01_230016) do
       cc.name AS card_cycle_name,
       p.card_set_id,
       cs.name AS card_set_name,
-      p.printed_is_unique,
       p.flavor,
       p.display_illustrators,
       p."position",
