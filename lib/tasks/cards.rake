@@ -1,5 +1,7 @@
+require 'optparse'
+
 namespace :cards do
-  desc 'import card data - json_dir defaults to /netrunner-cards-json/ if not specified.'
+  desc 'import card data - json_dir defaults to /netrunner-cards-json/v2/ if not specified.'
 
   def text_to_id(t)
     t.downcase
@@ -685,8 +687,46 @@ namespace :cards do
     RulingSource.import ruling_sources, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  task :import, [:json_dir] => [:environment] do |t, args|
-    args.with_defaults(:json_dir => '/netrunner-cards-json/v2/')
+  def import_rulings(rulings_json)
+    rulings = []
+    rulings_json.each { |r|
+      rulings << Ruling.new(
+        card_id: r['card_id'],
+        ruling_source_id: r['ruling_source_id'],
+        question: r['question'],
+        answer: r['answer'],
+        text_ruling: r['text_ruling'],
+        created_at: r['date_creation'],
+        updated_at: r['date_update'],
+      )
+    }
+
+    # Use a transaction since we are deleting the restriction mapping table.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing rulings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM rulings")
+        puts 'Hit an error while deleting rulings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      Ruling.import rulings 
+    end
+
+  end
+
+  task :import, [:json_dir] => [:environment] do |t|
+    args = {
+      :import_rulings => false,
+      :json_dir => '/netrunner-cards-json/v2/',
+    }
+
+    opts = OptionParser.new
+    opts.banner = "Usage: rake cards:import [options]"
+    opts.on("-j", "--json_dir ARG", String) { |j| args[:json_dir] = j }
+    opts.on("-r", "--import_rulings ARG", TrueClass) { |r| args[:import_rulings] = r }
+    argv = opts.order!(ARGV) {}
+    opts.parse!(argv)
+
+    puts args
     puts 'Import card data...'
 
     # Preload directories that are used multiple times
@@ -760,8 +800,14 @@ namespace :cards do
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
 
-    puts 'Importing Ruling Sources...'
-    import_ruling_sources(args[:json_dir] + '/ruling_sources.json')
+    if args[:import_rulings]
+      puts 'Importing Ruling Sources...'
+      import_ruling_sources(args[:json_dir] + '/ruling_sources.json')
+
+      puts 'Importing Rulings...'
+      rulings_json = load_multiple_json_files(args[:json_dir] + '/rulings/*.json')
+      import_rulings(rulings_json)
+    end
 
     puts 'Refreshing materialized view for restrictions...'
     Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
