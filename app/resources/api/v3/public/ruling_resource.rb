@@ -8,10 +8,8 @@ module API
 
         paginator :none
 
-        has_one :card
-        # has_many :rulings
-        # has_many :cards, relation_name: :unified_cards
-        # has_many :printings, relation_name: :unified_printings
+        has_one :ruling_source
+        has_one :card, relation_name: :unified_card
 
         filters :card_id, :ruling_source_id
       end
