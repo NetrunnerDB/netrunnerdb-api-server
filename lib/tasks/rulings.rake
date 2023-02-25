@@ -67,7 +67,7 @@ namespace :rulings do
     new_rulings_by_card_id.each do |c, r|
       puts c 
       puts "======"
-      File.write('/netrunner-cards-json/v2/rulings/%s.json' % c, JSON.pretty_generate(r))
+      File.write('/netrunner-cards-json/v2/rulings/%s.json' % c, "%s\n" % JSON.pretty_generate(r))
     end
   end
 end
