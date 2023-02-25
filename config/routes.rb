@@ -15,7 +15,6 @@ Rails.application.routes.draw do
         jsonapi_resources :illustrators, only: [:index, :show]
         jsonapi_resources :printings, only: [:index, :show]
         jsonapi_resources :restrictions, only: [:index, :show]
-        jsonapi_resources :ruling_sources, only: [:index, :show]
         jsonapi_resources :rulings, only: [:index, :show]
         jsonapi_resources :sides, only: [:index, :show]
         jsonapi_resources :snapshots, only: [:index, :show]

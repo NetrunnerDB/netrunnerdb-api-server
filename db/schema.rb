@@ -233,10 +233,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_165649) do
 
   create_table "rulings", force: :cascade do |t|
     t.string "card_id", null: false
-    t.string "ruling_source_id", null: false
     t.string "question"
     t.string "answer"
     t.string "text_ruling"
+    t.boolean "nsg_rules_team_verified", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -288,7 +288,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_165649) do
   add_foreign_key "restrictions_cards_universal_faction_cost", "cards"
   add_foreign_key "restrictions_cards_universal_faction_cost", "restrictions"
   add_foreign_key "rulings", "cards"
-  add_foreign_key "rulings", "ruling_sources"
   add_foreign_key "snapshots", "card_pools"
   add_foreign_key "snapshots", "formats"
   add_foreign_key "snapshots", "restrictions"

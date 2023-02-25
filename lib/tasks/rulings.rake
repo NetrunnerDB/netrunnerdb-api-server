@@ -18,33 +18,6 @@ namespace :rulings do
     rulings = JSON.parse(File.read('/netrunner-cards-json/rulings.json'))
     rulings.each do |r|
       r['card_id'] = text_to_id(r['card_id'])
-      # Identify ruling source id
-      if not r.has_key?('ruling_source_id')
-        puts 'No ruling source id'
-        ruling_source_id = 'unknown'
-        if r['question'].match?(/\[(UFAQ \d+)/)
-          m = r['question'].match(/\[(UFAQ \d+)/)
-          if m && m.captures.length == 1
-            ruling_source_id = text_to_id(m.captures[0])
-          end
-        elsif r['question'].match?(/\[Michael Boggs\]/)
-          ruling_source_id = 'michael_boggs'
-        elsif r['question'].match?(/\[Damon Stone\]/)
-          ruling_source_id = 'damon_stone'
-        elsif r['question'].match?(/\[Official FAQ\]/)
-          ruling_source_id = 'official_faq'
-        else
-          ruling_source_id = 'nsg_rules_team'
-        end
-        puts 'Discovered ruling_source_id %s' % ruling_source_id
-        if ruling_source_id == 'unknown'
-          puts r['question']
-        end
-
-        r['ruling_source_id'] = ruling_source_id
-      else
-        puts 'Has a ruling source id of %s' % r['ruling_source_id'] 
-      end
 
       if r['question'].match?(/\?/) and r['question'].match(/\n> /)
           puts "Looks like a question: %s" % r['question']

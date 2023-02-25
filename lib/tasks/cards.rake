@@ -675,16 +675,19 @@ namespace :cards do
     Snapshot.import snapshots, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
-  def import_ruling_sources(ruling_sources_path)
-    ruling_sources = JSON.parse(File.read(ruling_sources_path))
-    ruling_sources.map! do |s|
-      {
-        id: s['id'],
-        name: s['name'],
-        url: s['url']
-      }
+  def date_after_2018(date_str)
+    m = date_str.match(/^(\d{4})-/)
+    if m && m.captures.length == 1
+      return m.captures[0].to_i > 2018
     end
-    RulingSource.import ruling_sources, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+    return false
+  end
+
+  def strip_if_not_nil(str)
+    if str == nil
+      return str
+    end
+    return str.strip
   end
 
   def import_rulings(rulings_json)
@@ -692,12 +695,13 @@ namespace :cards do
     rulings_json.each { |r|
       rulings << Ruling.new(
         card_id: r['card_id'],
-        ruling_source_id: r['ruling_source_id'],
-        question: r['question'],
-        answer: r['answer'],
-        text_ruling: r['text_ruling'],
+        question: strip_if_not_nil(r['question']),
+        answer: strip_if_not_nil(r['answer']),
+        text_ruling: strip_if_not_nil(r['text_ruling']),
+        # TODO fix up date fields.
         created_at: r['date_creation'],
         updated_at: r['date_update'],
+        nsg_rules_team_verified: date_after_2018(r['date_update']),
       )
     }
 
@@ -801,9 +805,6 @@ namespace :cards do
     import_snapshots(formats_json)
 
     if args[:import_rulings]
-      puts 'Importing Ruling Sources...'
-      import_ruling_sources(args[:json_dir] + '/ruling_sources.json')
-
       puts 'Importing Rulings...'
       rulings_json = load_multiple_json_files(args[:json_dir] + '/rulings/*.json')
       import_rulings(rulings_json)
