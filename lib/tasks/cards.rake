@@ -698,10 +698,8 @@ namespace :cards do
         question: strip_if_not_nil(r['question']),
         answer: strip_if_not_nil(r['answer']),
         text_ruling: strip_if_not_nil(r['text_ruling']),
-        # TODO fix up date fields.
-        created_at: r['date_creation'],
         updated_at: r['date_update'],
-        nsg_rules_team_verified: date_after_2018(r['date_update']),
+        nsg_rules_team_verified: r['nsg_rules_team_verified'],
       )
     }
 
@@ -712,25 +710,14 @@ namespace :cards do
         puts 'Hit an error while deleting rulings. Rolling back.'
         raise ActiveRecord::Rollback
       end
-      Ruling.import rulings 
+      Ruling.import rulings
     end
 
   end
 
-  task :import, [:json_dir] => [:environment] do |t|
-    args = {
-      :import_rulings => false,
-      :json_dir => '/netrunner-cards-json/v2/',
-    }
+  task :import, [:json_dir] => [:environment] do |t, args|
+    args.with_defaults(:json_dir => '/netrunner-cards-json/v2/')
 
-    opts = OptionParser.new
-    opts.banner = "Usage: rake cards:import [options]"
-    opts.on("-j", "--json_dir ARG", String) { |j| args[:json_dir] = j }
-    opts.on("-r", "--import_rulings ARG", TrueClass) { |r| args[:import_rulings] = r }
-    argv = opts.order!(ARGV) {}
-    opts.parse!(argv)
-
-    puts args
     puts 'Import card data...'
 
     # Preload directories that are used multiple times
@@ -804,11 +791,9 @@ namespace :cards do
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
 
-    if args[:import_rulings]
-      puts 'Importing Rulings...'
-      rulings_json = load_multiple_json_files(args[:json_dir] + '/rulings/*.json')
-      import_rulings(rulings_json)
-    end
+    puts 'Importing Rulings...'
+    rulings_json = load_multiple_json_files(args[:json_dir] + '/rulings/*.json')
+    import_rulings(rulings_json)
 
     puts 'Refreshing materialized view for restrictions...'
     Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
