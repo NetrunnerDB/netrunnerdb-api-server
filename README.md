@@ -24,8 +24,8 @@ docker-compose run app rake db:reset
 docker-compose up -d
 # Import the card data from the netrunner-cards-json repo
 docker-compose exec app rails cards:import
-# Generate API documentation and ensure doc serving is all set up.
-docker-compose run app bundle exec rake docs:generate
+# Generate API documentation (in test environment to ensure minimal changes) and ensure doc serving is all set up.
+docker-compose run -e RAILS_ENV=test app bundle exec rake docs:generate
 ```
 
 To run tests in your docker container, you will need to override the environment, like so:
