@@ -1,0 +1,41 @@
+{
+  "resource": "Formats",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/formats/:id",
+  "description": "Get A Single Format",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/formats/startup",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"startup\",\n    \"type\": \"formats\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup\"\n    },\n    \"attributes\": {\n      \"name\": \"Startup\",\n      \"active_snapshot_id\": \"startup_02\",\n      \"snapshot_ids\": [\n        \"startup_01\",\n        \"startup_02\"\n      ],\n      \"restriction_ids\": [\n\n      ],\n      \"updated_at\": \"2022-12-08T12:00:00.000Z\",\n      \"active_card_pool_id\": \"startup_02\",\n      \"active_restriction_id\": null\n    },\n    \"relationships\": {\n      \"card_pools\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup/relationships/card_pools\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup/card_pools\"\n        }\n      },\n      \"restrictions\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup/relationships/restrictions\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup/restrictions\"\n        }\n      },\n      \"snapshots\": {\n        \"links\": {\n          \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup/relationships/snapshots\",\n          \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/startup/snapshots\"\n        }\n      }\n    }\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/formats/startup\" -X GET "
+    }
+  ]
+}

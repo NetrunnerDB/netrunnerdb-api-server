@@ -11,7 +11,7 @@ module API
         attributes :influence_limit, :memory_cost, :minimum_deck_size, :num_printings, :printing_ids
         attributes :date_release, :restriction_ids, :strength, :stripped_text, :text, :trash_cost, :is_unique
         attributes :card_subtype_ids, :display_subtypes, :attribution, :updated_at
-        attributes :format_ids, :card_pool_ids, :snapshot_ids
+        attributes :format_ids, :card_pool_ids, :snapshot_ids, :card_cycle_ids, :card_set_ids
 
         # Synthesized attributes
         attributes :card_abilities, :latest_printing_id, :restrictions

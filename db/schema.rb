@@ -505,18 +505,35 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_165649) do
     GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release;
   SQL
   create_view "unified_printings", materialized: true, sql_definition: <<-SQL
-      WITH card_subtype_ids AS (
+      WITH card_cycles_summary AS (
+           SELECT c_1.id,
+              array_agg(cc_1.id ORDER BY cc_1.id) AS card_cycle_ids,
+              array_agg(lower(cc_1.name) ORDER BY (lower(cc_1.name))) AS card_cycle_names
+             FROM (((cards c_1
+               JOIN printings p_1 ON (((c_1.id)::text = p_1.card_id)))
+               JOIN card_sets cs_1 ON ((p_1.card_set_id = (cs_1.id)::text)))
+               JOIN card_cycles cc_1 ON (((cc_1.id)::text = cs_1.card_cycle_id)))
+            GROUP BY c_1.id
+          ), card_sets_summary AS (
+           SELECT c_1.id,
+              array_agg(cs_1.id ORDER BY cs_1.id) AS card_set_ids,
+              array_agg(lower(cs_1.name) ORDER BY (lower(cs_1.name))) AS card_set_names
+             FROM ((cards c_1
+               JOIN printings p_1 ON (((c_1.id)::text = p_1.card_id)))
+               JOIN card_sets cs_1 ON ((p_1.card_set_id = (cs_1.id)::text)))
+            GROUP BY c_1.id
+          ), card_subtype_ids AS (
            SELECT cards_card_subtypes.card_id,
               array_agg(cards_card_subtypes.card_subtype_id ORDER BY 1::integer) AS card_subtype_ids
              FROM cards_card_subtypes
             GROUP BY cards_card_subtypes.card_id
           ), card_subtype_names AS (
-           SELECT ccs.card_id,
+           SELECT ccs_1.card_id,
               array_agg(lower(cs_1.name) ORDER BY (lower(cs_1.name))) AS lower_card_subtype_names,
               array_agg(cs_1.name ORDER BY cs_1.name) AS card_subtype_names
-             FROM (cards_card_subtypes ccs
-               JOIN card_subtypes cs_1 ON ((ccs.card_subtype_id = (cs_1.id)::text)))
-            GROUP BY ccs.card_id
+             FROM (cards_card_subtypes ccs_1
+               JOIN card_subtypes cs_1 ON ((ccs_1.card_subtype_id = (cs_1.id)::text)))
+            GROUP BY ccs_1.card_id
           ), card_printing_ids AS (
            SELECT printings.card_id,
               array_agg(printings.id ORDER BY printings.date_release DESC) AS printing_ids
@@ -622,6 +639,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_165649) do
       COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
       cp.printing_ids,
       array_length(cp.printing_ids, 1) AS num_printings,
+      COALESCE(ccs.card_cycle_ids, (ARRAY[]::text[])::character varying[]) AS card_cycle_ids,
+      COALESCE(ccs.card_cycle_names, ARRAY[]::text[]) AS card_cycle_names,
+      COALESCE(css.card_set_ids, (ARRAY[]::text[])::character varying[]) AS card_set_ids,
+      COALESCE(css.card_set_names, ARRAY[]::text[]) AS card_set_names,
       COALESCE(i.illustrator_ids, (ARRAY[]::text[])::character varying[]) AS illustrator_ids,
       COALESCE(i.illustrator_names, (ARRAY[]::text[])::character varying[]) AS illustrator_names,
       COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]) AS restriction_ids,
@@ -642,8 +663,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_20_165649) do
       c.rez_effect,
       c.text,
       c.title
-     FROM ((((((((((((((((printings p
+     FROM ((((((((((((((((((printings p
        JOIN cards c ON ((p.card_id = (c.id)::text)))
+       JOIN card_cycles_summary ccs ON (((c.id)::text = (ccs.id)::text)))
+       JOIN card_sets_summary css ON (((c.id)::text = (css.id)::text)))
        JOIN card_sets cs ON ((p.card_set_id = (cs.id)::text)))
        JOIN card_cycles cc ON ((cs.card_cycle_id = (cc.id)::text)))
        LEFT JOIN card_subtype_ids csi ON (((c.id)::text = csi.card_id)))

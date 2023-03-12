@@ -1,0 +1,41 @@
+{
+  "resource": "Card Pools",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/card_pools/:id/relationships/format",
+  "description": "Relationship - Get Format ID for a Card Pool",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/card_pools/standard_02/relationships/format",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"type\": \"formats\",\n    \"id\": \"standard\"\n  },\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_pools/standard_02/relationships/format\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/card_pools/standard_02/format\"\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_pools/standard_02/relationships/format\" -X GET "
+    }
+  ]
+}

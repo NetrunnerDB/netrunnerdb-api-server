@@ -1,7 +1,7 @@
 class UnifiedPrinting < ApplicationRecord
   include CardAbilities
 
-  self.primary_key = :id 
+  self.primary_key = :id
 
   belongs_to :side
   belongs_to :unified_card,

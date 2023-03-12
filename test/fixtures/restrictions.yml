@@ -1,0 +1,7 @@
+standard_banlist:
+  id: standard_banlist
+  name: "Standard Banlist 2022 Edition"
+  date_start: 2022-01-01
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+

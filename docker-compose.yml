@@ -3,6 +3,7 @@ version: "3.2"
 services:
   # service configuration for our dockerized Rails app
   app:
+    restart: unless-stopped
     network_mode: bridge
 
     # use the Dockerfile next to this file
@@ -27,6 +28,7 @@ services:
 
   # service configuration for our database
   db:
+    restart: unless-stopped
     network_mode: bridge
     image: postgres:14.5
 
