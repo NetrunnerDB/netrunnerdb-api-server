@@ -1,0 +1,44 @@
+{
+  "resource": "Rulings",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/rulings?filter[card_id]=:card_id",
+  "description": "Filter - Get Rulings for a single Card",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "card_id",
+      "description": "Card"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/rulings?filter[card_id]=hedge_fund",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+        "filter": {
+          "card_id": "hedge_fund"
+        }
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"844239820\",\n      \"type\": \"rulings\",\n      \"links\": {\n        \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/rulings/844239820\"\n      },\n      \"attributes\": {\n        \"card_id\": \"hedge_fund\",\n        \"nsg_rules_team_verified\": false,\n        \"question\": null,\n        \"answer\": null,\n        \"text_ruling\": \"It is required to put this in your deck.\",\n        \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n      },\n      \"relationships\": {\n        \"card\": {\n          \"links\": {\n            \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/rulings/844239820/relationships/card\",\n            \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/rulings/844239820/card\"\n          }\n        }\n      }\n    }\n  ]\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json"
+      },
+      "response_content_type": "application/vnd.api+json",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/rulings?filter[card_id]=hedge_fund\" -X GET "
+    }
+  ]
+}

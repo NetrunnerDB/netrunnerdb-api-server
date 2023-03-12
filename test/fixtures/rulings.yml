@@ -1,0 +1,14 @@
+hedge_fund:
+  card_id: hedge_fund
+  text_ruling: "It is required to put this in your deck."
+  nsg_rules_team_verified: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+sure_gamble:
+  card_id: sure_gamble
+  question: "is the runner required to include this in their deck?"
+  answer: "nah. you do you."
+  nsg_rules_team_verified: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

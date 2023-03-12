@@ -787,6 +787,33 @@
       ]
     },
     {
+      "name": "Rulings",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Rulings",
+          "link": "rulings/all_rulings.json",
+          "groups": "all",
+          "route": "/api/v3/public/rulings",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get NSG Rules Team Verified Rulings",
+          "link": "rulings/filter_-_get_nsg_rules_team_verified_rulings.json",
+          "groups": "all",
+          "route": "/api/v3/public/rulings?filter[nsg_rules_team_verified]=:nsg_rules_team_verified",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get Rulings for a single Card",
+          "link": "rulings/filter_-_get_rulings_for_a_single_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/rulings?filter[card_id]=:card_id",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "name": "Sides",
       "explanation": null,
       "examples": [
