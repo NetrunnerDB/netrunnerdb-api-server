@@ -1,5 +1,7 @@
+require 'optparse'
+
 namespace :cards do
-  desc 'import card data - json_dir defaults to /netrunner-cards-json/ if not specified.'
+  desc 'import card data - json_dir defaults to /netrunner-cards-json/v2/ if not specified.'
 
   def text_to_id(t)
     t.downcase
@@ -673,8 +675,49 @@ namespace :cards do
     Snapshot.import snapshots, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
   end
 
+  def date_after_2018(date_str)
+    m = date_str.match(/^(\d{4})-/)
+    if m && m.captures.length == 1
+      return m.captures[0].to_i > 2018
+    end
+    return false
+  end
+
+  def strip_if_not_nil(str)
+    if str == nil
+      return str
+    end
+    return str.strip
+  end
+
+  def import_rulings(rulings_json)
+    rulings = []
+    rulings_json.each { |r|
+      rulings << Ruling.new(
+        card_id: r['card_id'],
+        question: strip_if_not_nil(r['question']),
+        answer: strip_if_not_nil(r['answer']),
+        text_ruling: strip_if_not_nil(r['text_ruling']),
+        updated_at: r['date_update'],
+        nsg_rules_team_verified: r['nsg_rules_team_verified'],
+      )
+    }
+
+    # Use a transaction since we are deleting the restriction mapping table.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing rulings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM rulings")
+        puts 'Hit an error while deleting rulings. Rolling back.'
+        raise ActiveRecord::Rollback
+      end
+      Ruling.import rulings
+    end
+
+  end
+
   task :import, [:json_dir] => [:environment] do |t, args|
     args.with_defaults(:json_dir => '/netrunner-cards-json/v2/')
+
     puts 'Import card data...'
 
     # Preload directories that are used multiple times
@@ -747,6 +790,10 @@ namespace :cards do
 
     puts 'Importing Format Snapshots...'
     import_snapshots(formats_json)
+
+    puts 'Importing Rulings...'
+    rulings_json = load_multiple_json_files(args[:json_dir] + '/rulings/*.json')
+    import_rulings(rulings_json)
 
     puts 'Refreshing materialized view for restrictions...'
     Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)

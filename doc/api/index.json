@@ -461,6 +461,20 @@
           "method": "get"
         },
         {
+          "description": "Relationship - Get Ruling IDs for a Card",
+          "link": "cards/relationship_-_get_ruling_ids_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/relationships/rulings",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Rulings for a Card",
+          "link": "cards/relationship_-_get_rulings_for_a_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards/:id/rulings",
+          "method": "get"
+        },
+        {
           "description": "Relationship - Get Side ID for a Card",
           "link": "cards/relationship_-_get_side_id_for_a_card.json",
           "groups": "all",
@@ -782,6 +796,33 @@
           "link": "restrictions/get_a_single_restriction.json",
           "groups": "all",
           "route": "/api/v3/public/restrictions/:id",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "Rulings",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "All Rulings",
+          "link": "rulings/all_rulings.json",
+          "groups": "all",
+          "route": "/api/v3/public/rulings",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get NSG Rules Team Verified Rulings",
+          "link": "rulings/filter_-_get_nsg_rules_team_verified_rulings.json",
+          "groups": "all",
+          "route": "/api/v3/public/rulings?filter[nsg_rules_team_verified]=:nsg_rules_team_verified",
+          "method": "get"
+        },
+        {
+          "description": "Filter - Get Rulings for a single Card",
+          "link": "rulings/filter_-_get_rulings_for_a_single_card.json",
+          "groups": "all",
+          "route": "/api/v3/public/rulings?filter[card_id]=:card_id",
           "method": "get"
         }
       ]
