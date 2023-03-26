@@ -16,4 +16,8 @@ class UnifiedCard < ApplicationRecord
     has_many :unified_printings,
       :primary_key => :id,
       :foreign_key => :card_id
+
+    has_many :rulings,
+      :primary_key => :id,
+      :foreign_key => :card_id
 end

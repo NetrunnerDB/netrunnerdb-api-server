@@ -123,4 +123,22 @@ resource "Cards" do
       expect(status).to eq 200
     end
   end
+
+  get "/api/v3/public/cards/:id/relationships/rulings" do
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'sure_gamble' }
+    example_request "Relationship - Get Ruling IDs for a Card" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "/api/v3/public/cards/:id/rulings" do
+    parameter :id, type: :string, required: true
+
+    let(:id) { 'sure_gamble' }
+    example_request "Relationship - Get Rulings for a Card" do
+      expect(status).to eq 200
+    end
+  end
 end
