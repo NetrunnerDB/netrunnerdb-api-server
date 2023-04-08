@@ -5,7 +5,7 @@ module API
         include JwtAuthorizationConcern
 
         def index
-          render json: { username: @auth_token_payload['preferred_username'] }
+          render json: { username: @current_user.id }
         end
       end
     end

@@ -17,7 +17,9 @@ module JwtAuthorizationConcern
   private
 
   def check_token
-    puts 'Checking that token!'
+    @auth_token_payload = nil
+    @current_user = nil
+
     jwt = nil
 
     auth_header = request.headers['Authorization']
@@ -28,6 +30,12 @@ module JwtAuthorizationConcern
         if pieces.length == 3
           begin
               jwt = JSON.parse(Base64.decode64(pieces[1]))
+              if !jwt.has_key?('preferred_username')
+                jwt = nil
+              else
+                username = jwt['preferred_username']
+                get_or_insert_user(username)
+              end
           rescue JSON::ParserError
               jwt = nil
           end
@@ -38,5 +46,17 @@ module JwtAuthorizationConcern
       return render json: {}, :status => :unauthorized
     end
     @auth_token_payload = jwt
+  end
+
+  def get_or_insert_user(username)
+    user = nil
+    begin
+      user = User.find(username)
+    rescue ActiveRecord::RecordNotFound
+      user = User.new
+      user.id = username
+      user.save
+    end
+    @current_user = user
   end
 end
