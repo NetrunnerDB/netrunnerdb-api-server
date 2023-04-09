@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_26_051147) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -126,6 +126,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_26_051147) do
     t.text "card_id", null: false
     t.text "card_subtype_id", null: false
     t.index ["card_id", "card_subtype_id"], name: "index_cards_card_subtypes_on_card_id_and_subtype_id"
+  end
+
+  create_table "decks", id: :string, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.string "tags", array: true
+    t.string "name", null: false
+    t.string "notes", default: "", null: false
+    t.string "side_id", null: false
+    t.string "identity_card_id", null: false
+    t.integer "deck_size", default: 0, null: false
+    t.integer "influence_spent", default: 0, null: false
+    t.integer "agenda_points"
+    t.string "problems", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tags"], name: "index_decks_on_tags", using: :gin
+  end
+
+  create_table "decks_cards", id: false, force: :cascade do |t|
+    t.string "deck_id", null: false
+    t.string "card_id", null: false
+    t.integer "quantity", null: false
+    t.index ["deck_id", "card_id"], name: "index_decks_cards_on_deck_id_and_card_id", unique: true
   end
 
   create_table "factions", id: :string, force: :cascade do |t|
@@ -277,6 +300,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_26_051147) do
   add_foreign_key "cards", "sides"
   add_foreign_key "cards_card_subtypes", "card_subtypes"
   add_foreign_key "cards_card_subtypes", "cards"
+  add_foreign_key "decks", "cards", column: "identity_card_id"
+  add_foreign_key "decks", "sides"
+  add_foreign_key "decks", "users"
+  add_foreign_key "decks_cards", "cards"
+  add_foreign_key "decks_cards", "decks"
   add_foreign_key "factions", "sides"
   add_foreign_key "printings", "card_sets"
   add_foreign_key "printings", "cards"
