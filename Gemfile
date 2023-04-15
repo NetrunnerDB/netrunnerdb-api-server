@@ -51,6 +51,7 @@ gem 'scenic'
 gem "sprockets-rails"
 gem 'rspec_api_documentation'
 gem "apitome"
+gem 'jwt'
 
 group :development, :test do
   gem "brakeman", "~> 5.2"

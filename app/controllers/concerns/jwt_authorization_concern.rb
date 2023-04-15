@@ -1,3 +1,5 @@
+require 'jwt'
+
 # Inspects the HTTP Authorization header for a Bearer JWT token and
 # populates the @auth_token_payload instance variable with the JWT payload.
 # This does no signature verification of the JWT, expecting a gateway or
@@ -23,22 +25,18 @@ module JwtAuthorizationConcern
     jwt = nil
 
     auth_header = request.headers['Authorization']
+    logger.info 'JWT header is %s' % auth_header
     if !auth_header.nil?
       m = auth_header.match(/^Bearer (.*)$/)
       if m && m.captures.length == 1
-        pieces = m.captures[0].split('.')
-        if pieces.length == 3
-          begin
-              jwt = JSON.parse(Base64.decode64(pieces[1]))
-              if !jwt.has_key?('preferred_username')
-                jwt = nil
-              else
-                username = jwt['preferred_username']
-                get_or_insert_user(username)
-              end
-          rescue JSON::ParserError
-              jwt = nil
+        # TODO(plural): Update this to validate the JWT more when we settle on an ID provider & API gateway.
+        begin
+          decoded_token = JWT.decode m.captures[0], nil, false
+          if decoded_token[0].has_key?('preferred_username')
+            jwt = decoded_token[0]
+            get_or_insert_user(jwt['preferred_username'])
           end
+        rescue JWT::DecodeError
         end
       end
     end
