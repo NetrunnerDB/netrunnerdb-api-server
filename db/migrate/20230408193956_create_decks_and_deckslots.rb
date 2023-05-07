@@ -1,17 +1,14 @@
 class CreateDecksAndDeckslots < ActiveRecord::Migration[7.0]
   def change
     # ID will be a UUID
-    create_table :decks, id: :string do |t|
+    create_table :decks, id: :uuid do |t|
       t.string :user_id, null: false
-      t.string :tags, array: true
+      t.boolean :follows_basic_deckbuilding_rules, null: false, default: true
+      t.string :identity_card_id, null: false
+      t.string :side_id, null: false
       t.string :name, null: false
       t.string :notes, null: false, default: ''
-      t.string :side_id, null: false
-      t.string :identity_card_id, null: false
-      t.integer :deck_size, null: false, default: 0
-      t.integer :influence_spent, null: false, default: 0
-      t.integer :agenda_points
-      t.string :problems, array: true
+      t.string :tags, array: true
 
       t.timestamps
 
@@ -22,7 +19,7 @@ class CreateDecksAndDeckslots < ActiveRecord::Migration[7.0]
     end
 
     create_table :decks_cards, id: false, force: :cascade do |t|
-      t.string :deck_id, null: false
+      t.uuid :deck_id, null: false
       t.string :card_id, null: false
       t.integer :quantity, null: false
 
