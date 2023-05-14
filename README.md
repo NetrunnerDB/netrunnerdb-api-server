@@ -16,11 +16,13 @@ This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-jso
 
 ```
 echo "RAILS_ENV=development" > .env
+# This will not be needed if you have already created this network.
+docker network create null_signal
 docker-compose build
 cp config/database.example.yml config/database.yml
 docker-compose up -d db
 # Wait until docker-compose logs db | tail shows 'database system is ready to accept connections'
-docker-compose run app rake db:reset 
+docker-compose run app rake db:reset
 docker-compose up -d
 # Import the card data from the netrunner-cards-json repo
 docker-compose exec app rails cards:import
@@ -35,7 +37,7 @@ docker-compose exec -e RAILS_ENV=test app rails test
 
 ## Getting Started
 
-Once your server is running you can hit the api! 
+Once your server is running you can hit the api!
 ex. `http://localhost:3000/api/v3/public/cards/sure_gamble`
 
 You can find the full list of routes here:
