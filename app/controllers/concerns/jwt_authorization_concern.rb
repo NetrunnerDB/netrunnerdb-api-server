@@ -25,7 +25,6 @@ module JwtAuthorizationConcern
     jwt = nil
 
     auth_header = request.headers['Authorization']
-    logger.info 'JWT header is %s' % auth_header
     if !auth_header.nil?
       m = auth_header.match(/^Bearer (.*)$/)
       if m && m.captures.length == 1
