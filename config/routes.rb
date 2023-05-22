@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v3 do
       namespace :public, defaults: { format: :json } do
         jsonapi_resources :card_cycles, only: [:index, :show]
+        jsonapi_resources :card_faces, only: [:index, :show]
         jsonapi_resources :card_pools, only: [:index, :show]
         jsonapi_resources :card_set_types, only: [:index, :show]
         jsonapi_resources :card_sets, only: [:index, :show]
