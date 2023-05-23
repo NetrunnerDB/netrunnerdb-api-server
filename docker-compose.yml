@@ -4,7 +4,6 @@ services:
   # service configuration for our dockerized Rails app
   nrdb_api_server:
     restart: unless-stopped
-    network_mode: bridge
 
     networks:
       - null_signal
@@ -33,7 +32,6 @@ services:
   # service configuration for our database
   db:
     restart: unless-stopped
-    network_mode: bridge
     image: postgres:14.5
 
     networks:
