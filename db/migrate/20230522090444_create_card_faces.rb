@@ -27,7 +27,7 @@ class CreateCardFaces < ActiveRecord::Migration[7.0]
     create_table :card_faces_card_subtypes, id: false, force: :cascade do |t|
       t.string :card_face_id, null: false
       t.string :card_subtype_id, null: false
-      t.index [:card_face_id, :card_subtype_id], name: "index_card_faces_card_subtypes_on_card_id_and_card_face_id", unique: true
+      t.index [:card_face_id, :card_subtype_id], name: "index_card_faces_card_subtypes_on_face_id_and_subtype_id", unique: true # shortened name due to limit
     end
   end
 end
