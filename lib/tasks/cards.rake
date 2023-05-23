@@ -311,7 +311,14 @@ namespace :cards do
         end
       end
 
-      CardFace.import new_faces, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      puts '  About to save %d card faces...' % new_faces.length
+      num_faces = 0
+      new_faces.each_slice(250) { |s|
+        num_faces += s.length
+        puts '  %d faces' % num_faces
+        CardFace.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      }
+
       CardCardFace.import cards_to_card_faces, on_duplicate_key_update: { conflict_target: [ :card_id, :card_face_id ], columns: :all }
       CardFaceCardSubtype.import card_faces_to_card_subtypes, on_duplicate_key_update: { conflict_target: [ :card_face_id, :card_subtype_id ], columns: :all }
     end
