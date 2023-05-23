@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   root to: redirect('/api/docs/', status: 302)
   namespace :api do
     namespace :v3 do
+      namespace :private, defaults: { format: :json } do
+        resources :user, only: [:index]
+      end
       namespace :public, defaults: { format: :json } do
         jsonapi_resources :card_cycles, only: [:index, :show]
         jsonapi_resources :card_faces, only: [:index, :show]

@@ -16,30 +16,34 @@ This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-jso
 
 ```
 echo "RAILS_ENV=development" > .env
-docker-compose build
+# This will not be needed if you have already created this network.
+docker network create null_signal
+docker compose build
 cp config/database.example.yml config/database.yml
-docker-compose up -d db
-# Wait until docker-compose logs db | tail shows 'database system is ready to accept connections'
-docker-compose run app rake db:reset 
-docker-compose up -d
+docker compose up -d db
+# Wait until docker compose logs db | tail shows 'database system is ready to accept connections'
+docker compose run nrdb_api_server rake db:reset
+docker compose up -d
 # Import the card data from the netrunner-cards-json repo
-docker-compose exec app rails cards:import
-# Generate API documentation (in test environment to ensure minimal changes) and ensure doc serving is all set up.
-docker-compose run -e RAILS_ENV=test app bundle exec rake docs:generate
+docker compose exec nrdb_api_server rails cards:import
 ```
 
 To run tests in your docker container, you will need to override the environment, like so:
 ```
-docker-compose exec -e RAILS_ENV=test app rails test
+docker compose exec -e RAILS_ENV=test nrdb_api_server rails test
 ```
 
 ## Getting Started
 
-Once your server is running you can hit the api! 
+Once your server is running you can hit the api!
 ex. `http://localhost:3000/api/v3/public/cards/sure_gamble`
 
 You can find the full list of routes here:
 `http://localhost:3000/rails/info/routes`
 
-API Documentation will be available at `http://localhost:3000/api/docs/`
-after the `rake docs:generate` step has been completed.
+API Documentation will be available at `http://localhost:3000/api/docs/`.
+
+To re-generate API documentation (in test environment to ensure minimal changes) run:
+```
+docker compose run -e RAILS_ENV=test nrdb_api_server bundle exec rake docs:generate
+```

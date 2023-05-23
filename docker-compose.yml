@@ -2,9 +2,13 @@ version: "3.2"
 
 services:
   # service configuration for our dockerized Rails app
-  app:
+  nrdb_api_server:
     restart: unless-stopped
     network_mode: bridge
+
+    networks:
+      - null_signal
+      - backend
 
     # use the Dockerfile next to this file
     build: .
@@ -32,12 +36,20 @@ services:
     network_mode: bridge
     image: postgres:14.5
 
+    networks:
+     - backend
+
     environment:
       POSTGRES_PASSWORD: netrunnerdb
 
     # persist the database between containers by storing it in a volume
     volumes:
       - nrdb-api-postgres:/var/lib/postgresql/data
+
+networks:
+  backend:
+  null_signal:
+    external: true
 
 volumes:
   nrdb-api-logs:

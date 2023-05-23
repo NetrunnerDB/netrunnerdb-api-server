@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema[7.0].define(version: 2023_05_22_153927) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "card_cycles", id: :string, force: :cascade do |t|
@@ -160,6 +161,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_22_153927) do
     t.index ["card_id", "card_subtype_id"], name: "index_cards_card_subtypes_on_card_id_and_subtype_id"
   end
 
+  create_table "decks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.boolean "follows_basic_deckbuilding_rules", default: true, null: false
+    t.string "identity_card_id", null: false
+    t.string "side_id", null: false
+    t.string "name", null: false
+    t.string "notes", default: "", null: false
+    t.string "tags", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tags"], name: "index_decks_on_tags", using: :gin
+  end
+
+  create_table "decks_cards", id: false, force: :cascade do |t|
+    t.uuid "deck_id", null: false
+    t.string "card_id", null: false
+    t.integer "quantity", null: false
+    t.index ["deck_id", "card_id"], name: "index_decks_cards_on_deck_id_and_card_id", unique: true
+  end
+
   create_table "factions", id: :string, force: :cascade do |t|
     t.boolean "is_mini", null: false
     t.text "name", null: false
@@ -289,6 +310,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_22_153927) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "card_pools", "formats"
   add_foreign_key "card_pools_card_cycles", "card_cycles"
   add_foreign_key "card_pools_card_cycles", "card_pools"
@@ -304,6 +330,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_22_153927) do
   add_foreign_key "cards", "sides"
   add_foreign_key "cards_card_subtypes", "card_subtypes"
   add_foreign_key "cards_card_subtypes", "cards"
+  add_foreign_key "decks", "cards", column: "identity_card_id"
+  add_foreign_key "decks", "sides"
+  add_foreign_key "decks", "users"
+  add_foreign_key "decks_cards", "cards"
+  add_foreign_key "decks_cards", "decks"
   add_foreign_key "factions", "sides"
   add_foreign_key "printings", "card_sets"
   add_foreign_key "printings", "cards"
