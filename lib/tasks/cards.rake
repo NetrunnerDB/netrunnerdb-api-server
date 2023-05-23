@@ -214,19 +214,19 @@ namespace :cards do
   def import_card_faces(cards)
     # Use a transaction since we are deleting the card face and mapping tables.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing card -> card face mappings'
+      puts '  Clear out existing card -> card face mappings'
       unless ActiveRecord::Base.connection.delete("DELETE FROM cards_card_faces")
         puts 'Hit an error while deleting card -> card face mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
 
-      puts 'Clear out existing card face -> card subtype mappings'
+      puts '  Clear out existing card face -> card subtype mappings'
       unless ActiveRecord::Base.connection.delete("DELETE FROM card_faces_card_subtypes")
         puts 'Hit an error while deleting card face -> card subtype mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
 
-      puts 'Clear out existing card faces'
+      puts '  Clear out existing card faces'
       unless ActiveRecord::Base.connection.delete("DELETE FROM card_faces")
         puts 'Hit an error while deleting card faces. rolling back.'
         raise ActiveRecord::Rollback
@@ -438,13 +438,13 @@ namespace :cards do
   def import_illustrators()
     # Use a transaction since we are deleting the illustrator and mapping tables.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing illustrator -> printing mappings'
+      puts '  Clear out existing illustrator -> printing mappings'
       unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators_printings")
         puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
 
-      puts 'Clear out existing illustrators'
+      puts '  Clear out existing illustrators'
       unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators")
         puts 'Hit an error while deleting illustrators. rolling back.'
         raise ActiveRecord::Rollback
