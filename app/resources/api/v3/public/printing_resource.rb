@@ -21,19 +21,25 @@ module API
         attributes :title, :trash_cost, :printing_ids, :num_printings, :restriction_ids, :in_restriction
         attributes :format_ids, :card_pool_ids, :snapshot_ids
         attributes :card_cycle_ids, :card_set_ids, :attribution
+        attributes :layout_id
 
         # Synthesized attributes
-        attributes :card_abilities, :images, :latest_printing_id, :restrictions
+        attributes :num_faces, :card_abilities, :images, :latest_printing_id, :restrictions
 
         has_one :card, relation_name: :unified_card
         has_one :card_cycle
         has_one :card_set
         has_one :faction
         has_many :illustrators
+        has_many :printing_faces
         has_one :side
 
         def latest_printing_id
           @model.printing_ids[0]
+        end
+
+        def num_faces
+          @model.printing_faces.length
         end
 
         def packed_restriction_to_map(packed)

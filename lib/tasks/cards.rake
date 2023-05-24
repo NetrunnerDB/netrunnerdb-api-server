@@ -486,6 +486,103 @@ namespace :cards do
     end
   end
 
+  # This function largely reflects `import_card_faces` but for printings
+  # Instead of linking faces to subtypes, it links faces to illustrators
+  def import_printing_faces(printings)
+    # Use a transaction since we are deleting the printing face and mapping tables.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing printing -> printing face mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printings_printing_faces")
+        puts 'Hit an error while deleting printing -> printing face mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing printing face -> illustrator mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printing_faces_illustrators")
+        puts 'Hit an error while deleting printing face -> illustrator mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing printing faces'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printing_faces")
+        puts 'Hit an error while deleting printing faces. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      illustrators = Illustrator.all.index_by(&:id)
+      new_faces = []
+      printings_to_printing_faces = []
+      printing_faces_to_illustrators = []
+      printings.each do |printing|
+        # The first face of each printing is generated from its base stats
+        new_face = PrintingFace.new(
+          id: printing["id"] + '_0',
+          printing_id: printing["id"],
+        )
+        new_face.flavor = printing["flavor"]
+        new_face.display_illustrators = printing["illustrator"]
+        new_face.copy_quantity = printing["copy_quantity"]
+        new_faces << new_face
+        printings_to_printing_faces << {
+          "printing_id": printing["id"],
+          "printing_face_id": new_face.id
+        }
+        if new_face.display_illustrators then
+          new_face.display_illustrators.split(', ').each { |i|
+            printing_faces_to_illustrators << {
+              "printing_face_id": new_face.id,
+              "illustrator_id": text_to_id(i)
+            }
+          }
+        end
+
+        # Generate no additional faces for normal printings
+        next if !printing.key?('layout_id') || printing['layout_id'].nil? || printing['layout_id'] == 'single-sided'
+
+        # The rest of the faces (if any) are generated from the explicitly-defined faces of the card
+        # Missing attributes are assumed to be unchanged and are copied from the base stats
+        i = 0
+        printing['sides'].each do |face|
+          i += 1
+          new_face = PrintingFace.new(
+            id: printing["id"] + '_' + i.to_s,
+            printing_id: printing["id"],
+          )
+          new_face.printed_text = face.key?("printed_text") ? face["printed_text"] : printing["printed_text"]
+          new_face.stripped_printed_text = face.key?("stripped_printed_text") ? face["stripped_printed_text"] : printing["stripped_printed_text"]
+          new_face.printed_is_unique = face.key?("printed_is_unique") ? face["printed_is_unique"] : printing["printed_is_unique"]
+          new_face.flavor = face.key?("flavor") ? face["flavor"] : printing["flavor"]
+          new_face.display_illustrators = face.key?("illustrator") ? face["illustrator"] : printing["illustrator"]
+          new_face.copy_quantity = face.key?("copy_quantity") ? face["copy_quantity"] : printing["copy_quantity"]
+          new_faces << new_face
+          printings_to_printing_faces << {
+            "printing_id": printing["id"],
+            "printing_face_id": new_face.id
+          }
+          if new_face.display_illustrators then
+            new_face.display_illustrators.split(', ').each { |i|
+              printing_faces_to_illustrators << {
+                "printing_face_id": new_face.id,
+                "illustrator_id": text_to_id(i)
+              }
+            }
+          end
+        end
+      end
+
+      puts '  About to save %d printing faces...' % new_faces.length
+      num_faces = 0
+      new_faces.each_slice(250) { |s|
+        num_faces += s.length
+        puts '  %d faces' % num_faces
+        PrintingFace.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      }
+
+      PrintingPrintingFace.import printings_to_printing_faces, on_duplicate_key_update: { conflict_target: [ :printing_id, :printing_face_id ], columns: :all }
+      PrintingFaceIllustrator.import printing_faces_to_illustrators, on_duplicate_key_update: { conflict_target: [ :printing_face_id, :illustrator_id ], columns: :all }
+    end
+  end
+
   def import_formats(formats_json)
     formats = []
     formats_json.each { |f|
@@ -877,6 +974,9 @@ namespace :cards do
 
     puts 'Importing Illustrators...'
     import_illustrators()
+
+    puts 'Importing Printing Faces...'
+    import_printing_faces(printings_json)
 
     puts 'Importing Card Faces...'
     import_card_faces(cards_json)
