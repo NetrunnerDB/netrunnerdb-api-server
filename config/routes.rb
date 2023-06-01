@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v3 do
       namespace :private, defaults: { format: :json } do
+        # Don't generate links or relationship routes for decks.
+        jsonapi_resources :decks do
+        end
         resources :user, only: [:index]
       end
       namespace :public, defaults: { format: :json } do
