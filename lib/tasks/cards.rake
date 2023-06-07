@@ -548,9 +548,6 @@ namespace :cards do
             id: printing["id"] + '_' + i.to_s,
             printing_id: printing["id"],
           )
-          new_face.printed_text = face.key?("printed_text") ? face["printed_text"] : printing["printed_text"]
-          new_face.stripped_printed_text = face.key?("stripped_printed_text") ? face["stripped_printed_text"] : printing["stripped_printed_text"]
-          new_face.printed_is_unique = face.key?("printed_is_unique") ? face["printed_is_unique"] : printing["printed_is_unique"]
           new_face.flavor = face.key?("flavor") ? face["flavor"] : printing["flavor"]
           new_face.display_illustrators = face.key?("illustrator") ? face["illustrator"] : printing["illustrator"]
           new_face.copy_quantity = face.key?("copy_quantity") ? face["copy_quantity"] : printing["copy_quantity"]
