@@ -237,6 +237,9 @@ namespace :cards do
       cards_to_card_faces = []
       card_faces_to_card_subtypes = []
       cards.each do |card|
+        # Only generate faces for cards with multiple faces
+        next if !card.key?('layout_id') || card['layout_id'].nil? || card['layout_id'] == 'normal'
+
         # The first face of each card is generated from its base stats
         new_face = CardFace.new(
           id: card["id"] + '_0',
@@ -269,10 +272,7 @@ namespace :cards do
           end
         end
 
-        # Generate no additional faces for normal cards
-        next if !card.key?('layout_id') || card['layout_id'].nil? || card['layout_id'] == 'normal'
-
-        # The rest of the faces (if any) are generated from the explicitly-defined faces of the card
+        # The rest of the faces are generated from the explicitly-defined faces of the card
         # Missing attributes are assumed to be unchanged and are copied from the base stats
         i = 0
         card['faces'].each do |face|
@@ -514,6 +514,9 @@ namespace :cards do
       printings_to_printing_faces = []
       printing_faces_to_illustrators = []
       printings.each do |printing|
+        # Only generate faces for printings with multiple faces
+        next if !printing.key?('layout_id') || printing['layout_id'].nil? || printing['layout_id'] == 'normal'
+
         # The first face of each printing is generated from its base stats
         new_face = PrintingFace.new(
           id: printing["id"] + '_0',
@@ -536,10 +539,7 @@ namespace :cards do
           }
         end
 
-        # Generate no additional faces for normal printings
-        next if !printing.key?('layout_id') || printing['layout_id'].nil? || printing['layout_id'] == 'normal'
-
-        # The rest of the faces (if any) are generated from the explicitly-defined faces of the card
+        # The rest of the faces are generated from the explicitly-defined faces of the card
         # Missing attributes are assumed to be unchanged and are copied from the base stats
         i = 0
         printing['faces'].each do |face|
