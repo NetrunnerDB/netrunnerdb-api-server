@@ -107,7 +107,7 @@ namespace :cards do
         is_unique: card["is_unique"],
         display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
         attribution: card["attribution"],
-        layout_id: card.key?("layout_id") ? card["layout_id"] : 'single-sided',
+        layout_id: card.key?("layout_id") ? card["layout_id"] : 'normal',
       )
       if card.key?("cost")
         new_card.cost = (card["cost"].nil? ? -1 : card["cost"])
@@ -270,12 +270,12 @@ namespace :cards do
         end
 
         # Generate no additional faces for normal cards
-        next if !card.key?('layout_id') || card['layout_id'].nil? || card['layout_id'] == 'single-sided'
+        next if !card.key?('layout_id') || card['layout_id'].nil? || card['layout_id'] == 'normal'
 
         # The rest of the faces (if any) are generated from the explicitly-defined faces of the card
         # Missing attributes are assumed to be unchanged and are copied from the base stats
         i = 0
-        card['sides'].each do |face|
+        card['faces'].each do |face|
           i += 1
           face_subtypes = face.key?("subtypes") ? face["subtypes"] : card["subtypes"]
           new_face = CardFace.new(
@@ -537,12 +537,12 @@ namespace :cards do
         end
 
         # Generate no additional faces for normal printings
-        next if !printing.key?('layout_id') || printing['layout_id'].nil? || printing['layout_id'] == 'single-sided'
+        next if !printing.key?('layout_id') || printing['layout_id'].nil? || printing['layout_id'] == 'normal'
 
         # The rest of the faces (if any) are generated from the explicitly-defined faces of the card
         # Missing attributes are assumed to be unchanged and are copied from the base stats
         i = 0
-        printing['sides'].each do |face|
+        printing['faces'].each do |face|
           i += 1
           new_face = PrintingFace.new(
             id: printing["id"] + '_' + i.to_s,
