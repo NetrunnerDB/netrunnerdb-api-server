@@ -212,9 +212,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_073031) do
 
   create_table "printing_faces", id: :string, force: :cascade do |t|
     t.string "printing_id", null: false
-    t.text "printed_text"
-    t.text "stripped_printed_text"
-    t.boolean "printed_is_unique"
     t.text "flavor"
     t.text "display_illustrators"
     t.integer "copy_quantity"
