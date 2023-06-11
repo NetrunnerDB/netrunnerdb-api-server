@@ -17,14 +17,29 @@ module API
           super - [:faction_id, :num_cards, :influence_spent, :created_at, :updated_at]
         end
 
-        before_save do
-          @model.user_id = context[:current_user].id if @model.new_record?
+        after_save do
+          new_cards = context[:params]['data']['attributes']['cards']
+          if new_cards
+            @model.deck_cards.delete_all
+            new_cards.each do |card_id, quantity|
+              @model.deck_cards << @model.deck_cards.build(card_id: card_id, quantity: quantity)
+            end
+          end
         end
 
-        before_create :do_it
-
-        def do_it
-          Rails.logger.info 'Before create'
+        before_create do
+          @model.user_id = context[:current_user].id if @model.new_record?
+          new_cards = context[:params]['data']['attributes']['cards']
+          card_ids = Card.pluck(:id)
+          invalid_card_ids = new_cards.keys - card_ids
+          if invalid_card_ids.size > 0
+            raise JSONAPI::Exceptions::InvalidFieldValue.new(
+              'Deck specifies invalid card ids: %s' % invalid_card_ids.join, invalid_card_ids.join,
+              {
+                :title => 'Critical Deck Validation Error',
+                :detail => 'Deck specifies invalid card_ids: %s' % invalid_card_ids.join
+              })
+          end
         end
 
         def self.records(options = {})
@@ -42,14 +57,11 @@ module API
           return cards
         end
 
-        def cards=(new_cards)
-          @model.deck_cards.destroy_all
-          new_cards.each do |card_id, quantity|
-            # Rails.logger.info 'New card is %s with %d copies' % [card_id, quantity]
-            #c = Card.find(card_id)
-            #Rails.logger.info 'Card id %s has title %s' % [c.id, c.title]
-            @model.deck_cards.build(card_id: card_id, quantity: quantity)
-          end
+        def cards=(cards)
+          # Do nothing here because we save cards in the after_save callback.
+          # This is necessary due to the decision to make a tidier representation of
+          # cards as a map of card_id => quantity.
+          return
         end
 
         def num_cards
