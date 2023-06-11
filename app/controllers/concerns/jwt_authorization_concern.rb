@@ -40,7 +40,14 @@ module JwtAuthorizationConcern
       end
     end
     if jwt.nil?
-      return render json: {}, :status => :unauthorized
+      # This format is a proper JSON::API error message.
+      return render json: {
+        :errors => [{
+          :title => "Unauthorized",
+          :detail => "The request does not contain proper authorization for this resource.",
+          :code => "401",
+          :status => "401"
+        }]}, :status => :unauthorized
     end
     @auth_token_payload = jwt
   end
