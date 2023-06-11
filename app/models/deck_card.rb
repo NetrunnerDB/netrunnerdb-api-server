@@ -5,7 +5,9 @@ class DeckCard < ApplicationRecord
 
   belongs_to :deck,
     :primary_key => :id,
-    :foreign_key => :deck_id
+    :foreign_key => :deck_id,
+    :inverse_of => :deck_cards,
+    :touch => true
   belongs_to :card,
     :primary_key => :id,
     :foreign_key => :card_id
