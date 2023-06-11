@@ -9,6 +9,8 @@ module API
         # Computed attributes
         attributes :faction_id, :cards, :num_cards, :influence_spent
 
+        # Since some of the fields are computed or handled automatically, we don't allow
+        # them to be specified for create or update operations.
         def self.creatable_fields(context)
           super - [:faction_id, :num_cards, :influence_spent, :created_at, :updated_at]
         end
