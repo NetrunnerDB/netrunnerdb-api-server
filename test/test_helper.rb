@@ -3,7 +3,9 @@ require_relative "../config/environment"
 require "rails/test_help"
 
 require "simplecov"
-SimpleCov.start
+SimpleCov.start 'rails' do
+  SimpleCov.coverage_dir 'coverage/unit'
+end
 
 require 'simplecov-cobertura'
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
