@@ -1,5 +1,6 @@
 require 'parslet'
 
+# Root Parser for Card and Printing Search.
 class SearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
