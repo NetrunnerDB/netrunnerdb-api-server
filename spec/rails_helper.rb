@@ -8,13 +8,12 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require "simplecov"
-SimpleCov.start 'rails' do
-  SimpleCov.coverage_dir 'coverage/rspec'
-end
-
-
 require 'simplecov-cobertura'
+SimpleCov.coverage_dir 'coverage/rspec'
+SimpleCov.enable_coverage :branch
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+SimpleCov.start 'rails'
+Rails.application.eager_load!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
