@@ -7,7 +7,14 @@ require 'simplecov-cobertura'
 SimpleCov.coverage_dir 'coverage/unit'
 SimpleCov.enable_coverage :branch
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
-SimpleCov.start 'rails'
+
+SimpleCov.start do
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Models', 'app/models'
+  add_group 'Resources', 'app/resources'
+  add_group 'Libraries', 'lib'
+  add_group 'Spec', 'spec'
+end
 Rails.application.eager_load!
 
 class ActiveSupport::TestCase
