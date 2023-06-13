@@ -167,11 +167,4 @@ class SearchParserTest < Minitest::Test
     tree = parser.parse_with_debug(input)
     refute_equal nil, tree
   end
-
-  def test_dupe_for_coverage
-    input = %Q{"bean" f:weyland-consortium t!"operation"   royalties  n<=1 }
-    parser = SearchParser.new
-    tree = parser.parse_with_debug(input)
-    refute_equal nil, tree
-  end
 end
