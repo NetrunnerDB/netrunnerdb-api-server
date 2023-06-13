@@ -3,12 +3,12 @@ require_relative "../config/environment"
 require "rails/test_help"
 
 require "simplecov"
-SimpleCov.start 'rails' do
-  SimpleCov.coverage_dir 'coverage/unit'
-end
-
 require 'simplecov-cobertura'
+SimpleCov.coverage_dir 'coverage/unit'
+SimpleCov.enable_coverage :branch
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+SimpleCov.start 'rails'
+Rails.application.eager_load!
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
