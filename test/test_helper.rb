@@ -9,13 +9,13 @@ SimpleCov.enable_coverage :branch
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 
 SimpleCov.start do
+  add_filter 'spec/'
+  add_filter 'test/'
   add_group 'Controllers', 'app/controllers'
   add_group 'Models', 'app/models'
   add_group 'Resources', 'app/resources'
   add_group 'Libraries', 'lib'
-  add_group 'Spec', 'spec'
 end
-Rails.application.eager_load!
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

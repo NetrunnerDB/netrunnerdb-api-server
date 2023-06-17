@@ -14,14 +14,13 @@ SimpleCov.enable_coverage :branch
 SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 
 SimpleCov.start do
+  add_filter 'spec/'
+  add_filter 'test/'
   add_group 'Controllers', 'app/controllers'
   add_group 'Models', 'app/models'
   add_group 'Resources', 'app/resources'
   add_group 'Libraries', 'lib'
-  add_group 'Spec', 'spec'
 end
-Rails.application.eager_load!
-
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
