@@ -15,7 +15,6 @@ SimpleCov.start do
   add_group 'Models', 'app/models'
   add_group 'Resources', 'app/resources'
   add_group 'Libraries', 'lib'
-  add_group 'Spec', 'spec'
 end
 
 class ActiveSupport::TestCase
