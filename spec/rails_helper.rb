@@ -20,8 +20,6 @@ SimpleCov.start do
   add_group 'Libraries', 'lib'
   add_group 'Spec', 'spec'
 end
-Rails.application.eager_load!
-
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

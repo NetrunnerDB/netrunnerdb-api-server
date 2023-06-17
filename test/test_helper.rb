@@ -15,7 +15,6 @@ SimpleCov.start do
   add_group 'Libraries', 'lib'
   add_group 'Spec', 'spec'
 end
-Rails.application.eager_load!
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
