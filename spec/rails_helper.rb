@@ -20,7 +20,6 @@ SimpleCov.start do
   add_group 'Models', 'app/models'
   add_group 'Resources', 'app/resources'
   add_group 'Libraries', 'lib'
-  add_group 'Spec', 'spec'
 end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
