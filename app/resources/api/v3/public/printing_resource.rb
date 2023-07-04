@@ -28,6 +28,7 @@ module API
         has_one :card, relation_name: :unified_card
         has_one :card_cycle
         has_one :card_set
+        has_one :card_type
         has_one :faction
         has_many :illustrators
         has_one :side

@@ -15,6 +15,8 @@ module API
         has_one :card_pool
         has_one :restriction
 
+        has_many :card_cycles
+        has_many :card_sets
         has_many :cards, relation_name: :unified_cards
 
         filters :active, :format_id
