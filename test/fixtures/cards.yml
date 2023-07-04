@@ -30,10 +30,40 @@ sure_gamble:
 
 adonis_campaign:
   id: adonis_campaign
-  title: Adonis Campaign 
-  stripped_title: Adonis Campaign 
+  title: Adonis Campaign
+  stripped_title: Adonis Campaign
   side_id: corp
-  faction_id: haas_bioroid 
-  card_type_id: asset 
+  faction_id: haas_bioroid
+  card_type_id: asset
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+geist:
+  card_type_id: runner_identity
+  faction_id: criminal
+  id: geist
+  influence_limit: 15
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: runner
+  stripped_text: Whenever you use a trash ability, draw 1 card.
+  stripped_title: "Armand \"Geist\" Walker: Tech Lord"
+  text: Whenever you use a [trash] ability, draw 1 card.
+  title: "Armand \"Geist\" Walker: Tech Lord"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+asa_group:
+  card_type_id: corp_identity
+  faction_id: haas_bioroid
+  id: asa_group
+  influence_limit: 15
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: corp
+  stripped_text: The first time each turn you install a card, you may install 1 non-agenda card from HQ in the root of or protecting the same server.
+  stripped_title: "Asa Group: Security Through Vigilance"
+  text: The first time each turn you install a card, you may install 1 non-agenda card from HQ in the root of or protecting the same server.
+  title: "Asa Group: Security Through Vigilance"
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

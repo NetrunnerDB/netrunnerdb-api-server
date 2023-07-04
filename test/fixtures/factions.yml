@@ -8,7 +8,7 @@ neutral_corp:
 
 neutral_runner:
   id: neutral_runner
-  name: Neutral Runner 
+  name: Neutral Runner
   side_id: "runner"
   is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -35,5 +35,13 @@ adam:
   name: "Adam"
   side_id: "runner"
   is_mini: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+criminal:
+  id: "criminal"
+  name: "Criminal"
+  side_id: "runner"
+  is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

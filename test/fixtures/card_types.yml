@@ -25,3 +25,18 @@ event:
   side_id: "runner"
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+corp_identity:
+  id: "corp_identity"
+  name: "Corp Identity"
+  side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+runner_identity:
+  id: "runner_identity"
+  name: "Runner Identity"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
