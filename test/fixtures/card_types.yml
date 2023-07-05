@@ -1,3 +1,10 @@
+agenda:
+  id: "agenda"
+  name: "Agenda"
+  side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 asset:
   id: "asset"
   name: "Asset"
@@ -5,10 +12,38 @@ asset:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
+hardware:
+  id: "hardware"
+  name: "Hardware"
+  side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+ice:
+  id: "ice"
+  name: "ICE"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 operation:
   id: "operation"
   name: "Operation"
-  side_id: "corp"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+program:
+  id: "program"
+  name: "Program"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+resource:
+  id: "resource"
+  name: "Resource"
+  side_id: "runner"
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 

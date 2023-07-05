@@ -11,7 +11,7 @@ class DeckValidator
 
   def validate(deck_json)
     if passes_request_validity?(deck_json)
-      # passes_basic_deckbuilding_rules?(deck_json)
+      passes_basic_deckbuilding_rules?(deck_json)
     end
 
     return @errors.size == 0
@@ -60,45 +60,56 @@ class DeckValidator
       end
     end
 
-    if not (deck.has_key?(:cards) and deck[:cards].size > 0)
+    if deck.has_key?(:cards) and deck[:cards].size > 0
+      # Ensure that all card ids exist.
+      card_ids = Set.new(Card.all().pluck(:id))
+      deck[:cards].each do |card_id, quantity|
+        if !card_ids.include?(card_id.to_s)
+          @errors << 'Card `%s` does not exist.' % card_id
+        end
+      end
+    else
       @errors << "Deck must specify some cards."
     end
+
+    return @errors.size == 0
   end
 
   def passes_basic_deckbuilding_rules?(deck)
     # Check deck size minimums
     identity = Card.find(deck[:identity_card_id])
 
-    num_cards = deck[:cards].map{ |slot| slot.quantity }.sum
-    puts 'Deck has %d cards' % num_cards
-    agendas_with_points = {}
+    num_cards = deck[:cards].map{ |slot, quantity| quantity }.sum
     if num_cards < identity.minimum_deck_size
       @errors << "Minimum deck size is %d, but deck has %d cards." % [identity.minimum_deck_size, num_cards]
     end
 
-#    # If corp deck, check agenda points
-#    deck.cards.select{ |c| c.card_type_id == 'agenda' }.each{|c| agendas_with_points[c.id] = c.agenda_points}
-#    agenda_points = deck.deck_cards.select{|slot| agendas_with_points.has_key?(slot.card_id)}.sum{|slot| slot.quantity * agendas_with_points[slot.card_id]}
-#    puts 'Deck has %d agenda_points' % agenda_points
-#
-#    # TODO: add special Ampere agenda point rules.
-#    min_agenda_points = (num_cards < identity.minimum_deck_size ? identity.minimum_deck_size : num_cards) / 5 * 2 + 2
-#    required_agenda_points = [min_agenda_points, min_agenda_points + 1]
-#    puts 'Deck requires %s agenda_points' % required_agenda_points.to_json
-#    if not required_agenda_points.include?(agenda_points)
-#      errors << "Deck with size %d requires %s agenda points, but deck only has %d" % [num_cards, required_agenda_points.to_json, agenda_points]
-#    end
-#
-#    # TODO: add special Nova influence rules.
-#    # Check influence
-#    out_of_faction_cards = {}
-#    deck.cards.select{ |c| c.faction_id != identity.faction_id }.each{ |c| out_of_faction_cards[c.id] = c.influence_cost }
-#    influence_spent = deck.deck_cards.select{|slot| out_of_faction_cards.has_key?(slot.card_id)}.sum{|slot| slot.quantity * out_of_faction_cards[slot.card_id]}
-#    puts 'Deck has spent %d influence' % influence_spent
-#    if influence_spent > identity.influence_limit
-#      @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
-#    end
-#
-    return true # @errors.size == 0
+    # TODO: Check max quantity of each card
+
+    # If corp deck, check agenda points
+    if deck[:side_id] == 'corp'
+      agendas_with_points = {}
+      Card.where({id: deck[:cards].map{|card_id, quantity| card_id}, card_type_id: 'agenda'}).each {|c| agendas_with_points[c.id] = c.agenda_points}
+      agenda_points = agendas_with_points.map{|card_id, points| points * deck[:cards][card_id.to_sym] }.sum
+
+      min_agenda_points = (num_cards < identity.minimum_deck_size ? identity.minimum_deck_size : num_cards) / 5 * 2 + 2
+      required_agenda_points = [min_agenda_points, min_agenda_points + 1]
+      if not required_agenda_points.include?(agenda_points)
+        errors << "Deck with size %d requires %s agenda points, but deck only has %d" % [num_cards, required_agenda_points.to_json, agenda_points]
+      end
+    end
+
+    # TODO: add special Professor influence rules.
+    # TODO: add special Ampere agenda rules.
+    # TODO: add special Nova influence rules.
+    # Check influence
+    out_of_faction_cards = {}
+    Card.where(id: deck[:cards].map{|card_id, quantity| card_id}).where.not(influence_cost: [nil, 0]).where.not(faction_id: identity.faction_id).each {|c| out_of_faction_cards[c.id] = c.influence_cost }
+    influence_spent = out_of_faction_cards.map{|card_id, influence| influence * deck[:cards][card_id.to_sym] }.sum
+    if influence_spent > identity.influence_limit
+      @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
+    end
+
+    return @errors.size == 0
   end
 end

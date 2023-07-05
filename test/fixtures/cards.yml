@@ -1,33 +1,3 @@
-hedge_fund:
-  id: hedge_fund
-  title: Hedge Fund
-  stripped_title: Hedge Fund
-  side_id: corp
-  faction_id: neutral_corp
-  card_type_id: operation
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
-prisec:
-  id: prisec
-  title: Prisec
-  stripped_title: Prisec
-  side_id: corp
-  faction_id: neutral_corp
-  card_type_id: upgrade
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
-sure_gamble:
-  id: sure_gamble
-  title: Sure Gamble
-  stripped_title: Sure Gamble
-  side_id: runner
-  faction_id: neutral_runner
-  card_type_id: event
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
 adonis_campaign:
   id: adonis_campaign
   title: Adonis Campaign
@@ -37,6 +7,285 @@ adonis_campaign:
   card_type_id: asset
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+aeneas_informant:
+  card_type_id: "resource"
+  cost: 0
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "aeneas_informant"
+  influence_cost: 1
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Whenever you access a card with a trash cost not in Archives and do not trash it, you may reveal it and gain 1 credit."
+  stripped_title: "Aeneas Informant"
+  text: "Whenever you access a card with a trash cost not in Archives and do not trash it, you may reveal it and gain 1[credit]."
+  title: "Aeneas Informant"
+
+ansel_1_0:
+  attribution: "Designed by 2018 European Champion Patrick Gower"
+  card_type_id: "ice"
+  cost: 6
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "ansel_1_0"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  strength: 4
+  stripped_text: "Lose click: Break 1 subroutine on this ice. Only the Runner can use this ability. Subroutine Trash 1 installed Runner card. Subroutine You may install 1 card from HQ or Archives. Subroutine The Runner cannot steal or trash Corp cards for the remainder of this run."
+  stripped_title: "Ansel 1.0"
+  text: "<strong>Lose [click]:</strong> Break 1 subroutine on this ice. Only the Runner can use this ability.\n[subroutine] Trash 1 installed Runner card.\n[subroutine] You may install 1 card from HQ or Archives.\n[subroutine] The Runner cannot steal or trash Corp cards for the remainder of this run."
+  title: "Ansel 1.0"
+
+asa_group:
+  card_type_id: corp_identity
+  faction_id: haas_bioroid
+  id: asa_group
+  influence_limit: 15
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: corp
+  stripped_text: The first time each turn you install a card, you may install 1 non-agenda card from HQ in the root of or protecting the same server.
+  stripped_title: "Asa Group: Security Through Vigilance"
+  text: The first time each turn you install a card, you may install 1 non-agenda card from HQ in the root of or protecting the same server.
+  title: "Asa Group: Security Through Vigilance"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+aumakua:
+  card_type_id: "program"
+  cost: 3
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "aumakua"
+  influence_cost: 1
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  strength: 0
+  stripped_text: "This program gets +1 strength for each hosted virus counter. Whenever you expose a card, place 1 virus counter on this program. Whenever you finish breaching a server, if you did not steal or trash any accessed cards, place 1 virus counter on this program. Interface -> 1 credit: Break 1 subroutine."
+  stripped_title: "Aumakua"
+  text: "This program gets +1 strength for each hosted virus counter.\nWhenever you expose a card, place 1 virus counter on this program.\nWhenever you finish breaching a server, if you did not steal or trash any accessed cards, place 1 virus counter on this program.\nInterface → <strong>1[credit]:</strong> Break 1 subroutine."
+  title: "Aumakua"
+
+bankroll:
+  card_type_id: "program"
+  cost: 1
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "bankroll"
+  influence_cost: 2
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  stripped_text: "Whenever you make a successful run, you may place 1 credit from the bank on Bankroll. trash: Take all credits from Bankroll."
+  stripped_title: "Bankroll"
+  text: "Whenever you make a successful run, you may place 1[credit] from the bank on Bankroll.\n[trash]: Take all credits from Bankroll."
+  title: "Bankroll"
+
+biotic_labor:
+  card_type_id: "operation"
+  cost: 4
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "biotic_labor"
+  influence_cost: 4
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Gain click click."
+  stripped_title: "Biotic Labor"
+  text: "Gain [click][click]."
+  title: "Biotic Labor"
+
+boomerang:
+  card_type_id: "hardware"
+  cost: 2
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "boomerang"
+  influence_cost: 2
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "When you install this hardware, choose an installed piece of ice. Use this hardware only during encounters with that ice. trash: Break up to 2 subroutines. When this run ends, if it is successful, you may shuffle a copy of Boomerang from your heap into your stack."
+  stripped_title: "Boomerang"
+  text: "When you install this hardware, choose an installed piece of ice. Use this hardware only during encounters with that ice.\n[trash]<strong>:</strong> Break up to 2 subroutines. When this run ends, if it is successful, you may shuffle a copy of Boomerang from your heap into your stack."
+  title: "Boomerang"
+
+bravado:
+  card_type_id: "event"
+  cost: 3
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "bravado"
+  influence_cost: 3
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run a server protected by ice. When that run ends, gain 6 credits, plus 1 credit for each piece of ice you passed during that run."
+  stripped_title: "Bravado"
+  text: "Run a server protected by ice. When that run ends, gain 6[credit], plus 1[credit] for each piece of ice you passed during that run."
+  title: "Bravado"
+
+buffer_drive:
+  card_type_id: "hardware"
+  cost: 3
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "buffer_drive"
+  influence_cost: 1
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "The first time each turn 1 or more cards are trashed from your grip or stack, you may add 1 of those cards to the bottom of your stack. Remove this hardware from the game: Add 1 card from your heap to the top of your stack."
+  stripped_title: "Buffer Drive"
+  text: "The first time each turn 1 or more cards are trashed from your grip or stack, you may add 1 of those cards to the bottom of your stack.\n<strong>Remove this hardware from the game:</strong> Add 1 card from your heap to the top of your stack."
+  title: "Buffer Drive"
+
+bukhgalter:
+  card_type_id: "program"
+  cost: 3
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "bukhgalter"
+  influence_cost: 4
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  strength: 1
+  stripped_text: "Interface -> 1 credit: Break 1 sentry subroutine. 1 credit: +1 strength. The first time each turn this program fully breaks a piece of ice, gain 2 credits."
+  stripped_title: "Bukhgalter"
+  text: "Interface → <strong>1[credit]:</strong> Break 1 <strong>sentry</strong> subroutine.\n<strong>1[credit]:</strong> +1 strength.\nThe first time each turn this program fully breaks a piece of ice, gain 2[credit]."
+  title: "Bukhgalter"
+
+carpe_diem:
+  card_type_id: "event"
+  cost: 1
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "carpe_diem"
+  influence_cost: 2
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Identify your mark. (If you dont have a mark, a random central server becomes your mark for this turn.) Gain 4 credits. You may run your mark."
+  stripped_title: "Carpe Diem"
+  text: "Identify your mark. <em>(If you don’t have a mark, a random central server becomes your mark for this turn.)</em>\nGain 4[credit]. You may run your mark."
+  title: "Carpe Diem"
+
+cats_cradle:
+  card_type_id: "program"
+  cost: 2
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "cats_cradle"
+  influence_cost: 2
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  strength: 1
+  stripped_text: "The rez cost of each piece of code gate ice is increased by 1 credit. Interface -> 1 credit: Break 1 code gate subroutine. 1 credit: +1 strength."
+  stripped_title: "Cat's Cradle"
+  text: "The rez cost of each piece of <strong>code gate</strong> ice is increased by 1[credit].\nInterface → <strong>1[credit]:</strong> Break 1 <strong>code gate</strong> subroutine.\n<strong>1[credit]:</strong> +1 strength."
+  title: "Cat's Cradle"
+
+daily_casts:
+  card_type_id: "resource"
+  cost: 3
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "daily_casts"
+  influence_cost: 0
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "When you install this resource, load 8 credits onto it. When it is empty, trash it. When your turn begins, take 2 credits from this resource."
+  stripped_title: "Daily Casts"
+  text: "When you install this resource, load 8[credit] onto it. When it is empty, trash it.\nWhen your turn begins, take 2[credit] from this resource."
+  title: "Daily Casts"
+
+dirty_laundry:
+  card_type_id: "event"
+  cost: 2
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "dirty_laundry"
+  influence_cost: 0
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run any server. When that run ends, if it was successful, gain 5 credits."
+  stripped_title: "Dirty Laundry"
+  text: "Run any server. When that run ends, if it was successful, gain 5[credit]."
+  title: "Dirty Laundry"
+
+dreamnet:
+  card_type_id: "resource"
+  cost: 3
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "dreamnet"
+  influence_cost: 0
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "The first time each turn you make a successful run, draw 1 card. If you have at least 2 link or your identity is digital, also gain 1 credit."
+  stripped_title: "DreamNet"
+  text: "The first time each turn you make a successful run, draw 1 card. If you have at least 2[link] or your identity is <strong>digital</strong>, also gain 1[credit]."
+  title: "DreamNet"
+
+eli_1_0:
+  card_type_id: "ice"
+  cost: 3
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "eli_1_0"
+  influence_cost: 1
+  is_unique: false
+  side_id: "corp"
+  strength: 4
+  stripped_text: "Lose click: Break 1 subroutine on this ice. Only the Runner can use this ability. Subroutine End the run. Subroutine End the run."
+  stripped_title: "Eli 1.0"
+  text: "<strong>Lose [click]:</strong> Break 1 subroutine on this ice. Only the Runner can use this ability.\n[subroutine] End the run.\n[subroutine] End the run."
+  title: "Eli 1.0"
+
+embezzle:
+  card_type_id: "event"
+  cost: 1
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "embezzle"
+  influence_cost: 3
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run HQ. If successful, instead of breaching HQ, name asset, ice, operation or upgrade, then reveal 2 cards from HQ at random. Trash each revealed card that has the named type, then gain 4 credits for each card trashed this way."
+  stripped_title: "Embezzle"
+  text: "Run HQ. If successful, instead of breaching HQ, name asset, ice, operation or upgrade, then reveal 2 cards from HQ at random. Trash each revealed card that has the named type, then gain 4[credit] for each card trashed this way."
+  title: "Embezzle"
+
+enigma:
+  card_type_id: "ice"
+  cost: 3
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "enigma"
+  influence_cost: 0
+  is_unique: false
+  side_id: "corp"
+  strength: 2
+  stripped_text: "Subroutine The Runner loses click. Subroutine End the run."
+  stripped_title: "Enigma"
+  text: "[subroutine] The Runner loses [click].\n[subroutine] End the run."
+  title: "Enigma"
+
+funhouse:
+  card_type_id: "ice"
+  cost: 5
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "funhouse"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: 4
+  stripped_text: "When the Runner encounters this ice, end the run unless the Runner takes 1 tag. Subroutine Give the Runner 1 tag unless they pay 4 credits."
+  stripped_title: "Funhouse"
+  text: "When the Runner encounters this ice, end the run unless the Runner takes 1 tag.\n[subroutine] Give the Runner 1 tag unless they pay 4[credit]."
+  title: "Funhouse"
 
 geist:
   card_type_id: runner_identity
@@ -53,17 +302,368 @@ geist:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-asa_group:
-  card_type_id: corp_identity
-  faction_id: haas_bioroid
-  id: asa_group
-  influence_limit: 15
+ghosttongue:
+  card_type_id: "hardware"
+  cost: 2
+  deck_limit: 3
+  faction_id: "anarch"
+  id: "ghosttongue"
+  influence_cost: 3
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "When you install this hardware, suffer 1 core damage. The play cost of each event is lowered by 1 credit."
+  stripped_title: "Ghosttongue"
+  text: "When you install this hardware, suffer 1 core damage.\nThe play cost of each event is lowered by 1[credit]."
+  title: "Ghosttongue"
+
+hagen:
+  card_type_id: "ice"
+  cost: 4
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "hagen"
+  influence_cost: 3
   is_unique: false
-  minimum_deck_size: 45
+  side_id: "corp"
+  strength: 6
+  stripped_text: "This ice has -1 strength for each installed icebreaker. Subroutine Trash 1 program that is not a decoder, fracter, or killer. Subroutine End the run."
+  stripped_title: "Hagen"
+  text: "This ice has -1 strength for each installed <strong>icebreaker</strong>.\n[subroutine] Trash 1 program that is not a <strong>decoder</strong>, <strong>fracter</strong>, or <strong>killer</strong>.\n[subroutine] End the run."
+  title: "Hagen"
+
+hakarl_1_0:
+  card_type_id: "ice"
+  cost: 5
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "hakarl_1_0"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  strength: 4
+  stripped_text: "When you rez this ice during a run against this server, you may derez another installed card. If you do, the Runner cannot use paid abilities printed on bioroid ice for the remainder of this turn. Lose click: Break 1 subroutine on this ice. Only the Runner can use this ability. Subroutine Do 1 core damage. Subroutine End the run."
+  stripped_title: "Hakarl 1.0"
+  text: "When you rez this ice during a run against this server, you may derez another installed card. If you do, the Runner cannot use paid abilities printed on <strong>bioroid</strong> ice for the remainder of this turn.\n<strong>Lose [click]:</strong> Break 1 subroutine on this ice. Only the Runner can use this ability.\n[subroutine] Do 1 core damage.\n[subroutine] End the run."
+  title: "Hákarl 1.0"
+
+hedge_fund:
+  id: hedge_fund
+  title: Hedge Fund
+  stripped_title: Hedge Fund
   side_id: corp
-  stripped_text: The first time each turn you install a card, you may install 1 non-agenda card from HQ in the root of or protecting the same server.
-  stripped_title: "Asa Group: Security Through Vigilance"
-  text: The first time each turn you install a card, you may install 1 non-agenda card from HQ in the root of or protecting the same server.
-  title: "Asa Group: Security Through Vigilance"
+  faction_id: neutral_corp
+  card_type_id: operation
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+ikawah_project:
+  advancement_requirement: 5
+  agenda_points: 3
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "ikawah_project"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "As an additional cost to steal Ikawah Project, the Runner must spend click and 2 credits."
+  stripped_title: "Ikawah Project"
+  text: "As an additional cost to steal Ikawah Project, the Runner must spend [click] and 2[credit]."
+  title: "Ikawah Project"
+
+inside_job:
+  card_type_id: "event"
+  cost: 2
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "inside_job"
+  influence_cost: 3
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run any server. The first time this run you encounter a piece of ice, bypass it."
+  stripped_title: "Inside Job"
+  text: "Run any server. The first time this run you encounter a piece of ice, bypass it."
+  title: "Inside Job"
+
+ken_express_tenma_disappeared_clone:
+  base_link: 0
+  card_type_id: "runner_identity"
+  deck_limit: 1
+  faction_id: "criminal"
+  id: "ken_express_tenma_disappeared_clone"
+  influence_limit: 17
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: "runner"
+  stripped_text: "The first time each turn you play a run event, gain 1 credit."
+  stripped_title: "Ken \"Express\" Tenma: Disappeared Clone"
+  text: "The first time each turn you play a <strong>run</strong> event, gain 1[credit]."
+  title: "Ken \"Express\" Tenma: Disappeared Clone"
+
+legwork:
+  card_type_id: "event"
+  cost: 2
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "legwork"
+  influence_cost: 2
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run HQ. If successful, access 2 additional cards when you breach HQ."
+  stripped_title: "Legwork"
+  text: "Run HQ. If successful, access 2 additional cards when you breach HQ."
+  title: "Legwork"
+
+marathon:
+  card_type_id: "event"
+  cost: 1
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "marathon"
+  influence_cost: 5
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Make a run on a remote server. When the run ends, gain click and add Marathon to your grip instead of trashing it if the run was successful. You may not make another run on that server for the remainder of this turn."
+  stripped_title: "Marathon"
+  text: "Make a run on a remote server. When the run ends, gain [click] and add Marathon to your grip instead of trashing it if the run was successful. You may not make another run on that server for the remainder of this turn."
+  title: "Marathon"
+
+mutual_favor:
+  card_type_id: "event"
+  cost: 0
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "mutual_favor"
+  influence_cost: 3
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Search your stack for 1 icebreaker program and reveal it. (Shuffle your stack after searching it.) If you made a successful run this turn, you may install it. If you do not, add it to your grip."
+  stripped_title: "Mutual Favor"
+  text: "Search your stack for 1 <strong>icebreaker</strong> program and reveal it. <em>(Shuffle your stack after searching it.)</em> If you made a successful run this turn, you may install it. If you do not, add it to your grip."
+  title: "Mutual Favor"
+
+networking:
+  card_type_id: "event"
+  cost: 0
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "networking"
+  influence_cost: 1
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Remove 1 tag. Then, you may pay 1 credit to add this event to your grip."
+  stripped_title: "Networking"
+  text: "Remove 1 tag. Then, you may pay 1[credit] to add this event to your grip."
+  title: "Networking"
+
+paperclip:
+  card_type_id: "program"
+  cost: 4
+  deck_limit: 3
+  faction_id: "anarch"
+  id: "paperclip"
+  influence_cost: 3
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  strength: 1
+  stripped_text: "Whenever you encounter a barrier, you may install this program from your heap. X credits: +X strength. Then, if this program can interface with the barrier you are encountering, break up to X subroutines."
+  stripped_title: "Paperclip"
+  text: "Whenever you encounter a <strong>barrier</strong>, you may install this program from your heap.\n<strong>X[credit]:</strong> +X strength. Then, if this program can interface with the <strong>barrier</strong> you are encountering, break up to X subroutines."
+  title: "Paperclip"
+
+pennyshaver:
+  card_type_id: "hardware"
+  cost: 3
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "pennyshaver"
+  influence_cost: 3
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "+1 mu Whenever you make a successful run, place 1 credit on this hardware. click: Place 1 credit on this hardware, then take all credits from it. Limit 1 console per player."
+  stripped_title: "Pennyshaver"
+  text: "+1[mu]\nWhenever you make a successful run, place 1[credit] on this hardware.\n[click]<strong>:</strong> Place 1[credit] on this hardware, then take all credits from it.\nLimit 1 <strong>console</strong> per player."
+  title: "Pennyshaver"
+
+prisec:
+  id: prisec
+  title: Prisec
+  stripped_title: Prisec
+  side_id: corp
+  faction_id: neutral_corp
+  card_type_id: upgrade
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+project_vitruvius:
+  advancement_requirement: 3
+  agenda_points: 2
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "project_vitruvius"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you score this agenda, place 1 agenda counter on it for each hosted advancement counter past 3. Hosted agenda counter: Add 1 card from Archives to HQ."
+  stripped_title: "Project Vitruvius"
+  text: "When you score this agenda, place 1 agenda counter on it for each hosted advancement counter past 3.\n<strong>Hosted agenda counter:</strong> Add 1 card from Archives to HQ."
+  title: "Project Vitruvius"
+
+punitive_counterstrike:
+  card_type_id: "operation"
+  cost: 3
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "punitive_counterstrike"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Trace[5]. If successful, do X meat damage. X is equal to the sum of the printed agenda points on all agendas the Runner stole during their last turn."
+  stripped_title: "Punitive Counterstrike"
+  text: "Trace[5]. If successful, do X meat damage. X is equal to the sum of the printed agenda points on all agendas the Runner stole during their last turn."
+  title: "Punitive Counterstrike"
+
+regolith_mining_license:
+  card_type_id: "asset"
+  cost: 2
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "regolith_mining_license"
+  influence_cost: 0
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you rez this asset, load 15 credits onto it. When it is empty, trash it. click: Take 3 credits from this asset."
+  stripped_title: "Regolith Mining License"
+  text: "When you rez this asset, load 15[credit] onto it. When it is empty, trash it.\n[click]<strong>:</strong> Take 3[credit] from this asset."
+  title: "Regolith Mining License"
+  trash_cost: 3
+
+rototurret:
+  card_type_id: "ice"
+  cost: 4
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "rototurret"
+  influence_cost: 1
+  is_unique: false
+  side_id: "corp"
+  strength: 0
+  stripped_text: "Subroutine Trash 1 installed program. Subroutine End the run."
+  stripped_title: "Rototurret"
+  text: "[subroutine] Trash 1 installed program.\n[subroutine] End the run."
+  title: "Rototurret"
+
+send_a_message:
+  advancement_requirement: 5
+  agenda_points: 3
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "send_a_message"
+  influence_cost: 0
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When this agenda is scored or stolen, you may rez 1 installed piece of ice, ignoring all costs."
+  stripped_title: "Send a Message"
+  text: "When this agenda is scored or stolen, you may rez 1 installed piece of ice, ignoring all costs."
+  title: "Send a Message"
+
+spin_doctor:
+  card_type_id: "asset"
+  cost: 0
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "spin_doctor"
+  influence_cost: 1
+  is_unique: true
+  side_id: "corp"
+  stripped_text: "When you rez this asset, draw 2 cards. Remove this asset from the game: Shuffle up to 2 cards from Archives into R&D."
+  stripped_title: "Spin Doctor"
+  text: "When you rez this asset, draw 2 cards.\n<strong>Remove this asset from the game:</strong> Shuffle up to 2 cards from Archives into R&D."
+  title: "Spin Doctor"
+  trash_cost: 2
+
+sure_gamble:
+  id: sure_gamble
+  title: Sure Gamble
+  stripped_title: Sure Gamble
+  side_id: runner
+  faction_id: neutral_runner
+  card_type_id: event
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+the_class_act:
+  card_type_id: "resource"
+  cost: 4
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "the_class_act"
+  influence_cost: 5
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "When your discard phase ends, if you installed this resource this turn, draw 4 cards. Interrupt -> The first time each turn you would draw any number of cards, look at the top X cards of your stack. Add 1 of those cards to the bottom of your stack. X is equal to the number of cards you will draw plus 1."
+  stripped_title: "The Class Act"
+  text: "When your discard phase ends, if you installed this resource this turn, draw 4 cards.\n[interrupt] → The first time each turn you would draw any number of cards, look at the top X cards of your stack. Add 1 of those cards to the bottom of your stack. X is equal to the number of cards you will draw plus 1."
+  title: "The Class Act"
+
+tollbooth:
+  card_type_id: "ice"
+  cost: 8
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "tollbooth"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: 5
+  stripped_text: "When the Runner encounters this ice, they must pay 3 credits, if able. If they do not, end the run. Subroutine End the run."
+  stripped_title: "Tollbooth"
+  text: "When the Runner encounters this ice, they must pay 3[credit], if able. If they do not, end the run.\n[subroutine] End the run."
+  title: "Tollbooth"
+
+trieste_model_bioroids:
+  attribution: "Designed by 2019 World Champion Oliver \"Pinsel\" Siccha"
+  card_type_id: "asset"
+  cost: 2
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "trieste_model_bioroids"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you rez this asset, choose 1 rezzed piece of bioroid ice. Runner card abilities cannot break subroutines on the chosen ice."
+  stripped_title: "Trieste Model Bioroids"
+  text: "When you rez this asset, choose 1 rezzed piece of <strong>bioroid</strong> ice.\nRunner card abilities cannot break subroutines on the chosen ice."
+  title: "Trieste Model Bioroids"
+  trash_cost: 3
+
+tyr:
+  card_type_id: "ice"
+  cost: 10
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "tyr"
+  influence_cost: 5
+  is_unique: true
+  side_id: "corp"
+  strength: 7
+  stripped_text: "Lose click: Break 1 subroutine on this ice. The Corp gets +1 allotted click for their next turn. Only the Runner can use this ability. Subroutine Do 2 core damage. Subroutine Trash 1 installed Runner card. Gain 3 credits. Subroutine End the run."
+  stripped_title: "Tyr"
+  text: "<strong>Lose [click]:</strong> Break 1 subroutine on this ice. The Corp gets +1 allotted [click] for their next turn. Only the Runner can use this ability.\n[subroutine] Do 2 core damage.\n[subroutine] Trash 1 installed Runner card. Gain 3[credit].\n[subroutine] End the run."
+  title: "Týr"
+
+wake_implant_v2a_jrj:
+  card_type_id: "hardware"
+  cost: 1
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "wake_implant_v2a_jrj"
+  influence_cost: 3
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "When you install this hardware, suffer 1 meat damage. Whenever you make a successful run on HQ, place 1 power counter on this hardware. Whenever you breach R&D, you may remove up to 3 hosted power counters to access that many additional cards."
+  stripped_title: "WAKE Implant v2A-JRJ"
+  text: "When you install this hardware, suffer 1 meat damage.\nWhenever you make a successful run on HQ, place 1 power counter on this hardware.\nWhenever you breach R&D, you may remove up to 3 hosted power counters to access that many additional cards."
+  title: "WAKE Implant v2A-JRJ"
+

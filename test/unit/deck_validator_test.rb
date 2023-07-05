@@ -11,8 +11,89 @@ class DeckValidatorTest < ActiveSupport::TestCase
     @wrong_side_asa_group = { identity_card_id: 'asa_group', side_id: 'runner' }
     @wrong_side_geist = { identity_card_id: 'geist', side_id: 'corp' }
 
-    @minimal_asa_group = { identity_card_id: 'asa_group', side_id: 'corp', cards: { 'hedge_fund': 3} }
-    @minimal_geist = { identity_card_id: 'geist', side_id: 'runner', cards: { 'sure_gamble': 3} }
+    @bad_cards_asa_group = { identity_card_id: 'asa_group', side_id: 'corp', cards: { 'foo': 3, 'bar': 3 } }
+    @too_few_cards_asa_group = { identity_card_id: 'asa_group', side_id: 'corp', cards: { 'hedge_fund': 3 } }
+
+    @not_enough_agenda_points_45_card = { identity_card_id: 'asa_group', side_id: 'corp', cards: { 'hedge_fund': 36, 'project_vitruvius': 9 } }
+
+    @too_much_influence_asa_group = {
+      identity_card_id: 'asa_group',
+      side_id: 'corp',
+      cards: {
+        'ikawah_project': 3,
+        'project_vitruvius': 3,
+        'send_a_message': 2,
+        'regolith_mining_license': 3,
+        'spin_doctor': 3,
+        'trieste_model_bioroids': 3,
+        'biotic_labor': 3,
+        'hedge_fund': 3,
+        'punitive_counterstrike': 3,
+        'funhouse': 3,
+        'hagen': 3,
+        'hakarl_1_0': 3,
+        'enigma': 3,
+        'tollbooth': 3,
+        'ansel_1_0': 3,
+        'rototurret': 3,
+        'tyr': 2,
+      }
+    }
+
+    @good_asa_group = {
+      identity_card_id: 'asa_group',
+      side_id: 'corp',
+      cards: {
+        'ikawah_project': 3,
+        'project_vitruvius': 3,
+        'send_a_message': 2,
+        'regolith_mining_license': 3,
+        'spin_doctor': 3,
+        'trieste_model_bioroids': 3,
+        'biotic_labor': 3,
+        'hedge_fund': 3,
+        'punitive_counterstrike': 3,
+        'eli_1_0': 3,
+        'hagen': 3,
+        'hakarl_1_0': 3,
+        'enigma': 3,
+        'tollbooth': 3,
+        'ansel_1_0': 3,
+        'rototurret': 3,
+        'tyr': 2,
+      }
+    }
+    @good_geist = { identity_card_id: 'geist', side_id: 'runner', cards: { 'sure_gamble': 45 } }
+    @good_ken = {
+      identity_card_id: 'ken_express_tenma_disappeared_clone',
+      side_id: 'runner',
+      cards: {
+        'bravado': 3,
+        'carpe_diem': 3,
+        'dirty_laundry': 3,
+        'embezzle': 2,
+        'inside_job': 2,
+        'legwork': 1,
+        'marathon': 2,
+        'mutual_favor': 2,
+        'networking': 1,
+        'sure_gamble': 3,
+        'boomerang': 2,
+        'buffer_drive': 1,
+        'ghosttongue': 1,
+        'pennyshaver': 2,
+        'wake_implant_v2a_jrj': 1,
+        'aeneas_informant': 3,
+        'daily_casts': 3,
+        'dreamnet': 1,
+        'the_class_act': 2,
+        'aumakua': 1,
+        'bukhgalter': 1,
+        'cats_cradle': 1,
+        'paperclip': 1,
+        'bankroll': 3,
+      }
+    }
   end
 
   def test_empty_deck_json
@@ -58,15 +139,40 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_includes v.errors, "Identity `geist` has side `runner` which does not match given side `corp`"
   end
 
-  def test_minimal_corp_side
+  def test_not_enough_agenda_points
     v = DeckValidator.new()
-    assert v.validate(@minimal_asa_group)
+    assert !v.validate(@not_enough_agenda_points_45_card)
+    assert_includes v.errors, "Deck with size 45 requires [20,21] agenda points, but deck only has 18"
+  end
+
+  def test_corp_too_much_influence
+    v = DeckValidator.new()
+    assert !v.validate(@too_much_influence_asa_group)
+    assert_includes v.errors, "Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence"
+  end
+
+  def test_good_corp_side
+    v = DeckValidator.new()
+    assert v.validate(@good_asa_group)
     assert_equal 0, v.errors.size
   end
 
-  def test_minimal_runner_side
+  def test_good_runner_side
     v = DeckValidator.new()
-    assert v.validate(@minimal_asa_group)
+    assert v.validate(@good_ken)
     assert_equal 0, v.errors.size
+  end
+
+  def test_bad_cards
+    v = DeckValidator.new()
+    assert !v.validate(@bad_cards_asa_group)
+    assert_includes v.errors, "Card `foo` does not exist."
+    assert_includes v.errors, "Card `bar` does not exist."
+  end
+
+  def test_too_few_cards
+    v = DeckValidator.new()
+    assert !v.validate(@too_few_cards_asa_group)
+    assert_includes v.errors, "Minimum deck size is 45, but deck has 3 cards."
   end
 end

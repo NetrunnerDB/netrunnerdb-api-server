@@ -1,3 +1,43 @@
+adam:
+  id: "adam"
+  name: "Adam"
+  side_id: "runner"
+  is_mini: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+anarch:
+  id: "anarch"
+  name: "Anarch"
+  side_id: "runner"
+  is_mini: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+criminal:
+  id: "criminal"
+  name: "Criminal"
+  side_id: "runner"
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+haas_bioroid:
+  id: "haas_bioroid"
+  name: "Haas-Bioroid"
+  side_id: "corp"
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+nbn:
+  id: "nbn"
+  name: "NBN"
+  side_id: "corp"
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 neutral_corp:
   id: neutral_corp
   name: Neutral Corp
@@ -14,10 +54,10 @@ neutral_runner:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-haas_bioroid:
-  id: "haas_bioroid"
-  name: "Haas-Bioroid"
-  side_id: "corp"
+shaper:
+  id: "shaper"
+  name: "Shaper"
+  side_id: "runner"
   is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -26,22 +66,6 @@ weyland:
   id: "weyland_consortium"
   name: "Weyland Consortium"
   side_id: "corp"
-  is_mini: false
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
-adam:
-  id: "adam"
-  name: "Adam"
-  side_id: "runner"
-  is_mini: true
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
-criminal:
-  id: "criminal"
-  name: "Criminal"
-  side_id: "runner"
   is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
