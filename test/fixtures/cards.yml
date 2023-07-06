@@ -1,12 +1,17 @@
 adonis_campaign:
-  id: adonis_campaign
-  title: Adonis Campaign
-  stripped_title: Adonis Campaign
-  side_id: corp
-  faction_id: haas_bioroid
-  card_type_id: asset
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  card_type_id: "asset"
+  cost: 4
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "adonis_campaign"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Put 12 credits from the bank on Adonis Campaign when rezzed. When there are no credits left on Adonis Campaign, trash it. Take 3 credits from Adonis Campaign when your turn begins."
+  stripped_title: "Adonis Campaign"
+  text: "Put 12[credit] from the bank on Adonis Campaign when rezzed. When there are no credits left on Adonis Campaign, trash it.\nTake 3[credit] from Adonis Campaign when your turn begins."
+  title: "Adonis Campaign"
+  trash_cost: 3
 
 aeneas_informant:
   card_type_id: "resource"
@@ -38,10 +43,10 @@ ansel_1_0:
   text: "<strong>Lose [click]:</strong> Break 1 subroutine on this ice. Only the Runner can use this ability.\n[subroutine] Trash 1 installed Runner card.\n[subroutine] You may install 1 card from HQ or Archives.\n[subroutine] The Runner cannot steal or trash Corp cards for the remainder of this run."
   title: "Ansel 1.0"
 
-asa_group:
+asa_group_security_through_vigilance:
   card_type_id: corp_identity
   faction_id: haas_bioroid
-  id: asa_group
+  id: asa_group_security_through_vigilance
   influence_limit: 15
   is_unique: false
   minimum_deck_size: 45
@@ -83,6 +88,20 @@ bankroll:
   stripped_title: "Bankroll"
   text: "Whenever you make a successful run, you may place 1[credit] from the bank on Bankroll.\n[trash]: Take all credits from Bankroll."
   title: "Bankroll"
+
+bellona:
+  advancement_requirement: 5
+  agenda_points: 3
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "bellona"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "As an additional cost to steal this agenda, the Runner must pay 5 credits. When you score this agenda, gain 5 credits."
+  stripped_title: "Bellona"
+  text: "As an additional cost to steal this agenda, the Runner must pay 5[credit].\nWhen you score this agenda, gain 5[credit]."
+  title: "Bellona"
 
 biotic_labor:
   card_type_id: "operation"
@@ -347,14 +366,18 @@ hakarl_1_0:
   title: "Hákarl 1.0"
 
 hedge_fund:
-  id: hedge_fund
-  title: Hedge Fund
-  stripped_title: Hedge Fund
-  side_id: corp
-  faction_id: neutral_corp
-  card_type_id: operation
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  card_type_id: "operation"
+  cost: 5
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "hedge_fund"
+  influence_cost: 0
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Gain 9 credits."
+  stripped_title: "Hedge Fund"
+  text: "Gain 9[credit]."
+  title: "Hedge Fund"
 
 ikawah_project:
   advancement_requirement: 5
@@ -486,14 +509,19 @@ pennyshaver:
   title: "Pennyshaver"
 
 prisec:
-  id: prisec
-  title: Prisec
-  stripped_title: Prisec
-  side_id: corp
-  faction_id: neutral_corp
-  card_type_id: upgrade
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  card_type_id: "upgrade"
+  cost: 0
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "prisec"
+  influence_cost: 0
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "If the Runner accesses Prisec while installed, you may pay 2 credits to give the Runner 1 tag and do 1 meat damage."
+  stripped_title: "Prisec"
+  text: "If the Runner accesses Prisec while installed, you may pay 2[credit] to give the Runner 1 tag and do 1 meat damage."
+  title: "Prisec"
+  trash_cost: 3
 
 project_vitruvius:
   advancement_requirement: 3
@@ -584,14 +612,18 @@ spin_doctor:
   trash_cost: 2
 
 sure_gamble:
-  id: sure_gamble
-  title: Sure Gamble
-  stripped_title: Sure Gamble
-  side_id: runner
-  faction_id: neutral_runner
-  card_type_id: event
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  card_type_id: "event"
+  cost: 5
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "sure_gamble"
+  influence_cost: 0
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Gain 9 credits."
+  stripped_title: "Sure Gamble"
+  text: "Gain 9[credit]."
+  title: "Sure Gamble"
 
 the_class_act:
   card_type_id: "resource"

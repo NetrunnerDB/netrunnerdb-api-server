@@ -18,7 +18,8 @@ class DeckValidator
   end
 
   def passes_request_validity?(deck)
-    # normalize to lowercase for all ids.
+    # TODO: normalize to lowercase for all ids.
+    # TODO: normalize input to remove symbol / string casting.
 
     # has identity_card_id
     has_identity = deck.has_key?(:identity_card_id)
@@ -61,11 +62,15 @@ class DeckValidator
     end
 
     if deck.has_key?(:cards) and deck[:cards].size > 0
-      # Ensure that all card ids exist.
-      card_ids = Set.new(Card.all().pluck(:id))
+      # Ensure that all card ids exist and match the side of the identity.
+      cards_to_sides = {}
+      Card.all().pluck(:id, :side_id).each{|card_id, side_id| cards_to_sides[card_id] = side_id}
       deck[:cards].each do |card_id, quantity|
-        if !card_ids.include?(card_id.to_s)
+        if !cards_to_sides.include?(card_id.to_s)
           @errors << 'Card `%s` does not exist.' % card_id
+        end
+        if deck[:side_id] != cards_to_sides[card_id.to_s]
+          @errors << 'Card `%s` side `%s` does not match deck side `%s`' % [card_id, cards_to_sides[card_id.to_s], deck[:side_id]]
         end
       end
     else
@@ -84,12 +89,23 @@ class DeckValidator
       @errors << "Minimum deck size is %d, but deck has %d cards." % [identity.minimum_deck_size, num_cards]
     end
 
-    # TODO: Check max quantity of each card
+    # Check cards against deck limits.
+    deck_limits = {}
+    Card.where({id: deck[:cards].map{|card_id, quantity| card_id}}).each{|c| deck_limits[c.id] = c.deck_limit}
+    deck[:cards].each do |card_id, quantity|
+      if quantity > deck_limits[card_id.to_s]
+        @errors << 'Card `%s` has a deck limit of %d, but %d copies are included.' % [card_id, deck_limits[card_id.to_s], quantity]
+      end
+    end
 
     # If corp deck, check agenda points
+    agendas_with_points = {}
+    agendas_with_factions = {}
     if deck[:side_id] == 'corp'
-      agendas_with_points = {}
-      Card.where({id: deck[:cards].map{|card_id, quantity| card_id}, card_type_id: 'agenda'}).each {|c| agendas_with_points[c.id] = c.agenda_points}
+      Card.where({id: deck[:cards].map{|card_id, quantity| card_id}, card_type_id: 'agenda'}).each do |c|
+        agendas_with_points[c.id] = c.agenda_points
+        agendas_with_factions[c.id] = c.faction_id
+      end
       agenda_points = agendas_with_points.map{|card_id, points| points * deck[:cards][card_id.to_sym] }.sum
 
       min_agenda_points = (num_cards < identity.minimum_deck_size ? identity.minimum_deck_size : num_cards) / 5 * 2 + 2
@@ -99,10 +115,19 @@ class DeckValidator
       end
     end
 
-    # TODO: add special Professor influence rules.
+    # TODO: check that all agendas are either neutral or match id faction.
     # TODO: add special Ampere agenda rules.
-    # TODO: add special Nova influence rules.
+    deck[:cards].each do |card_id, quantity|
+      if agendas_with_factions.has_key?(card_id.to_s)
+        if agendas_with_factions[card_id.to_s] != 'neutral_corp' && identity.faction_id != agendas_with_factions[card_id.to_s]
+          @errors << "Agenda `#{card_id}` with faction_id `#{agendas_with_factions[card_id.to_s]}` is not allowed in a `#{identity.faction_id}` deck."
+        end
+      end
+    end
+
     # Check influence
+    # TODO: add special Professor influence rules.
+    # TODO: add special Nova influence rules.
     out_of_faction_cards = {}
     Card.where(id: deck[:cards].map{|card_id, quantity| card_id}).where.not(influence_cost: [nil, 0]).where.not(faction_id: identity.faction_id).each {|c| out_of_faction_cards[c.id] = c.influence_cost }
     influence_spent = out_of_faction_cards.map{|card_id, influence| influence * deck[:cards][card_id.to_sym] }.sum
