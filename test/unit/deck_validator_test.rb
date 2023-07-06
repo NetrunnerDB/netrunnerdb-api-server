@@ -2,98 +2,99 @@ class DeckValidatorTest < ActiveSupport::TestCase
   def setup
     @empty_deck = {}
 
-    @missing_identity = { side_id: 'corp' }
-    @missing_side = { identity_card_id: ''}
+    # Using => format to ensure that all keys remain strings, like we get in the web app.
+    @missing_identity = { 'side_id' => 'corp' }
+    @missing_side = { 'identity_card_id' => ''}
 
-    @imaginary_identity = { identity_card_id: 'plural', side_id: 'corp' }
-    @imaginary_side = { identity_card_id: 'geist', side_id: 'super_mega_corp' }
+    @imaginary_identity = { 'identity_card_id' => 'plural', 'side_id' => 'corp' }
+    @imaginary_side = { 'identity_card_id' => 'geist', 'side_id' => 'super_mega_corp' }
 
-    @wrong_side_asa_group = { identity_card_id: 'asa_group_security_through_vigilance', side_id: 'runner' }
-    @wrong_side_geist = { identity_card_id: 'geist', side_id: 'corp' }
+    @wrong_side_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'runner' }
+    @wrong_side_geist = { 'identity_card_id' => 'geist', 'side_id' => 'corp' }
 
-    @bad_cards_asa_group = { identity_card_id: 'asa_group_security_through_vigilance', side_id: 'corp', cards: { 'foo': 3, 'bar': 3 } }
-    @too_few_cards_asa_group = { identity_card_id: 'asa_group_security_through_vigilance', side_id: 'corp', cards: { 'hedge_fund': 3 } }
+    @bad_cards_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'foo' => 3, 'bar' => 3 } }
+    @too_few_cards_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
 
-    @not_enough_agenda_points_too_many_copies = { identity_card_id: 'asa_group_security_through_vigilance', side_id: 'corp', cards: { 'hedge_fund': 36, 'project_vitruvius': 9 } }
+    @not_enough_agenda_points_too_many_copies = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 36, 'project_vitruvius' => 9 } }
 
     @too_much_influence_asa_group = {
-      identity_card_id: 'asa_group_security_through_vigilance',
-      side_id: 'corp',
-      cards: {
-        'ikawah_project': 3,
-        'project_vitruvius': 3,
-        'send_a_message': 2,
-        'regolith_mining_license': 3,
-        'spin_doctor': 3,
-        'trieste_model_bioroids': 3,
-        'biotic_labor': 3,
-        'hedge_fund': 3,
-        'punitive_counterstrike': 3,
-        'funhouse': 3,
-        'hagen': 3,
-        'hakarl_1_0': 3,
-        'enigma': 3,
-        'tollbooth': 3,
-        'ansel_1_0': 3,
-        'rototurret': 3,
-        'tyr': 2,
+      'identity_card_id' => 'asa_group_security_through_vigilance',
+      'side_id' => 'corp',
+      'cards' => {
+        'ikawah_project' => 3,
+        'project_vitruvius' => 3,
+        'send_a_message' => 2,
+        'regolith_mining_license' => 3,
+        'spin_doctor' => 3,
+        'trieste_model_bioroids' => 3,
+        'biotic_labor' => 3,
+        'hedge_fund' => 3,
+        'punitive_counterstrike' => 3,
+        'funhouse' => 3,
+        'hagen' => 3,
+        'hakarl_1_0' => 3,
+        'enigma' => 3,
+        'tollbooth' => 3,
+        'ansel_1_0' => 3,
+        'rototurret' => 3,
+        'tyr' => 2,
       }
     }
 
     @good_asa_group = {
-      identity_card_id: 'asa_group_security_through_vigilance',
-      side_id: 'corp',
-      cards: {
-        'ikawah_project': 3,
-        'project_vitruvius': 3,
-        'send_a_message': 2,
-        'regolith_mining_license': 3,
-        'spin_doctor': 3,
-        'trieste_model_bioroids': 3,
-        'biotic_labor': 3,
-        'hedge_fund': 3,
-        'punitive_counterstrike': 3,
-        'eli_1_0': 3,
-        'hagen': 3,
-        'hakarl_1_0': 3,
-        'enigma': 3,
-        'tollbooth': 3,
-        'ansel_1_0': 3,
-        'rototurret': 3,
-        'tyr': 2,
+      'identity_card_id' => 'asa_group_security_through_vigilance',
+      'side_id' => 'corp',
+      'cards' => {
+        'ikawah_project' => 3,
+        'project_vitruvius' => 3,
+        'send_a_message' => 2,
+        'regolith_mining_license' => 3,
+        'spin_doctor' => 3,
+        'trieste_model_bioroids' => 3,
+        'biotic_labor' => 3,
+        'hedge_fund' => 3,
+        'punitive_counterstrike' => 3,
+        'eli_1_0' => 3,
+        'hagen' => 3,
+        'hakarl_1_0' => 3,
+        'enigma' => 3,
+        'tollbooth' => 3,
+        'ansel_1_0' => 3,
+        'rototurret' => 3,
+        'tyr' => 2,
       }
     }
     @runner_econ_asa_group = swap_econ(@good_asa_group)
     @out_of_faction_agenda = add_out_of_faction_agenda(@good_asa_group)
 
     @good_ken = {
-      identity_card_id: 'ken_express_tenma_disappeared_clone',
-      side_id: 'runner',
-      cards: {
-        'bravado': 3,
-        'carpe_diem': 3,
-        'dirty_laundry': 3,
-        'embezzle': 2,
-        'inside_job': 2,
-        'legwork': 1,
-        'marathon': 2,
-        'mutual_favor': 2,
-        'networking': 1,
-        'sure_gamble': 3,
-        'boomerang': 2,
-        'buffer_drive': 1,
-        'ghosttongue': 1,
-        'pennyshaver': 2,
-        'wake_implant_v2a_jrj': 1,
-        'aeneas_informant': 3,
-        'daily_casts': 3,
-        'dreamnet': 1,
-        'the_class_act': 2,
-        'aumakua': 1,
-        'bukhgalter': 1,
-        'cats_cradle': 1,
-        'paperclip': 1,
-        'bankroll': 3,
+      'identity_card_id' => 'ken_express_tenma_disappeared_clone',
+      'side_id' => 'runner',
+      'cards' => {
+        'bravado' => 3,
+        'carpe_diem' => 3,
+        'dirty_laundry' => 3,
+        'embezzle' => 2,
+        'inside_job' => 2,
+        'legwork' => 1,
+        'marathon' => 2,
+        'mutual_favor' => 2,
+        'networking' => 1,
+        'sure_gamble' => 3,
+        'boomerang' => 2,
+        'buffer_drive' => 1,
+        'ghosttongue' => 1,
+        'pennyshaver' => 2,
+        'wake_implant_v2a_jrj' => 1,
+        'aeneas_informant' => 3,
+        'daily_casts' => 3,
+        'dreamnet' => 1,
+        'the_class_act' => 2,
+        'aumakua' => 1,
+        'bukhgalter' => 1,
+        'cats_cradle' => 1,
+        'paperclip' => 1,
+        'bankroll' => 3,
       }
     }
     @corp_econ_ken = swap_econ(@good_ken)
@@ -101,20 +102,20 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
   def swap_econ(deck)
     new_deck = deck.deep_dup
-    if new_deck[:side_id] == 'corp'
-      new_deck[:cards].delete(:hedge_fund)
-      new_deck[:cards][:sure_gamble] = 3
+    if new_deck['side_id'] == 'corp'
+      new_deck['cards'].delete('hedge_fund')
+      new_deck['cards']['sure_gamble'] = 3
     else
-      new_deck[:cards].delete(:sure_gamble)
-      new_deck[:cards][:hedge_fund] = 3
+      new_deck['cards'].delete('sure_gamble')
+      new_deck['cards']['hedge_fund'] = 3
     end
     return new_deck
   end
 
   def add_out_of_faction_agenda(deck)
     new_deck = deck.deep_dup
-    new_deck[:cards].delete(:send_a_message)
-    new_deck[:cards][:bellona] = deck[:cards][:send_a_message]
+    new_deck['cards'].delete('send_a_message')
+    new_deck['cards']['bellona'] = deck['cards']['send_a_message']
     return new_deck
   end
 
