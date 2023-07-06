@@ -64,6 +64,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'tyr' => 2,
       }
     }
+    @upper_case_asa_group = force_uppercase(@good_asa_group)
     @runner_econ_asa_group = swap_econ(@good_asa_group)
     @out_of_faction_agenda = add_out_of_faction_agenda(@good_asa_group)
 
@@ -100,6 +101,14 @@ class DeckValidatorTest < ActiveSupport::TestCase
     @corp_econ_ken = swap_econ(@good_ken)
   end
 
+  def force_uppercase(deck)
+    new_deck = deck.deep_dup
+    new_deck.deep_transform_keys(&:upcase)
+    new_deck['identity_card_id'].upcase!
+    new_deck['side_id'].upcase!
+    return new_deck
+  end
+
   def swap_econ(deck)
     new_deck = deck.deep_dup
     if new_deck['side_id'] == 'corp'
@@ -127,6 +136,12 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
   def test_good_runner_side
     v = DeckValidator.new(@good_ken)
+    assert v.validate
+    assert_equal 0, v.errors.size
+  end
+
+  def test_case_normalization
+    v = DeckValidator.new(@upper_case_asa_group)
     assert v.validate
     assert_equal 0, v.errors.size
   end

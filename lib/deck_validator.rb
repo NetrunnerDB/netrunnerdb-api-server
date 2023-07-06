@@ -5,7 +5,13 @@ class DeckValidator
 
   # TODO: make error codes with maps for messages to aid translation and testing.
   def initialize(deck)
-    @deck = deck
+    @deck = deck.deep_dup
+    @deck.deep_transform_keys(&:downcase)
+    ['identity_card_id', 'side_id'].each do |k|
+      if @deck.has_key?(k)
+        @deck[k].downcase!
+      end
+    end
     @valid = false
     @errors = []
   end
@@ -19,9 +25,6 @@ class DeckValidator
   end
 
   def passes_request_validity?
-    # TODO: normalize to lowercase for all ids.
-    # TODO: normalize input to remove symbol / string casting.
-
     # has identity_card_id
     has_identity = @deck.has_key?('identity_card_id')
     if not has_identity
