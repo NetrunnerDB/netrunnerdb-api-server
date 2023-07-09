@@ -21,7 +21,7 @@ class DeckValidator
     @cards = {}
   end
 
-  def validate
+  def is_valid?
     if all_required_fields_present?
       load_cards_from_deck
       if all_ids_exist?
@@ -31,6 +31,8 @@ class DeckValidator
 
     return @errors.size == 0
   end
+
+  private
 
   def all_required_fields_present?
     # Deck must have identity_card_id specified.
@@ -130,7 +132,5 @@ class DeckValidator
     if influence_spent > identity.influence_limit
       @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
     end
-
-    return @errors.size == 0
   end
 end

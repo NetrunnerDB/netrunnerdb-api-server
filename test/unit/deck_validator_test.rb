@@ -130,25 +130,25 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
   def test_good_corp_side
     v = DeckValidator.new(@good_asa_group)
-    assert v.validate
+    assert v.is_valid?
     assert_equal 0, v.errors.size
   end
 
   def test_good_runner_side
     v = DeckValidator.new(@good_ken)
-    assert v.validate
+    assert v.is_valid?
     assert_equal 0, v.errors.size
   end
 
   def test_case_normalization
     v = DeckValidator.new(@upper_case_asa_group)
-    assert v.validate
+    assert v.is_valid?
     assert_equal 0, v.errors.size
   end
 
   def test_empty_deck_json
     v = DeckValidator.new(@empty_deck)
-    assert !v.validate, 'Empty Deck JSON fails validation'
+    assert !v.is_valid?, 'Empty Deck JSON fails validation'
     assert_includes v.errors, "Deck is missing `identity_card_id` field."
     assert_includes v.errors, "Deck is missing `side_id` field."
     assert_includes v.errors, "Deck must specify some cards."
@@ -156,81 +156,81 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
   def test_missing_identity
     v = DeckValidator.new(@missing_identity)
-    assert !v.validate(), 'Deck JSON missing identity fails validation'
+    assert !v.is_valid?, 'Deck JSON missing identity fails validation'
     assert_includes v.errors, "Deck is missing `identity_card_id` field."
   end
 
   def test_missing_side
     v = DeckValidator.new(@missing_side)
-    assert !v.validate(), 'Deck JSON missing side fails validation'
+    assert !v.is_valid?, 'Deck JSON missing side fails validation'
     assert_includes v.errors, "Deck is missing `side_id` field."
   end
 
   def test_imaginary_identity
     v = DeckValidator.new(@imaginary_identity)
-    assert !v.validate(), 'Deck JSON has non-existent Identity'
+    assert !v.is_valid?, 'Deck JSON has non-existent Identity'
     assert_includes v.errors, "`identity_card_id` `plural` does not exist."
   end
 
   def test_imaginary_side
     v = DeckValidator.new(@imaginary_side)
-    assert !v.validate(), 'Deck JSON has non-existent side'
+    assert !v.is_valid?, 'Deck JSON has non-existent side'
     assert_includes v.errors, "`side_id` `super_mega_corp` does not exist."
   end
 
   def test_corp_deck_with_runner_card
     v = DeckValidator.new(@runner_econ_asa_group)
-    assert !v.validate(), 'Corp deck with runner card fails.'
+    assert !v.is_valid?, 'Corp deck with runner card fails.'
     assert_includes v.errors, "Card `sure_gamble` side `runner` does not match deck side `corp`"
   end
 
   def test_out_of_faction_agendas
     v = DeckValidator.new(@out_of_faction_agenda)
-    assert !v.validate(), 'Corp deck with out of faction agenda fails.'
+    assert !v.is_valid?, 'Corp deck with out of faction agenda fails.'
     assert_includes v.errors, "Agenda `bellona` with faction_id `nbn` is not allowed in a `haas_bioroid` deck."
   end
 
   def test_mismatched_side_corp_id
     v = DeckValidator.new(@corp_econ_ken)
-    assert !v.validate(), 'Runner deck with corp card fails.'
+    assert !v.is_valid?, 'Runner deck with corp card fails.'
     assert_includes v.errors, "Card `hedge_fund` side `corp` does not match deck side `runner`"
   end
 
   def test_mismatched_side_runner_id
     v = DeckValidator.new(@wrong_side_geist)
-    assert !v.validate(), 'Deck with mismatched id and specified side fails'
+    assert !v.is_valid?, 'Deck with mismatched id and specified side fails'
     assert_includes v.errors, "Identity `geist` has side `runner` which does not match given side `corp`"
   end
 
   def test_not_enough_agenda_points
     v = DeckValidator.new(@not_enough_agenda_points_too_many_copies)
-    assert !v.validate()
+    assert !v.is_valid?
     assert_includes v.errors, "Deck with size 45 requires [20,21] agenda points, but deck only has 18"
   end
 
   def test_too_many_copies
     v = DeckValidator.new(@not_enough_agenda_points_too_many_copies)
-    assert !v.validate()
+    assert !v.is_valid?
     assert_includes v.errors, 'Card `hedge_fund` has a deck limit of 3, but 36 copies are included.'
     assert_includes v.errors, 'Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.'
   end
 
   def test_corp_too_much_influence
     v = DeckValidator.new(@too_much_influence_asa_group)
-    assert !v.validate()
+    assert !v.is_valid?
     assert_includes v.errors, "Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence"
   end
 
   def test_bad_cards
     v = DeckValidator.new(@bad_cards_asa_group)
-    assert !v.validate()
+    assert !v.is_valid?
     assert_includes v.errors, "Card `foo` does not exist."
     assert_includes v.errors, "Card `bar` does not exist."
   end
 
   def test_too_few_cards
     v = DeckValidator.new(@too_few_cards_asa_group)
-    assert !v.validate()
+    assert !v.is_valid?
     assert_includes v.errors, "Minimum deck size is 45, but deck has 3 cards."
   end
 end
