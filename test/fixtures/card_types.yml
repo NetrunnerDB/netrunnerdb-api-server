@@ -1,3 +1,10 @@
+agenda:
+  id: "agenda"
+  name: "Agenda"
+  side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 asset:
   id: "asset"
   name: "Asset"
@@ -5,16 +12,9 @@ asset:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-operation:
-  id: "operation"
-  name: "Operation"
-  side_id: "corp"
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
-upgrade:
-  id: "upgrade"
-  name: "Upgrade"
+corp_identity:
+  id: "corp_identity"
+  name: "Corp Identity"
   side_id: "corp"
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -23,5 +23,54 @@ event:
   id: "event"
   name: "Event"
   side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+hardware:
+  id: "hardware"
+  name: "Hardware"
+  side_id: "corp"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+ice:
+  id: "ice"
+  name: "ICE"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+operation:
+  id: "operation"
+  name: "Operation"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+program:
+  id: "program"
+  name: "Program"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+resource:
+  id: "resource"
+  name: "Resource"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+runner_identity:
+  id: "runner_identity"
+  name: "Runner Identity"
+  side_id: "runner"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+upgrade:
+  id: "upgrade"
+  name: "Upgrade"
+  side_id: "corp"
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
