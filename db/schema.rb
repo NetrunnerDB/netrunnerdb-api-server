@@ -245,13 +245,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ruling_sources", id: :string, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "rulings", force: :cascade do |t|
     t.string "card_id", null: false
     t.string "question"
