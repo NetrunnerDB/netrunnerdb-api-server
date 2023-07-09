@@ -6,11 +6,11 @@ class DeckValidatorTest < ActiveSupport::TestCase
     @missing_identity = { 'side_id' => 'corp' }
     @missing_side = { 'identity_card_id' => ''}
 
-    @imaginary_identity = { 'identity_card_id' => 'plural', 'side_id' => 'corp' }
-    @imaginary_side = { 'identity_card_id' => 'geist', 'side_id' => 'super_mega_corp' }
+    @imaginary_identity = { 'identity_card_id' => 'plural', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
+    @imaginary_side = { 'identity_card_id' => 'geist', 'side_id' => 'super_mega_corp', 'cards' => { 'hedge_fund' => 3 } }
 
     @wrong_side_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'runner' }
-    @wrong_side_geist = { 'identity_card_id' => 'geist', 'side_id' => 'corp' }
+    @wrong_side_geist = { 'identity_card_id' => 'geist', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
 
     @bad_cards_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'foo' => 3, 'bar' => 3 } }
     @too_few_cards_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
@@ -151,6 +151,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert !v.validate, 'Empty Deck JSON fails validation'
     assert_includes v.errors, "Deck is missing `identity_card_id` field."
     assert_includes v.errors, "Deck is missing `side_id` field."
+    assert_includes v.errors, "Deck must specify some cards."
   end
 
   def test_missing_identity
