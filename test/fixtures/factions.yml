@@ -62,7 +62,7 @@ shaper:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-weyland:
+weyland_consortium:
   id: "weyland_consortium"
   name: "Weyland Consortium"
   side_id: "corp"
