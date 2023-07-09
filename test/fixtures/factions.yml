@@ -1,14 +1,22 @@
-neutral_corp:
-  id: neutral_corp
-  name: Neutral Corp
-  side_id: "corp"
-  is_mini: false
+adam:
+  id: "adam"
+  name: "Adam"
+  side_id: "runner"
+  is_mini: true
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-neutral_runner:
-  id: neutral_runner
-  name: Neutral Runner 
+anarch:
+  id: "anarch"
+  name: "Anarch"
+  side_id: "runner"
+  is_mini: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+criminal:
+  id: "criminal"
+  name: "Criminal"
   side_id: "runner"
   is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -22,18 +30,42 @@ haas_bioroid:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-weyland:
-  id: "weyland_consortium"
-  name: "Weyland Consortium"
+nbn:
+  id: "nbn"
+  name: "NBN"
   side_id: "corp"
   is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-adam:
-  id: "adam"
-  name: "Adam"
+neutral_corp:
+  id: neutral_corp
+  name: Neutral Corp
+  side_id: "corp"
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+neutral_runner:
+  id: neutral_runner
+  name: Neutral Runner
   side_id: "runner"
-  is_mini: true
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+shaper:
+  id: "shaper"
+  name: "Shaper"
+  side_id: "runner"
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+weyland_consortium:
+  id: "weyland_consortium"
+  name: "Weyland Consortium"
+  side_id: "corp"
+  is_mini: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
