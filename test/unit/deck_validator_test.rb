@@ -127,6 +127,53 @@ class DeckValidatorTest < ActiveSupport::TestCase
     @ampere_with_too_many_cards = swap_identity(@good_asa_group, 'ampere_cybernetics_for_anyone')
     @ampere_too_many_agendas_from_one_faction = swap_card(@good_ampere, 'hostile_takeover', 'ar_enhanced_security')
 
+    @good_nova = {
+      'identity_card_id' => 'nova_initiumia_catalyst_impetus',
+      'side_id' => 'runner',
+      'cards' => {
+        'beth_kilrain_chang' => 1,
+        'boomerang' => 1,
+        'botulus' => 1,
+        'bravado' => 1,
+        'build_script' => 1,
+        'bukhgalter' => 1,
+        'career_fair' => 1,
+        'cezve' => 1,
+        'creative_commission' => 1,
+        'daily_casts' => 1,
+        'deuces_wild' => 1,
+        'diesel' => 1,
+        'dirty_laundry' => 1,
+        'diversion_of_funds' => 1,
+        'dr_nuka_vrolyck' => 1,
+        'dreamnet' => 1,
+        'earthrise_hotel' => 1,
+        'emergent_creativity' => 1,
+        'endurance' => 1,
+        'falsified_credentials' => 1,
+        'fermenter' => 1,
+        'find_the_truth' => 1,
+        'labor_rights' => 1,
+        'liberated_account' => 1,
+        'logic_bomb' => 1,
+        'mad_dash' => 1,
+        'miss_bones' => 1,
+        'neutralize_all_threats' => 1,
+        'no_free_lunch' => 1,
+        'overclock' => 1,
+        'paladin_poemu' => 1,
+        'paperclip' => 1,
+        'pinhole_threading' => 1,
+        'simulchip' => 1,
+        'stargate' => 1,
+        'steelskin_scarring' => 1,
+        'sure_gamble' => 1,
+        'telework_contract' => 1,
+        'the_class_act' => 1,
+        'unity' => 1,
+      }
+    }
+
     @good_ken = {
       'identity_card_id' => 'ken_express_tenma_disappeared_clone',
       'side_id' => 'runner',
@@ -215,6 +262,12 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
   def test_good_runner_side
     v = DeckValidator.new(@good_ken)
+    assert v.is_valid?
+    assert_equal 0, v.errors.size
+  end
+
+  def test_good_nova
+    v = DeckValidator.new(@good_nova)
     assert v.is_valid?
     assert_equal 0, v.errors.size
   end
