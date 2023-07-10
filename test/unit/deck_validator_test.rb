@@ -65,7 +65,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
       }
     }
     @upper_case_asa_group = force_uppercase(@good_asa_group)
-    @runner_econ_asa_group = swap_econ(@good_asa_group)
+    @runner_econ_asa_group = swap_card(@good_asa_group, 'hedge_fund', 'sure_gamble')
     @out_of_faction_agenda = add_out_of_faction_agenda(@good_asa_group)
 
     @good_ampere = {
@@ -123,8 +123,9 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'wraparound' => 1,
       }
     }
+
     # TODO change ampere to use a new set_card_quantity helper method.
-    @ampere_with_too_many_cards = swap_identity(@good_asa_group, 'ampere_cybernetics_for_anyone')
+    @ampere_with_too_many_cards = set_card_quantity(set_card_quantity(@good_ampere, 'tyr', 2), 'hedge_fund', 2)
     @ampere_too_many_agendas_from_one_faction = swap_card(@good_ampere, 'hostile_takeover', 'ar_enhanced_security')
 
     @good_nova = {
@@ -204,8 +205,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'bankroll' => 3,
       }
     }
-    @corp_econ_ken = swap_econ(@good_ken)
-    @nova_with_too_many_cards = swap_identity(@good_ken, 'nova_initiumia_catalyst_impetus')
+    @corp_econ_ken = swap_card(@good_ken, 'sure_gamble', 'hedge_fund')
+    @nova_with_too_many_cards = set_card_quantity(set_card_quantity(@good_nova, 'sure_gamble', 2), 'unity', 2)
   end
 
   def force_uppercase(deck)
@@ -229,15 +230,9 @@ class DeckValidatorTest < ActiveSupport::TestCase
     return new_deck
   end
 
-  def swap_econ(deck)
+  def set_card_quantity(deck, card_id, quantity)
     new_deck = deck.deep_dup
-    if new_deck['side_id'] == 'corp'
-      new_deck['cards'].delete('hedge_fund')
-      new_deck['cards']['sure_gamble'] = 3
-    else
-      new_deck['cards'].delete('sure_gamble')
-      new_deck['cards']['hedge_fund'] = 3
-    end
+    new_deck['cards'][card_id] = quantity
     return new_deck
   end
 
@@ -356,42 +351,15 @@ class DeckValidatorTest < ActiveSupport::TestCase
   def test_too_many_copies_ampere
     v = DeckValidator.new(@ampere_with_too_many_cards)
     assert !v.is_valid?
-    assert_includes v.errors, "Card `ansel_1_0` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `biotic_labor` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `eli_1_0` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `enigma` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `hagen` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `hakarl_1_0` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `hedge_fund` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `ikawah_project` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `project_vitruvius` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `punitive_counterstrike` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `regolith_mining_license` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `rototurret` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `send_a_message` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `spin_doctor` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `tollbooth` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `trieste_model_bioroids` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `hedge_fund` has a deck limit of 1, but 2 copies are included."
     assert_includes v.errors, "Card `tyr` has a deck limit of 1, but 2 copies are included."
   end
 
   def test_too_may_copies_nova
     v = DeckValidator.new(@nova_with_too_many_cards)
     assert !v.is_valid?
-    assert_includes v.errors, "Card `aeneas_informant` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `bankroll` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `boomerang` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `bravado` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `carpe_diem` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `daily_casts` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `dirty_laundry` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `embezzle` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `inside_job` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `marathon` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `mutual_favor` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `pennyshaver` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.errors, "Card `sure_gamble` has a deck limit of 1, but 3 copies are included."
-    assert_includes v.errors, "Card `the_class_act` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `sure_gamble` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `unity` has a deck limit of 1, but 2 copies are included."
   end
 
   def test_corp_too_much_influence
