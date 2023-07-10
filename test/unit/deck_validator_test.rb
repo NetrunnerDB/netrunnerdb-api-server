@@ -124,7 +124,6 @@ class DeckValidatorTest < ActiveSupport::TestCase
       }
     }
 
-    # TODO change ampere to use a new set_card_quantity helper method.
     @ampere_with_too_many_cards = set_card_quantity(set_card_quantity(@good_ampere, 'tyr', 2), 'hedge_fund', 2)
     @ampere_too_many_agendas_from_one_faction = swap_card(@good_ampere, 'hostile_takeover', 'ar_enhanced_security')
 
