@@ -30,6 +30,14 @@ haas_bioroid:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
+jinteki:
+  id: "jinteki"
+  name: "Jinteki"
+  side_id: "corp"
+  is_mini: false
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 nbn:
   id: "nbn"
   name: "NBN"
@@ -39,7 +47,7 @@ nbn:
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 neutral_corp:
-  id: neutral_corp
+  id: "neutral_corp"
   name: Neutral Corp
   side_id: "corp"
   is_mini: false
@@ -47,7 +55,7 @@ neutral_corp:
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
 neutral_runner:
-  id: neutral_runner
+  id: "neutral_runner"
   name: Neutral Runner
   side_id: "runner"
   is_mini: false

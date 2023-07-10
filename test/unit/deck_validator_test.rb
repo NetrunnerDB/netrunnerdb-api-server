@@ -68,6 +68,65 @@ class DeckValidatorTest < ActiveSupport::TestCase
     @runner_econ_asa_group = swap_econ(@good_asa_group)
     @out_of_faction_agenda = add_out_of_faction_agenda(@good_asa_group)
 
+    @good_ampere = {
+      'identity_card_id' => 'ampere_cybernetics_for_anyone',
+      'side_id' => 'corp',
+      'cards' => {
+        'afshar' => 1,
+        'aiki' => 1,
+        'anoetic_void' => 1,
+        'ansel_1_0' => 1,
+        'argus_crackdown' => 1,
+        'ark_lockdown' => 1,
+        'artificial_cryptocrash' => 1,
+        'audacity' => 1,
+        'bathynomus' => 1,
+        'bellona' => 1,
+        'biotic_labor' => 1,
+        'border_control' => 1,
+        'celebrity_gift' => 1,
+        'eli_1_0' => 1,
+        'enigma' => 1,
+        'envelopment' => 1,
+        'fairchild_3_0' => 1,
+        'formicary' => 1,
+        'funhouse' => 1,
+        'ganked' => 1,
+        'hagen' => 1,
+        'hakarl_1_0' => 1,
+        'hansei_review' => 1,
+        'hedge_fund' => 1,
+        'hostile_takeover' => 1,
+        'hybrid_release' => 1,
+        'hydra' => 1,
+        'ikawah_project' => 1,
+        'jinja_city_grid' => 1,
+        'lady_liberty' => 1,
+        'longevity_serum' => 1,
+        'luminal_transubstantiation' => 1,
+        'punitive_counterstrike' => 1,
+        'rashida_jaheem' => 1,
+        'regolith_mining_license' => 1,
+        'reversed_accounts' => 1,
+        'ronin' => 1,
+        'rototurret' => 1,
+        'sds_drone_deployment' => 1,
+        'send_a_message' => 1,
+        'spin_doctor' => 1,
+        'surveyor' => 1,
+        'thimblerig' => 1,
+        'tollbooth' => 1,
+        'trieste_model_bioroids' => 1,
+        'tyr' => 1,
+        'urban_renewal' => 1,
+        'urtica_cipher' => 1,
+        'wraparound' => 1,
+      }
+    }
+    # TODO change ampere to use a new set_card_quantity helper method.
+    @ampere_with_too_many_cards = swap_identity(@good_asa_group, 'ampere_cybernetics_for_anyone')
+    @ampere_too_many_agendas_from_one_faction = swap_card(@good_ampere, 'hostile_takeover', 'ar_enhanced_security')
+
     @good_ken = {
       'identity_card_id' => 'ken_express_tenma_disappeared_clone',
       'side_id' => 'runner',
@@ -99,6 +158,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
       }
     }
     @corp_econ_ken = swap_econ(@good_ken)
+    @nova_with_too_many_cards = swap_identity(@good_ken, 'nova_initiumia_catalyst_impetus')
   end
 
   def force_uppercase(deck)
@@ -106,6 +166,19 @@ class DeckValidatorTest < ActiveSupport::TestCase
     new_deck.deep_transform_keys(&:upcase)
     new_deck['identity_card_id'].upcase!
     new_deck['side_id'].upcase!
+    return new_deck
+  end
+
+  def swap_identity(deck, identity)
+    new_deck = deck.deep_dup
+    new_deck['identity_card_id'] = identity
+    return new_deck
+  end
+
+  def swap_card(deck, old_card_id, new_card_id)
+    new_deck = deck.deep_dup
+    new_deck['cards'][new_card_id] = new_deck['cards'][old_card_id]
+    new_deck['cards'].delete(old_card_id)
     return new_deck
   end
 
@@ -130,6 +203,12 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
   def test_good_corp_side
     v = DeckValidator.new(@good_asa_group)
+    assert v.is_valid?
+    assert_equal 0, v.errors.size
+  end
+
+  def test_good_ampere
+    v = DeckValidator.new(@good_ampere)
     assert v.is_valid?
     assert_equal 0, v.errors.size
   end
@@ -190,6 +269,12 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_includes v.errors, "Agenda `bellona` with faction_id `nbn` is not allowed in a `haas_bioroid` deck."
   end
 
+  def test_out_of_faction_agendas_ampere
+    v = DeckValidator.new(@ampere_too_many_agendas_from_one_faction)
+    assert !v.is_valid?
+    assert_includes v.errors, "Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present."
+  end
+
   def test_mismatched_side_corp_id
     v = DeckValidator.new(@corp_econ_ken)
     assert !v.is_valid?, 'Runner deck with corp card fails.'
@@ -213,6 +298,47 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert !v.is_valid?
     assert_includes v.errors, 'Card `hedge_fund` has a deck limit of 3, but 36 copies are included.'
     assert_includes v.errors, 'Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.'
+  end
+
+  def test_too_many_copies_ampere
+    v = DeckValidator.new(@ampere_with_too_many_cards)
+    assert !v.is_valid?
+    assert_includes v.errors, "Card `ansel_1_0` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `biotic_labor` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `eli_1_0` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `enigma` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `hagen` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `hakarl_1_0` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `hedge_fund` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `ikawah_project` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `project_vitruvius` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `punitive_counterstrike` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `regolith_mining_license` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `rototurret` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `send_a_message` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `spin_doctor` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `tollbooth` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `trieste_model_bioroids` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `tyr` has a deck limit of 1, but 2 copies are included."
+  end
+
+  def test_too_may_copies_nova
+    v = DeckValidator.new(@nova_with_too_many_cards)
+    assert !v.is_valid?
+    assert_includes v.errors, "Card `aeneas_informant` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `bankroll` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `boomerang` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `bravado` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `carpe_diem` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `daily_casts` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `dirty_laundry` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `embezzle` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `inside_job` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `marathon` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `mutual_favor` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `pennyshaver` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `sure_gamble` has a deck limit of 1, but 3 copies are included."
+    assert_includes v.errors, "Card `the_class_act` has a deck limit of 1, but 2 copies are included."
   end
 
   def test_corp_too_much_influence

@@ -27,6 +27,65 @@ aeneas_informant:
   text: "Whenever you access a card with a trash cost not in Archives and do not trash it, you may reveal it and gain 1[credit]."
   title: "Aeneas Informant"
 
+afshar:
+  card_type_id: "ice"
+  cost: 3
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "afshar"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: 1
+  stripped_text: "While this ice is protecting HQ, the Runner cannot break more than 1 of its printed subroutines during each encounter. Subroutine The Runner loses 2 credits. Subroutine End the run."
+  stripped_title: "Afshar"
+  text: "While this ice is protecting HQ, the Runner cannot break more than 1 of its printed subroutines during each encounter.\n[subroutine]The Runner loses 2[credit].\n[subroutine]End the run."
+  title: "Afshar"
+
+aiki:
+  card_type_id: "ice"
+  cost: 1
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "aiki"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: 3
+  stripped_text: "Subroutine You and the Runner secretly spend 0 credits, 1 credit, or 2 credits. Reveal spent credits. If you and the Runner spent a different number of credits, the Runner draws 2 cards. Subroutine Do 1 net damage. Subroutine Do 1 net damage."
+  stripped_title: "Aiki"
+  text: "[subroutine] You and the Runner secretly spend 0[credit], 1[credit], or 2[credit]. Reveal spent credits. If you and the Runner spent a different number of credits, the Runner draws 2 cards.\n[subroutine] Do 1 net damage.\n[subroutine] Do 1 net damage."
+  title: "Aiki"
+
+ampere_cybernetics_for_anyone:
+  card_type_id: "corp_identity"
+  deck_limit: 1
+  faction_id: "neutral_corp"
+  id: "ampere_cybernetics_for_anyone"
+  influence_limit: null
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: "corp"
+  stripped_text: "Your deck cannot include more than 1 copy of any card. Your deck may include up to 2 different agenda cards from each Corp faction."
+  stripped_title: "Ampere: Cybernetics For Anyone"
+  text: "Your deck cannot include more than 1 copy of any card.\nYour deck may include up to 2 different agenda cards from each Corp faction."
+  title: "Ampère: Cybernetics For Anyone"
+
+anoetic_void:
+  card_type_id: "upgrade"
+  cost: 0
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "anoetic_void"
+  influence_cost: 4
+  is_unique: true
+  side_id: "corp"
+  stripped_text: "Whenever the Runner approaches this server, you may pay 2 credits and trash 2 cards from HQ. If you do, end the run."
+  stripped_title: "Anoetic Void"
+  text: "Whenever the Runner approaches this server, you may pay 2[credit] and trash 2 cards from HQ. If you do, end the run."
+  title: "Anoetic Void"
+  trash_cost: 1
+
 ansel_1_0:
   attribution: "Designed by 2018 European Champion Patrick Gower"
   card_type_id: "ice"
@@ -43,8 +102,80 @@ ansel_1_0:
   text: "<strong>Lose [click]:</strong> Break 1 subroutine on this ice. Only the Runner can use this ability.\n[subroutine] Trash 1 installed Runner card.\n[subroutine] You may install 1 card from HQ or Archives.\n[subroutine] The Runner cannot steal or trash Corp cards for the remainder of this run."
   title: "Ansel 1.0"
 
+ar_enhanced_security:
+  advancement_requirement: 3
+  agenda_points: 1
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "ar_enhanced_security"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "The first time each turn the Runner trashes a Corp card, give them 1 tag."
+  stripped_title: "AR-Enhanced Security"
+  text: "The first time each turn the Runner trashes a Corp card, give them 1 tag."
+  title: "AR-Enhanced Security"
+
+argus_crackdown:
+  card_type_id: "operation"
+  cost: 0
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "argus_crackdown"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Play only if there is no active lockdown. This operation is not trashed until your next turn begins. Whenever the Runner makes a successful run on a server protected by ice, do 2 meat damage."
+  stripped_title: "Argus Crackdown"
+  text: "Play only if there is no active <strong>lockdown</strong>. This operation is not trashed until your next turn begins.\nWhenever the Runner makes a successful run on a server protected by ice, do 2 meat damage."
+  title: "Argus Crackdown"
+  trash_cost: 4
+
+ark_lockdown:
+  card_type_id: "operation"
+  cost: 1
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "ark_lockdown"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Name a card. Remove all copies of that card in the heap from the game."
+  stripped_title: "Ark Lockdown"
+  text: "Name a card. Remove all copies of that card in the heap from the game."
+  title: "Ark Lockdown"
+
+armand_geist_walker_tech_lord:
+  card_type_id: "runner_identity"
+  faction_id: criminal
+  id: geist
+  influence_limit: 15
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: runner
+  stripped_text: Whenever you use a trash ability, draw 1 card.
+  stripped_title: "Armand \"Geist\" Walker: Tech Lord"
+  text: Whenever you use a [trash] ability, draw 1 card.
+  title: "Armand \"Geist\" Walker: Tech Lord"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+artificial_cryptocrash:
+  advancement_requirement: 4
+  agenda_points: 2
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "artificial_cryptocrash"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you score this agenda, the Runner loses 7 credits."
+  stripped_title: "Artificial Cryptocrash"
+  text: "When you score this agenda, the Runner loses 7[credit]."
+  title: "Artificial Cryptocrash"
+
 asa_group_security_through_vigilance:
-  card_type_id: corp_identity
+  card_type_id: "corp_identity"
   faction_id: haas_bioroid
   id: asa_group_security_through_vigilance
   influence_limit: 15
@@ -57,6 +188,20 @@ asa_group_security_through_vigilance:
   title: "Asa Group: Security Through Vigilance"
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+audacity:
+  card_type_id: "operation"
+  cost: 0
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "audacity"
+  influence_cost: 4
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Play only if there are at least 2 other cards in HQ. Trash all cards from HQ. Place a total of 2 advancement counters on installed cards you can advance."
+  stripped_title: "Audacity"
+  text: "Play only if there are at least 2 other cards in HQ.\nTrash all cards from HQ. Place a total of 2 advancement counters on installed cards you can advance."
+  title: "Audacity"
 
 aumakua:
   card_type_id: "program"
@@ -88,6 +233,21 @@ bankroll:
   stripped_title: "Bankroll"
   text: "Whenever you make a successful run, you may place 1[credit] from the bank on Bankroll.\n[trash]: Take all credits from Bankroll."
   title: "Bankroll"
+
+bathynomus:
+  card_type_id: "ice"
+  cost: 3
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "bathynomus"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  strength: 1
+  stripped_text: "While this ice is protecting Archives, it gets +3 strength. Subroutine Do 3 net damage."
+  stripped_title: "Bathynomus"
+  text: "While this ice is protecting Archives, it gets +3 strength.\n[subroutine] Do 3 net damage."
+  title: "Bathynomus"
 
 bellona:
   advancement_requirement: 5
@@ -130,6 +290,22 @@ boomerang:
   stripped_title: "Boomerang"
   text: "When you install this hardware, choose an installed piece of ice. Use this hardware only during encounters with that ice.\n[trash]<strong>:</strong> Break up to 2 subroutines. When this run ends, if it is successful, you may shuffle a copy of Boomerang from your heap into your stack."
   title: "Boomerang"
+
+border_control:
+  attribution: "Designed by 2016 World Champion Chris Dyer"
+  card_type_id: "ice"
+  cost: 4
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "border_control"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  strength: 1
+  stripped_text: "trash: End the run. Use this ability only during a run on this server. Subroutine Gain 1 credit for each piece of ice protecting this server. Subroutine End the run."
+  stripped_title: "Border Control"
+  text: "[trash]: End the run. Use this ability only during a run on this server.\n[subroutine] Gain 1[credit] for each piece of ice protecting this server.\n[subroutine] End the run."
+  title: "Border Control"
 
 bravado:
   card_type_id: "event"
@@ -204,6 +380,20 @@ cats_cradle:
   stripped_title: "Cat's Cradle"
   text: "The rez cost of each piece of <strong>code gate</strong> ice is increased by 1[credit].\nInterface → <strong>1[credit]:</strong> Break 1 <strong>code gate</strong> subroutine.\n<strong>1[credit]:</strong> +1 strength."
   title: "Cat's Cradle"
+
+celebrity_gift:
+  card_type_id: "operation"
+  cost: 3
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "celebrity_gift"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "As an additional cost to play this operation, spend click. Reveal up to 5 cards in HQ. Gain 2 credits for each card you revealed this way."
+  stripped_title: "Celebrity Gift"
+  text: "As an additional cost to play this operation, spend [click].\nReveal up to 5 cards in HQ. Gain 2[credit] for each card you revealed this way."
+  title: "Celebrity Gift"
 
 daily_casts:
   card_type_id: "resource"
@@ -291,6 +481,51 @@ enigma:
   text: "[subroutine] The Runner loses [click].\n[subroutine] End the run."
   title: "Enigma"
 
+envelopment:
+  card_type_id: "ice"
+  cost: 5
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "envelopment"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  strength: 5
+  stripped_text: "When you rez this ice, place 4 power counters on it. When your turn begins, remove 1 hosted power counter. This ice gains \"Subroutine End the run.\" before its printed subroutine for each hosted power counter. Subroutine Trash this ice."
+  stripped_title: "Envelopment"
+  text: "When you rez this ice, place 4 power counters on it.\nWhen your turn begins, remove 1 hosted power counter.\nThis ice gains \"[subroutine] End the run.\" before its printed subroutine for each hosted power counter.\n[subroutine] Trash this ice."
+  title: "Envelopment"
+
+fairchild_3_0:
+  card_type_id: "ice"
+  cost: 6
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "fairchild_3_0"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  strength: 5
+  stripped_text: "Lose click click click: Break up to 3 subroutines on this ice. Only the Runner can use this ability. Subroutine The Runner must pay 3 credits or trash 1 of their installed cards. Subroutine The Runner must pay 3 credits or trash 1 of their installed cards. Subroutine Do 1 core damage or end the run."
+  stripped_title: "Fairchild 3.0"
+  text: "<strong>Lose [click][click][click]:</strong> Break up to 3 subroutines on this ice. Only the Runner can use this ability.\n[subroutine] The Runner must pay 3[credit] or trash 1 of their installed cards.\n[subroutine] The Runner must pay 3[credit] or trash 1 of their installed cards.\n[subroutine] Do 1 core damage or end the run."
+  title: "Fairchild 3.0"
+
+formicary:
+  card_type_id: "ice"
+  cost: 2
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "formicary"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: 2
+  stripped_text: "Whenever the Runner approaches a server, you may rez this ice. If you do, move this ice to the innermost position protecting the approached server. The Runner moves to this ice and encounters it. Subroutine End the run unless the Runner suffers 2 net damage."
+  stripped_title: "Formicary"
+  text: "Whenever the Runner approaches a server, you may rez this ice. If you do, move this ice to the innermost position protecting the approached server. The Runner moves to this ice and encounters it.\n[subroutine] End the run unless the Runner suffers 2 net damage."
+  title: "Formicary"
+
 funhouse:
   card_type_id: "ice"
   cost: 5
@@ -306,20 +541,20 @@ funhouse:
   text: "When the Runner encounters this ice, end the run unless the Runner takes 1 tag.\n[subroutine] Give the Runner 1 tag unless they pay 4[credit]."
   title: "Funhouse"
 
-geist:
-  card_type_id: runner_identity
-  faction_id: criminal
-  id: geist
-  influence_limit: 15
+ganked:
+  card_type_id: "upgrade"
+  cost: 0
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "ganked"
+  influence_cost: 2
   is_unique: false
-  minimum_deck_size: 45
-  side_id: runner
-  stripped_text: Whenever you use a trash ability, draw 1 card.
-  stripped_title: "Armand \"Geist\" Walker: Tech Lord"
-  text: Whenever you use a [trash] ability, draw 1 card.
-  title: "Armand \"Geist\" Walker: Tech Lord"
-  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  side_id: "corp"
+  stripped_text: "While the Runner is accessing this upgrade in R&D, they must reveal it. When the Runner accesses this upgrade, you may trash it to choose a rezzed piece of ice protecting this server. The Runner encounters that ice."
+  stripped_title: "Ganked!"
+  text: "While the Runner is accessing this upgrade in R&D, they must reveal it.\nWhen the Runner accesses this upgrade, you may trash it to choose a rezzed piece of ice protecting this server. The Runner encounters that ice."
+  title: "Ganked!"
+  trash_cost: 3
 
 ghosttongue:
   card_type_id: "hardware"
@@ -365,6 +600,20 @@ hakarl_1_0:
   text: "When you rez this ice during a run against this server, you may derez another installed card. If you do, the Runner cannot use paid abilities printed on <strong>bioroid</strong> ice for the remainder of this turn.\n<strong>Lose [click]:</strong> Break 1 subroutine on this ice. Only the Runner can use this ability.\n[subroutine] Do 1 core damage.\n[subroutine] End the run."
   title: "Hákarl 1.0"
 
+hansei_review:
+  card_type_id: "operation"
+  cost: 5
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "hansei_review"
+  influence_cost: 1
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Gain 10 credits. If there are any cards in HQ, trash 1 of them."
+  stripped_title: "Hansei Review"
+  text: "Gain 10[credit]. If there are any cards in HQ, trash 1 of them."
+  title: "Hansei Review"
+
 hedge_fund:
   card_type_id: "operation"
   cost: 5
@@ -378,6 +627,49 @@ hedge_fund:
   stripped_title: "Hedge Fund"
   text: "Gain 9[credit]."
   title: "Hedge Fund"
+
+hostile_takeover:
+  advancement_requirement: 2
+  agenda_points: 1
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "hostile_takeover"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you score this agenda, gain 7 credits and take 1 bad publicity."
+  stripped_title: "Hostile Takeover"
+  text: "When you score this agenda, gain 7[credit] and take 1 bad publicity."
+  title: "Hostile Takeover"
+
+hybrid_release:
+  advancement_requirement: 2
+  agenda_points: 1
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "hybrid_release"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you score this agenda, you may install 1 facedown card from Archives."
+  stripped_title: "Hybrid Release"
+  text: "When you score this agenda, you may install 1 facedown card from Archives."
+  title: "Hybrid Release"
+
+hydra:
+  card_type_id: "ice"
+  cost: 10
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "hydra"
+  influence_cost: 4
+  is_unique: false
+  side_id: "corp"
+  strength: 6
+  stripped_text: "Subroutine Do 3 net damage if the Runner is tagged; otherwise, give the Runner 1 tag. Subroutine Gain 5 credits if the Runner is tagged; otherwise, give the Runner 1 tag. Subroutine End the run if the Runner is tagged; otherwise, give the Runner 1 tag."
+  stripped_title: "Hydra"
+  text: "[subroutine] Do 3 net damage if the Runner is tagged; otherwise, give the Runner 1 tag.\n[subroutine] Gain 5[credit] if the Runner is tagged; otherwise, give the Runner 1 tag.\n[subroutine] End the run if the Runner is tagged; otherwise, give the Runner 1 tag.\n"
+  title: "Hydra"
 
 ikawah_project:
   advancement_requirement: 5
@@ -407,6 +699,21 @@ inside_job:
   text: "Run any server. The first time this run you encounter a piece of ice, bypass it."
   title: "Inside Job"
 
+jinja_city_grid:
+  card_type_id: "upgrade"
+  cost: 1
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "jinja_city_grid"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Whenever you draw a piece of ice, you may reveal it and install it protecting this server, paying 4 credits less. Limit 1 region per server."
+  stripped_title: "Jinja City Grid"
+  text: "Whenever you draw a piece of ice, you may reveal it and install it protecting this server, paying 4[credit] less.\nLimit 1 <strong>region</strong> per server."
+  title: "Jinja City Grid"
+  trash_cost: 5
+
 ken_express_tenma_disappeared_clone:
   base_link: 0
   card_type_id: "runner_identity"
@@ -422,6 +729,21 @@ ken_express_tenma_disappeared_clone:
   text: "The first time each turn you play a <strong>run</strong> event, gain 1[credit]."
   title: "Ken \"Express\" Tenma: Disappeared Clone"
 
+lady_liberty:
+  card_type_id: "asset"
+  cost: 5
+  deck_limit: 1
+  faction_id: "neutral_corp"
+  id: "lady_liberty"
+  influence_cost: 0
+  is_unique: true
+  side_id: "corp"
+  stripped_text: "When your turn begins, place 1 power counter on Lady Liberty. click, click, click: Add an agenda from HQ to your score area worth agenda points equal to the exact number of hosted power counters. Limit 1 region per server. Limit 1 per deck."
+  stripped_title: "Lady Liberty"
+  text: "When your turn begins, place 1 power counter on Lady Liberty.\n[click], [click], [click]: Add an agenda from HQ to your score area worth agenda points equal to the exact number of hosted power counters.\nLimit 1 <strong>region</strong> per server.\nLimit 1 per deck."
+  title: "Lady Liberty"
+  trash_cost: 4
+
 legwork:
   card_type_id: "event"
   cost: 2
@@ -435,6 +757,34 @@ legwork:
   stripped_title: "Legwork"
   text: "Run HQ. If successful, access 2 additional cards when you breach HQ."
   title: "Legwork"
+
+longevity_serum:
+  advancement_requirement: 3
+  agenda_points: 2
+  card_type_id: "agenda"
+  deck_limit: 1
+  faction_id: "jinteki"
+  id: "longevity_serum"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you score this agenda, trash any number of cards from HQ. Shuffle up to 3 cards from Archives into R&D. Limit 1 per deck."
+  stripped_title: "Longevity Serum"
+  text: "When you score this agenda, trash any number of cards from HQ. Shuffle up to 3 cards from Archives into R&D.\nLimit 1 per deck."
+  title: "Longevity Serum"
+
+luminal_transubstantiation:
+  advancement_requirement: 3
+  agenda_points: 2
+  card_type_id: "agenda"
+  deck_limit: 1
+  faction_id: "haas_bioroid"
+  id: "luminal_transubstantiation"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When you score this agenda, gain click click click. You cannot score agendas for the remainder of the turn. Limit 1 per deck."
+  stripped_title: "Luminal Transubstantiation"
+  text: "When you score this agenda, gain [click][click][click]. You cannot score agendas for the remainder of the turn.\nLimit 1 per deck."
+  title: "Luminal Transubstantiation"
 
 marathon:
   card_type_id: "event"
@@ -477,6 +827,21 @@ networking:
   stripped_title: "Networking"
   text: "Remove 1 tag. Then, you may pay 1[credit] to add this event to your grip."
   title: "Networking"
+
+nova_initiumia_catalyst_impetus:
+  base_link: 0
+  card_type_id: "runner_identity"
+  deck_limit: 1
+  faction_id: "neutral_runner"
+  id: "nova_initiumia_catalyst_impetus"
+  influence_limit: null
+  is_unique: false
+  minimum_deck_size: 40
+  side_id: "runner"
+  stripped_text: "Your deck cannot include more than 1 copy of any card."
+  stripped_title: "Nova Initiumia: Catalyst & Impetus"
+  text: "Your deck cannot include more than 1 copy of any card."
+  title: "Nova Initiumia: Catalyst & Impetus"
 
 paperclip:
   card_type_id: "program"
@@ -551,6 +916,21 @@ punitive_counterstrike:
   text: "Trace[5]. If successful, do X meat damage. X is equal to the sum of the printed agenda points on all agendas the Runner stole during their last turn."
   title: "Punitive Counterstrike"
 
+rashida_jaheem:
+  card_type_id: "asset"
+  cost: 0
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "rashida_jaheem"
+  influence_cost: 0
+  is_unique: true
+  side_id: "corp"
+  stripped_text: "When your turn begins, you may trash Rashida Jaheem to gain 3 credits and draw 3 cards."
+  stripped_title: "Rashida Jaheem"
+  text: "When your turn begins, you may trash Rashida Jaheem to gain 3[credit] and draw 3 cards."
+  title: "Rashida Jaheem"
+  trash_cost: 1
+
 regolith_mining_license:
   card_type_id: "asset"
   cost: 2
@@ -566,6 +946,36 @@ regolith_mining_license:
   title: "Regolith Mining License"
   trash_cost: 3
 
+reversed_accounts:
+  card_type_id: "asset"
+  cost: 0
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "reversed_accounts"
+  influence_cost: 1
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "You can advance this asset. click, trash: The Runner loses 4 credits for each hosted advancement counter."
+  stripped_title: "Reversed Accounts"
+  text: "You can advance this asset.\n[click], [trash]<strong>:</strong> The Runner loses 4[credit] for each hosted advancement counter."
+  title: "Reversed Accounts"
+  trash_cost: 3
+
+ronin:
+  card_type_id: "asset"
+  cost: 0
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "ronin"
+  influence_cost: 4
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "You can advance this asset. click, trash: Do 3 net damage. Use this ability only if there are 4 or more hosted advancement counters."
+  stripped_title: "Ronin"
+  text: "You can advance this asset.\n[click], [trash]<strong>:</strong> Do 3 net damage. Use this ability only if there are 4 or more hosted advancement counters."
+  title: "Ronin"
+  trash_cost: 2
+
 rototurret:
   card_type_id: "ice"
   cost: 4
@@ -580,6 +990,20 @@ rototurret:
   stripped_title: "Rototurret"
   text: "[subroutine] Trash 1 installed program.\n[subroutine] End the run."
   title: "Rototurret"
+
+sds_drone_deployment:
+  advancement_requirement: 5
+  agenda_points: 3
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "sds_drone_deployment"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "As an additional cost to steal this agenda, the Runner must trash an installed program. When you score this agenda, trash an installed program."
+  stripped_title: "SDS Drone Deployment"
+  text: "As an additional cost to steal this agenda, the Runner must trash an installed program.\nWhen you score this agenda, trash an installed program."
+  title: "SDS Drone Deployment"
 
 send_a_message:
   advancement_requirement: 5
@@ -625,6 +1049,21 @@ sure_gamble:
   text: "Gain 9[credit]."
   title: "Sure Gamble"
 
+surveyor:
+  card_type_id: "ice"
+  cost: 5
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "surveyor"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: null
+  stripped_text: "X is twice the number of ice protecting this server. Subroutine Trace[X]. If successful, give the Runner 2 tags. Subroutine Trace[X]. If successful, end the run."
+  stripped_title: "Surveyor"
+  text: "X is twice the number of ice protecting this server.\n[subroutine]Trace[X]. If successful, give the Runner 2 tags.\n[subroutine]Trace[X]. If successful, end the run."
+  title: "Surveyor"
+
 the_class_act:
   card_type_id: "resource"
   cost: 4
@@ -638,6 +1077,21 @@ the_class_act:
   stripped_title: "The Class Act"
   text: "When your discard phase ends, if you installed this resource this turn, draw 4 cards.\n[interrupt] → The first time each turn you would draw any number of cards, look at the top X cards of your stack. Add 1 of those cards to the bottom of your stack. X is equal to the number of cards you will draw plus 1."
   title: "The Class Act"
+
+thimblerig:
+  card_type_id: "ice"
+  cost: 2
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "thimblerig"
+  influence_cost: 1
+  is_unique: false
+  side_id: "corp"
+  strength: 0
+  stripped_text: "When your turn begins and whenever the Runner passes this ice, you may swap this ice with another installed piece of ice. Subroutine End the run."
+  stripped_title: "Thimblerig"
+  text: "When your turn begins and whenever the Runner passes this ice, you may swap this ice with another installed piece of ice.\n[subroutine] End the run."
+  title: "Thimblerig"
 
 tollbooth:
   card_type_id: "ice"
@@ -685,6 +1139,36 @@ tyr:
   text: "<strong>Lose [click]:</strong> Break 1 subroutine on this ice. The Corp gets +1 allotted [click] for their next turn. Only the Runner can use this ability.\n[subroutine] Do 2 core damage.\n[subroutine] Trash 1 installed Runner card. Gain 3[credit].\n[subroutine] End the run."
   title: "Týr"
 
+urban_renewal:
+  card_type_id: "asset"
+  cost: 1
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "urban_renewal"
+  influence_cost: 4
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "Place 3 power counters on Urban Renewal when it is rezzed. When there are no power counters left on Urban Renewal, trash it and do 4 meat damage. When your turn begins, remove 1 power counter from Urban Renewal."
+  stripped_title: "Urban Renewal"
+  text: "Place 3 power counters on Urban Renewal when it is rezzed. When there are no power counters left on Urban Renewal, trash it and do 4 meat damage.\nWhen your turn begins, remove 1 power counter from Urban Renewal."
+  title: "Urban Renewal"
+  trash_cost: 3
+
+urtica_cipher:
+  card_type_id: "asset"
+  cost: 0
+  deck_limit: 3
+  faction_id: "jinteki"
+  id: "urtica_cipher"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "You can advance this asset. When the Runner accesses this asset while it is installed, do 2 net damage plus 1 net damage for each hosted advancement counter."
+  stripped_title: "Urtica Cipher"
+  text: "You can advance this asset.\nWhen the Runner accesses this asset while it is installed, do 2 net damage plus 1 net damage for each hosted advancement counter."
+  title: "Urtica Cipher"
+  trash_cost: 2
+
 wake_implant_v2a_jrj:
   card_type_id: "hardware"
   cost: 1
@@ -699,3 +1183,17 @@ wake_implant_v2a_jrj:
   text: "When you install this hardware, suffer 1 meat damage.\nWhenever you make a successful run on HQ, place 1 power counter on this hardware.\nWhenever you breach R&D, you may remove up to 3 hosted power counters to access that many additional cards."
   title: "WAKE Implant v2A-JRJ"
 
+wraparound:
+  card_type_id: "ice"
+  cost: 2
+  deck_limit: 3
+  faction_id: "nbn"
+  id: "wraparound"
+  influence_cost: 1
+  is_unique: false
+  side_id: "corp"
+  strength: 0
+  stripped_text: "While there are no installed fracter programs, this ice gets +7 strength. Subroutine End the run."
+  stripped_title: "Wraparound"
+  text: "While there are no installed <strong>fracter</strong> programs, this ice gets +7 strength.\n[subroutine] End the run."
+  title: "Wraparound"
