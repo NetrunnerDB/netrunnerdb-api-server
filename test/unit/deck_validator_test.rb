@@ -206,6 +206,39 @@ class DeckValidatorTest < ActiveSupport::TestCase
     }
     @corp_econ_ken = swap_card(@good_ken, 'sure_gamble', 'hedge_fund')
     @nova_with_too_many_cards = set_card_quantity(set_card_quantity(@good_nova, 'sure_gamble', 2), 'unity', 2)
+
+    @good_professor = {
+      'identity_card_id' => 'the_professor_keeper_of_knowledge',
+      'side_id' => 'runner',
+      'cards' => {
+        'aumakua' => 1,
+        'bankroll' => 1,
+        'botulus' => 1,
+        'bukhgalter' => 1,
+        'cezve' => 1,
+        'clot' => 1,
+        'compile' => 2,
+        'consume' => 1,
+        'creative_commission' => 3,
+        'cybertrooper_talut' => 2,
+        'dirty_laundry' => 3,
+        'dzmz_optimizer' => 2,
+        'fermenter' => 1,
+        'jailbreak' => 3,
+        'leech' => 2,
+        'mad_dash' => 2,
+        'overclock' => 3,
+        'prepaid_voicepad' => 2,
+        'professional_contacts' => 2,
+        'spec_work' => 2,
+        'stargate' => 1,
+        'sure_gamble' => 3,
+        'tapwrm' => 1,
+        'the_makers_eye' => 2,
+        'top_hat' => 2,
+      }
+    }
+    @too_much_program_influence_professor = set_card_quantity(set_card_quantity(@good_professor, 'consume', 2), 'stargate', 2)
   end
 
   def force_uppercase(deck)
@@ -264,6 +297,18 @@ class DeckValidatorTest < ActiveSupport::TestCase
     v = DeckValidator.new(@good_nova)
     assert v.is_valid?
     assert_equal 0, v.errors.size
+  end
+
+  def test_good_professor
+    v = DeckValidator.new(@good_professor)
+    assert v.is_valid?
+    assert_equal 0, v.errors.size
+  end
+
+  def test_too_much_program_influence_professor
+    v = DeckValidator.new(@too_much_program_influence_professor)
+    assert !v.is_valid?
+    assert_includes v.errors, "Influence limit for The Professor: Keeper of Knowledge is 1, but deck has spent 9 influence"
   end
 
   def test_case_normalization

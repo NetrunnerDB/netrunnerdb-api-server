@@ -467,6 +467,50 @@ cezve:
   text: "2[recurring-credit] <em>(When you install this card and before your turn begins, refill to 2 hosted credits.)</em>\nYou can spend hosted credits during runs on central servers."
   title: "Cezve"
 
+clot:
+  card_type_id: "program"
+  cost: 2
+  deck_limit: 3
+  faction_id: "anarch"
+  id: "clot"
+  influence_cost: 2
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  stripped_text: "The Corp cannot score an agenda during the same turn they installed that agenda. When the Corp purges virus counters, trash this program."
+  stripped_title: "Clot"
+  text: "The Corp cannot score an agenda during the same turn they installed that agenda.\nWhen the Corp purges virus counters, trash this program."
+  title: "Clot"
+
+compile:
+  card_type_id: "event"
+  cost: 2
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "compile"
+  influence_cost: 3
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Make a run. The first time you encounter a piece of ice during this run, you may search your stack or heap for a program and install it, ignoring all costs. When the run ends, add that program to the bottom of your stack if it is still installed."
+  stripped_title: "Compile"
+  text: "Make a run. The first time you encounter a piece of ice during this run, you may search your stack or heap for a program and install it, ignoring all costs. When the run ends, add that program to the bottom of your stack if it is still installed."
+  title: "Compile"
+
+consume:
+  card_type_id: "program"
+  cost: 2
+  deck_limit: 3
+  faction_id: "apex"
+  id: "consume"
+  influence_cost: 5
+  is_unique: false
+  memory_cost: 0
+  side_id: "runner"
+  stripped_text: "Whenever you trash a Corp card, you may place 1 virus counter on Consume. click: Gain 2 credits for each hosted virus counter, then remove all virus counters from Consume."
+  stripped_title: "Consume"
+  text: "Whenever you trash a Corp card, you may place 1 virus counter on Consume.\n[click]: Gain 2[credit] for each hosted virus counter, then remove all virus counters from Consume."
+  title: "Consume"
+
 creative_commission:
   card_type_id: "event"
   cost: 1
@@ -480,6 +524,20 @@ creative_commission:
   stripped_title: "Creative Commission"
   text: "Gain 5[credit]. If you have any [click] remaining, lose [click]."
   title: "Creative Commission"
+
+cybertrooper_talut:
+  card_type_id: "resource"
+  cost: 2
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "cybertrooper_talut"
+  influence_cost: 2
+  is_unique: true
+  side_id: "runner"
+  stripped_text: "+1 link Whenever you install a non-AI icebreaker, that icebreaker gets +2 strength for the remainder of the turn."
+  stripped_title: "Cybertrooper Talut"
+  text: "+1[link]\nWhenever you install a non-<strong>AI</strong> <strong>icebreaker</strong>, that <strong>icebreaker</strong> gets +2 strength for the remainder of the turn."
+  title: "Cybertrooper Talut"
 
 daily_casts:
   card_type_id: "resource"
@@ -538,7 +596,6 @@ dirty_laundry:
   text: "Run any server. When that run ends, if it was successful, gain 5[credit]."
   title: "Dirty Laundry"
 
-
 diversion_of_funds:
   card_type_id: "event"
   cost: 1
@@ -580,6 +637,20 @@ dreamnet:
   stripped_title: "DreamNet"
   text: "The first time each turn you make a successful run, draw 1 card. If you have at least 2[link] or your identity is <strong>digital</strong>, also gain 1[credit]."
   title: "DreamNet"
+
+dzmz_optimizer:
+  card_type_id: "hardware"
+  cost: 2
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "dzmz_optimizer"
+  influence_cost: 2
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "+1 mu The first program you install each turn costs 1 credit less to install."
+  stripped_title: "DZMZ Optimizer"
+  text: "+1[mu]\nThe first program you install each turn costs 1[credit] less to install."
+  title: "DZMZ Optimizer"
 
 earthrise_hotel:
   card_type_id: "resource"
@@ -928,6 +999,20 @@ inside_job:
   text: "Run any server. The first time this run you encounter a piece of ice, bypass it."
   title: "Inside Job"
 
+jailbreak:
+  card_type_id: "event"
+  cost: 0
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "jailbreak"
+  influence_cost: 0
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run HQ or R&D. If successful, draw 1 card and when you breach the attacked server, access 1 additional card."
+  stripped_title: "Jailbreak"
+  text: "Run HQ or R&D. If successful, draw 1 card and when you breach the attacked server, access 1 additional card."
+  title: "Jailbreak"
+
 jinja_city_grid:
   card_type_id: "upgrade"
   cost: 1
@@ -987,6 +1072,21 @@ lady_liberty:
   text: "When your turn begins, place 1 power counter on Lady Liberty.\n[click], [click], [click]: Add an agenda from HQ to your score area worth agenda points equal to the exact number of hosted power counters.\nLimit 1 <strong>region</strong> per server.\nLimit 1 per deck."
   title: "Lady Liberty"
   trash_cost: 4
+
+leech:
+  card_type_id: "program"
+  cost: 1
+  deck_limit: 3
+  faction_id: "anarch"
+  id: "leech"
+  influence_cost: 1
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  stripped_text: "Whenever you make a successful run on a central server, place 1 virus counter on this program. Hosted virus counter: The ice you are encountering gets -1 strength for the remainder of this encounter."
+  stripped_title: "Leech"
+  text: "Whenever you make a successful run on a central server, place 1 virus counter on this program.\n<strong>Hosted virus counter:</strong> The ice you are encountering gets -1 strength for the remainder of this encounter."
+  title: "Leech"
 
 legwork:
   card_type_id: "event"
@@ -1243,6 +1343,20 @@ pinhole_threading:
   text: "Run any server. If successful, instead of breaching the attacked server, access 1 card in the root of another server. If that card is an agenda, you cannot steal or trash it during this access."
   title: "Pinhole Threading"
 
+prepaid_voicepad:
+  card_type_id: "hardware"
+  cost: 2
+  deck_limit: 3
+  faction_id: "neutral_runner"
+  id: "prepaid_voicepad"
+  influence_cost: 0
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "1 recurring credit (When you install this card and before your turn begins, refill to 1 hosted credit.) You can spend hosted credits to play events."
+  stripped_title: "Prepaid VoicePAD"
+  text: "1[recurring-credit] <em>(When you install this card and before your turn begins, refill to 1 hosted credit.)</em>\nYou can spend hosted credits to play events."
+  title: "Prepaid VoicePAD"
+
 prisec:
   card_type_id: "upgrade"
   cost: 0
@@ -1257,6 +1371,20 @@ prisec:
   text: "If the Runner accesses Prisec while installed, you may pay 2[credit] to give the Runner 1 tag and do 1 meat damage."
   title: "Prisec"
   trash_cost: 3
+
+professional_contacts:
+  card_type_id: "resource"
+  cost: 5
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "professional_contacts"
+  influence_cost: 2
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "click: Gain 1 credit and draw 1 card."
+  stripped_title: "Professional Contacts"
+  text: "[click]<strong>:</strong> Gain 1[credit] and draw 1 card."
+  title: "Professional Contacts"
 
 project_vitruvius:
   advancement_requirement: 3
@@ -1404,6 +1532,20 @@ simulchip:
   text: "If no installed programs have been trashed this turn, you must trash 1 installed program as an additional cost to use this hardware.\n[trash]<strong>:</strong> Install 1 program from your heap, paying 3[credit] less."
   title: "Simulchip"
 
+spec_work:
+  card_type_id: "event"
+  cost: 1
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "spec_work"
+  influence_cost: 1
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "As an additional cost to play this event, trash an installed program. Gain 4 credits and draw 2 cards."
+  stripped_title: "Spec Work"
+  text: "As an additional cost to play this event, trash an installed program.\nGain 4[credit] and draw 2 cards."
+  title: "Spec Work"
+
 spin_doctor:
   card_type_id: "asset"
   cost: 0
@@ -1477,6 +1619,21 @@ surveyor:
   text: "X is twice the number of ice protecting this server.\n[subroutine]Trace[X]. If successful, give the Runner 2 tags.\n[subroutine]Trace[X]. If successful, end the run."
   title: "Surveyor"
 
+tapwrm:
+  card_type_id: "program"
+  cost: 0
+  deck_limit: 3
+  faction_id: "criminal"
+  id: "tapwrm"
+  influence_cost: 2
+  is_unique: false
+  memory_cost: 1
+  side_id: "runner"
+  stripped_text: "Install only if you made a successful run on a central server this turn. When your turn begins, gain 1 credit for every 5 credits in the Corp's credit pool. Trash Tapwrm if the Corp purges virus counters."
+  stripped_title: "Tapwrm"
+  text: "Install only if you made a successful run on a central server this turn.\nWhen your turn begins, gain 1[credit] for every 5[credit] in the Corp's credit pool.\nTrash Tapwrm if the Corp purges virus counters."
+  title: "Tapwrm"
+
 telework_contract:
   card_type_id: "resource"
   cost: 1
@@ -1504,6 +1661,35 @@ the_class_act:
   stripped_title: "The Class Act"
   text: "When your discard phase ends, if you installed this resource this turn, draw 4 cards.\n[interrupt] → The first time each turn you would draw any number of cards, look at the top X cards of your stack. Add 1 of those cards to the bottom of your stack. X is equal to the number of cards you will draw plus 1."
   title: "The Class Act"
+
+the_makers_eye:
+  card_type_id: "event"
+  cost: 2
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "the_makers_eye"
+  influence_cost: 2
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Run R&D. If successful, access 2 additional cards when you breach R&D."
+  stripped_title: "The Maker's Eye"
+  text: "Run R&D. If successful, access 2 additional cards when you breach R&D."
+  title: "The Maker's Eye"
+
+the_professor_keeper_of_knowledge:
+  base_link: 0
+  card_type_id: "runner_identity"
+  deck_limit: 1
+  faction_id: "shaper"
+  id: "the_professor_keeper_of_knowledge"
+  influence_limit: 1
+  is_unique: false
+  minimum_deck_size: 45
+  side_id: "runner"
+  stripped_text: "The first copy of each program in this deck does not count against your influence limit."
+  stripped_title: "The Professor: Keeper of Knowledge"
+  text: "The first copy of each program in this deck does not count against your influence limit."
+  title: "The Professor: Keeper of Knowledge"
 
 thimblerig:
   card_type_id: "ice"
@@ -1534,6 +1720,20 @@ tollbooth:
   stripped_title: "Tollbooth"
   text: "When the Runner encounters this ice, they must pay 3[credit], if able. If they do not, end the run.\n[subroutine] End the run."
   title: "Tollbooth"
+
+top_hat:
+  card_type_id: "hardware"
+  cost: 0
+  deck_limit: 3
+  faction_id: "shaper"
+  id: "top_hat"
+  influence_cost: 1
+  is_unique: false
+  side_id: "runner"
+  stripped_text: "Whenever you make a successful run on R&D, instead of breaching R&D, you may choose 1 of the top 5 cards in R&D and access it."
+  stripped_title: "Top Hat"
+  text: "Whenever you make a successful run on R&D, instead of breaching R&D, you may choose 1 of the top 5 cards in R&D and access it."
+  title: "Top Hat"
 
 trieste_model_bioroids:
   attribution: "Designed by 2019 World Champion Oliver \"Pinsel\" Siccha"
@@ -1640,9 +1840,3 @@ wraparound:
   stripped_title: "Wraparound"
   text: "While there are no installed <strong>fracter</strong> programs, this ice gets +7 strength.\n[subroutine] End the run."
   title: "Wraparound"
-
-
-
-
-
-

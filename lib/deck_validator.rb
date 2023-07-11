@@ -146,6 +146,12 @@ class DeckValidator
     if not identity.influence_limit.nil?
       influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
         .map{|card_id, card| card.influence_cost * @deck['cards'][card_id] }.sum
+      # The Professor ignores the influence cost for the 1st copy of each program in the deck, so subtract that much influence.
+      if identity.id == 'the_professor_keeper_of_knowledge'
+        first_program_influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0) and @cards[card_id].card_type_id == 'program'}
+          .map{|card_id, card| card.influence_cost }.sum
+          influence_spent = influence_spent - first_program_influence_spent
+      end
       if influence_spent > identity.influence_limit
         @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
       end
