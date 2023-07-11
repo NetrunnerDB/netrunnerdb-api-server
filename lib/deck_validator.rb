@@ -142,7 +142,6 @@ class DeckValidator
     end
 
     # Check influence
-    # TODO: add special Professor influence rules.
     if not identity.influence_limit.nil?
       influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
         .map{|card_id, card| card.influence_cost * @deck['cards'][card_id] }.sum
