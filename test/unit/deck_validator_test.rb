@@ -65,8 +65,114 @@ class DeckValidatorTest < ActiveSupport::TestCase
       }
     }
     @upper_case_asa_group = force_uppercase(@good_asa_group)
-    @runner_econ_asa_group = swap_econ(@good_asa_group)
+    @runner_econ_asa_group = swap_card(@good_asa_group, 'hedge_fund', 'sure_gamble')
     @out_of_faction_agenda = add_out_of_faction_agenda(@good_asa_group)
+
+    @good_ampere = {
+      'identity_card_id' => 'ampere_cybernetics_for_anyone',
+      'side_id' => 'corp',
+      'cards' => {
+        'afshar' => 1,
+        'aiki' => 1,
+        'anoetic_void' => 1,
+        'ansel_1_0' => 1,
+        'argus_crackdown' => 1,
+        'ark_lockdown' => 1,
+        'artificial_cryptocrash' => 1,
+        'audacity' => 1,
+        'bathynomus' => 1,
+        'bellona' => 1,
+        'biotic_labor' => 1,
+        'border_control' => 1,
+        'celebrity_gift' => 1,
+        'eli_1_0' => 1,
+        'enigma' => 1,
+        'envelopment' => 1,
+        'fairchild_3_0' => 1,
+        'formicary' => 1,
+        'funhouse' => 1,
+        'ganked' => 1,
+        'hagen' => 1,
+        'hakarl_1_0' => 1,
+        'hansei_review' => 1,
+        'hedge_fund' => 1,
+        'hostile_takeover' => 1,
+        'hybrid_release' => 1,
+        'hydra' => 1,
+        'ikawah_project' => 1,
+        'jinja_city_grid' => 1,
+        'lady_liberty' => 1,
+        'longevity_serum' => 1,
+        'luminal_transubstantiation' => 1,
+        'punitive_counterstrike' => 1,
+        'rashida_jaheem' => 1,
+        'regolith_mining_license' => 1,
+        'reversed_accounts' => 1,
+        'ronin' => 1,
+        'rototurret' => 1,
+        'sds_drone_deployment' => 1,
+        'send_a_message' => 1,
+        'spin_doctor' => 1,
+        'surveyor' => 1,
+        'thimblerig' => 1,
+        'tollbooth' => 1,
+        'trieste_model_bioroids' => 1,
+        'tyr' => 1,
+        'urban_renewal' => 1,
+        'urtica_cipher' => 1,
+        'wraparound' => 1,
+      }
+    }
+
+    @ampere_with_too_many_cards = set_card_quantity(set_card_quantity(@good_ampere, 'tyr', 2), 'hedge_fund', 2)
+    @ampere_too_many_agendas_from_one_faction = swap_card(@good_ampere, 'hostile_takeover', 'ar_enhanced_security')
+
+    @good_nova = {
+      'identity_card_id' => 'nova_initiumia_catalyst_impetus',
+      'side_id' => 'runner',
+      'cards' => {
+        'beth_kilrain_chang' => 1,
+        'boomerang' => 1,
+        'botulus' => 1,
+        'bravado' => 1,
+        'build_script' => 1,
+        'bukhgalter' => 1,
+        'career_fair' => 1,
+        'cezve' => 1,
+        'creative_commission' => 1,
+        'daily_casts' => 1,
+        'deuces_wild' => 1,
+        'diesel' => 1,
+        'dirty_laundry' => 1,
+        'diversion_of_funds' => 1,
+        'dr_nuka_vrolyck' => 1,
+        'dreamnet' => 1,
+        'earthrise_hotel' => 1,
+        'emergent_creativity' => 1,
+        'endurance' => 1,
+        'falsified_credentials' => 1,
+        'fermenter' => 1,
+        'find_the_truth' => 1,
+        'labor_rights' => 1,
+        'liberated_account' => 1,
+        'logic_bomb' => 1,
+        'mad_dash' => 1,
+        'miss_bones' => 1,
+        'neutralize_all_threats' => 1,
+        'no_free_lunch' => 1,
+        'overclock' => 1,
+        'paladin_poemu' => 1,
+        'paperclip' => 1,
+        'pinhole_threading' => 1,
+        'simulchip' => 1,
+        'stargate' => 1,
+        'steelskin_scarring' => 1,
+        'sure_gamble' => 1,
+        'telework_contract' => 1,
+        'the_class_act' => 1,
+        'unity' => 1,
+      }
+    }
 
     @good_ken = {
       'identity_card_id' => 'ken_express_tenma_disappeared_clone',
@@ -98,7 +204,41 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'bankroll' => 3,
       }
     }
-    @corp_econ_ken = swap_econ(@good_ken)
+    @corp_econ_ken = swap_card(@good_ken, 'sure_gamble', 'hedge_fund')
+    @nova_with_too_many_cards = set_card_quantity(set_card_quantity(@good_nova, 'sure_gamble', 2), 'unity', 2)
+
+    @good_professor = {
+      'identity_card_id' => 'the_professor_keeper_of_knowledge',
+      'side_id' => 'runner',
+      'cards' => {
+        'aumakua' => 1,
+        'bankroll' => 1,
+        'botulus' => 1,
+        'bukhgalter' => 1,
+        'cezve' => 1,
+        'clot' => 1,
+        'compile' => 2,
+        'consume' => 1,
+        'creative_commission' => 3,
+        'cybertrooper_talut' => 2,
+        'dirty_laundry' => 3,
+        'dzmz_optimizer' => 2,
+        'fermenter' => 1,
+        'jailbreak' => 3,
+        'leech' => 2,
+        'mad_dash' => 2,
+        'overclock' => 3,
+        'prepaid_voicepad' => 2,
+        'professional_contacts' => 2,
+        'spec_work' => 2,
+        'stargate' => 1,
+        'sure_gamble' => 3,
+        'tapwrm' => 1,
+        'the_makers_eye' => 2,
+        'top_hat' => 2,
+      }
+    }
+    @too_much_program_influence_professor = set_card_quantity(set_card_quantity(@good_professor, 'consume', 2), 'stargate', 2)
   end
 
   def force_uppercase(deck)
@@ -109,15 +249,22 @@ class DeckValidatorTest < ActiveSupport::TestCase
     return new_deck
   end
 
-  def swap_econ(deck)
+  def swap_identity(deck, identity)
     new_deck = deck.deep_dup
-    if new_deck['side_id'] == 'corp'
-      new_deck['cards'].delete('hedge_fund')
-      new_deck['cards']['sure_gamble'] = 3
-    else
-      new_deck['cards'].delete('sure_gamble')
-      new_deck['cards']['hedge_fund'] = 3
-    end
+    new_deck['identity_card_id'] = identity
+    return new_deck
+  end
+
+  def swap_card(deck, old_card_id, new_card_id)
+    new_deck = deck.deep_dup
+    new_deck['cards'][new_card_id] = new_deck['cards'][old_card_id]
+    new_deck['cards'].delete(old_card_id)
+    return new_deck
+  end
+
+  def set_card_quantity(deck, card_id, quantity)
+    new_deck = deck.deep_dup
+    new_deck['cards'][card_id] = quantity
     return new_deck
   end
 
@@ -134,10 +281,34 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_equal 0, v.errors.size
   end
 
+  def test_good_ampere
+    v = DeckValidator.new(@good_ampere)
+    assert v.is_valid?
+    assert_equal 0, v.errors.size
+  end
+
   def test_good_runner_side
     v = DeckValidator.new(@good_ken)
     assert v.is_valid?
     assert_equal 0, v.errors.size
+  end
+
+  def test_good_nova
+    v = DeckValidator.new(@good_nova)
+    assert v.is_valid?
+    assert_equal 0, v.errors.size
+  end
+
+  def test_good_professor
+    v = DeckValidator.new(@good_professor)
+    assert v.is_valid?
+    assert_equal 0, v.errors.size
+  end
+
+  def test_too_much_program_influence_professor
+    v = DeckValidator.new(@too_much_program_influence_professor)
+    assert !v.is_valid?
+    assert_includes v.errors, "Influence limit for The Professor: Keeper of Knowledge is 1, but deck has spent 9 influence"
   end
 
   def test_case_normalization
@@ -190,6 +361,12 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_includes v.errors, "Agenda `bellona` with faction_id `nbn` is not allowed in a `haas_bioroid` deck."
   end
 
+  def test_out_of_faction_agendas_ampere
+    v = DeckValidator.new(@ampere_too_many_agendas_from_one_faction)
+    assert !v.is_valid?
+    assert_includes v.errors, "Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present."
+  end
+
   def test_mismatched_side_corp_id
     v = DeckValidator.new(@corp_econ_ken)
     assert !v.is_valid?, 'Runner deck with corp card fails.'
@@ -213,6 +390,20 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert !v.is_valid?
     assert_includes v.errors, 'Card `hedge_fund` has a deck limit of 3, but 36 copies are included.'
     assert_includes v.errors, 'Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.'
+  end
+
+  def test_too_many_copies_ampere
+    v = DeckValidator.new(@ampere_with_too_many_cards)
+    assert !v.is_valid?
+    assert_includes v.errors, "Card `hedge_fund` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `tyr` has a deck limit of 1, but 2 copies are included."
+  end
+
+  def test_too_may_copies_nova
+    v = DeckValidator.new(@nova_with_too_many_cards)
+    assert !v.is_valid?
+    assert_includes v.errors, "Card `sure_gamble` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.errors, "Card `unity` has a deck limit of 1, but 2 copies are included."
   end
 
   def test_corp_too_much_influence

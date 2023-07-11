@@ -101,12 +101,13 @@ class DeckValidator
 
     # Check cards against deck limits.
     @deck['cards'].each do |card_id, quantity|
-      if quantity > @cards[card_id.to_s].deck_limit
-        @errors << 'Card `%s` has a deck limit of %d, but %d copies are included.' % [card_id, @cards[card_id.to_s].deck_limit, quantity]
+      limit = ['ampere_cybernetics_for_anyone', 'nova_initiumia_catalyst_impetus'].include?(identity.id) ? 1 : @cards[card_id.to_s].deck_limit
+      if quantity > limit
+        @errors << 'Card `%s` has a deck limit of %d, but %d copies are included.' % [card_id, limit, quantity]
       end
     end
 
-    # If corp deck, check agenda points
+    # Check Corp decks for deck-size based agenda points restrictions.
     if @deck['side_id'] == 'corp'
       agenda_points = @cards.select {|card_id| @cards[card_id].card_type_id == 'agenda'}.map{|card_id, card| card.agenda_points * @deck['cards'][card_id] }.sum
 
@@ -117,20 +118,42 @@ class DeckValidator
       end
     end
 
-    # TODO: add special Ampere agenda rules.
-    @deck['cards']
-      .select{|card_id| @cards[card_id].card_type_id == 'agenda' and not [identity.faction_id, 'neutral_corp'].include?(@cards[card_id].faction_id)}
-      .each do |card_id, card|
-        @errors << "Agenda `#{card_id}` with faction_id `#{@cards[card_id].faction_id}` is not allowed in a `#{identity.faction_id}` deck."
+    # Check agenda faction restrictions.
+    if identity.id == 'ampere_cybernetics_for_anyone'
+      # Ampere may only have 2 agendas per non-neutral faction.
+      faction_agenda_count = {}
+      @cards.select{|card_id| @cards[card_id].card_type_id == 'agenda' and @cards[card_id].faction_id != 'neutral_corp'}.each do |card_id, card|
+        if not faction_agenda_count.has_key?(card.faction_id)
+          faction_agenda_count[card.faction_id] = 0
+        end
+        faction_agenda_count[card.faction_id] += 1
+      end
+      faction_agenda_count.each do |faction_id, count|
+        if count > 2
+          @errors << "Ampere decks may not include more than 2 agendas per non-neutral faction. There are #{count} `#{faction_id}` agendas present."
+        end
+      end
+    else
+      @deck['cards']
+        .select{|card_id| @cards[card_id].card_type_id == 'agenda' and not [identity.faction_id, 'neutral_corp'].include?(@cards[card_id].faction_id)}
+        .each do |card_id, card|
+          @errors << "Agenda `#{card_id}` with faction_id `#{@cards[card_id].faction_id}` is not allowed in a `#{identity.faction_id}` deck."
+      end
     end
 
     # Check influence
-    # TODO: add special Professor influence rules.
-    # TODO: add special Nova influence rules.
-    influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
-      .map{|card_id, card| card.influence_cost * @deck['cards'][card_id] }.sum
-    if influence_spent > identity.influence_limit
-      @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
+    if not identity.influence_limit.nil?
+      influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
+        .map{|card_id, card| card.influence_cost * @deck['cards'][card_id] }.sum
+      # The Professor ignores the influence cost for the 1st copy of each program in the deck, so subtract that much influence.
+      if identity.id == 'the_professor_keeper_of_knowledge'
+        first_program_influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0) and @cards[card_id].card_type_id == 'program'}
+          .map{|card_id, card| card.influence_cost }.sum
+          influence_spent = influence_spent - first_program_influence_spent
+      end
+      if influence_spent > identity.influence_limit
+        @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
+      end
     end
   end
 end
