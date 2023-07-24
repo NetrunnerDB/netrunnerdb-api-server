@@ -14,6 +14,9 @@ class DeckValidator
         @deck[k].downcase!
       end
     end
+
+    Rails.logger.info "DECK: #{@deck}"
+
     @valid = false
     # Errors accumulated through the validation process.
     @errors = []

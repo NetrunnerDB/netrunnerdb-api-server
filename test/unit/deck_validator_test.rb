@@ -171,7 +171,13 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'telework_contract' => 1,
         'the_class_act' => 1,
         'unity' => 1,
-      }
+      },
+      'validations' => [
+        {
+          "label" => "Straight Up Basic Deckbuilding rules and nothing else.",
+          "BASIC_DECKBUILDING_RULES" => true,
+        }
+      ]
     }
 
     @good_ken = {

@@ -6,11 +6,11 @@ module API
             out = params[:data]
 
             # Check for presence of everything needed to perform deck validation and error if not present.
-            if out.nil? or not (out.has_key?(:attributes) and out[:attributes].has_key?(:identity_card_id) and out[:attributes].has_key?(:side_id) and out[:attributes].has_key?(:cards))
+            if out.nil? or not (out.has_key?(:attributes) and out[:attributes].has_key?(:identity_card_id) and out[:attributes].has_key?(:side_id) and out[:attributes].has_key?(:cards) and out[:attributes].has_key?(:validations))
               return render json: {
                 :errors => [{
                   :title => "Invalid request",
-                  :detail => "Valid requests must be of the form `{'data': { 'attributes': { 'identity_card_id': 'foo', 'side_id': 'bar', 'cards': { } } }
+                  :detail => "Valid requests must be of the form `{'data': { 'attributes': { 'identity_card_id': 'foo', 'side_id': 'bar', 'cards': { }, 'validations': [] } }
 }`. Extra fields are allowed.",
                   :code => "400",
                   :status => "400"
