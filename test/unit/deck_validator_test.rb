@@ -6,16 +6,85 @@ class DeckValidatorTest < ActiveSupport::TestCase
     @missing_identity = { 'side_id' => 'corp' }
     @missing_side = { 'identity_card_id' => ''}
 
-    @imaginary_identity = { 'identity_card_id' => 'plural', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
-    @imaginary_side = { 'identity_card_id' => 'geist', 'side_id' => 'super_mega_corp', 'cards' => { 'hedge_fund' => 3 } }
+    @imaginary_identity = {
+      'identity_card_id' => 'plural',
+      'side_id' => 'corp',
+      'cards' => { 'hedge_fund' => 3 },
+      'validations' => [
+        {
+          "label" => "Straight Up Basic Deckbuilding rules and nothing else.",
+          "BASIC_DECKBUILDING_RULES" => true,
+        }
+      ]
+    }
+    @imaginary_side = {
+      'identity_card_id' => 'geist',
+      'side_id' => 'super_mega_corp',
+      'cards' => { 'hedge_fund' => 3 },
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+    }
 
-    @wrong_side_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'runner' }
-    @wrong_side_geist = { 'identity_card_id' => 'geist', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
+    @wrong_side_asa_group = {
+      'identity_card_id' => 'asa_group_security_through_vigilance',
+      'side_id' => 'runner',
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+    }
+    @wrong_side_geist = {
+      'identity_card_id' => 'geist',
+      'side_id' => 'corp',
+      'cards' => { 'hedge_fund' => 3 },
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+    }
 
-    @bad_cards_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'foo' => 3, 'bar' => 3 } }
-    @too_few_cards_asa_group = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 3 } }
+    @bad_cards_asa_group = {
+      'identity_card_id' => 'asa_group_security_through_vigilance',
+      'side_id' => 'corp',
+      'cards' => { 'foo' => 3, 'bar' => 3 },
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+   }
+    @too_few_cards_asa_group = {
+      'identity_card_id' => 'asa_group_security_through_vigilance',
+      'side_id' => 'corp',
+      'cards' => { 'hedge_fund' => 3 },
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+  }
 
-    @not_enough_agenda_points_too_many_copies = { 'identity_card_id' => 'asa_group_security_through_vigilance', 'side_id' => 'corp', 'cards' => { 'hedge_fund' => 36, 'project_vitruvius' => 9 } }
+    @not_enough_agenda_points_too_many_copies = {
+      'identity_card_id' => 'asa_group_security_through_vigilance',
+      'side_id' => 'corp',
+      'cards' => { 'hedge_fund' => 36, 'project_vitruvius' => 9 },
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+    }
 
     @too_much_influence_asa_group = {
       'identity_card_id' => 'asa_group_security_through_vigilance',
@@ -38,8 +107,14 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'ansel_1_0' => 3,
         'rototurret' => 3,
         'tyr' => 2,
-      }
-    }
+      },
+      'validations' => [
+        {
+          "label" => "straight up basic deckbuilding rules and nothing else.",
+          "basic_deckbuilding_rules" => true,
+        }
+      ]
+     }
 
     @good_asa_group = {
       'identity_card_id' => 'asa_group_security_through_vigilance',
@@ -62,7 +137,13 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'ansel_1_0' => 3,
         'rototurret' => 3,
         'tyr' => 2,
-      }
+      },
+      'validations' => [
+        {
+          "label" => "Straight Up Basic Deckbuilding rules and nothing else.",
+          "BASIC_DECKBUILDING_RULES" => true,
+        }
+      ]
     }
     @upper_case_asa_group = force_uppercase(@good_asa_group)
     @runner_econ_asa_group = swap_card(@good_asa_group, 'hedge_fund', 'sure_gamble')
@@ -121,7 +202,14 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'urban_renewal' => 1,
         'urtica_cipher' => 1,
         'wraparound' => 1,
-      }
+      },
+      'validations' => [
+        {
+          "label" => "Straight Up Basic Deckbuilding rules and nothing else.",
+          "BASIC_DECKBUILDING_RULES" => true,
+        }
+      ]
+
     }
 
     @ampere_with_too_many_cards = set_card_quantity(set_card_quantity(@good_ampere, 'tyr', 2), 'hedge_fund', 2)
@@ -208,7 +296,13 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'cats_cradle' => 1,
         'paperclip' => 1,
         'bankroll' => 3,
-      }
+      },
+      'validations' => [
+        {
+          "label" => "Straight Up Basic Deckbuilding rules and nothing else.",
+          "BASIC_DECKBUILDING_RULES" => true,
+        }
+      ]
     }
     @corp_econ_ken = swap_card(@good_ken, 'sure_gamble', 'hedge_fund')
     @nova_with_too_many_cards = set_card_quantity(set_card_quantity(@good_nova, 'sure_gamble', 2), 'unity', 2)
@@ -242,7 +336,13 @@ class DeckValidatorTest < ActiveSupport::TestCase
         'tapwrm' => 1,
         'the_makers_eye' => 2,
         'top_hat' => 2,
-      }
+      },
+      'validations' => [
+        {
+          "label" => "Straight Up Basic Deckbuilding rules and nothing else.",
+          "BASIC_DECKBUILDING_RULES" => true,
+        }
+      ]
     }
     @too_much_program_influence_professor = set_card_quantity(set_card_quantity(@good_professor, 'consume', 2), 'stargate', 2)
   end
@@ -329,6 +429,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_includes v.errors, "Deck is missing `identity_card_id` field."
     assert_includes v.errors, "Deck is missing `side_id` field."
     assert_includes v.errors, "Deck must specify some cards."
+    assert_includes v.errors, "Validation request must specify at least one validation to perform."
   end
 
   def test_missing_identity

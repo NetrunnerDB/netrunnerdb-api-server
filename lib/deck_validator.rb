@@ -28,6 +28,7 @@ class DeckValidator
     if all_required_fields_present?
       load_cards_from_deck
       if all_ids_exist?
+        # TODO: Loop through the validation request entries here.
         check_basic_deckbuilding_rules
       end
     end
@@ -51,6 +52,11 @@ class DeckValidator
     # Deck must have a cards array with at least 1 card.
     if not @deck.has_key?('cards') or (@deck.has_key?('cards') and @deck['cards'].size == 0)
       @errors << "Deck must specify some cards."
+    end
+
+    # A list of validations must be present with at least 1 item.
+    if not @deck.has_key?('validations') or (@deck.has_key?('validations') and @deck['validations'].size == 0)
+      @errors << "Validation request must specify at least one validation to perform."
     end
 
     return @errors.size == 0
@@ -77,6 +83,8 @@ class DeckValidator
         @errors << 'Card `%s` does not exist.' % card_id
       end
     end
+
+    # Check all format, snapshot, card pool, restriction id values as well.
 
     return @errors.size == 0
   end
