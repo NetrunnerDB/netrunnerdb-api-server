@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       end
       namespace :public, defaults: { format: :json } do
         jsonapi_resources :card_cycles, only: [:index, :show]
+        jsonapi_resources :card_faces, only: [:index, :show]
         jsonapi_resources :card_pools, only: [:index, :show]
         jsonapi_resources :card_set_types, only: [:index, :show]
         jsonapi_resources :card_sets, only: [:index, :show]
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
         jsonapi_resources :formats, only: [:index, :show]
         jsonapi_resources :illustrators, only: [:index, :show]
         jsonapi_resources :printings, only: [:index, :show]
+        jsonapi_resources :printing_faces, only: [:index, :show]
         jsonapi_resources :restrictions, only: [:index, :show]
         jsonapi_resources :rulings, only: [:index]
         jsonapi_resources :sides, only: [:index, :show]

@@ -107,6 +107,7 @@ namespace :cards do
         is_unique: card["is_unique"],
         display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
         attribution: card["attribution"],
+        layout_id: card.key?("layout_id") ? card["layout_id"] : 'normal',
       )
       if card.key?("cost")
         new_card.cost = (card["cost"].nil? ? -1 : card["cost"])
@@ -208,6 +209,119 @@ namespace :cards do
       puts '  %d cards' % num_cards
       Card.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
     }
+  end
+
+  def import_card_faces(cards)
+    # Use a transaction since we are deleting the card face and mapping tables.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing card -> card face mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM cards_card_faces")
+        puts 'Hit an error while deleting card -> card face mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing card face -> card subtype mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_faces_card_subtypes")
+        puts 'Hit an error while deleting card face -> card subtype mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing card faces'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM card_faces")
+        puts 'Hit an error while deleting card faces. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      subtypes = CardSubtype.all.index_by(&:id)
+      new_faces = []
+      cards_to_card_faces = []
+      card_faces_to_card_subtypes = []
+      cards.each do |card|
+        # Only generate faces for cards with multiple faces
+        next if !card.key?('layout_id') || card['layout_id'].nil? || card['layout_id'] == 'normal'
+
+        # The first face of each card is generated from its base stats
+        new_face = CardFace.new(
+          id: card["id"] + '_0',
+          card_id: card["id"],
+        )
+        new_face.title = card["title"]
+        new_face.stripped_title = card["stripped_title"]
+        new_face.base_link = card["base_link"]
+        new_face.advancement_requirement = card["advancement_requirement"]
+        new_face.agenda_points = card["agenda_points"]
+        new_face.cost = card["cost"]
+        new_face.memory_cost = card["memory_cost"]
+        new_face.strength = card["strength"]
+        new_face.text = card["text"]
+        new_face.stripped_text = card["stripped_text"]
+        new_face.trash_cost = card["trash_cost"]
+        new_face.is_unique = card["is_unique"]
+        new_face.display_subtypes = flatten_subtypes(subtypes, card["subtypes"])
+        new_faces << new_face
+        cards_to_card_faces << {
+          "card_id": card["id"],
+          "card_face_id": new_face.id
+        }
+        unless card["subtypes"].nil?
+          card["subtypes"].each do |s|
+            card_faces_to_card_subtypes << {
+              "card_face_id": new_face.id,
+              "card_subtype_id": s
+            }
+          end
+        end
+
+        # The rest of the faces are generated from the explicitly-defined faces of the card
+        # Missing attributes are assumed to be unchanged and are copied from the base stats
+        i = 0
+        card['faces'].each do |face|
+          i += 1
+          face_subtypes = face.key?("subtypes") ? face["subtypes"] : card["subtypes"]
+          new_face = CardFace.new(
+            id: card["id"] + '_' + i.to_s,
+            card_id: card["id"],
+          )
+          new_face.title = face.key?("title") ? face["title"] : card["title"]
+          new_face.stripped_title = face.key?("stripped_title") ? face["stripped_title"] : card["stripped_title"]
+          new_face.base_link = face.key?("base_link") ? face["base_link"] : card["base_link"]
+          new_face.advancement_requirement = face.key?("advancement_requirement") ? face["advancement_requirement"] : card["advancement_requirement"]
+          new_face.agenda_points = face.key?("agenda_points") ? face["agenda_points"] : card["agenda_points"]
+          new_face.cost = face.key?("cost") ? face["cost"] : card["cost"]
+          new_face.memory_cost = face.key?("memory_cost") ? face["memory_cost"] : card["memory_cost"]
+          new_face.strength = face.key?("strength") ? face["strength"] : card["strength"]
+          new_face.text = face.key?("text") ? face["text"] : card["text"]
+          new_face.stripped_text = face.key?("stripped_text") ? face["stripped_text"] : card["stripped_text"]
+          new_face.trash_cost = face.key?("trash_cost") ? face["trash_cost"] : card["trash_cost"]
+          new_face.is_unique = face.key?("is_unique") ? face["is_unique"] : card["is_unique"]
+          new_face.display_subtypes = flatten_subtypes(subtypes, face_subtypes)
+          new_faces << new_face
+          cards_to_card_faces << {
+            "card_id": card["id"],
+            "card_face_id": new_face.id
+          }
+          unless face_subtypes.nil?
+            face_subtypes.each do |s|
+              card_faces_to_card_subtypes << {
+                "card_face_id": new_face.id,
+                "card_subtype_id": s
+              }
+            end
+          end
+        end
+      end
+
+      puts '  About to save %d card faces...' % new_faces.length
+      num_faces = 0
+      new_faces.each_slice(250) { |s|
+        num_faces += s.length
+        puts '  %d faces' % num_faces
+        CardFace.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      }
+
+      CardCardFace.import cards_to_card_faces, on_duplicate_key_update: { conflict_target: [ :card_id, :card_face_id ], columns: :all }
+      CardFaceCardSubtype.import card_faces_to_card_subtypes, on_duplicate_key_update: { conflict_target: [ :card_face_id, :card_subtype_id ], columns: :all }
+    end
   end
 
   # We don't reload JSON files in here because we have already saved all the cards
@@ -324,13 +438,13 @@ namespace :cards do
   def import_illustrators()
     # Use a transaction since we are deleting the illustrator and mapping tables.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing illustrator -> printing mappings'
+      puts '  Clear out existing illustrator -> printing mappings'
       unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators_printings")
         puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
 
-      puts 'Clear out existing illustrators'
+      puts '  Clear out existing illustrators'
       unless ActiveRecord::Base.connection.delete("DELETE FROM illustrators")
         puts 'Hit an error while deleting illustrators. rolling back.'
         raise ActiveRecord::Rollback
@@ -369,6 +483,100 @@ namespace :cards do
 
       Illustrator.import ill, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
       IllustratorPrinting.import illustrators_to_printings, on_duplicate_key_update: { conflict_target: [ :illustrator_id, :printing_id ], columns: :all }
+    end
+  end
+
+  # This function largely reflects `import_card_faces` but for printings
+  # Instead of linking faces to subtypes, it links faces to illustrators
+  def import_printing_faces(printings)
+    # Use a transaction since we are deleting the printing face and mapping tables.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing printing -> printing face mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printings_printing_faces")
+        puts 'Hit an error while deleting printing -> printing face mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing printing face -> illustrator mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printing_faces_illustrators")
+        puts 'Hit an error while deleting printing face -> illustrator mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing printing faces'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printing_faces")
+        puts 'Hit an error while deleting printing faces. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      illustrators = Illustrator.all.index_by(&:id)
+      new_faces = []
+      printings_to_printing_faces = []
+      printing_faces_to_illustrators = []
+      printings.each do |printing|
+        # Only generate faces for printings with multiple faces
+        next if !printing.key?('layout_id') || printing['layout_id'].nil? || printing['layout_id'] == 'normal'
+
+        # The first face of each printing is generated from its base stats
+        new_face = PrintingFace.new(
+          id: printing["id"] + '_0',
+          printing_id: printing["id"],
+        )
+        new_face.flavor = printing["flavor"]
+        new_face.display_illustrators = printing["illustrator"]
+        new_face.copy_quantity = printing["copy_quantity"]
+        new_faces << new_face
+        printings_to_printing_faces << {
+          "printing_id": printing["id"],
+          "printing_face_id": new_face.id
+        }
+        if new_face.display_illustrators then
+          new_face.display_illustrators.split(', ').each { |i|
+            printing_faces_to_illustrators << {
+              "printing_face_id": new_face.id,
+              "illustrator_id": text_to_id(i)
+            }
+          }
+        end
+
+        # The rest of the faces are generated from the explicitly-defined faces of the card
+        # Missing attributes are assumed to be unchanged and are copied from the base stats
+        i = 0
+        printing['faces'].each do |face|
+          i += 1
+          new_face = PrintingFace.new(
+            id: printing["id"] + '_' + i.to_s,
+            printing_id: printing["id"],
+          )
+          new_face.flavor = face.key?("flavor") ? face["flavor"] : printing["flavor"]
+          new_face.display_illustrators = face.key?("illustrator") ? face["illustrator"] : printing["illustrator"]
+          new_face.copy_quantity = face.key?("copy_quantity") ? face["copy_quantity"] : printing["copy_quantity"]
+          new_faces << new_face
+          printings_to_printing_faces << {
+            "printing_id": printing["id"],
+            "printing_face_id": new_face.id
+          }
+          if new_face.display_illustrators then
+            new_face.display_illustrators.split(', ').each { |i|
+              printing_faces_to_illustrators << {
+                "printing_face_id": new_face.id,
+                "illustrator_id": text_to_id(i)
+              }
+            }
+          end
+        end
+      end
+
+      puts '  About to save %d printing faces...' % new_faces.length
+      num_faces = 0
+      new_faces.each_slice(250) { |s|
+        num_faces += s.length
+        puts '  %d faces' % num_faces
+        PrintingFace.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      }
+
+      PrintingPrintingFace.import printings_to_printing_faces, on_duplicate_key_update: { conflict_target: [ :printing_id, :printing_face_id ], columns: :all }
+      PrintingFaceIllustrator.import printing_faces_to_illustrators, on_duplicate_key_update: { conflict_target: [ :printing_face_id, :illustrator_id ], columns: :all }
     end
   end
 
@@ -763,6 +971,12 @@ namespace :cards do
 
     puts 'Importing Illustrators...'
     import_illustrators()
+
+    puts 'Importing Printing Faces...'
+    import_printing_faces(printings_json)
+
+    puts 'Importing Card Faces...'
+    import_card_faces(cards_json)
 
     puts 'Importing Formats...'
     import_formats(formats_json)

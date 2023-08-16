@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_073031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,6 +22,31 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
     t.datetime "updated_at", null: false
     t.date "date_release"
     t.string "legacy_code"
+  end
+
+  create_table "card_faces", id: :string, force: :cascade do |t|
+    t.string "card_id", null: false
+    t.text "title"
+    t.text "stripped_title"
+    t.text "base_link"
+    t.integer "advancement_requirement"
+    t.integer "agenda_points"
+    t.integer "cost"
+    t.integer "memory_cost"
+    t.integer "strength"
+    t.text "text"
+    t.text "stripped_text"
+    t.integer "trash_cost"
+    t.boolean "is_unique"
+    t.text "display_subtypes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "card_faces_card_subtypes", id: false, force: :cascade do |t|
+    t.string "card_face_id", null: false
+    t.string "card_subtype_id", null: false
+    t.index ["card_face_id", "card_subtype_id"], name: "index_card_faces_card_subtypes_on_face_id_and_subtype_id", unique: true
   end
 
   create_table "card_pools", id: :string, force: :cascade do |t|
@@ -117,10 +142,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
     t.boolean "rez_effect", default: false
     t.boolean "trash_ability", default: false
     t.string "attribution"
+    t.string "layout_id"
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
     t.index ["title"], name: "index_cards_unique_title", unique: true
+  end
+
+  create_table "cards_card_faces", id: false, force: :cascade do |t|
+    t.string "card_id", null: false
+    t.string "card_face_id", null: false
+    t.index ["card_id", "card_face_id"], name: "index_cards_card_faces_on_card_id_and_card_face_id", unique: true
   end
 
   create_table "cards_card_subtypes", id: false, force: :cascade do |t|
@@ -178,6 +210,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
     t.index ["illustrator_id", "printing_id"], name: "index_illustrators_printings_on_illustrator_id_and_printing_id", unique: true
   end
 
+  create_table "printing_faces", id: :string, force: :cascade do |t|
+    t.string "printing_id", null: false
+    t.text "flavor"
+    t.text "display_illustrators"
+    t.integer "copy_quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "printing_faces_illustrators", id: false, force: :cascade do |t|
+    t.string "printing_face_id", null: false
+    t.string "illustrator_id", null: false
+    t.index ["printing_face_id", "illustrator_id"], name: "index_printing_faces_illustrators_on_face_id_and_illustrator_id", unique: true
+  end
+
   create_table "printings", id: :string, force: :cascade do |t|
     t.text "card_id"
     t.text "card_set_id"
@@ -191,6 +238,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
     t.date "date_release"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "layout_id"
+  end
+
+  create_table "printings_printing_faces", id: false, force: :cascade do |t|
+    t.string "printing_id", null: false
+    t.string "printing_face_id", null: false
+    t.index ["printing_id", "printing_face_id"], name: "index_printings_printing_faces_on_printing_id_and_face_id", unique: true
   end
 
   create_table "restrictions", id: :string, force: :cascade do |t|
@@ -476,6 +530,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
       c.is_unique,
       c.display_subtypes,
       c.attribution,
+      c.layout_id,
       c.created_at,
       c.updated_at,
       c.additional_cost,
@@ -631,6 +686,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
       p."position",
       p.quantity,
       p.date_release,
+      c.layout_id,
       p.created_at,
       p.updated_at,
       c.additional_cost,

@@ -12,9 +12,10 @@ module API
         attributes :date_release, :restriction_ids, :strength, :stripped_text, :text, :trash_cost, :is_unique
         attributes :card_subtype_ids, :display_subtypes, :attribution, :updated_at
         attributes :format_ids, :card_pool_ids, :snapshot_ids, :card_cycle_ids, :card_set_ids
+        attributes :layout_id
 
         # Synthesized attributes
-        attributes :card_abilities, :latest_printing_id, :restrictions
+        attributes :num_faces, :card_abilities, :latest_printing_id, :restrictions
 
         key_type :string
 
@@ -22,11 +23,16 @@ module API
         has_one :faction
         has_one :card_type
         has_many :card_subtypes
+        has_many :card_faces
         has_many :printings, relation_name: :unified_printings
         has_many :rulings
 
         def latest_printing_id
           @model.printing_ids[0]
+        end
+
+        def num_faces
+          @model.card_faces.length
         end
 
         def packed_restriction_to_map(packed)

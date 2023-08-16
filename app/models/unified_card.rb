@@ -13,6 +13,12 @@ class UnifiedCard < ApplicationRecord
 
     has_many :card_subtypes, :through => :card_card_subtypes
 
+    has_many :card_card_faces,
+      :primary_key => :id,
+      :foreign_key => :card_id
+
+    has_many :card_faces, :through => :card_card_faces
+
     has_many :unified_printings,
       :primary_key => :id,
       :foreign_key => :card_id
