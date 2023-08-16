@@ -31,6 +31,8 @@ class DeckValidator
         @validations << DeckValidation.new(v)
       end
     end
+
+    @validation_errors = false
   end
 
   def is_valid?
@@ -41,14 +43,17 @@ class DeckValidator
         if all_ids_exist?
           @validations.each do |v|
             if v.basic_deckbuilding_rules
-              check_basic_deckbuilding_rules.each { |e| v.add_error(e) }
+              check_basic_deckbuilding_rules.each do |e|
+                v.add_error(e)
+                @validation_errors = true
+              end
             end
           end
         end
       end
     end
 
-    return @errors.size == 0
+    return (@errors.size == 0 and !@validation_errors)
   end
 
   private
