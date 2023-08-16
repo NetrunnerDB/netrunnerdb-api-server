@@ -1,0 +1,79 @@
+{
+    "data": {
+        "type": "decks",
+        "attributes": {
+            "identity_card_id": "ob_superheavy_logistics_extract_export_excel",
+            "side_id": "corp",
+            "cards": {
+                "azef_protocol": 1,
+                "city_works_project": 3,
+                "sds_drone_deployment": 3,
+                "bladderwort": 3,
+                "drudge_work": 3,
+                "hostile_architecture": 3,
+                "nasx": 3,
+                "spin_doctor": 3,
+                "svyatogor_excavator": 3,
+                "urban_renewal": 3,
+                "wall_to_wall": 3,
+                "boom": 3,
+                "economic_warfare": 3,
+                "hard_hitting_news": 2,
+                "border_control": 3,
+                "sandstone": 1,
+                "afshar": 2,
+                "anemone": 1,
+                "formicary": 3
+            },
+            "validations": [
+                {
+                    "label": "Straight Up Basic Deckbuilding rules and nothing else.",
+                    "basic_deckbuilding_rules": true,
+                    "is_valid": true,
+                    "validation_errors": []
+                },
+                {
+                    "label": "Basic Deckbuilding rules + filtered to a card pool",
+                    "basic_deckbuilding_rules": true,
+                    "card_pool_id": "ram_6",
+                    "is_valid": true,
+                    "validation_errors": []
+                },
+                {
+                    "label": "Basic Deckbuilding rules + a restriction list is specified",
+                    "basic_deckbuilding_rules": true,
+                    "restriction_id": "standard_ban_list_21_04",
+                    "is_valid": true,
+                    "validation_errors": []
+                },
+                {
+                    "label": "Basic Deckbuilding rules + filtered to a card pool + a restriction list is specified",
+                    "basic_deckbuilding_rules": true,
+                    "card_pool_id": "ram_6",
+                    "restriction_id": "standard_ban_list_21_04",
+                    "is_valid": true,
+                    "validation_errors": []
+                },
+                {
+                    "label": "Basic Deckbuilding rules + a specific snapshot (implies format, card pool, and restriction so they will be expanded here)",
+                    "basic_deckbuilding_rules": true,
+                    "snapshot_id": "standard_22",
+                    "format_id": "standard",
+                    "card_pool_id": "rotation_2022",
+                    "restriction_id": "standard_ban_list_22_09",
+                    "is_valid": true,
+                    "validation_errors": []
+                },
+                {
+                    "label": "Basic Deckbuilding rules + a specific format (implies latest snapshot for that format so card pool and restriction will be expanded here)",
+                    "basic_deckbuilding_rules": true,
+                    "format_id": "standard",
+                    "card_pool_id": "rotation_2022",
+                    "restriction_id": "standard_ban_list_22_09",
+                    "is_valid": true,
+                    "validation_errors": []
+                }
+            ]
+        }
+    }
+}

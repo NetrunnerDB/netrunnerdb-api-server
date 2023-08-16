@@ -1,7 +1,10 @@
 class DeckValidator
 
   attr_reader :valid
+  attr_reader :validations
   attr_reader :errors
+
+  # TODO: make a class for Validations
 
   # TODO: make error codes with maps for messages to aid translation and testing.
   def initialize(deck)
@@ -15,21 +18,39 @@ class DeckValidator
       end
     end
 
-    Rails.logger.info "DECK: #{@deck}"
+    @validation_performed = false
 
     @valid = false
     # Errors accumulated through the validation process.
     @errors = []
     # All valid cards specified in the deck.
     @cards = {}
+    # All requested validations, used to keep specific errors tied to the validations requested.
+    @validations = []
+
+    if @deck.has_key?('validations')
+      @deck['validations'].each do |v|
+        v['errors'] = []
+        # Default to false and only flip to true affirmatively.
+        v['is_valid?'] = false
+        @validations << v
+      end
+    end
   end
 
   def is_valid?
-    if all_required_fields_present?
-      load_cards_from_deck
-      if all_ids_exist?
-        # TODO: Loop through the validation request entries here.
-        check_basic_deckbuilding_rules
+    if not @validation_performed
+      @validation_performed = true
+      if all_required_fields_present?
+        load_cards_from_deck
+        if all_ids_exist?
+          @validations.each do |v|
+            if v['basic_deckbuilding_rules']
+              check_basic_deckbuilding_rules.each { |e| v['errors'] << e }
+            end
+            v['is_valid?'] = (v['errors'].size == 0)
+          end
+        end
       end
     end
 
@@ -90,15 +111,16 @@ class DeckValidator
   end
 
   def check_basic_deckbuilding_rules
+    local_errors = []
     # identity_card_id side matches deck side
     if @cards[@deck['identity_card_id']].side_id != @deck['side_id']
-      @errors << 'Identity `%s` has side `%s` which does not match given side `%s`' % [@deck['identity_card_id'], @cards[@deck['identity_card_id']].side_id, @deck['side_id']]
+      local_errors << 'Identity `%s` has side `%s` which does not match given side `%s`' % [@deck['identity_card_id'], @cards[@deck['identity_card_id']].side_id, @deck['side_id']]
     end
 
     # Ensure that all card ids exist and match the side of the identity.
     @deck['cards'].each do |card_id, quantity|
       if @deck['side_id'] != @cards[card_id.to_s].side_id
-        @errors << 'Card `%s` side `%s` does not match deck side `%s`' % [card_id, @cards[card_id.to_s].side_id, @deck['side_id']]
+        local_errors << 'Card `%s` side `%s` does not match deck side `%s`' % [card_id, @cards[card_id.to_s].side_id, @deck['side_id']]
       end
     end
 
@@ -107,14 +129,14 @@ class DeckValidator
     # Check deck size minimums
     num_cards = @deck['cards'].map{ |slot, quantity| quantity }.sum
     if num_cards < identity.minimum_deck_size
-      @errors << "Minimum deck size is %d, but deck has %d cards." % [identity.minimum_deck_size, num_cards]
+      local_errors << "Minimum deck size is %d, but deck has %d cards." % [identity.minimum_deck_size, num_cards]
     end
 
     # Check cards against deck limits.
     @deck['cards'].each do |card_id, quantity|
       limit = ['ampere_cybernetics_for_anyone', 'nova_initiumia_catalyst_impetus'].include?(identity.id) ? 1 : @cards[card_id.to_s].deck_limit
       if quantity > limit
-        @errors << 'Card `%s` has a deck limit of %d, but %d copies are included.' % [card_id, limit, quantity]
+        local_errors << 'Card `%s` has a deck limit of %d, but %d copies are included.' % [card_id, limit, quantity]
       end
     end
 
@@ -125,7 +147,7 @@ class DeckValidator
       min_agenda_points = (num_cards < identity.minimum_deck_size ? identity.minimum_deck_size : num_cards) / 5 * 2 + 2
       required_agenda_points = [min_agenda_points, min_agenda_points + 1]
       if not required_agenda_points.include?(agenda_points)
-        errors << "Deck with size %d requires %s agenda points, but deck only has %d" % [num_cards, required_agenda_points.to_json, agenda_points]
+        local_errors << "Deck with size %d requires %s agenda points, but deck only has %d" % [num_cards, required_agenda_points.to_json, agenda_points]
       end
     end
 
@@ -141,14 +163,14 @@ class DeckValidator
       end
       faction_agenda_count.each do |faction_id, count|
         if count > 2
-          @errors << "Ampere decks may not include more than 2 agendas per non-neutral faction. There are #{count} `#{faction_id}` agendas present."
+          local_errors << "Ampere decks may not include more than 2 agendas per non-neutral faction. There are #{count} `#{faction_id}` agendas present."
         end
       end
     else
       @deck['cards']
         .select{|card_id| @cards[card_id].card_type_id == 'agenda' and not [identity.faction_id, 'neutral_corp'].include?(@cards[card_id].faction_id)}
         .each do |card_id, card|
-          @errors << "Agenda `#{card_id}` with faction_id `#{@cards[card_id].faction_id}` is not allowed in a `#{identity.faction_id}` deck."
+          local_errors << "Agenda `#{card_id}` with faction_id `#{@cards[card_id].faction_id}` is not allowed in a `#{identity.faction_id}` deck."
       end
     end
 
@@ -163,8 +185,9 @@ class DeckValidator
           influence_spent = influence_spent - first_program_influence_spent
       end
       if influence_spent > identity.influence_limit
-        @errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
+        local_errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
       end
     end
+    return local_errors
   end
 end
