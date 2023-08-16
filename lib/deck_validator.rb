@@ -8,7 +8,7 @@ class DeckValidator
   def initialize(deck)
     @deck = deck.deep_dup
     # Force all keys to lowercase, which includes card ids from the cards object.
-    @deck.deep_transform_keys(&:downcase)
+    @deck.deep_transform_keys!(&:downcase)
     # Force values for fields specifying IDs to lowercase.
     ['identity_card_id', 'side_id'].each do |k|
       if @deck.has_key?(k)

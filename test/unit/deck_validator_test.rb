@@ -360,15 +360,14 @@ class DeckValidatorTest < ActiveSupport::TestCase
         }
       ]
     }
-    # TODO: Normalize case for keys for validations
     @too_much_program_influence_professor = set_card_quantity(set_card_quantity(@good_professor, 'consume', 2), 'stargate', 2)
   end
 
   def force_uppercase(deck)
     new_deck = deck.deep_dup
-    new_deck.deep_transform_keys(&:upcase)
     new_deck['identity_card_id'].upcase!
     new_deck['side_id'].upcase!
+    new_deck.deep_transform_keys!(&:upcase)
     return new_deck
   end
 
@@ -492,7 +491,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     v = DeckValidator.new(@upper_case_asa_group)
     assert v.is_valid?
     assert_equal 0, v.errors.size
-    assert_equal v.validations.size, @upper_case_asa_group['validations'].size
+    assert_equal v.validations.size, @upper_case_asa_group['VALIDATIONS'].size
     assert v.validations[0].is_valid?
     assert_equal 0, v.validations[0].errors.size
   end
