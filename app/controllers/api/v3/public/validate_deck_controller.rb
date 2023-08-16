@@ -17,18 +17,28 @@ module API
                 }]}, :status => :bad_request
             end
 
-            # Deck validation works off of a simple datastructure, so construct it instead of passing around ActionController::Parameters
+            # Deck validation takes in a simple datastructure, so construct it instead of passing around ActionController::Parameters
             deck = {
               'identity_card_id' => params[:data][:attributes][:identity_card_id],
               'side_id' => params[:data][:attributes][:side_id],
-              'cards' => {}
+              'cards' => {},
+              'validations' => [],
             }
             params[:data][:attributes][:cards].each {|c,q| deck['cards'][c] = q}
+            params[:data][:attributes][:validations].each do |v|
+              deck['validations'] << v
+            end
 
+            Rails.logger.info 'Deck is %s' % deck.inspect
             v = DeckValidator.new(deck)
 
             out[:attributes][:is_valid] = v.is_valid?
             out[:attributes][:validation_errors] = v.errors
+            for i in 0..(v.validations.size - 1) do
+              out[:attributes][:validations][i][:errors] = v.validations[i].errors
+              out[:attributes][:validations][i][:is_valid] = v.validations[i].is_valid?
+            end
+
             render json: { data: out }, :status => :ok
           end
         end
