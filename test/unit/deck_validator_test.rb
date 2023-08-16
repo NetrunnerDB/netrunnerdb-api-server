@@ -10,11 +10,11 @@ class DeckValidatorTest < ActiveSupport::TestCase
       'identity_card_id' => '',
       'validations' => [
         {
-          "label": "validation 1",
+          "label" => "validation 1",
           "basic_deckbuilding_rules" => false,
         },
         {
-          "label": "validation 2",
+          "label" => "validation 2",
           "basic_deckbuilding_rules" => true,
         }
       ]
@@ -409,8 +409,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_asa_without_basic_deckbuilding_validations['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_validation_without_basic_deckbuilding_rules
@@ -418,8 +418,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @bad_ken_without_basic_deckbuilding_rules['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_corp_side
@@ -427,8 +427,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_asa_group['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_ampere
@@ -436,8 +436,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_ampere['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_runner_side
@@ -445,8 +445,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_ken['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_nova
@@ -454,8 +454,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_nova['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_professor
@@ -464,8 +464,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_professor['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_is_valid_is_idempotent
@@ -475,7 +475,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
       assert v.is_valid?
       assert_equal 0, v.errors.size
       assert_equal v.validations.size, @too_much_program_influence_professor['validations'].size
-      assert_equal 1, v.validations[0]['errors'].size
+      assert_equal 1, v.validations[0].errors.size
     end
   end
 
@@ -484,8 +484,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @too_much_program_influence_professor['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], "Influence limit for The Professor: Keeper of Knowledge is 1, but deck has spent 9 influence"
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, "Influence limit for The Professor: Keeper of Knowledge is 1, but deck has spent 9 influence"
   end
 
   def test_case_normalization
@@ -493,8 +493,8 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @upper_case_asa_group['validations'].size
-    assert v.validations[0]['is_valid?']
-    assert_equal 0, v.validations[0]['errors'].size
+    assert v.validations[0].is_valid?
+    assert_equal 0, v.validations[0].errors.size
   end
 
   def test_empty_deck_json
@@ -534,83 +534,83 @@ class DeckValidatorTest < ActiveSupport::TestCase
     v = DeckValidator.new(@runner_econ_asa_group)
     assert v.is_valid?
     assert_equal v.validations.size, @runner_econ_asa_group['validations'].size
-    assert !v.validations[0]['is_valid?'], "Basic deckbuilding validation fails."
-    assert_includes v.validations[0]['errors'], "Card `sure_gamble` side `runner` does not match deck side `corp`"
+    assert !v.validations[0].is_valid?, "Basic deckbuilding validation fails."
+    assert_includes v.validations[0].errors, "Card `sure_gamble` side `runner` does not match deck side `corp`"
   end
 
   def test_out_of_faction_agendas
     v = DeckValidator.new(@out_of_faction_agenda)
     assert v.is_valid?
     assert_equal v.validations.size, @out_of_faction_agenda['validations'].size
-    assert !v.validations[0]['is_valid?'], "Basic deckbuilding validation fails."
-    assert_includes v.validations[0]['errors'], "Agenda `bellona` with faction_id `nbn` is not allowed in a `haas_bioroid` deck."
+    assert !v.validations[0].is_valid?, "Basic deckbuilding validation fails."
+    assert_includes v.validations[0].errors, "Agenda `bellona` with faction_id `nbn` is not allowed in a `haas_bioroid` deck."
   end
 
   def test_out_of_faction_agendas_ampere
     v = DeckValidator.new(@ampere_too_many_agendas_from_one_faction)
     assert v.is_valid?
     assert_equal v.validations.size, @ampere_too_many_agendas_from_one_faction['validations'].size
-    assert !v.validations[0]['is_valid?'], "Basic deckbuilding validation fails."
-    assert_includes v.validations[0]['errors'], "Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present."
+    assert !v.validations[0].is_valid?, "Basic deckbuilding validation fails."
+    assert_includes v.validations[0].errors, "Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present."
   end
 
   def test_mismatched_side_corp_id
     v = DeckValidator.new(@corp_econ_ken)
     assert v.is_valid?
     assert_equal v.validations.size, @corp_econ_ken['validations'].size
-    assert !v.validations[0]['is_valid?'], 'Runner deck with corp card fails.'
-    assert_includes v.validations[0]['errors'], "Card `hedge_fund` side `corp` does not match deck side `runner`"
+    assert !v.validations[0].is_valid?, 'Runner deck with corp card fails.'
+    assert_includes v.validations[0].errors, "Card `hedge_fund` side `corp` does not match deck side `runner`"
   end
 
   def test_mismatched_side_runner_id
     v = DeckValidator.new(@wrong_side_geist)
     assert v.is_valid?
     assert_equal v.validations.size, @wrong_side_geist['validations'].size
-    assert !v.validations[0]['is_valid?'], 'Deck with mismatched id and specified side fails'
-    assert_includes v.validations[0]['errors'], "Identity `geist` has side `runner` which does not match given side `corp`"
+    assert !v.validations[0].is_valid?, 'Deck with mismatched id and specified side fails'
+    assert_includes v.validations[0].errors, "Identity `geist` has side `runner` which does not match given side `corp`"
   end
 
   def test_not_enough_agenda_points
     v = DeckValidator.new(@not_enough_agenda_points_too_many_copies)
     assert v.is_valid?
     assert_equal v.validations.size, @not_enough_agenda_points_too_many_copies['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], "Deck with size 45 requires [20,21] agenda points, but deck only has 18"
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, "Deck with size 45 requires [20,21] agenda points, but deck only has 18"
   end
 
   def test_too_many_copies
     v = DeckValidator.new(@not_enough_agenda_points_too_many_copies)
     assert v.is_valid?
     assert_equal v.validations.size, @not_enough_agenda_points_too_many_copies['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], 'Card `hedge_fund` has a deck limit of 3, but 36 copies are included.'
-    assert_includes v.validations[0]['errors'], 'Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.'
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, 'Card `hedge_fund` has a deck limit of 3, but 36 copies are included.'
+    assert_includes v.validations[0].errors, 'Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.'
   end
 
   def test_too_many_copies_ampere
     v = DeckValidator.new(@ampere_with_too_many_cards)
     assert v.is_valid?
     assert_equal v.validations.size, @ampere_with_too_many_cards['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], "Card `hedge_fund` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.validations[0]['errors'], "Card `tyr` has a deck limit of 1, but 2 copies are included."
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, "Card `hedge_fund` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.validations[0].errors, "Card `tyr` has a deck limit of 1, but 2 copies are included."
   end
 
   def test_too_may_copies_nova
     v = DeckValidator.new(@nova_with_too_many_cards)
     assert v.is_valid?
     assert_equal v.validations.size, @nova_with_too_many_cards['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], "Card `sure_gamble` has a deck limit of 1, but 2 copies are included."
-    assert_includes v.validations[0]['errors'], "Card `unity` has a deck limit of 1, but 2 copies are included."
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, "Card `sure_gamble` has a deck limit of 1, but 2 copies are included."
+    assert_includes v.validations[0].errors, "Card `unity` has a deck limit of 1, but 2 copies are included."
   end
 
   def test_corp_too_much_influence
     v = DeckValidator.new(@too_much_influence_asa_group)
     assert v.is_valid?
     assert_equal v.validations.size, @too_much_influence_asa_group['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], "Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence"
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, "Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence"
   end
 
   def test_bad_cards
@@ -626,21 +626,21 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_equal 0, v.validations.size
   end
 
-  def initializes_validations_properly
+  def test_initializes_validations_properly
     v = DeckValidator.new(@invalid_with_multiple_validations)
     assert_equal 2, v.validations.size
 
-    assert_equal 'validation 1', v.validation[0]['label']
-    assert !v.validation[0]['basic_deckbuilding_rules']
-    assert_equal 'validation 2', v.validation[1]['label']
-    assert v.validation[1]['basic_deckbuilding_rules']
+    assert_equal 'validation 1', v.validations[0].label
+    assert !v.validations[0].basic_deckbuilding_rules
+    assert_equal 'validation 2', v.validations[1].label
+    assert v.validations[1].basic_deckbuilding_rules
   end
 
   def test_too_few_cards
     v = DeckValidator.new(@too_few_cards_asa_group)
     assert v.is_valid?
     assert_equal v.validations.size, @too_few_cards_asa_group['validations'].size
-    assert !v.validations[0]['is_valid?']
-    assert_includes v.validations[0]['errors'], "Minimum deck size is 45, but deck has 3 cards."
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, "Minimum deck size is 45, but deck has 3 cards."
   end
 end

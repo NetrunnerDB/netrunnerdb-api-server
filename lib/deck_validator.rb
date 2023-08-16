@@ -4,8 +4,6 @@ class DeckValidator
   attr_reader :validations
   attr_reader :errors
 
-  # TODO: make a class for Validations
-
   # TODO: make error codes with maps for messages to aid translation and testing.
   def initialize(deck)
     @deck = deck.deep_dup
@@ -30,10 +28,7 @@ class DeckValidator
 
     if @deck.has_key?('validations')
       @deck['validations'].each do |v|
-        v['errors'] = []
-        # Default to false and only flip to true affirmatively.
-        v['is_valid?'] = false
-        @validations << v
+        @validations << DeckValidation.new(v)
       end
     end
   end
@@ -45,10 +40,9 @@ class DeckValidator
         load_cards_from_deck
         if all_ids_exist?
           @validations.each do |v|
-            if v['basic_deckbuilding_rules']
-              check_basic_deckbuilding_rules.each { |e| v['errors'] << e }
+            if v.basic_deckbuilding_rules
+              check_basic_deckbuilding_rules.each { |e| v.add_error(e) }
             end
-            v['is_valid?'] = (v['errors'].size == 0)
           end
         end
       end
