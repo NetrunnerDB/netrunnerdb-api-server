@@ -642,4 +642,43 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert !v.validations[0].is_valid?
     assert_includes v.validations[0].errors, "Minimum deck size is 45, but deck has 3 cards."
   end
+
+  def test_invalid_format_id
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['format_id'] = 'eternal'
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    # TODO: Update validation to explicitly set is_valid? to false and have the validator set it to true as a literal iff valid.
+    # assert v.validations[0].is_valid?
+    assert_includes v.errors, "Format `eternal` does not exist."
+  end
+
+  def test_invalid_card_pool_id
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['card_pool_id'] = 'startup_2099'
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.errors, "Card Pool `startup_2099` does not exist."
+  end
+
+  def test_invalid_restriction_id
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['restriction_id'] = 'standard_banlist_2034_03'
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.errors, "Restriction `standard_banlist_2034_03` does not exist."
+  end
+
+  def test_invalid_snapshot_id
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['snapshot_id'] = 'snapshot_3030'
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.errors, "Snapshot `snapshot_3030` does not exist."
+  end
+
 end

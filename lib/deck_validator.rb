@@ -23,6 +23,14 @@ class DeckValidator
     @errors = []
     # All valid cards specified in the deck.
     @cards = {}
+    # All valid formats specified in validations.
+    @formats = {}
+    # All valid card pools specified in validations.
+    @card_pools = {}
+    # All valid restrictions specified in validations.
+    @restrictions = {}
+    # All valid snapshots specified in validations.
+    @snapshots = {}
     # All requested validations, used to keep specific errors tied to the validations requested.
     @validations = []
 
@@ -40,6 +48,10 @@ class DeckValidator
       @validation_performed = true
       if all_required_fields_present?
         load_cards_from_deck
+        load_formats_from_deck
+        load_card_pools_from_deck
+        load_restrictions_from_deck
+        load_snapshots_from_deck
         if all_ids_exist?
           @validations.each do |v|
             if v.basic_deckbuilding_rules
@@ -75,7 +87,7 @@ class DeckValidator
     end
 
     # A list of validations must be present with at least 1 item.
-    if not @deck.has_key?('validations') or (@deck.has_key?('validations') and @deck['validations'].size == 0)
+    if @validations.size == 0
       @errors << "Validation request must specify at least one validation to perform."
     end
 
@@ -85,6 +97,46 @@ class DeckValidator
   def load_cards_from_deck
     # Populate @cards by retrieving cards specified in the deck.
     Card.where(id: [@deck['identity_card_id']] + @deck['cards'].keys).each {|c| @cards[c.id] = c}
+  end
+
+  def load_formats_from_deck
+    format_ids = []
+    @validations.each do |v|
+      if !v.format_id.nil?
+        format_ids << v.format_id
+      end
+    end
+    Format.where(id: format_ids).each {|f| @formats[f.id] = f}
+  end
+
+  def load_card_pools_from_deck
+    card_pool_ids = []
+    @validations.each do |v|
+      if !v.card_pool_id.nil?
+        card_pool_ids << v.card_pool_id
+      end
+    end
+    CardPool.where(id: card_pool_ids).each {|f| @card_pools[f.id] = f}
+  end
+
+  def load_restrictions_from_deck
+    restriction_ids = []
+    @validations.each do |v|
+      if v.restriction_id.nil?
+        restriction_ids << v.restriction_id
+      end
+    end
+    Restriction.where(id: restriction_ids).each {|f| @restrictions[f.id] = f}
+  end
+
+  def load_snapshots_from_deck
+    snapshot_ids = []
+    @validations.each do |v|
+      if v.snapshot_id.nil?
+        snapshot_ids << v.snapshot_id
+      end
+    end
+    Snapshot.where(id: snapshot_ids).each {|f| @snapshots[f.id] = f}
   end
 
   def all_ids_exist?
@@ -105,6 +157,28 @@ class DeckValidator
     end
 
     # Check all format, snapshot, card pool, restriction id values as well.
+    @validations.each do |v|
+      if !v.format_id.nil?
+        if !@formats.has_key?(v.format_id)
+          @errors << 'Format `%s` does not exist.' % v.format_id
+        end
+      end
+      if !v.card_pool_id.nil?
+        if !@card_pools.has_key?(v.card_pool_id)
+          @errors << 'Card Pool `%s` does not exist.' % v.card_pool_id
+        end
+      end
+      if !v.restriction_id.nil?
+        if !@restrictions.has_key?(v.restriction_id)
+          @errors << 'Restriction `%s` does not exist.' % v.restriction_id
+        end
+      end
+      if !v.snapshot_id.nil?
+        if !@snapshots.has_key?(v.snapshot_id)
+          @errors << 'Snapshot `%s` does not exist.' % v.snapshot_id
+        end
+      end
+    end
 
     return @errors.size == 0
   end
