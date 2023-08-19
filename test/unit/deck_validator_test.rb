@@ -681,4 +681,34 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_includes v.errors, "Snapshot `snapshot_3030` does not exist."
   end
 
+  def test_cards_not_in_specified_card_pool
+    deck = @good_asa_group.deep_dup
+    # Test fixture standard_02 is not a full representation of standard.
+    deck['validations'][0]['card_pool_id'] = 'standard_02'
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    # Ensure all invalid cards are reported as errors.
+    [
+      'ansel_1_0',
+      'biotic_labor',
+      'eli_1_0',
+      'enigma',
+      'hagen',
+      'hakarl_1_0',
+      'ikawah_project',
+      'project_vitruvius',
+      'punitive_counterstrike',
+      'regolith_mining_license',
+      'rototurret',
+      'send_a_message',
+      'spin_doctor',
+      'tollbooth',
+      'trieste_model_bioroids',
+      'tyr'
+    ].each do |c|
+      assert_includes v.validations[0].errors, "Card `%s` is not present in Card Pool `standard_02`." % c
+    end
+  end
+
 end

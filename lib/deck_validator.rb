@@ -33,6 +33,8 @@ class DeckValidator
     @snapshots = {}
     # All requested validations, used to keep specific errors tied to the validations requested.
     @validations = []
+    # Card ids keyed by card pool specified in the deck
+    @card_pools_to_card_ids = {}
 
     if @deck.has_key?('validations')
       @deck['validations'].each do |v|
@@ -50,6 +52,7 @@ class DeckValidator
         load_cards_from_deck
         load_formats_from_deck
         load_card_pools_from_deck
+        load_cards_from_card_pools
         load_restrictions_from_deck
         load_snapshots_from_deck
         if all_ids_exist?
@@ -60,6 +63,21 @@ class DeckValidator
                 @validation_errors = true
               end
             end
+            # Expansions:
+            #   if format_id is specified, expand nothing. (remove it?)
+            #   if card pool is specified, expand format
+            #   if restriction is specified, expand nothing
+            #   if snapshot is specified, expand card pool, format, snapshot
+            # Update validation message to include expansions
+
+            # Validate against Card Pool
+            if !v.card_pool_id.nil?
+              check_cards_in_card_pool(v).each do |e|
+                v.add_error(e)
+                @validation_errors = true
+              end
+            end
+            # Validate against Restriction
           end
         end
       end
@@ -117,6 +135,15 @@ class DeckValidator
       end
     end
     CardPool.where(id: card_pool_ids).each {|f| @card_pools[f.id] = f}
+  end
+
+  def load_cards_from_card_pools
+    @card_pools.keys.each do |p|
+      @card_pools_to_card_ids[p] = Set.new
+      CardPool.find(p).card_ids.each do |c|
+        @card_pools_to_card_ids[p].add(c)
+      end
+    end
   end
 
   def load_restrictions_from_deck
@@ -263,4 +290,19 @@ class DeckValidator
     end
     return local_errors
   end
+
+  def check_cards_in_card_pool(v)
+    local_errors = []
+    if v.card_pool_id.nil?
+      return local_errors
+    end
+
+    @deck['cards'].keys.each do |c|
+      if !@card_pools_to_card_ids[v.card_pool_id].include?(c)
+        local_errors << "Card `%s` is not present in Card Pool `%s`." % [c, v.card_pool_id]
+      end
+    end
+    return local_errors
+  end
+
 end
