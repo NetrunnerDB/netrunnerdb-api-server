@@ -64,7 +64,7 @@ class DeckValidator
               end
             end
             # Expansions:
-            #   if format_id is specified, expand nothing. (remove it?)
+            #   if format_id is specified, expand to active snapshot
             #   if card pool is specified, expand format
             #   if restriction is specified, expand nothing
             #   if snapshot is specified, expand card pool, format, snapshot
