@@ -532,7 +532,8 @@ namespace :cards do
         id: m['id'],
         name: m['name'],
         date_start: m['date_start'],
-        point_limit: m['point_limit']
+        point_limit: m['point_limit'],
+        format_id: m['format_id']
       )
     }
     Restriction.import new_restrictions, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
