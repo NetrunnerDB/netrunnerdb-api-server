@@ -37,6 +37,52 @@ class DeckValidation
     @errors = []
   end
 
+  def expand_implied_ids
+    # TODO: Update validation message to include expansions
+
+    if !@snapshot_id.nil? and (@format_id.nil? or @card_pool_id.nil? or @restriction_id.nil?)
+      snapshot = Snapshot.find(@snapshot_id)
+      if !snapshot.nil?
+        if @format_id.nil?
+          @format_id = snapshot.format_id
+        end
+        if @card_pool_id.nil?
+          @card_pool_id = snapshot.card_pool_id
+        end
+        if @restriction_id.nil?
+          @restriction_id = snapshot.restriction_id
+        end
+      end
+    elsif !@format_id.nil? and (@snapshot_id.nil? or @card_pool_id.nil? or @restriction_id.nil?)
+      format = Format.find(@format_id)
+      if !format.nil?
+        if @snapshot_id.nil?
+          @snapshot_id = format.active_snapshot_id
+        end
+        active_snapshot = format.snapshot
+        if !active_snapshot.nil?
+          if @card_pool_id.nil?
+            @card_pool_id = active_snapshot.card_pool_id
+          end
+          if @restriction_id.nil?
+            @restriction_id = active_snapshot.restriction_id
+          end
+        end
+      end
+    elsif !@card_pool_id.nil? and @format_id.nil?
+      card_pool = CardPool.find(@card_pool_id)
+      if !card_pool.nil?
+        @format_id = card_pool.format_id
+      end
+# TODO: uncomment once restrictions have formats.
+#    elsif !@restriction_id.nil? and @format_id.nil?
+#      restriction = Restriction.find(@restriction_id)
+#      if !restriction.nil?
+#        @format_id = restriction.format_id
+#      end
+    end
+  end
+
   def add_error(e)
     @errors << e
   end

@@ -57,18 +57,13 @@ class DeckValidator
         load_snapshots_from_deck
         if all_ids_exist?
           @validations.each do |v|
+            v.expand_implied_ids
             if v.basic_deckbuilding_rules
               check_basic_deckbuilding_rules.each do |e|
                 v.add_error(e)
                 @validation_errors = true
               end
             end
-            # Expansions:
-            #   if format_id is specified, expand to active snapshot
-            #   if card pool is specified, expand format
-            #   if restriction is specified, expand nothing
-            #   if snapshot is specified, expand card pool, format, snapshot
-            # Update validation message to include expansions
 
             # Validate against Card Pool
             if !v.card_pool_id.nil?
@@ -184,25 +179,26 @@ class DeckValidator
     end
 
     # Check all format, snapshot, card pool, restriction id values as well.
-    @validations.each do |v|
-      if !v.format_id.nil?
-        if !@formats.has_key?(v.format_id)
-          @errors << 'Format `%s` does not exist.' % v.format_id
+    # TODO: change this to use input deck values, not created validations.
+    @deck['validations'].each do |v|
+      if v.has_key?('format_id')
+        if !@formats.has_key?(v['format_id'])
+          @errors << 'Format `%s` does not exist.' % v['format_id']
         end
       end
-      if !v.card_pool_id.nil?
-        if !@card_pools.has_key?(v.card_pool_id)
-          @errors << 'Card Pool `%s` does not exist.' % v.card_pool_id
+      if v.has_key?('card_pool_id')
+        if !@card_pools.has_key?(v['card_pool_id'])
+          @errors << 'Card Pool `%s` does not exist.' % v['card_pool_id']
         end
       end
-      if !v.restriction_id.nil?
-        if !@restrictions.has_key?(v.restriction_id)
-          @errors << 'Restriction `%s` does not exist.' % v.restriction_id
+      if v.has_key?('restriction_id')
+        if !@restrictions.has_key?(v['restriction_id'])
+          @errors << 'Restriction `%s` does not exist.' % v['restriction_id']
         end
       end
-      if !v.snapshot_id.nil?
-        if !@snapshots.has_key?(v.snapshot_id)
-          @errors << 'Snapshot `%s` does not exist.' % v.snapshot_id
+      if v.has_key?('snapshot_id')
+        if !@snapshots.has_key?(v['snapshot_id'])
+          @errors << 'Snapshot `%s` does not exist.' % v['snapshot_id']
         end
       end
     end
