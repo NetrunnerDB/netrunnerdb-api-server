@@ -23,7 +23,6 @@ class DeckValidationTest < ActiveSupport::TestCase
 
   def test_empty_validation
     v = DeckValidation.new(@empty_validation)
-    v.expand_implied_ids
 
     assert_equal 'empty', v.label
     assert v.format_id.nil?
@@ -35,7 +34,6 @@ class DeckValidationTest < ActiveSupport::TestCase
 
   def test_expand_snapshot
     v = DeckValidation.new(@snapshot_only)
-    v.expand_implied_ids
 
     assert_equal 'expand snapshot', v.label
     assert_equal 'standard', v.format_id
@@ -47,7 +45,6 @@ class DeckValidationTest < ActiveSupport::TestCase
 
   def test_expand_format
     v = DeckValidation.new(@format_only)
-    v.expand_implied_ids
 
     assert_equal 'expand format', v.label
     assert_equal 'standard', v.format_id
@@ -59,7 +56,6 @@ class DeckValidationTest < ActiveSupport::TestCase
 
   def test_expand_card_pool
     v = DeckValidation.new(@card_pool_only)
-    v.expand_implied_ids
 
     assert_equal 'expand card_pool', v.label
     assert_equal 'startup', v.format_id
@@ -71,7 +67,6 @@ class DeckValidationTest < ActiveSupport::TestCase
 
   def test_expand_restriction
     v = DeckValidation.new(@restriction_only)
-    v.expand_implied_ids
 
     assert_equal 'expand restriction', v.label
     assert_equal 'standard', v.format_id

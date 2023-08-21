@@ -57,7 +57,6 @@ class DeckValidator
         load_snapshots_from_deck
         if all_ids_exist?
           @validations.each do |v|
-            v.expand_implied_ids
             if v.basic_deckbuilding_rules
               check_basic_deckbuilding_rules.each do |e|
                 v.add_error(e)
@@ -129,11 +128,15 @@ class DeckValidator
         card_pool_ids << v.card_pool_id
       end
     end
-    CardPool.where(id: card_pool_ids).each {|f| @card_pools[f.id] = f}
+    Rails.logger.error 'In load_card_pools_from_deck card_pool_ids is %s' % card_pool_ids.inspect
+    CardPool.where(id: card_pool_ids).each {|p| @card_pools[p.id] = p}
   end
 
   def load_cards_from_card_pools
+    Rails.logger.error 'Inside load_cards_from_card_pools'
     @card_pools.keys.each do |p|
+      Rails.logger.error 'Checking card pool %s' % p
+      Rails.logger.info 'Card pool id is %s' % p
       @card_pools_to_card_ids[p] = Set.new
       CardPool.find(p).card_ids.each do |c|
         @card_pools_to_card_ids[p].add(c)
@@ -144,7 +147,7 @@ class DeckValidator
   def load_restrictions_from_deck
     restriction_ids = []
     @validations.each do |v|
-      if v.restriction_id.nil?
+      if !v.restriction_id.nil?
         restriction_ids << v.restriction_id
       end
     end
@@ -154,7 +157,7 @@ class DeckValidator
   def load_snapshots_from_deck
     snapshot_ids = []
     @validations.each do |v|
-      if v.snapshot_id.nil?
+      if !v.snapshot_id.nil?
         snapshot_ids << v.snapshot_id
       end
     end
@@ -179,26 +182,25 @@ class DeckValidator
     end
 
     # Check all format, snapshot, card pool, restriction id values as well.
-    # TODO: change this to use input deck values, not created validations.
-    @deck['validations'].each do |v|
-      if v.has_key?('format_id')
-        if !@formats.has_key?(v['format_id'])
-          @errors << 'Format `%s` does not exist.' % v['format_id']
+    @validations.each do |v|
+      if !v.format_id.nil?
+        if !@formats.has_key?(v.format_id)
+          @errors << 'Format `%s` does not exist.' % v.format_id
         end
       end
-      if v.has_key?('card_pool_id')
-        if !@card_pools.has_key?(v['card_pool_id'])
-          @errors << 'Card Pool `%s` does not exist.' % v['card_pool_id']
+      if !v.card_pool_id.nil?
+        if !@card_pools.has_key?(v.card_pool_id)
+          @errors << 'Card Pool `%s` does not exist.' % v.card_pool_id
         end
       end
-      if v.has_key?('restriction_id')
-        if !@restrictions.has_key?(v['restriction_id'])
-          @errors << 'Restriction `%s` does not exist.' % v['restriction_id']
+      if !v.restriction_id.nil?
+        if !@restrictions.has_key?(v.restriction_id)
+          @errors << 'Restriction `%s` does not exist.' % v.restriction_id
         end
       end
-      if v.has_key?('snapshot_id')
-        if !@snapshots.has_key?(v['snapshot_id'])
-          @errors << 'Snapshot `%s` does not exist.' % v['snapshot_id']
+      if !v.snapshot_id.nil?
+        if !@snapshots.has_key?(v.snapshot_id)
+          @errors << 'Snapshot `%s` does not exist.' % v.snapshot_id
         end
       end
     end
@@ -293,6 +295,8 @@ class DeckValidator
       return local_errors
     end
 
+    Rails.logger.error 'Inside check_cards_in_card_pool, validation is %s' % v.inspect
+    Rails.logger.error @card_pools_to_card_ids.inspect
     @deck['cards'].keys.each do |c|
       if !@card_pools_to_card_ids[v.card_pool_id].include?(c)
         local_errors << "Card `%s` is not present in Card Pool `%s`." % [c, v.card_pool_id]
