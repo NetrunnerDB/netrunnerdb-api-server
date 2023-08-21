@@ -69,16 +69,15 @@ class DeckValidationTest < ActiveSupport::TestCase
     assert v.is_valid?
   end
 
-# TODO: uncomment when restrictions have a format id.
-#  def test_expand_restriction
-#    v = DeckValidation.new(@restriction_only)
-#    v.expand_implied_ids
-#
-#    assert_equal 'expand restriction', v.label
-#    assert_equal 'standard', v.format_id
-#    assert_equal 'standard_banlist', v.restriction_id
-#    assert v.card_pool_id.nil?
-#    assert v.snapshot_id.nil?
-#    assert v.is_valid?
-#  end
+  def test_expand_restriction
+    v = DeckValidation.new(@restriction_only)
+    v.expand_implied_ids
+
+    assert_equal 'expand restriction', v.label
+    assert_equal 'standard', v.format_id
+    assert_equal 'standard_banlist', v.restriction_id
+    assert v.card_pool_id.nil?
+    assert v.snapshot_id.nil?
+    assert v.is_valid?
+  end
 end

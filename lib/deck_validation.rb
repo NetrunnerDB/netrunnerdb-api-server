@@ -74,12 +74,11 @@ class DeckValidation
       if !card_pool.nil?
         @format_id = card_pool.format_id
       end
-# TODO: uncomment once restrictions have formats.
-#    elsif !@restriction_id.nil? and @format_id.nil?
-#      restriction = Restriction.find(@restriction_id)
-#      if !restriction.nil?
-#        @format_id = restriction.format_id
-#      end
+    elsif !@restriction_id.nil? and @format_id.nil?
+      restriction = Restriction.find(@restriction_id)
+      if !restriction.nil?
+        @format_id = restriction.format_id
+      end
     end
   end
 
