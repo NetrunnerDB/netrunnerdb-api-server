@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_21_014459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -199,6 +199,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
     t.integer "point_limit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "format_id"
   end
 
   create_table "restrictions_card_subtypes_banned", id: false, force: :cascade do |t|
@@ -299,6 +300,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_193956) do
   add_foreign_key "factions", "sides"
   add_foreign_key "printings", "card_sets"
   add_foreign_key "printings", "cards"
+  add_foreign_key "restrictions", "formats"
   add_foreign_key "restrictions_card_subtypes_banned", "card_subtypes"
   add_foreign_key "restrictions_card_subtypes_banned", "restrictions"
   add_foreign_key "restrictions_cards_banned", "cards"
