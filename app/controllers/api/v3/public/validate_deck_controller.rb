@@ -34,10 +34,7 @@ module API
 
             out[:attributes][:is_valid] = v.is_valid?
             out[:attributes][:validation_errors] = v.errors
-            for i in 0..(v.validations.size - 1) do
-              out[:attributes][:validations][i][:errors] = v.validations[i].errors
-              out[:attributes][:validations][i][:is_valid] = v.validations[i].is_valid?
-            end
+            out[:attributes][:validations] = v.validations
 
             render json: { data: out }, :status => :ok
           end
