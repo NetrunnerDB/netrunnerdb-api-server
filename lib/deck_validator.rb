@@ -29,6 +29,12 @@ class DeckValidator
     @card_pools = {}
     # All valid restrictions specified in validations.
     @restrictions = {}
+    # Map of restriction id to UnifiedRestrictions for affected cards.
+    @unified_restrictions = {}
+    # Identity card object
+    @identity = nil
+    # Basic rules influence spent.  If -1, this has not been calculated yet.
+    @basic_influence_spent = -1
     # All valid snapshots specified in validations.
     @snapshots = {}
     # All requested validations, used to keep specific errors tied to the validations requested.
@@ -71,7 +77,76 @@ class DeckValidator
                 @validation_errors = true
               end
             end
+
             # Validate against Restriction
+            if !v.restriction_id.nil?
+              r = @unified_restrictions[v.restriction_id]
+              Rails.logger.error 'Restriction is %s' % r.inspect
+
+              # Check for banned cards.
+              ([@deck['identity_card_id']] + @deck['cards'].keys).each do |card_id|
+                if r.has_key?(card_id) and r[card_id].is_banned
+                  v.add_error('Card `%s` is banned in restriction `%s`.' % [card_id, v.restriction_id])
+                end
+              end
+
+              # Check for # of restricted cards.
+              restricted_cards_in_deck = []
+              ([@deck['identity_card_id']] + @deck['cards'].keys).each do |card_id|
+                if r.has_key?(card_id) and r[card_id].is_restricted
+                  restricted_cards_in_deck << card_id
+                end
+              end
+              if restricted_cards_in_deck.size > 1
+                v.add_error('Deck has too many cards marked restricted in restriction `%s`: %s.' % [v.restriction_id, restricted_cards_in_deck.join(', ')])
+              end
+
+              # Sum eternal points.
+              eternal_points = 0
+              cards_with_points = []
+              ([@deck['identity_card_id']] + @deck['cards'].keys).each do |card_id|
+                if r.has_key?(card_id) and r[card_id].eternal_points > 0
+                  cards_with_points << '%s (%d)' % [card_id, r[card_id].eternal_points]
+                  eternal_points += r[card_id].eternal_points
+                end
+              end
+              if eternal_points > 7
+                v.add_error('Deck has too many points (%d) for eternal restriction `%s`: %s.' % [eternal_points, v.restriction_id, cards_with_points.join(', ')])
+              end
+
+              # Check for universal faction cost.
+              # Each copy of a card with a universal faction cost has the universal faction cost added to its influence cost.
+              universal_faction_cost = 0
+              cards_with_universal_faction_cost = []
+              @deck['cards'].each do |card_id, qty|
+                if r.has_key?(card_id) and r[card_id].universal_faction_cost > 0
+                  universal_faction_cost += (qty * r[card_id].universal_faction_cost)
+                  cards_with_universal_faction_cost << '%s (%d)' % [card_id, qty * r[card_id].universal_faction_cost]
+                end
+              end
+              if universal_faction_cost > 0 and !@identity.influence_limit.nil? and (@basic_influence_spent + universal_faction_cost) > @identity.influence_limit
+                v.add_error('Influence limit for %s is %d, but after Universal Influence applied from restriction `%s`, deck has spent %d influence from %s.' % [@identity.title, @identity.influence_limit, v.restriction_id, (@basic_influence_spent + universal_faction_cost), cards_with_universal_faction_cost.join(', ')])
+              end
+
+              # Check for global penalty.
+              # Each copy of a card with a global penalty reduces your identity influence by 1, to a minimum of 1.
+              global_penalty = 0
+              cards_with_global_penalty = []
+              @deck['cards'].each do |card_id, qty|
+                if r.has_key?(card_id) and r[card_id].has_global_penalty
+                  global_penalty += qty
+                  cards_with_global_penalty << '%s (%d)' % [card_id, qty]
+                end
+              end
+              if global_penalty > 0 and !@identity.influence_limit.nil?
+                influence_limit = [(@identity.influence_limit - global_penalty), 1].max
+                if @basic_influence_spent > influence_limit
+                  v.add_error('Influence limit for %s is %d after Global Penalty applied from restriction `%s`, but deck has spent %d influence from %s.' % [@identity.title, influence_limit, v.restriction_id, @basic_influence_spent, cards_with_global_penalty.join(', ')])
+                end
+              end
+
+
+            end
           end
         end
       end
@@ -128,14 +203,11 @@ class DeckValidator
         card_pool_ids << v.card_pool_id
       end
     end
-    Rails.logger.error 'In load_card_pools_from_deck card_pool_ids is %s' % card_pool_ids.inspect
     CardPool.where(id: card_pool_ids).each {|p| @card_pools[p.id] = p}
   end
 
   def load_cards_from_card_pools
-    Rails.logger.error 'Inside load_cards_from_card_pools'
     @card_pools.keys.each do |p|
-      Rails.logger.error 'Checking card pool %s' % p
       Rails.logger.info 'Card pool id is %s' % p
       @card_pools_to_card_ids[p] = Set.new
       CardPool.find(p).card_ids.each do |c|
@@ -151,7 +223,11 @@ class DeckValidator
         restriction_ids << v.restriction_id
       end
     end
-    Restriction.where(id: restriction_ids).each {|f| @restrictions[f.id] = f}
+    Restriction.where(id: restriction_ids).each do |r|
+      @restrictions[r.id] = r
+      @unified_restrictions[r.id] = {}
+      UnifiedRestriction.cards_restricted_by(r.id).each {|c| @unified_restrictions[r.id][c.card_id] = c}
+    end
   end
 
   def load_snapshots_from_deck
@@ -169,6 +245,8 @@ class DeckValidator
     if not @cards.has_key?(@deck['identity_card_id'])
       @errors << '`identity_card_id` `%s` does not exist.' % @deck['identity_card_id']
     end
+
+    # TODO: basic deckbuilding should verify that none of the included cards are ids.
 
     # side_id is valid
     if not ['corp', 'runner'].include?(@deck['side_id'])
@@ -222,17 +300,17 @@ class DeckValidator
       end
     end
 
-    identity = @cards[@deck['identity_card_id']]
+    @identity = @cards[@deck['identity_card_id']]
 
     # Check deck size minimums
     num_cards = @deck['cards'].map{ |slot, quantity| quantity }.sum
-    if num_cards < identity.minimum_deck_size
-      local_errors << "Minimum deck size is %d, but deck has %d cards." % [identity.minimum_deck_size, num_cards]
+    if num_cards < @identity.minimum_deck_size
+      local_errors << "Minimum deck size is %d, but deck has %d cards." % [@identity.minimum_deck_size, num_cards]
     end
 
     # Check cards against deck limits.
     @deck['cards'].each do |card_id, quantity|
-      limit = ['ampere_cybernetics_for_anyone', 'nova_initiumia_catalyst_impetus'].include?(identity.id) ? 1 : @cards[card_id.to_s].deck_limit
+      limit = ['ampere_cybernetics_for_anyone', 'nova_initiumia_catalyst_impetus'].include?(@identity.id) ? 1 : @cards[card_id.to_s].deck_limit
       if quantity > limit
         local_errors << 'Card `%s` has a deck limit of %d, but %d copies are included.' % [card_id, limit, quantity]
       end
@@ -242,7 +320,7 @@ class DeckValidator
     if @deck['side_id'] == 'corp'
       agenda_points = @cards.select {|card_id| @cards[card_id].card_type_id == 'agenda'}.map{|card_id, card| card.agenda_points * @deck['cards'][card_id] }.sum
 
-      min_agenda_points = (num_cards < identity.minimum_deck_size ? identity.minimum_deck_size : num_cards) / 5 * 2 + 2
+      min_agenda_points = (num_cards < @identity.minimum_deck_size ? @identity.minimum_deck_size : num_cards) / 5 * 2 + 2
       required_agenda_points = [min_agenda_points, min_agenda_points + 1]
       if not required_agenda_points.include?(agenda_points)
         local_errors << "Deck with size %d requires %s agenda points, but deck only has %d" % [num_cards, required_agenda_points.to_json, agenda_points]
@@ -250,7 +328,7 @@ class DeckValidator
     end
 
     # Check agenda faction restrictions.
-    if identity.id == 'ampere_cybernetics_for_anyone'
+    if @identity.id == 'ampere_cybernetics_for_anyone'
       # Ampere may only have 2 agendas per non-neutral faction.
       faction_agenda_count = {}
       @cards.select{|card_id| @cards[card_id].card_type_id == 'agenda' and @cards[card_id].faction_id != 'neutral_corp'}.each do |card_id, card|
@@ -266,27 +344,35 @@ class DeckValidator
       end
     else
       @deck['cards']
-        .select{|card_id| @cards[card_id].card_type_id == 'agenda' and not [identity.faction_id, 'neutral_corp'].include?(@cards[card_id].faction_id)}
+        .select{|card_id| @cards[card_id].card_type_id == 'agenda' and not [@identity.faction_id, 'neutral_corp'].include?(@cards[card_id].faction_id)}
         .each do |card_id, card|
-          local_errors << "Agenda `#{card_id}` with faction_id `#{@cards[card_id].faction_id}` is not allowed in a `#{identity.faction_id}` deck."
+          local_errors << "Agenda `#{card_id}` with faction_id `#{@cards[card_id].faction_id}` is not allowed in a `#{@identity.faction_id}` deck."
       end
     end
 
     # Check influence
-    if not identity.influence_limit.nil?
-      influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
-        .map{|card_id, card| card.influence_cost * @deck['cards'][card_id] }.sum
-      # The Professor ignores the influence cost for the 1st copy of each program in the deck, so subtract that much influence.
-      if identity.id == 'the_professor_keeper_of_knowledge'
-        first_program_influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0) and @cards[card_id].card_type_id == 'program'}
-          .map{|card_id, card| card.influence_cost }.sum
-          influence_spent = influence_spent - first_program_influence_spent
-      end
-      if influence_spent > identity.influence_limit
-        local_errors << "Influence limit for %s is %d, but deck has spent %d influence" % [identity.title, identity.influence_limit, influence_spent]
+    if not @identity.influence_limit.nil?
+      basic_calculate_influence_spent
+      if @basic_influence_spent > @identity.influence_limit
+        local_errors << "Influence limit for %s is %d, but deck has spent %d influence" % [@identity.title, @identity.influence_limit, @basic_influence_spent]
       end
     end
     return local_errors
+  end
+
+  # TODO: Handle alliance cards: https://netrunnerdb.com/find/?q=x%3Ainfluence&sort=name&view=text&_locale=en
+  def basic_calculate_influence_spent
+    if @basic_influence_spent == -1
+      influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != @identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
+        .map{|card_id, card| card.influence_cost * @deck['cards'][card_id] }.sum
+      # The Professor ignores the influence cost for the 1st copy of each program in the deck, so subtract that much influence.
+      if @identity.id == 'the_professor_keeper_of_knowledge'
+        first_program_influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != @identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0) and @cards[card_id].card_type_id == 'program'}
+          .map{|card_id, card| card.influence_cost }.sum
+          influence_spent -= first_program_influence_spent
+      end
+      @basic_influence_spent = influence_spent
+    end
   end
 
   def check_cards_in_card_pool(v)
@@ -295,8 +381,6 @@ class DeckValidator
       return local_errors
     end
 
-    Rails.logger.error 'Inside check_cards_in_card_pool, validation is %s' % v.inspect
-    Rails.logger.error @card_pools_to_card_ids.inspect
     @deck['cards'].keys.each do |c|
       if !@card_pools_to_card_ids[v.card_pool_id].include?(c)
         local_errors << "Card `%s` is not present in Card Pool `%s`." % [c, v.card_pool_id]
