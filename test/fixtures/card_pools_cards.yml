@@ -3,15 +3,15 @@ standard_01_prisec:
   card_pool_id: standard_01
 
 standard_01_hedge_fund:
-  card_id: hedge_fund 
+  card_id: hedge_fund
   card_pool_id: standard_01
 
 standard_01_sure_gamble:
-  card_id: sure_gamble 
+  card_id: sure_gamble
   card_pool_id: standard_01
 
 standard_01_adonis_campaign:
-  card_id: adonis_campaign 
+  card_id: adonis_campaign
   card_pool_id: standard_01
 
 standard_02_prisec:
@@ -19,15 +19,23 @@ standard_02_prisec:
   card_pool_id: standard_02
 
 standard_02_hedge_fund:
-  card_id: hedge_fund 
+  card_id: hedge_fund
   card_pool_id: standard_02
 
 standard_02_sure_gamble:
-  card_id: sure_gamble 
+  card_id: sure_gamble
   card_pool_id: standard_02
 
 standard_02_adonis_campaign:
-  card_id: adonis_campaign 
+  card_id: adonis_campaign
+  card_pool_id: standard_02
+
+standard_02_send_a_message:
+  card_id: send_a_message
+  card_pool_id: standard_02
+
+standard_02_trieste_model_bioroids:
+  card_id: trieste_model_bioroids
   card_pool_id: standard_02
 
 startup_01_prisec:
@@ -35,15 +43,15 @@ startup_01_prisec:
   card_pool_id: startup_01
 
 startup_01_hedge_fund:
-  card_id: hedge_fund 
+  card_id: hedge_fund
   card_pool_id: startup_01
 
 startup_01_sure_gamble:
-  card_id: sure_gamble 
+  card_id: sure_gamble
   card_pool_id: startup_01
 
 startup_01_adonis_campaign:
-  card_id: adonis_campaign 
+  card_id: adonis_campaign
   card_pool_id: startup_01
 
 startup_02_prisec:
@@ -51,14 +59,523 @@ startup_02_prisec:
   card_pool_id: startup_02
 
 startup_02_hedge_fund:
-  card_id: hedge_fund 
+  card_id: hedge_fund
   card_pool_id: startup_02
 
 startup_02_sure_gamble:
-  card_id: sure_gamble 
+  card_id: sure_gamble
   card_pool_id: startup_02
 
 startup_02_adonis_campaign:
-  card_id: adonis_campaign 
+  card_id: adonis_campaign
   card_pool_id: startup_02
+
+eternal_01_adonis_campaign:
+  card_id: adonis_campaign
+  card_pool_id: eternal_01
+
+eternal_01_aeneas_informant:
+  card_id: aeneas_informant
+  card_pool_id: eternal_01
+
+eternal_01_afshar:
+  card_id: afshar
+  card_pool_id: eternal_01
+
+eternal_01_aiki:
+  card_id: aiki
+  card_pool_id: eternal_01
+
+eternal_01_ampere_cybernetics_for_anyone:
+  card_id: ampere_cybernetics_for_anyone
+  card_pool_id: eternal_01
+
+eternal_01_anoetic_void:
+  card_id: anoetic_void
+  card_pool_id: eternal_01
+
+eternal_01_ansel_1_0:
+  card_id: ansel_1_0
+  card_pool_id: eternal_01
+
+eternal_01_ar_enhanced_security:
+  card_id: ar_enhanced_security
+  card_pool_id: eternal_01
+
+eternal_01_argus_crackdown:
+  card_id: argus_crackdown
+  card_pool_id: eternal_01
+
+eternal_01_ark_lockdown:
+  card_id: ark_lockdown
+  card_pool_id: eternal_01
+
+eternal_01_geist:
+  card_id: geist
+  card_pool_id: eternal_01
+
+eternal_01_artificial_cryptocrash:
+  card_id: artificial_cryptocrash
+  card_pool_id: eternal_01
+
+eternal_01_asa_group_security_through_vigilance:
+  card_id: asa_group_security_through_vigilance
+  card_pool_id: eternal_01
+
+eternal_01_audacity:
+  card_id: audacity
+  card_pool_id: eternal_01
+
+eternal_01_aumakua:
+  card_id: aumakua
+  card_pool_id: eternal_01
+
+eternal_01_bankroll:
+  card_id: bankroll
+  card_pool_id: eternal_01
+
+eternal_01_bathynomus:
+  card_id: bathynomus
+  card_pool_id: eternal_01
+
+eternal_01_bellona:
+  card_id: bellona
+  card_pool_id: eternal_01
+
+eternal_01_beth_kilrain_chang:
+  card_id: beth_kilrain_chang
+  card_pool_id: eternal_01
+
+eternal_01_biotic_labor:
+  card_id: biotic_labor
+  card_pool_id: eternal_01
+
+eternal_01_boomerang:
+  card_id: boomerang
+  card_pool_id: eternal_01
+
+eternal_01_border_control:
+  card_id: border_control
+  card_pool_id: eternal_01
+
+eternal_01_botulus:
+  card_id: botulus
+  card_pool_id: eternal_01
+
+eternal_01_bravado:
+  card_id: bravado
+  card_pool_id: eternal_01
+
+eternal_01_buffer_drive:
+  card_id: buffer_drive
+  card_pool_id: eternal_01
+
+eternal_01_build_script:
+  card_id: build_script
+  card_pool_id: eternal_01
+
+eternal_01_bukhgalter:
+  card_id: bukhgalter
+  card_pool_id: eternal_01
+
+eternal_01_career_fair:
+  card_id: career_fair
+  card_pool_id: eternal_01
+
+eternal_01_carpe_diem:
+  card_id: carpe_diem
+  card_pool_id: eternal_01
+
+eternal_01_cats_cradle:
+  card_id: cats_cradle
+  card_pool_id: eternal_01
+
+eternal_01_celebrity_gift:
+  card_id: celebrity_gift
+  card_pool_id: eternal_01
+
+eternal_01_cezve:
+  card_id: cezve
+  card_pool_id: eternal_01
+
+eternal_01_clot:
+  card_id: clot
+  card_pool_id: eternal_01
+
+eternal_01_compile:
+  card_id: compile
+  card_pool_id: eternal_01
+
+eternal_01_consume:
+  card_id: consume
+  card_pool_id: eternal_01
+
+eternal_01_creative_commission:
+  card_id: creative_commission
+  card_pool_id: eternal_01
+
+eternal_01_cybertrooper_talut:
+  card_id: cybertrooper_talut
+  card_pool_id: eternal_01
+
+eternal_01_daily_casts:
+  card_id: daily_casts
+  card_pool_id: eternal_01
+
+eternal_01_deuces_wild:
+  card_id: deuces_wild
+  card_pool_id: eternal_01
+
+eternal_01_diesel:
+  card_id: diesel
+  card_pool_id: eternal_01
+
+eternal_01_dirty_laundry:
+  card_id: dirty_laundry
+  card_pool_id: eternal_01
+
+eternal_01_diversion_of_funds:
+  card_id: diversion_of_funds
+  card_pool_id: eternal_01
+
+eternal_01_dr_nuka_vrolyck:
+  card_id: dr_nuka_vrolyck
+  card_pool_id: eternal_01
+
+eternal_01_dreamnet:
+  card_id: dreamnet
+  card_pool_id: eternal_01
+
+eternal_01_dzmz_optimizer:
+  card_id: dzmz_optimizer
+  card_pool_id: eternal_01
+
+eternal_01_earthrise_hotel:
+  card_id: earthrise_hotel
+  card_pool_id: eternal_01
+
+eternal_01_eli_1_0:
+  card_id: eli_1_0
+  card_pool_id: eternal_01
+
+eternal_01_embezzle:
+  card_id: embezzle
+  card_pool_id: eternal_01
+
+eternal_01_emergent_creativity:
+  card_id: emergent_creativity
+  card_pool_id: eternal_01
+
+eternal_01_endurance:
+  card_id: endurance
+  card_pool_id: eternal_01
+
+eternal_01_enigma:
+  card_id: enigma
+  card_pool_id: eternal_01
+
+eternal_01_envelopment:
+  card_id: envelopment
+  card_pool_id: eternal_01
+
+eternal_01_fairchild_3_0:
+  card_id: fairchild_3_0
+  card_pool_id: eternal_01
+
+eternal_01_falsified_credentials:
+  card_id: falsified_credentials
+  card_pool_id: eternal_01
+
+eternal_01_fermenter:
+  card_id: fermenter
+  card_pool_id: eternal_01
+
+eternal_01_find_the_truth:
+  card_id: find_the_truth
+  card_pool_id: eternal_01
+
+eternal_01_formicary:
+  card_id: formicary
+  card_pool_id: eternal_01
+
+eternal_01_funhouse:
+  card_id: funhouse
+  card_pool_id: eternal_01
+
+eternal_01_ganked:
+  card_id: ganked
+  card_pool_id: eternal_01
+
+eternal_01_ghosttongue:
+  card_id: ghosttongue
+  card_pool_id: eternal_01
+
+eternal_01_hagen:
+  card_id: hagen
+  card_pool_id: eternal_01
+
+eternal_01_hakarl_1_0:
+  card_id: hakarl_1_0
+  card_pool_id: eternal_01
+
+eternal_01_hansei_review:
+  card_id: hansei_review
+  card_pool_id: eternal_01
+
+eternal_01_hedge_fund:
+  card_id: hedge_fund
+  card_pool_id: eternal_01
+
+eternal_01_hostile_takeover:
+  card_id: hostile_takeover
+  card_pool_id: eternal_01
+
+eternal_01_hybrid_release:
+  card_id: hybrid_release
+  card_pool_id: eternal_01
+
+eternal_01_hydra:
+  card_id: hydra
+  card_pool_id: eternal_01
+
+eternal_01_ikawah_project:
+  card_id: ikawah_project
+  card_pool_id: eternal_01
+
+eternal_01_inside_job:
+  card_id: inside_job
+  card_pool_id: eternal_01
+
+eternal_01_jailbreak:
+  card_id: jailbreak
+  card_pool_id: eternal_01
+
+eternal_01_jinja_city_grid:
+  card_id: jinja_city_grid
+  card_pool_id: eternal_01
+
+eternal_01_ken_express_tenma_disappeared_clone:
+  card_id: ken_express_tenma_disappeared_clone
+  card_pool_id: eternal_01
+
+eternal_01_labor_rights:
+  card_id: labor_rights
+  card_pool_id: eternal_01
+
+eternal_01_lady_liberty:
+  card_id: lady_liberty
+  card_pool_id: eternal_01
+
+eternal_01_leech:
+  card_id: leech
+  card_pool_id: eternal_01
+
+eternal_01_legwork:
+  card_id: legwork
+  card_pool_id: eternal_01
+
+eternal_01_liberated_account:
+  card_id: liberated_account
+  card_pool_id: eternal_01
+
+eternal_01_logic_bomb:
+  card_id: logic_bomb
+  card_pool_id: eternal_01
+
+eternal_01_longevity_serum:
+  card_id: longevity_serum
+  card_pool_id: eternal_01
+
+eternal_01_luminal_transubstantiation:
+  card_id: luminal_transubstantiation
+  card_pool_id: eternal_01
+
+eternal_01_mad_dash:
+  card_id: mad_dash
+  card_pool_id: eternal_01
+
+eternal_01_marathon:
+  card_id: marathon
+  card_pool_id: eternal_01
+
+eternal_01_miss_bones:
+  card_id: miss_bones
+  card_pool_id: eternal_01
+
+eternal_01_mutual_favor:
+  card_id: mutual_favor
+  card_pool_id: eternal_01
+
+eternal_01_networking:
+  card_id: networking
+  card_pool_id: eternal_01
+
+eternal_01_neutralize_all_threats:
+  card_id: neutralize_all_threats
+  card_pool_id: eternal_01
+
+eternal_01_no_free_lunch:
+  card_id: no_free_lunch
+  card_pool_id: eternal_01
+
+eternal_01_nova_initiumia_catalyst_impetus:
+  card_id: nova_initiumia_catalyst_impetus
+  card_pool_id: eternal_01
+
+eternal_01_overclock:
+  card_id: overclock
+  card_pool_id: eternal_01
+
+eternal_01_paladin_poemu:
+  card_id: paladin_poemu
+  card_pool_id: eternal_01
+
+eternal_01_paperclip:
+  card_id: paperclip
+  card_pool_id: eternal_01
+
+eternal_01_pennyshaver:
+  card_id: pennyshaver
+  card_pool_id: eternal_01
+
+eternal_01_pinhole_threading:
+  card_id: pinhole_threading
+  card_pool_id: eternal_01
+
+eternal_01_prepaid_voicepad:
+  card_id: prepaid_voicepad
+  card_pool_id: eternal_01
+
+eternal_01_prisec:
+  card_id: prisec
+  card_pool_id: eternal_01
+
+eternal_01_professional_contacts:
+  card_id: professional_contacts
+  card_pool_id: eternal_01
+
+eternal_01_project_vitruvius:
+  card_id: project_vitruvius
+  card_pool_id: eternal_01
+
+eternal_01_punitive_counterstrike:
+  card_id: punitive_counterstrike
+  card_pool_id: eternal_01
+
+eternal_01_rashida_jaheem:
+  card_id: rashida_jaheem
+  card_pool_id: eternal_01
+
+eternal_01_regolith_mining_license:
+  card_id: regolith_mining_license
+  card_pool_id: eternal_01
+
+eternal_01_reversed_accounts:
+  card_id: reversed_accounts
+  card_pool_id: eternal_01
+
+eternal_01_ronin:
+  card_id: ronin
+  card_pool_id: eternal_01
+
+eternal_01_rototurret:
+  card_id: rototurret
+  card_pool_id: eternal_01
+
+eternal_01_sds_drone_deployment:
+  card_id: sds_drone_deployment
+  card_pool_id: eternal_01
+
+eternal_01_send_a_message:
+  card_id: send_a_message
+  card_pool_id: eternal_01
+
+eternal_01_simulchip:
+  card_id: simulchip
+  card_pool_id: eternal_01
+
+eternal_01_spec_work:
+  card_id: spec_work
+  card_pool_id: eternal_01
+
+eternal_01_spin_doctor:
+  card_id: spin_doctor
+  card_pool_id: eternal_01
+
+eternal_01_stargate:
+  card_id: stargate
+  card_pool_id: eternal_01
+
+eternal_01_steelskin_scarring:
+  card_id: steelskin_scarring
+  card_pool_id: eternal_01
+
+eternal_01_sure_gamble:
+  card_id: sure_gamble
+  card_pool_id: eternal_01
+
+eternal_01_surveyor:
+  card_id: surveyor
+  card_pool_id: eternal_01
+
+eternal_01_tapwrm:
+  card_id: tapwrm
+  card_pool_id: eternal_01
+
+eternal_01_telework_contract:
+  card_id: telework_contract
+  card_pool_id: eternal_01
+
+eternal_01_the_class_act:
+  card_id: the_class_act
+  card_pool_id: eternal_01
+
+eternal_01_the_makers_eye:
+  card_id: the_makers_eye
+  card_pool_id: eternal_01
+
+eternal_01_the_professor_keeper_of_knowledge:
+  card_id: the_professor_keeper_of_knowledge
+  card_pool_id: eternal_01
+
+eternal_01_thimblerig:
+  card_id: thimblerig
+  card_pool_id: eternal_01
+
+eternal_01_tollbooth:
+  card_id: tollbooth
+  card_pool_id: eternal_01
+
+eternal_01_top_hat:
+  card_id: top_hat
+  card_pool_id: eternal_01
+
+eternal_01_trieste_model_bioroids:
+  card_id: trieste_model_bioroids
+  card_pool_id: eternal_01
+
+eternal_01_tyr:
+  card_id: tyr
+  card_pool_id: eternal_01
+
+eternal_01_unity:
+  card_id: unity
+  card_pool_id: eternal_01
+
+eternal_01_urban_renewal:
+  card_id: urban_renewal
+  card_pool_id: eternal_01
+
+eternal_01_urtica_cipher:
+  card_id: urtica_cipher
+  card_pool_id: eternal_01
+
+eternal_01_wake_implant_v2a_jrj:
+  card_id: wake_implant_v2a_jrj
+  card_pool_id: eternal_01
+
+eternal_01_wraparound:
+  card_id: wraparound
+  card_pool_id: eternal_01
+
 

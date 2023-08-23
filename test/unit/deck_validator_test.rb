@@ -1,5 +1,10 @@
 class DeckValidatorTest < ActiveSupport::TestCase
   def setup
+    # TODO: find a better spot for this than the setup for this test case.
+    Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
+    Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
+    Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
+
     @empty_deck = {}
 
     # Using => format to ensure that all keys remain strings, like we get in the web app.
@@ -645,13 +650,13 @@ class DeckValidatorTest < ActiveSupport::TestCase
 
  def test_invalid_format_id
    deck = @good_asa_group.deep_dup
-   deck['validations'][0]['format_id'] = 'eternal'
+   deck['validations'][0]['format_id'] = 'magic_the_gathering'
    v = DeckValidator.new(deck)
    assert !v.is_valid?
    assert_equal v.validations.size, deck['validations'].size
    # TODO: Update validation to explicitly set is_valid? to false and have the validator set it to true as a literal iff valid.
    # assert v.validations[0].is_valid?
-   assert_includes v.errors, "Format `eternal` does not exist."
+   assert_includes v.errors, "Format `magic_the_gathering` does not exist."
  end
 
   def test_invalid_card_pool_id
@@ -701,13 +706,50 @@ class DeckValidatorTest < ActiveSupport::TestCase
       'punitive_counterstrike',
       'regolith_mining_license',
       'rototurret',
-      'send_a_message',
       'spin_doctor',
       'tollbooth',
-      'trieste_model_bioroids',
       'tyr'
     ].each do |c|
       assert_includes v.validations[0].errors, "Card `%s` is not present in Card Pool `standard_02`." % c
     end
+  end
+
+  def test_banned_card
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['format_id'] = 'standard'
+    deck['validations'][0].delete('card_pool_id')
+    deck['validations'][0].delete('restriction_id')
+    deck['validations'][0].delete('snapshot_id')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Card `trieste_model_bioroids` is banned in restriction `standard_banlist`.'
+  end
+
+  def test_too_many_restricted_cards
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['restriction_id'] = 'standard_restricted'
+    deck['validations'][0].delete('card_pool_id')
+    deck['validations'][0].delete('format_id')
+    deck['validations'][0].delete('snapshot_id')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Deck has too many cards marked restricted in restriction `standard_restricted`: send_a_message, trieste_model_bioroids.'
+  end
+
+  def test_over_eternal_points_limit
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['snapshot_id'] = 'eternal_01'
+    deck['validations'][0].delete('card_pool_id')
+    deck['validations'][0].delete('format_id')
+    deck['validations'][0].delete('restriction_id')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Deck has too many points (9) for eternal restriction `eternal_points_list`: send_a_message (3), punitive_counterstrike (3), tyr (3).'
   end
 end

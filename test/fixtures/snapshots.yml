@@ -2,7 +2,7 @@ standard_01:
   id: standard_01
   format_id: standard
   card_pool_id: standard_01
-  date_start: 2012-09-06 
+  date_start: 2012-09-06
   active: false
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -11,9 +11,19 @@ standard_02:
   id: standard_02
   format_id: standard
   card_pool_id: standard_02
-  date_start: 2022-09-06 
-  active: true 
+  date_start: 2022-09-06
+  active: true
   restriction_id: standard_banlist
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_03:
+  id: standard_03
+  format_id: standard
+  card_pool_id: standard_02
+  date_start: 2022-09-06
+  active: true
+  restriction_id: standard_restricted
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
@@ -31,6 +41,16 @@ startup_02:
   format_id: startup
   card_pool_id: startup_02
   date_start: 2022-09-01
-  active: true 
+  active: true
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+eternal_01:
+  id: eternal_01
+  format_id: eternal
+  card_pool_id: eternal_01
+  restriction_id: eternal_points_list
+  date_start: 2022-09-01
+  active: true
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

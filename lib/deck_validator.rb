@@ -87,6 +87,7 @@ class DeckValidator
               ([@deck['identity_card_id']] + @deck['cards'].keys).each do |card_id|
                 if r.has_key?(card_id) and r[card_id].is_banned
                   v.add_error('Card `%s` is banned in restriction `%s`.' % [card_id, v.restriction_id])
+                  @validation_errors = true
                 end
               end
 
@@ -99,6 +100,7 @@ class DeckValidator
               end
               if restricted_cards_in_deck.size > 1
                 v.add_error('Deck has too many cards marked restricted in restriction `%s`: %s.' % [v.restriction_id, restricted_cards_in_deck.join(', ')])
+                @validation_errors = true
               end
 
               # Sum eternal points.
@@ -112,6 +114,7 @@ class DeckValidator
               end
               if eternal_points > 7
                 v.add_error('Deck has too many points (%d) for eternal restriction `%s`: %s.' % [eternal_points, v.restriction_id, cards_with_points.join(', ')])
+                @validation_errors = true
               end
 
               # Check for universal faction cost.
@@ -126,6 +129,7 @@ class DeckValidator
               end
               if universal_faction_cost > 0 and !@identity.influence_limit.nil? and (@basic_influence_spent + universal_faction_cost) > @identity.influence_limit
                 v.add_error('Influence limit for %s is %d, but after Universal Influence applied from restriction `%s`, deck has spent %d influence from %s.' % [@identity.title, @identity.influence_limit, v.restriction_id, (@basic_influence_spent + universal_faction_cost), cards_with_universal_faction_cost.join(', ')])
+                @validation_errors = true
               end
 
               # Check for global penalty.
@@ -142,10 +146,9 @@ class DeckValidator
                 influence_limit = [(@identity.influence_limit - global_penalty), 1].max
                 if @basic_influence_spent > influence_limit
                   v.add_error('Influence limit for %s is %d after Global Penalty applied from restriction `%s`, but deck has spent %d influence from %s.' % [@identity.title, influence_limit, v.restriction_id, @basic_influence_spent, cards_with_global_penalty.join(', ')])
+                @validation_errors = true
                 end
               end
-
-
             end
           end
         end
