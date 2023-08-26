@@ -825,4 +825,22 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert v.is_valid?
     assert_equal v.validations.size, deck['validations'].size
   end
+
+  def test_alliance_faction_locked
+    deck = swap_card(swap_card(@good_asa_group, 'tollbooth', 'afshar'), 'tyr', 'consulting_visit')
+    deck['cards']['afshar'] = 2
+    deck['cards']['consulting_visit'] = 3
+    deck['cards'].delete('rototurret')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, "Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 22 influence"
+
+    # With 3 Afshar and 3 Punitive Counterstrike, there are 6 non-Alliance Weyland cards in the deck.
+    deck['cards']['afshar'] = 3
+    v = DeckValidator.new(deck)
+    assert v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+  end
 end

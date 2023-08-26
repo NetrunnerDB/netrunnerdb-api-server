@@ -1929,3 +1929,32 @@ mumba_temple:
   text: "This card costs 0 influence if you have 15 or fewer ice in your deck.\n2[recurring-credit]\nUse these credits to rez cards."
   title: "Mumba Temple"
   trash_cost: 3
+
+afshar:
+  card_type_id: "ice"
+  cost: 3
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "afshar"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  strength: 1
+  stripped_text: "While this ice is protecting HQ, the Runner cannot break more than 1 of its printed subroutines during each encounter. Subroutine The Runner loses 2 credits. Subroutine End the run."
+  stripped_title: "Afshar"
+  text: "While this ice is protecting HQ, the Runner cannot break more than 1 of its printed subroutines during each encounter.\n[subroutine]The Runner loses 2[credit].\n[subroutine]End the run."
+  title: "Afshar"
+
+consulting_visit:
+  card_type_id: "operation"
+  cost: 2
+  deck_limit: 3
+  faction_id: "weyland_consortium"
+  id: "consulting_visit"
+  influence_cost: 3
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "This card costs 0 influence if you have 6 or more non-alliance weyland-consortium cards in your deck. As an additional cost to play this operation, spend click. Search R&D for an operation and play it (paying all costs). Shuffle R&D."
+  stripped_title: "Consulting Visit"
+  text: "This card costs 0 influence if you have 6 or more non-<strong>alliance</strong> [weyland-consortium] cards in your deck.\nAs an additional cost to play this operation, spend [click].\nSearch R&D for an operation and play it (paying all costs). Shuffle R&D."
+  title: "Consulting Visit"

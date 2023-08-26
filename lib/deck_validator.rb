@@ -41,6 +41,17 @@ class DeckValidator
     @validations = []
     # Card ids keyed by card pool specified in the deck
     @card_pools_to_card_ids = {}
+    # Alliance cards with faction restrictions.
+    @alliance_cards = {
+      'consulting_visit' => 'weyland_consortium',
+      'executive_search_firm' => 'weyland_consortium',
+      'heritage_committee' => 'jinteki',
+      'raman_rai' => 'jinteki',
+      'ibrahim_salem' => 'nbn',
+      'salems_hospitality' => 'nbn',
+      'jeeves_model_bioroids' => 'haas_bioroid',
+      'product_recall' => 'haas_bioroid',
+    }
 
     if @deck.has_key?('validations')
       @deck['validations'].each do |v|
@@ -365,6 +376,14 @@ class DeckValidator
     return local_errors
   end
 
+  def num_cards_by_type(card_type)
+    @deck['cards'].map{ |slot, quantity| @cards[slot].card_type_id == card_type ? quantity : 0 }.sum
+  end
+
+  def num_non_alliance_cards_for(faction)
+    @deck['cards'].map{ |card_id, quantity| (@cards[card_id].faction_id == faction and !@alliance_cards.has_key?(card_id)) ? quantity : 0 }.sum
+  end
+
   # TODO: Handle alliance cards: https://netrunnerdb.com/find/?q=x%3Ainfluence&sort=name&view=text&_locale=en
   def basic_calculate_influence_spent
     if @basic_influence_spent == -1
@@ -378,25 +397,31 @@ class DeckValidator
       end
 
       # Handle alliance cards
-      # Mumbad Virtual Tour costs 0 if there are 15 or more ice in the deck.
-      num_ice = @deck['cards'].map{ |slot, quantity| @cards[slot].card_type_id == 'ice' ? quantity : 0 }.sum
-      if @deck['cards'].has_key?('mumba_temple') and num_ice >= 15
+      if @deck['cards'].has_key?('mumba_temple') and num_cards_by_type('ice') >= 15
         influence_spent -= @deck['cards']['mumba_temple'] * @cards['mumba_temple'].influence_cost
       end
 
-      num_assets = @deck['cards'].map{ |slot, quantity| @cards[slot].card_type_id == 'asset' ? quantity : 0 }.sum
-      if @deck['cards'].has_key?('mumbad_virtual_tour') and num_assets >= 7
+      if @deck['cards'].has_key?('mumbad_virtual_tour') and num_cards_by_type('asset') >= 7
         influence_spent -= @deck['cards']['mumbad_virtual_tour'] * @cards['mumbad_virtual_tour'].influence_cost
       end
 
-      # Museum of History costs 0 if there are 50 or more cards in the deck.
       num_cards = @deck['cards'].map{ |slot, quantity| quantity }.sum
       if @deck['cards'].has_key?('museum_of_history') and num_cards >= 50
         influence_spent -= @deck['cards']['museum_of_history'] * @cards['museum_of_history'].influence_cost
       end
-      # Pad Factory costs 0 influence if there are 3 Pad Campaigns in the deck.
+
       if @deck['cards'].has_key?('pad_factory') and @deck['cards']['pad_campaign'] == 3
         influence_spent -= @deck['cards']['pad_factory'] * @cards['pad_factory'].influence_cost
+      end
+
+      # Check faction-locked alliance cards.
+      @deck['cards'].each do |card_id, qty|
+        if @alliance_cards.has_key?(card_id) and @cards[card_id].faction_id != @identity.faction_id
+          num_non_alliance_for_faction = num_non_alliance_cards_for(@cards[card_id].faction_id)
+          if num_non_alliance_for_faction >= 6
+            influence_spent -= @deck['cards'][card_id] * @cards[card_id].influence_cost
+          end
+        end
       end
       @basic_influence_spent = influence_spent
     end
