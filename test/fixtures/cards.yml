@@ -1899,3 +1899,33 @@ ontological_dependence:
   stripped_title: "Ontological Dependence"
   text: "This agenda gets -1 advancement requirement for each core damage the Runner has taken this game."
   title: "Ontological Dependence"
+
+mumbad_virtual_tour:
+  card_type_id: "upgrade"
+  cost: 0
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "mumbad_virtual_tour"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "This upgrade costs 0 influence if you have 7 or more assets in your deck. When the Runner accesses this upgrade while it is installed, they must trash it, if able."
+  stripped_title: "Mumbad Virtual Tour"
+  text: "This upgrade costs 0 influence if you have 7 or more assets in your deck.\nWhen the Runner accesses this upgrade while it is installed, they must trash it, if able."
+  title: "Mumbad Virtual Tour"
+  trash_cost: 5
+
+mumba_temple:
+  card_type_id: "asset"
+  cost: 1
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "mumba_temple"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "This card costs 0 influence if you have 15 or fewer ice in your deck. 2 recurring credits Use these credits to rez cards."
+  stripped_title: "Mumba Temple"
+  text: "This card costs 0 influence if you have 15 or fewer ice in your deck.\n2[recurring-credit]\nUse these credits to rez cards."
+  title: "Mumba Temple"
+  trash_cost: 3

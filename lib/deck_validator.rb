@@ -378,6 +378,17 @@ class DeckValidator
       end
 
       # Handle alliance cards
+      # Mumbad Virtual Tour costs 0 if there are 15 or more ice in the deck.
+      num_ice = @deck['cards'].map{ |slot, quantity| @cards[slot].card_type_id == 'ice' ? quantity : 0 }.sum
+      if @deck['cards'].has_key?('mumba_temple') and num_ice >= 15
+        influence_spent -= @deck['cards']['mumba_temple'] * @cards['mumba_temple'].influence_cost
+      end
+
+      num_assets = @deck['cards'].map{ |slot, quantity| @cards[slot].card_type_id == 'asset' ? quantity : 0 }.sum
+      if @deck['cards'].has_key?('mumbad_virtual_tour') and num_assets >= 7
+        influence_spent -= @deck['cards']['mumbad_virtual_tour'] * @cards['mumbad_virtual_tour'].influence_cost
+      end
+
       # Museum of History costs 0 if there are 50 or more cards in the deck.
       num_cards = @deck['cards'].map{ |slot, quantity| quantity }.sum
       if @deck['cards'].has_key?('museum_of_history') and num_cards >= 50

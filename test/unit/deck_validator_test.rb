@@ -753,22 +753,47 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_includes v.validations[0].errors, 'Deck has too many points (9) for eternal restriction `eternal_points_list`: send_a_message (3), punitive_counterstrike (3), tyr (3).'
   end
 
-  # Pad factory costs 0 instead of 2 influence if the deck has 3 pad campaigns.
-  def test_pad_factory
-    # swap 3 cards for a pad factory, no pad campaigns, should add 6 influence.
-    deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'pad_factory')
+  # Mumba Temple costs 0 instead of 2 influence if the deck has >= 15 ice
+  def test_mumba_temple
+    #
+    #    'eli_1_0' => 3,
+    #    'hagen' => 3,
+    #    'hakarl_1_0' => 3,
+    #    'enigma' => 3,
+    #    'tollbooth' => 3,
+    #    'ansel_1_0' => 3,
+    #    'rototurret' => 3,
+    #    'tyr' => 2,
+    # Cut 9 pieces of ice
+     # Swap 3 cards for Museum of History, deck under 50 should fail.
+    deck = swap_card(swap_card(swap_card(@good_asa_group.deep_dup, 'hagen', 'mumba_temple'), 'hakarl_1_0', 'ark_lockdown'), 'ansel_1_0', 'prisec')
     v = DeckValidator.new(deck)
     assert !v.is_valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors, 'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
 
-    # swap 3 cards for pad factory, add 3 pad campaigns, influence should be fine.
-    deck = swap_card(swap_card(@good_asa_group.deep_dup, 'hagen', 'pad_factory'), 'hakarl_1_0', 'pad_campaign')
+    deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'mumba_temple')
     v = DeckValidator.new(deck)
     assert v.is_valid?
     assert_equal v.validations.size, deck['validations'].size
   end
 
+  # Mumbad Virtual Tour costs 0 instead of 2 influence if the deck has >= 7 assets
+  def test_mumbad_virtual_tour
+    # Swap 3 cards for Museum of History, deck under 50 should fail.
+    deck = swap_card(swap_card(@good_asa_group.deep_dup, 'hagen', 'mumbad_virtual_tour'), 'trieste_model_bioroids', 'ark_lockdown')
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
+
+    deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'mumbad_virtual_tour')
+    v = DeckValidator.new(deck)
+    assert v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+  end
+
+  # Museum costs 0 instead of 2 influence if the deck has >= 50 cards
   def test_museum_of_history
     # Swap 3 cards for Museum of History, deck under 50 should fail.
     deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'museum_of_history')
@@ -780,6 +805,22 @@ class DeckValidatorTest < ActiveSupport::TestCase
     deck = @good_asa_group.deep_dup
     deck['cards']['ontological_dependence'] = 1
     deck['cards']['museum_of_history'] = 3
+    v = DeckValidator.new(deck)
+    assert v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+  end
+
+  # Pad factory costs 0 instead of 2 influence if the deck has 3 pad campaigns.
+  def test_pad_factory
+    # swap 3 cards for a pad factory, no pad campaigns, should add 6 influence.
+    deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'pad_factory')
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
+
+    # swap 3 cards for pad factory, add 3 pad campaigns, influence should be fine.
+    deck = swap_card(swap_card(@good_asa_group.deep_dup, 'hagen', 'pad_factory'), 'hakarl_1_0', 'pad_campaign')
     v = DeckValidator.new(deck)
     assert v.is_valid?
     assert_equal v.validations.size, deck['validations'].size
