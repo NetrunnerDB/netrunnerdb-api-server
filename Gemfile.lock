@@ -97,6 +97,9 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-protobuf (3.24.2-aarch64-linux)
+    google-protobuf (3.24.2-arm64-darwin)
+    google-protobuf (3.24.2-x86_64-darwin)
+    google-protobuf (3.24.2-x86_64-linux)
     googleapis-common-protos-types (1.8.0)
       google-protobuf (~> 3.18)
     i18n (1.14.1)
@@ -136,6 +139,12 @@ GEM
       net-protocol
     nio4r (2.5.9)
     nokogiri (1.15.4-aarch64-linux)
+      racc (~> 1.4)
+    nokogiri (1.15.4-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.15.4-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     opentelemetry-api (1.2.2)
     opentelemetry-common (0.20.0)
@@ -429,6 +438,8 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  universal-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   activerecord-import
