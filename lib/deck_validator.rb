@@ -356,10 +356,12 @@ class DeckValidator
     # Check influence
     if not @identity.influence_limit.nil?
       basic_calculate_influence_spent
+
       if @basic_influence_spent > @identity.influence_limit
         local_errors << "Influence limit for %s is %d, but deck has spent %d influence" % [@identity.title, @identity.influence_limit, @basic_influence_spent]
       end
     end
+
     return local_errors
   end
 
@@ -373,6 +375,17 @@ class DeckValidator
         first_program_influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != @identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0) and @cards[card_id].card_type_id == 'program'}
           .map{|card_id, card| card.influence_cost }.sum
           influence_spent -= first_program_influence_spent
+      end
+
+      # Handle alliance cards
+      # Museum of History costs 0 if there are 50 or more cards in the deck.
+      num_cards = @deck['cards'].map{ |slot, quantity| quantity }.sum
+      if @deck['cards'].has_key?('museum_of_history') and num_cards >= 50
+        influence_spent -= @deck['cards']['museum_of_history'] * @cards['museum_of_history'].influence_cost
+      end
+      # Pad Factory costs 0 influence if there are 3 Pad Campaigns in the deck.
+      if @deck['cards'].has_key?('pad_factory') and @deck['cards']['pad_campaign'] == 3
+        influence_spent -= @deck['cards']['pad_factory'] * @cards['pad_factory'].influence_cost
       end
       @basic_influence_spent = influence_spent
     end

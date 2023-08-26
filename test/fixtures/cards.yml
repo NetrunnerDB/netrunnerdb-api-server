@@ -1840,3 +1840,62 @@ wraparound:
   stripped_title: "Wraparound"
   text: "While there are no installed <strong>fracter</strong> programs, this ice gets +7 strength.\n[subroutine] End the run."
   title: "Wraparound"
+
+pad_campaign:
+  card_type_id: "asset"
+  cost: 2
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "pad_campaign"
+  influence_cost: 0
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "When your turn begins, gain 1 credit."
+  stripped_title: "PAD Campaign"
+  text: "When your turn begins, gain 1[credit]."
+  title: "PAD Campaign"
+  trash_cost: 4
+
+pad_factory:
+  card_type_id: "asset"
+  cost: 2
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "pad_factory"
+  influence_cost: 2
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "This card costs 0 influence if you have 3 PAD Campaigns in your deck. click: Place 1 advancement token on a card. You cannot score that card until your next turn begins."
+  stripped_title: "PAD Factory"
+  text: "This card costs 0 influence if you have 3 PAD Campaigns in your deck.\n[click]: Place 1 advancement token on a card. You cannot score that card until your next turn begins."
+  title: "PAD Factory"
+  trash_cost: 3
+
+museum_of_history:
+  card_type_id: "asset"
+  cost: 1
+  deck_limit: 3
+  faction_id: "neutral_corp"
+  id: "museum_of_history"
+  influence_cost: 2
+  is_unique: true
+  side_id: "corp"
+  stripped_text: "This asset costs 0 influence if you have 50 or more cards in your deck. When your turn begins, you may shuffle 1 card from Archives into R&D."
+  stripped_title: "Museum of History"
+  text: "This asset costs 0 influence if you have 50 or more cards in your deck.\nWhen your turn begins, you may shuffle 1 card from Archives into R&D."
+  title: "Museum of History"
+  trash_cost: 3
+
+ontological_dependence:
+  advancement_requirement: 4
+  agenda_points: 2
+  card_type_id: "agenda"
+  deck_limit: 3
+  faction_id: "haas_bioroid"
+  id: "ontological_dependence"
+  is_unique: false
+  side_id: "corp"
+  stripped_text: "This agenda gets -1 advancement requirement for each core damage the Runner has taken this game."
+  stripped_title: "Ontological Dependence"
+  text: "This agenda gets -1 advancement requirement for each core damage the Runner has taken this game."
+  title: "Ontological Dependence"
