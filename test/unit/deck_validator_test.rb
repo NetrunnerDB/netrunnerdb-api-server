@@ -1,10 +1,5 @@
 class DeckValidatorTest < ActiveSupport::TestCase
   def setup
-    # TODO: find a better spot for this than the setup for this test case.
-    Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
-    Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
-    Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
-
     @empty_deck = {}
 
     # Using => format to ensure that all keys remain strings, like we get in the web app.

@@ -384,7 +384,10 @@ class DeckValidator
     @deck['cards'].map{ |card_id, quantity| (@cards[card_id].faction_id == faction and !@alliance_cards.has_key?(card_id)) ? quantity : 0 }.sum
   end
 
-  # TODO: Handle alliance cards: https://netrunnerdb.com/find/?q=x%3Ainfluence&sort=name&view=text&_locale=en
+  def influence_for(card_id)
+    @deck['cards'][card_id] * @cards[card_id].influence_cost
+  end
+
   def basic_calculate_influence_spent
     if @basic_influence_spent == -1
       influence_spent = @cards.select{|card_id| @cards[card_id].faction_id != @identity.faction_id and (@cards[card_id].influence_cost.nil? ? false : @cards[card_id].influence_cost > 0)}
@@ -398,20 +401,20 @@ class DeckValidator
 
       # Handle alliance cards
       if @deck['cards'].has_key?('mumba_temple') and num_cards_by_type('ice') >= 15
-        influence_spent -= @deck['cards']['mumba_temple'] * @cards['mumba_temple'].influence_cost
+        influence_spent -= influence_for('mumba_temple')
       end
 
       if @deck['cards'].has_key?('mumbad_virtual_tour') and num_cards_by_type('asset') >= 7
-        influence_spent -= @deck['cards']['mumbad_virtual_tour'] * @cards['mumbad_virtual_tour'].influence_cost
+        influence_spent -= influence_for('mumbad_virtual_tour')
       end
 
       num_cards = @deck['cards'].map{ |slot, quantity| quantity }.sum
       if @deck['cards'].has_key?('museum_of_history') and num_cards >= 50
-        influence_spent -= @deck['cards']['museum_of_history'] * @cards['museum_of_history'].influence_cost
+        influence_spent -= influence_for('museum_of_history')
       end
 
       if @deck['cards'].has_key?('pad_factory') and @deck['cards']['pad_campaign'] == 3
-        influence_spent -= @deck['cards']['pad_factory'] * @cards['pad_factory'].influence_cost
+        influence_spent -= influence_for('pad_factory')
       end
 
       # Check faction-locked alliance cards.
@@ -419,7 +422,7 @@ class DeckValidator
         if @alliance_cards.has_key?(card_id) and @cards[card_id].faction_id != @identity.faction_id
           num_non_alliance_for_faction = num_non_alliance_cards_for(@cards[card_id].faction_id)
           if num_non_alliance_for_faction >= 6
-            influence_spent -= @deck['cards'][card_id] * @cards[card_id].influence_cost
+            influence_spent -= influence_for(card_id)
           end
         end
       end
