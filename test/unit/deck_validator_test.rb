@@ -698,12 +698,10 @@ class DeckValidatorTest < ActiveSupport::TestCase
       'hakarl_1_0',
       'ikawah_project',
       'project_vitruvius',
-      'punitive_counterstrike',
       'regolith_mining_license',
       'rototurret',
       'spin_doctor',
       'tollbooth',
-      'tyr'
     ].each do |c|
       assert_includes v.validations[0].errors, "Card `%s` is not present in Card Pool `standard_02`." % c
     end
@@ -733,6 +731,32 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert !v.is_valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors, 'Deck has too many cards marked restricted in restriction `standard_restricted`: send_a_message, trieste_model_bioroids.'
+  end
+
+  def test_global_penalty_reduces_influence
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['restriction_id'] = 'standard_global_penalty'
+    deck['validations'][0].delete('format_id')
+    deck['validations'][0].delete('card_pool_id')
+    deck['validations'][0].delete('snapshot_id')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Influence limit for Asa Group: Security Through Vigilance is 13 after Global Penalty applied from restriction `standard_global_penalty`, but deck has spent 2 influence from tyr (2).'
+  end
+
+  def test_universal_influence
+    deck = @good_asa_group.deep_dup
+    deck['validations'][0]['restriction_id'] = 'standard_universal_faction_cost'
+    deck['validations'][0].delete('format_id')
+    deck['validations'][0].delete('card_pool_id')
+    deck['validations'][0].delete('snapshot_id')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal v.validations.size, deck['validations'].size
+    assert_includes v.validations[0].errors, 'Influence limit for Asa Group: Security Through Vigilance is 15, but after Universal Influence applied from restriction `standard_universal_faction_cost`, deck has spent 24 influence from punitive_counterstrike (9).'
   end
 
   def test_over_eternal_points_limit

@@ -38,6 +38,62 @@ standard_02_trieste_model_bioroids:
   card_id: trieste_model_bioroids
   card_pool_id: standard_02
 
+#standard_02_ikawah_project:
+#  card_id: ikawah_project
+#  card_pool_id: standard_02
+#
+#standard_02_project_vitruvius:
+#   card_id: project_vitruvius
+#   card_pool_id: standard_02
+
+# standard_02_regolith_mining_license:
+#   card_id: regolith_mining_license
+#   card_pool_id: standard_02
+
+# standard_02_spin_doctor:
+#   card_id: spin_doctor
+#   card_pool_id: standard_02
+
+# standard_02_biotic_labor:
+#   card_id: biotic_labor
+#   card_pool_id: standard_02
+
+standard_02_punitive_counterstrike:
+  card_id: punitive_counterstrike
+  card_pool_id: standard_02
+
+# standard_02_eli_1_0:
+#   card_id: eli_1_0
+#   card_pool_id: standard_02
+
+# standard_02_hagen:
+#   card_id: hagen
+#   card_pool_id: standard_02
+
+# standard_02_hakarl_1_0:
+#   card_id: hakarl_1_0
+#   card_pool_id: standard_02
+
+# standard_02_enigma:
+#   card_id: enigma
+#   card_pool_id: standard_02
+
+# standard_02_tollbooth:
+#   card_id: tollbooth
+#   card_pool_id: standard_02
+
+# standard_02_ansel_1_0:
+#   card_id: ansel_1_0
+#   card_pool_id: standard_02
+
+# standard_02_rototurret:
+#   card_id: rototurret
+#   card_pool_id: standard_02
+
+standard_02_tyr:
+  card_id: tyr
+  card_pool_id: standard_02
+
 startup_01_prisec:
   card_id: prisec
   card_pool_id: startup_01

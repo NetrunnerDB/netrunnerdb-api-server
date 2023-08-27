@@ -22,8 +22,28 @@ standard_03:
   format_id: standard
   card_pool_id: standard_02
   date_start: 2022-09-06
-  active: true
+  active: false
   restriction_id: standard_restricted
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_04:
+  id: standard_04
+  format_id: standard
+  card_pool_id: standard_02
+  date_start: 2022-09-06
+  active: false
+  restriction_id: standard_global_penalty
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_05:
+  id: standard_05
+  format_id: standard
+  card_pool_id: standard_02
+  date_start: 2022-09-06
+  active: false
+  restriction_id: standard_universal_faction_cost
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 

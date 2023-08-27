@@ -156,8 +156,8 @@ class DeckValidator
               if global_penalty > 0 and !@identity.influence_limit.nil?
                 influence_limit = [(@identity.influence_limit - global_penalty), 1].max
                 if @basic_influence_spent > influence_limit
-                  v.add_error('Influence limit for %s is %d after Global Penalty applied from restriction `%s`, but deck has spent %d influence from %s.' % [@identity.title, influence_limit, v.restriction_id, @basic_influence_spent, cards_with_global_penalty.join(', ')])
-                @validation_errors = true
+                  v.add_error('Influence limit for %s is %d after Global Penalty applied from restriction `%s`, but deck has spent %d influence from %s.' % [@identity.title, influence_limit, v.restriction_id, global_penalty, cards_with_global_penalty.join(', ')])
+                  @validation_errors = true
                 end
               end
             end
