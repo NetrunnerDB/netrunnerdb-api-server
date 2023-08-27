@@ -32,7 +32,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
       ]
     }
     @imaginary_side = {
-      'identity_card_id' => 'geist',
+      'identity_card_id' => 'armand_geist_walker_tech_lord',
       'side_id' => 'super_mega_corp',
       'cards' => { 'hedge_fund' => 3 },
       'validations' => [
@@ -54,7 +54,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
       ]
     }
     @wrong_side_geist = {
-      'identity_card_id' => 'geist',
+      'identity_card_id' => 'armand_geist_walker_tech_lord',
       'side_id' => 'corp',
       'cards' => { 'hedge_fund' => 3 },
       'validations' => [
@@ -478,6 +478,29 @@ class DeckValidatorTest < ActiveSupport::TestCase
     end
   end
 
+  def test_corp_identities_are_not_valid_cards_for_basic_deckbuilding
+    deck = swap_card(@good_ampere.deep_dup, 'ark_lockdown', 'asa_group_security_through_vigilance')
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal 0, v.errors.size
+    assert_equal v.validations.size, deck['validations'].size
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, 'Decks may not include multiple identities.  Identity card `asa_group_security_through_vigilance` is not allowed.'
+  end
+
+  def test_runner_identities_are_not_valid_cards_for_basic_deckbuilding
+    deck = @good_nova.deep_dup
+    deck['cards']['armand_geist_walker_tech_lord'] = 3
+
+    v = DeckValidator.new(deck)
+    assert !v.is_valid?
+    assert_equal 0, v.errors.size
+    assert_equal v.validations.size, deck['validations'].size
+    assert !v.validations[0].is_valid?
+    assert_includes v.validations[0].errors, 'Decks may not include multiple identities.  Identity card `armand_geist_walker_tech_lord` is not allowed.'
+  end
+
   def test_too_much_program_influence_professor
     v = DeckValidator.new(@too_much_program_influence_professor)
     assert !v.is_valid?
@@ -566,7 +589,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert !v.is_valid?
     assert_equal v.validations.size, @wrong_side_geist['validations'].size
     assert !v.validations[0].is_valid?, 'Deck with mismatched id and specified side fails'
-    assert_includes v.validations[0].errors, "Identity `geist` has side `runner` which does not match given side `corp`"
+    assert_includes v.validations[0].errors, "Identity `armand_geist_walker_tech_lord` has side `runner` which does not match given side `corp`"
   end
 
   def test_not_enough_agenda_points

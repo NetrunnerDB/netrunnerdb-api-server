@@ -33,7 +33,6 @@ module API
             deck['validations'] << v
           end
 
-          Rails.logger.info 'Deck is %s' % deck.inspect
           v = DeckValidator.new(deck)
 
           out[:attributes][:is_valid] = v.is_valid?

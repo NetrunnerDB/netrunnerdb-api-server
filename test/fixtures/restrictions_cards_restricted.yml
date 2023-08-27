@@ -9,4 +9,3 @@ standard_restricted_trieste_model_bioroids:
   card_id: trieste_model_bioroids
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-

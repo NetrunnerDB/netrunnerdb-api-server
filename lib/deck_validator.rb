@@ -260,8 +260,6 @@ class DeckValidator
       @errors << '`identity_card_id` `%s` does not exist.' % @deck['identity_card_id']
     end
 
-    # TODO: basic deckbuilding should verify that none of the included cards are ids.
-
     # side_id is valid
     if not ['corp', 'runner'].include?(@deck['side_id'])
       @errors << '`side_id` `%s` does not exist.' % @deck['side_id']
@@ -311,6 +309,13 @@ class DeckValidator
     @deck['cards'].each do |card_id, quantity|
       if @deck['side_id'] != @cards[card_id.to_s].side_id
         local_errors << 'Card `%s` side `%s` does not match deck side `%s`' % [card_id, @cards[card_id.to_s].side_id, @deck['side_id']]
+      end
+    end
+
+    # Identity cards may not be included as cards in decks.
+    @deck['cards'].each do |card_id, quantity|
+      if ['corp_identity', 'runner_identity'].include?(@cards[card_id].card_type_id)
+        local_errors << 'Decks may not include multiple identities.  Identity card `%s` is not allowed.' % card_id
       end
     end
 
