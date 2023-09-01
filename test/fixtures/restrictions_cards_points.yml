@@ -1,20 +1,21 @@
-eternal:
-  id: eternal
-  name: "Eternal"
-  active_snapshot_id: "eternal_01"
+punitive_counterstrike_points:
+  restriction_id: eternal_points_list
+  card_id: punitive_counterstrike
+  value: 3
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-startup:
-  id: startup
-  name: "Startup"
-  active_snapshot_id: "startup_02"
+send_a_message_points:
+  restriction_id: eternal_points_list
+  card_id: send_a_message
+  value: 3
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
-standard:
-  id: standard
-  name: "Standard"
-  active_snapshot_id: "standard_02"
+tyr_points:
+  restriction_id: eternal_points_list
+  card_id: tyr
+  value: 3
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+

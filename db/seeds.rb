@@ -5,4 +5,8 @@ require 'rake'
 # data for all the tests and the API doc generation.
 if Rails.env == 'test'
   Rake::Task["db:fixtures:load"].invoke
+
+  Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
+  Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
+  Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
 end

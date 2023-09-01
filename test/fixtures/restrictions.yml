@@ -1,7 +1,39 @@
 standard_banlist:
   id: standard_banlist
   name: "Standard Banlist 2022 Edition"
+  format_id: "standard"
   date_start: 2022-01-01
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
+eternal_points_list:
+  id: eternal_points_list
+  name: "Eternal Points List"
+  format_id: "eternal"
+  date_start: 2022-01-01
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_restricted:
+  id: standard_restricted
+  name: "Standard Restricted List"
+  format_id: "standard"
+  date_start: 2022-01-01
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_global_penalty:
+  id: standard_global_penalty
+  name: "Standard Global Penalty"
+  format_id: "standard"
+  date_start: 2023-08-26
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+standard_universal_faction_cost:
+  id: standard_universal_faction_cost
+  name: "Standard Universal Faction Cost"
+  format_id: "standard"
+  date_start: 2023-08-26
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

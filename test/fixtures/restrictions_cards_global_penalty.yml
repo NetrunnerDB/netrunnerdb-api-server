@@ -1,6 +1,5 @@
-standard_banlist_trieste_model_bioroids:
-  restriction_id: standard_banlist
-  card_id: trieste_model_bioroids
+tyr_global_penalty:
+  restriction_id: standard_global_penalty
+  card_id: tyr
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
-
