@@ -16,9 +16,9 @@ module API
         def verdicts
           { 'banned': @model.banned_cards.pluck(:card_id),
             'restricted': @model.restricted_cards.pluck(:card_id),
-            'universal_faction_cost': Hash[@model.universal_faction_cost_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }],
+            'universal_faction_cost': @model.universal_faction_cost_cards.pluck(:card_id, :value).to_h,
             'global_penalty': @model.global_penalty_cards.pluck(:card_id),
-            'points': Hash[@model.points_cards.pluck(:value, :card_id).group_by(&:first).map{ |k,a| [k,a.map(&:last)] }]
+            'points': @model.points_cards.pluck(:card_id, :value).to_h,
           }
         end
 
@@ -27,13 +27,7 @@ module API
         end
 
         def size
-          verdicts.reduce(0) do |n, (_,v)|
-            if v.kind_of?(Array) then
-              n + v.length()
-            else
-              n + v.reduce(0) { |m, (_,a)| m + a.length() }
-            end
-          end
+          verdicts.map { |(_,v)| v.length() }.sum
         end
       end
     end
