@@ -102,6 +102,13 @@ namespace :krakend do
     }
   end
 
+# Example rate limiting config. Not enabled right now because it takes base memory usage from 25m to over a gig.
+#      "extra_config": {
+#        "qos/ratelimit/router": {
+#          "client_max_rate": 5,
+#          "strategy": "ip"
+#        }
+#      },
   def build_base_endpoint(api_url, url, method)
     return {
       "endpoint" => url,
