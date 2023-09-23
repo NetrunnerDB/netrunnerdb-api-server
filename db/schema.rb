@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_21_014459) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_23_064748) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -191,6 +191,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_014459) do
     t.date "date_release"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position_in_set"
   end
 
   create_table "restrictions", id: :string, force: :cascade do |t|
@@ -631,6 +632,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_014459) do
       p.flavor,
       p.display_illustrators,
       p."position",
+      p.position_in_set,
       p.quantity,
       p.date_release,
       p.created_at,

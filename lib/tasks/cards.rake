@@ -319,6 +319,9 @@ namespace :cards do
       puts '  %d printings' % num_printings
       Printing.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
     }
+
+    # Use ROW_NUMBER() to identify the position of each printing in the each set.
+    ActiveRecord::Base.connection.execute("UPDATE printings SET position_in_set = sp.pos FROM (SELECT id as printing_id, ROW_NUMBER() OVER(PARTITION BY card_set_id ORDER BY position) as pos FROM printings) AS sp WHERE printings.id = sp.printing_id")
   end
 
   def import_illustrators()
