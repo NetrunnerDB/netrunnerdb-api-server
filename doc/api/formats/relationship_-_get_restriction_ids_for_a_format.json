@@ -30,7 +30,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n    {\n      \"type\": \"restrictions\",\n      \"id\": \"standard_banlist\"\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/standard/relationships/restrictions\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/standard/restrictions\"\n  }\n}",
+      "response_body": "{\n  \"data\": [\n    {\n      \"type\": \"restrictions\",\n      \"id\": \"standard_banlist\"\n    },\n    {\n      \"type\": \"restrictions\",\n      \"id\": \"standard_global_penalty\"\n    },\n    {\n      \"type\": \"restrictions\",\n      \"id\": \"standard_restricted\"\n    },\n    {\n      \"type\": \"restrictions\",\n      \"id\": \"standard_universal_faction_cost\"\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/standard/relationships/restrictions\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/formats/standard/restrictions\"\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json"
       },
