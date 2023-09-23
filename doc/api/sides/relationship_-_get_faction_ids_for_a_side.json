@@ -30,7 +30,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n    {\n      \"type\": \"factions\",\n      \"id\": \"adam\"\n    },\n    {\n      \"type\": \"factions\",\n      \"id\": \"neutral_runner\"\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/runner/relationships/factions\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/runner/factions\"\n  }\n}",
+      "response_body": "{\n  \"data\": [\n    {\n      \"type\": \"factions\",\n      \"id\": \"adam\"\n    },\n    {\n      \"type\": \"factions\",\n      \"id\": \"anarch\"\n    },\n    {\n      \"type\": \"factions\",\n      \"id\": \"apex\"\n    },\n    {\n      \"type\": \"factions\",\n      \"id\": \"criminal\"\n    },\n    {\n      \"type\": \"factions\",\n      \"id\": \"neutral_runner\"\n    },\n    {\n      \"type\": \"factions\",\n      \"id\": \"shaper\"\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/runner/relationships/factions\",\n    \"related\": \"http://api-preview.netrunnerdb.com/api/v3/public/sides/runner/factions\"\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json"
       },

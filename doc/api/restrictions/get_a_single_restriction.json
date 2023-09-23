@@ -30,7 +30,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"standard_banlist\",\n    \"type\": \"restrictions\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/restrictions/standard_banlist\"\n    },\n    \"attributes\": {\n      \"name\": \"Standard Banlist 2022 Edition\",\n      \"date_start\": \"2022-01-01\",\n      \"point_limit\": null,\n      \"verdicts\": {\n        \"banned\": [\n          \"adonis_campaign\"\n        ],\n        \"restricted\": [\n\n        ],\n        \"universal_faction_cost\": {\n        },\n        \"global_penalty\": [\n\n        ],\n        \"points\": {\n        }\n      },\n      \"banned_subtypes\": [\n\n      ],\n      \"size\": 1,\n      \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n    }\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"standard_banlist\",\n    \"type\": \"restrictions\",\n    \"links\": {\n      \"self\": \"http://api-preview.netrunnerdb.com/api/v3/public/restrictions/standard_banlist\"\n    },\n    \"attributes\": {\n      \"name\": \"Standard Banlist 2022 Edition\",\n      \"date_start\": \"2022-01-01\",\n      \"point_limit\": null,\n      \"verdicts\": {\n        \"banned\": [\n          \"trieste_model_bioroids\"\n        ],\n        \"restricted\": [\n\n        ],\n        \"universal_faction_cost\": {\n        },\n        \"global_penalty\": [\n\n        ],\n        \"points\": {\n        }\n      },\n      \"banned_subtypes\": [\n\n      ],\n      \"size\": 1,\n      \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n    }\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json"
       },
