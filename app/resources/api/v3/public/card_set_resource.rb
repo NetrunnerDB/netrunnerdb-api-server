@@ -17,7 +17,9 @@ module API
         filters :card_cycle_id, :card_set_type_id
 
         def first_printing_id
-          @model.printings.find_by(position_in_set: 1).id
+          first_printing = @model.printings.find_by(position_in_set: 1)
+          return if first_printing.nil?
+          first_printing.id
         end
       end
     end

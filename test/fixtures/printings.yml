@@ -5,6 +5,7 @@ prisec:
   flavor: "Don't mess with these bad people."
   display_illustrators: "Good Drawers"
   position: 5
+  position_in_set: 1
   quantity: 3
   date_release: 2012-09-06
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -17,6 +18,7 @@ hedge_fund_core_set:
   flavor: "Hedge funds are run by jagoffs"
   display_illustrators: "Ann Illustrator"
   position: 110
+  position_in_set: 4
   quantity: 3
   date_release: 2012-09-06
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -29,6 +31,7 @@ sure_gamble_core_set:
   flavor: "Andy is cool and sneaky"
   display_illustrators: "Ann Illustrator"
   position: 50
+  position_in_set: 2
   quantity: 3
   date_release: 2012-09-06
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
@@ -36,11 +39,12 @@ sure_gamble_core_set:
 
 adonis_campaign_core_set:
   id: "01056"
-  card_id: adonis_campaign 
+  card_id: adonis_campaign
   card_set_id: core
   flavor: "Beefy Boi"
   display_illustrators: "Tom of Netrunner"
   position: 56
+  position_in_set: 3
   quantity: 3
   date_release: 2012-09-06
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
