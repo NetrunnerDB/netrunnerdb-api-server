@@ -8,6 +8,7 @@ namespace :krakend do
     # Base config, including API documentation endpoints.
     return {
       'version' => 3,
+      'content_type' => 'application/vnd.api+json',
       'name' => 'NRDB v3 API',
       'timeout' => '5s',
       'output_encoding' => 'json',
