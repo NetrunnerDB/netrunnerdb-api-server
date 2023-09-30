@@ -2,6 +2,7 @@ module API
   module V3
     module Public
       class Api::V3::Public::CardCycleResource < JSONAPI::Resource
+        caching
         immutable
 
         attributes :name, :date_release, :legacy_code, :card_set_ids, :first_printing_id, :updated_at

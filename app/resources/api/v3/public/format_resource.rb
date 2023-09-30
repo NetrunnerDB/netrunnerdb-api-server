@@ -2,6 +2,7 @@ module API
   module V3
     module Public
       class Api::V3::Public::FormatResource < JSONAPI::Resource
+        caching
         immutable
 
         attributes :name, :active_snapshot_id, :snapshot_ids, :restriction_ids, :updated_at
