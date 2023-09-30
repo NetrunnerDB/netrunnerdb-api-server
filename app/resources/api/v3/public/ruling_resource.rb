@@ -2,6 +2,7 @@ module API
   module V3
     module Public
       class Api::V3::Public::RulingResource < JSONAPI::Resource
+        caching
         immutable
 
         attributes :card_id, :nsg_rules_team_verified, :question, :answer, :text_ruling, :updated_at

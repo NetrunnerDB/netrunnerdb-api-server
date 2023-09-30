@@ -2,6 +2,7 @@ module API
   module V3
     module Public
       class Api::V3::Public::RestrictionResource < JSONAPI::Resource
+        caching
         immutable
 
         attributes :name, :date_start, :point_limit

@@ -2,6 +2,7 @@ module API
   module V3
     module Public
       class Api::V3::Public::PrintingResource < JSONAPI::Resource
+        caching
         immutable
 
         model_name 'UnifiedPrinting'

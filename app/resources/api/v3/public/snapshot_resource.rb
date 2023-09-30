@@ -2,6 +2,7 @@ module API
   module V3
     module Public
       class Api::V3::Public::SnapshotResource < JSONAPI::Resource
+        caching
         immutable
 
         attributes :format_id, :active, :card_cycle_ids, :card_set_ids, :card_pool_id, :restriction_id, :date_start, :updated_at
