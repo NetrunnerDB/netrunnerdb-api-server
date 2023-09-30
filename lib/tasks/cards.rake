@@ -213,7 +213,7 @@ namespace :cards do
   # We don't reload JSON files in here because we have already saved all the cards
   # with their subtypes fields and can parse from there.
   def import_card_subtypes(cards)
-    card_id_to_subtype_id = []
+    card_id_to_subtype_id = Set.new
     cards.each { |c|
       next if c["subtypes"].nil?
       c["subtypes"].each do |st|
@@ -405,7 +405,7 @@ namespace :cards do
   end
 
   def import_card_pool_card_cycles(card_pools)
-    card_pool_id_to_cycle_id = []
+    card_pool_id_to_cycle_id = Set.new
 
     # Collect each card pool's cycles
     card_pools.each do |p|
@@ -443,7 +443,7 @@ namespace :cards do
   end
 
   def import_card_pool_card_sets(card_pools)
-    card_pool_id_to_set_id = []
+    card_pool_id_to_set_id = Set.new
 
     # Get implied sets from cycles in the card_pool
     ActiveRecord::Base.connection.execute('SELECT card_pool_id, id FROM card_pools_card_cycles r INNER JOIN card_sets AS s ON r.card_cycle_id = s.card_cycle_id').each do |s|
@@ -486,7 +486,7 @@ namespace :cards do
   end
 
   def import_card_pool_cards(card_pools)
-    card_pool_id_to_card_id = []
+    card_pool_id_to_card_id = Set.new
 
     # Get implied cards from sets in the card_pool
     ActiveRecord::Base.connection.execute('SELECT card_pool_id, card_id FROM card_pools_card_sets AS r INNER JOIN printings AS p ON r.card_set_id = p.card_set_id GROUP BY 1,2').each do |s|
