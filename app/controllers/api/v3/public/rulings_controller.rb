@@ -1,7 +1,7 @@
 module API
   module V3
     module Public
-      class Api::V3::Public::RulingsController < JSONAPI::ResourceController
+      class Api::V3::Public::RulingsController < Api::V3::Public::PublicController
       end
     end
   end
