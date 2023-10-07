@@ -169,7 +169,9 @@ namespace :krakend do
   def build_public_endpoints(api_server_host, url_base, methods)
     endpoints = []
     methods.each do |m|
-      endpoints << build_base_endpoint(api_server_host, url_base, m)
+      endpoint = build_base_endpoint(api_server_host, url_base, m)
+      endpoint['cache_ttl'] = '1h'
+      endpoints << endpoint
     end
     return endpoints
   end
