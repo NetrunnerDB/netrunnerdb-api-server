@@ -58,7 +58,7 @@ module API
         end
 
         # Printing direct attribute filters
-        filters :card_id, :card_set_id, :display_illustrators, :position, :position_in_set
+        filters :card_id, :card_cycle_id, :card_set_id, :display_illustrators, :position, :position_in_set
         filters :quantity, :date_release
 
         # Card attribute filters
