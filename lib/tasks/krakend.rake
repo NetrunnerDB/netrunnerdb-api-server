@@ -30,7 +30,11 @@ namespace :krakend do
           ],
           "allow_credentials" => true,
           "allow_headers" => [
-            "Accept-Language"
+            "Accept-Language",
+            "Authorization",
+            "X-Forwarded-For",
+            "X-Forwarded-Host",
+            "X-Forwarded-Proto"
           ]
         }
       },
@@ -53,7 +57,12 @@ namespace :krakend do
                 "host": [ api_url ],
               }
             ],
-            "input_headers": [ "Authorization" ]
+            "input_headers": [
+              "Authorization",
+              "X-Forwarded-For",
+              "X-Forwarded-Host",
+              "X-Forwarded-Proto"
+            ]
           },
           {
             "endpoint": "/assets/apitome/{resource}",
@@ -66,7 +75,12 @@ namespace :krakend do
                 "sd": "static"
               }
             ],
-            "input_headers": [ "Authorization" ]
+            "input_headers": [
+              "Authorization",
+              "X-Forwarded-For",
+              "X-Forwarded-Host",
+              "X-Forwarded-Proto"
+            ]
           },
           {
           "endpoint": "/assets/apitome/highlight_themes/{theme}",
@@ -80,7 +94,10 @@ namespace :krakend do
               }
           ],
           "input_headers": [
-              "Authorization"
+            "Authorization",
+            "X-Forwarded-For",
+            "X-Forwarded-Host",
+            "X-Forwarded-Proto"
           ]
           },
           {
@@ -95,7 +112,10 @@ namespace :krakend do
               }
           ],
           "input_headers": [
-              "Authorization"
+              "Authorization",
+              "X-Forwarded-For",
+              "X-Forwarded-Host",
+              "X-Forwarded-Proto"
           ]
           },
       ],
@@ -121,8 +141,11 @@ namespace :krakend do
         }
       ],
       "input_query_strings" => [ "*" ],
-      "input_headers" => [
-        "Authorization"
+      "input_headers": [
+        "Authorization",
+        "X-Forwarded-For",
+        "X-Forwarded-Host",
+        "X-Forwarded-Proto"
       ]
     }
   end
@@ -146,7 +169,9 @@ namespace :krakend do
   def build_public_endpoints(api_server_host, url_base, methods)
     endpoints = []
     methods.each do |m|
-      endpoints << build_base_endpoint(api_server_host, url_base, m)
+      endpoint = build_base_endpoint(api_server_host, url_base, m)
+      endpoint['cache_ttl'] = '1h'
+      endpoints << endpoint
     end
     return endpoints
   end
