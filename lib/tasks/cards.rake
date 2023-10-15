@@ -107,6 +107,7 @@ namespace :cards do
         is_unique: card["is_unique"],
         display_subtypes: flatten_subtypes(subtypes, card["subtypes"]),
         attribution: card["attribution"],
+        designed_by: card["designed_by"],
       )
       if card.key?("cost")
         new_card.cost = (card["cost"].nil? ? -1 : card["cost"])
@@ -252,7 +253,8 @@ namespace :cards do
       {
         id: c['id'],
         name: c['name'],
-        legacy_code: c['legacy_code']
+        legacy_code: c['legacy_code'],
+        released_by: c['released_by'],
       }
     end
     CardCycle.import cycles, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
@@ -290,7 +292,8 @@ namespace :cards do
           "card_cycle_id": s["card_cycle_id"],
           "card_set_type_id": s["card_set_type_id"],
           "position": s["position"],
-          "legacy_code": s["legacy_code"]
+          "legacy_code": s["legacy_code"],
+          "released_by": s["released_by"],
       }
     end
     CardSet.import printings, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
