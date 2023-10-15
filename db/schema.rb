@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_23_064748) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_15_222301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_23_064748) do
     t.datetime "updated_at", null: false
     t.date "date_release"
     t.string "legacy_code"
+    t.string "released_by"
   end
 
   create_table "card_pools", id: :string, force: :cascade do |t|
@@ -66,6 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_23_064748) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "legacy_code"
+    t.string "released_by"
   end
 
   create_table "card_subtypes", id: :string, force: :cascade do |t|
@@ -117,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_23_064748) do
     t.boolean "rez_effect", default: false
     t.boolean "trash_ability", default: false
     t.string "attribution"
+    t.string "designed_by"
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
