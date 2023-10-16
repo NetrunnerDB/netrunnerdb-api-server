@@ -313,6 +313,7 @@ namespace :cards do
         card_id: printing["card_id"],
         card_set_id: printing["card_set_id"],
         date_release: card_sets[printing["card_set_id"]].date_release,
+        released_by: printing["released_by"],
       )
     }
 
