@@ -304,4 +304,39 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
     assert_equal [], builder.left_joins
   end
 
+  def test_designed_by
+    input = %Q{designed_by:best_org}
+    builders = [
+      {:builder => CardSearchQueryBuilder.new(input), :table => 'cards'},
+      {:builder => PrintingSearchQueryBuilder.new(input), :table => 'printings'}]
+    builders.each do |b|
+      assert_nil b[:builder].parse_error
+      assert_equal 'lower(unified_%s.designed_by) LIKE ?' % b[:table], b[:builder].where.strip
+      assert_equal ['%best_org%'], b[:builder].where_values
+      assert_equal [], b[:builder].left_joins
+    end
+  end
+
+  def test_released_by
+    input = %Q{released_by:best_org}
+    builder = PrintingSearchQueryBuilder.new(input)
+    assert_nil builder.parse_error
+    assert_equal 'lower(unified_printings.released_by) LIKE ?', builder.where.strip
+    assert_equal ['%best_org%'], builder.where_values
+    assert_equal [], builder.left_joins
+  end
+
+  def test_printings_released_by
+    input = %Q{printings_released_by:best_org}
+    builders = [
+      {:builder => CardSearchQueryBuilder.new(input), :table => 'cards'},
+      {:builder => PrintingSearchQueryBuilder.new(input), :table => 'printings'}]
+    builders.each do |b|
+      assert_nil b[:builder].parse_error
+      assert_equal '(? = ANY(unified_%s.printings_released_by))' % b[:table], b[:builder].where.strip
+      assert_equal ['best_org'], b[:builder].where_values
+      assert_equal [], b[:builder].left_joins
+    end
+  end
+
 end

@@ -184,7 +184,11 @@ There are 5 types of fields in the Search Filter:
     FieldData.new(:string, both('stripped_text'), ['text', 'x'],
       'The text of a card, stripped of all formatting symbols and marks.'),
     FieldData.new(:string, both('stripped_title'), ['title', '_'],
-      'The title of a card, stripped of all formatting symbols and marks.')
+      'The title of a card, stripped of all formatting symbols and marks.'),
+    # Designed and Released by information.
+    FieldData.new(:string, both('designed_by'), ['designed_by'], 'The organization that designed the card.'),
+    FieldData.new(:string, printing('released_by'), ['released_by'], 'The organization that released the printing.'),
+    FieldData.new(:array, both('printings_released_by'), ['printings_released_by'], 'All organizations that have released printings for a card.'),
   ]
   def self.search_filter_docs
     @@search_filter_docs
