@@ -283,3 +283,4 @@ FROM
     LEFT JOIN format_ids f ON p.card_id = f.card_id
     LEFT JOIN card_pool_ids cpc ON p.card_id = cpc.card_id
     LEFT JOIN snapshot_ids s ON p.card_id = s.card_id
+;
