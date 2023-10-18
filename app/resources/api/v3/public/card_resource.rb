@@ -13,6 +13,7 @@ module API
         attributes :date_release, :restriction_ids, :strength, :stripped_text, :text, :trash_cost, :is_unique
         attributes :card_subtype_ids, :display_subtypes, :attribution, :updated_at
         attributes :format_ids, :card_pool_ids, :snapshot_ids, :card_cycle_ids, :card_set_ids
+        attributes :designed_by, :printings_released_by
 
         # Synthesized attributes
         attributes :card_abilities, :latest_printing_id, :restrictions
@@ -52,6 +53,7 @@ module API
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
         filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost
         filters :influence_limit, :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique
+        filters :designed_by
 
         filter :search, apply: ->(records, value, _options) {
           query_builder = CardSearchQueryBuilder.new(value[0])

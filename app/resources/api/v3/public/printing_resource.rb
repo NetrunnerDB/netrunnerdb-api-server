@@ -22,6 +22,7 @@ module API
         attributes :title, :trash_cost, :printing_ids, :num_printings, :restriction_ids, :in_restriction
         attributes :format_ids, :card_pool_ids, :snapshot_ids
         attributes :card_cycle_ids, :card_set_ids, :attribution
+        attributes :released_by, :printings_released_by, :designed_by
 
         # Synthesized attributes
         attributes :card_abilities, :images, :latest_printing_id, :restrictions
@@ -59,7 +60,7 @@ module API
 
         # Printing direct attribute filters
         filters :card_id, :card_cycle_id, :card_set_id, :display_illustrators, :position, :position_in_set
-        filters :quantity, :date_release
+        filters :quantity, :date_release, :designed_by, :released_by
 
         # Card attribute filters
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
