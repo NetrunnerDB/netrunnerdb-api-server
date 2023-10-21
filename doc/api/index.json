@@ -10,55 +10,6 @@
           "groups": "all",
           "route": "/api/v3/public/card_cycles",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Card Cycle",
-          "link": "card_cycles/get_a_single_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card IDs for a Card Cycle",
-          "link": "card_cycles/relationship_-_get_card_ids_for_a_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set IDs for a Card Cycle",
-          "link": "card_cycles/relationship_-_get_card_set_ids_for_a_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id/relationships/card_sets",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Sets for a Card Cycle",
-          "link": "card_cycles/relationship_-_get_card_sets_for_a_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id/card_sets",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Card Cycle",
-          "link": "card_cycles/relationship_-_get_cards_for_a_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing IDs for a Card Cycle",
-          "link": "card_cycles/relationship_-_get_printing_ids_for_a_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for a Card Cycle",
-          "link": "card_cycles/relationship_-_get_printings_for_a_card_cycle.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_cycles/:id/printings",
-          "method": "get"
         }
       ]
     },
@@ -72,83 +23,6 @@
           "groups": "all",
           "route": "/api/v3/public/card_pools",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Card Pool",
-          "link": "card_pools/get_a_single_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Cycle IDs for a Card Pool",
-          "link": "card_pools/relationship_-_get_card_cycle_ids_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/relationships/card_cycles",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Cycles for a Card Pool",
-          "link": "card_pools/relationship_-_get_card_cycles_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/card_cycles",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card IDs for a Card Pool",
-          "link": "card_pools/relationship_-_get_card_ids_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set IDs for a Card Pool",
-          "link": "card_pools/relationship_-_get_card_set_ids_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/relationships/card_sets",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Sets for a Card Pool",
-          "link": "card_pools/relationship_-_get_card_sets_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/card_sets",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Card Pool",
-          "link": "card_pools/relationship_-_get_cards_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Format ID for a Card Pool",
-          "link": "card_pools/relationship_-_get_format_id_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/relationships/format",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Format for a Card Pool",
-          "link": "card_pools/relationship_-_get_format_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/format",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Snapshot IDs for a Card Pool",
-          "link": "card_pools/relationship_-_get_snapshot_ids_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/relationships/snapshots",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Snapshots for a Card Pool",
-          "link": "card_pools/relationship_-_get_snapshots_for_a_card_pool.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_pools/:id/snapshots",
-          "method": "get"
         }
       ]
     },
@@ -161,27 +35,6 @@
           "link": "card_set_types/all_card_set_types.json",
           "groups": "all",
           "route": "/api/v3/public/card_set_types",
-          "method": "get"
-        },
-        {
-          "description": "Get A Single Card Set Type",
-          "link": "card_set_types/get_a_single_card_set_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_set_types/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set IDs for a Card Set Type",
-          "link": "card_set_types/relationship_-_get_card_set_ids_for_a_card_set_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_set_types/:id/relationships/card_sets",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Sets for a Card Set Type",
-          "link": "card_set_types/relationship_-_get_card_sets_for_a_card_set_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_set_types/:id/card_sets",
           "method": "get"
         }
       ]
@@ -210,69 +63,6 @@
           "groups": "all",
           "route": "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Card Set",
-          "link": "card_sets/get_a_single_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Cycle ID for a Card Set",
-          "link": "card_sets/relationship_-_get_card_cycle_id_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/relationships/card_cycle",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Cycle for a Card Set",
-          "link": "card_sets/relationship_-_get_card_cycle_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/card_cycle",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card IDs for a Card Set",
-          "link": "card_sets/relationship_-_get_card_ids_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set ID for a Card Set",
-          "link": "card_sets/relationship_-_get_card_set_id_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/relationships/card_set_type",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set Type for a Card Set",
-          "link": "card_sets/relationship_-_get_card_set_type_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/card_set_type",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Card Set",
-          "link": "card_sets/relationship_-_get_cards_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing IDs for a Card Set",
-          "link": "card_sets/relationship_-_get_printing_ids_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for a Card Set",
-          "link": "card_sets/relationship_-_get_printings_for_a_card_set.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_sets/:id/printings",
-          "method": "get"
         }
       ]
     },
@@ -285,41 +75,6 @@
           "link": "card_subtypes/all_card_subtypes.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes",
-          "method": "get"
-        },
-        {
-          "description": "Get A Single Card Subtype",
-          "link": "card_subtypes/get_a_single_card_subtype.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_subtypes/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card IDs for a Card Subtype",
-          "link": "card_subtypes/relationship_-_get_card_ids_for_a_card_subtype.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_subtypes/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Card Subtype",
-          "link": "card_subtypes/relationship_-_get_cards_for_a_card_subtype.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_subtypes/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing IDs for a Card Subtype",
-          "link": "card_subtypes/relationship_-_get_printing_ids_for_a_card_subtype.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_subtypes/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for a Card Subtype",
-          "link": "card_subtypes/relationship_-_get_printings_for_a_card_subtype.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_subtypes/:id/printings",
           "method": "get"
         }
       ]
@@ -341,41 +96,6 @@
           "groups": "all",
           "route": "/api/v3/public/card_types?filter[side_id]=:side_id",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Card Type",
-          "link": "card_types/get_a_single_card_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_types/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card IDs for a Card Type",
-          "link": "card_types/relationship_-_get_card_ids_for_a_card_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_types/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Card Type",
-          "link": "card_types/relationship_-_get_cards_for_a_card_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_types/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side ID for a Card Type",
-          "link": "card_types/relationship_-_get_side_id_for_a_card_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_types/:id/relationships/side",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side for a Card Type",
-          "link": "card_types/relationship_-_get_side_for_a_card_type.json",
-          "groups": "all",
-          "route": "/api/v3/public/card_types/:id/side",
-          "method": "get"
         }
       ]
     },
@@ -395,97 +115,6 @@
           "link": "cards/filter_-_card_search_operator.json",
           "groups": "all",
           "route": "/api/v3/public/cards?filter[search]=:query",
-          "method": "get"
-        },
-        {
-          "description": "Get A Single Card",
-          "link": "cards/get_a_single_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Subtype IDs for a Card",
-          "link": "cards/relationship_-_get_card_subtype_ids_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/relationships/card_subtypes",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Subtypes for a Card",
-          "link": "cards/relationship_-_get_card_subtypes_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/card_subtypes",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Type ID for a Card",
-          "link": "cards/relationship_-_get_card_type_id_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/relationships/card_type",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Type for a Card",
-          "link": "cards/relationship_-_get_card_type_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/card_type",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Faction ID for a Card",
-          "link": "cards/relationship_-_get_faction_id_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/relationships/faction",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Faction for a Card",
-          "link": "cards/relationship_-_get_faction_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/faction",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing IDs for a Card",
-          "link": "cards/relationship_-_get_printing_ids_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for a Card",
-          "link": "cards/relationship_-_get_printings_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Ruling IDs for a Card",
-          "link": "cards/relationship_-_get_ruling_ids_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/relationships/rulings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Rulings for a Card",
-          "link": "cards/relationship_-_get_rulings_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/rulings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side ID for a Card",
-          "link": "cards/relationship_-_get_side_id_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/relationships/side",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side for a Card",
-          "link": "cards/relationship_-_get_side_for_a_card.json",
-          "groups": "all",
-          "route": "/api/v3/public/cards/:id/side",
           "method": "get"
         }
       ]
@@ -514,55 +143,6 @@
           "groups": "all",
           "route": "/api/v3/public/factions?filter[is_mini]=:is_mini",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Faction",
-          "link": "factions/get_a_single_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Ids for a Faction",
-          "link": "factions/relationship_-_get_card_ids_for_a_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Faction",
-          "link": "factions/relationship_-_get_cards_for_a_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing Ids for a Faction",
-          "link": "factions/relationship_-_get_printing_ids_for_a_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for a Faction",
-          "link": "factions/relationship_-_get_printings_for_a_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side ID for a Faction",
-          "link": "factions/relationship_-_get_side_id_for_a_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id/relationships/side",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side for a Faction",
-          "link": "factions/relationship_-_get_side_for_a_faction.json",
-          "groups": "all",
-          "route": "/api/v3/public/factions/:id/side",
-          "method": "get"
         }
       ]
     },
@@ -576,55 +156,6 @@
           "groups": "all",
           "route": "/api/v3/public/formats",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Format",
-          "link": "formats/get_a_single_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Pool IDs for a Format",
-          "link": "formats/relationship_-_get_card_pool_ids_for_a_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id/relationships/card_pools",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Pools for a Format",
-          "link": "formats/relationship_-_get_card_pools_for_a_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id/card_pools",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Restriction IDs for a Format",
-          "link": "formats/relationship_-_get_restriction_ids_for_a_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id/relationships/restrictions",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Restrictions for a Format",
-          "link": "formats/relationship_-_get_restrictions_for_a_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id/restrictions",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Snapshot IDs for a Format",
-          "link": "formats/relationship_-_get_snapshot_ids_for_a_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id/relationships/restrictions",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Snapshots for a Format",
-          "link": "formats/relationship_-_get_snapshots_for_a_format.json",
-          "groups": "all",
-          "route": "/api/v3/public/formats/:id/snapshots",
-          "method": "get"
         }
       ]
     },
@@ -637,27 +168,6 @@
           "link": "illustrators/all_illustrators.json",
           "groups": "all",
           "route": "/api/v3/public/illustrators",
-          "method": "get"
-        },
-        {
-          "description": "Get A Single Illustrator",
-          "link": "illustrators/get_a_single_illustrator.json",
-          "groups": "all",
-          "route": "/api/v3/public/illustrators/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing IDs for an Illustrator",
-          "link": "illustrators/relationship_-_get_printing_ids_for_an_illustrator.json",
-          "groups": "all",
-          "route": "/api/v3/public/illustrators/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for an Illustrator",
-          "link": "illustrators/relationship_-_get_printings_for_an_illustrator.json",
-          "groups": "all",
-          "route": "/api/v3/public/illustrators/:id/printings",
           "method": "get"
         }
       ]
@@ -686,97 +196,6 @@
           "groups": "all",
           "route": "/api/v3/public/printings?filter[search]=:query",
           "method": "get"
-        },
-        {
-          "description": "Get A Single Printing",
-          "link": "printings/get_a_single_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Cycle ID for a Printing",
-          "link": "printings/relationship_-_get_card_cycle_id_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/relationships/card_cycle",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Cycle for a Printing",
-          "link": "printings/relationship_-_get_card_cycle_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/card_cycle",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card ID for a Printing",
-          "link": "printings/relationship_-_get_card_id_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/relationships/card",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set ID for a Printing",
-          "link": "printings/relationship_-_get_card_set_id_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/relationships/card_set",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Set for a Printing",
-          "link": "printings/relationship_-_get_card_set_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/card_set",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card for a Printing",
-          "link": "printings/relationship_-_get_card_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/card",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Faction ID for a Printing",
-          "link": "printings/relationship_-_get_faction_id_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/relationships/faction",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Faction for a Printing",
-          "link": "printings/relationship_-_get_faction_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/faction",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Illustrator IDs for a Printing",
-          "link": "printings/relationship_-_get_illustrator_ids_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/relationships/illustrators",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Illustrators for a Printing",
-          "link": "printings/relationship_-_get_illustrators_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/illustrators",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side ID for a Printing",
-          "link": "printings/relationship_-_get_side_id_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/relationships/side",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Side for a Printing",
-          "link": "printings/relationship_-_get_side_for_a_printing.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings/:id/side",
-          "method": "get"
         }
       ]
     },
@@ -789,13 +208,6 @@
           "link": "restrictions/all_restrictions.json",
           "groups": "all",
           "route": "/api/v3/public/restrictions",
-          "method": "get"
-        },
-        {
-          "description": "Get A Single Restriction",
-          "link": "restrictions/get_a_single_restriction.json",
-          "groups": "all",
-          "route": "/api/v3/public/restrictions/:id",
           "method": "get"
         }
       ]
@@ -837,69 +249,6 @@
           "groups": "all",
           "route": "/api/v3/public/sides",
           "method": "get"
-        },
-        {
-          "description": "Get A Single side",
-          "link": "sides/get_a_single_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card IDs for a Side",
-          "link": "sides/relationship_-_get_card_ids_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/relationships/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Type IDs for a Side",
-          "link": "sides/relationship_-_get_card_type_ids_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/relationships/card_types",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Types for a Side",
-          "link": "sides/relationship_-_get_card_types_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/card_types",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Cards for a Side",
-          "link": "sides/relationship_-_get_cards_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/cards",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Faction IDs for a Side",
-          "link": "sides/relationship_-_get_faction_ids_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/relationships/factions",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Factions for a Side",
-          "link": "sides/relationship_-_get_factions_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/factions",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printing IDs for a Side",
-          "link": "sides/relationship_-_get_printing_ids_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/relationships/printings",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Printings for a Side",
-          "link": "sides/relationship_-_get_printings_for_a_side.json",
-          "groups": "all",
-          "route": "/api/v3/public/sides/:id/printings",
-          "method": "get"
         }
       ]
     },
@@ -926,55 +275,6 @@
           "link": "snapshots/filter_-_get_snapshots_filtered_by_format_id.json",
           "groups": "all",
           "route": "/api/v3/public/snapshots?filter[format_id]=:format_id",
-          "method": "get"
-        },
-        {
-          "description": "Get A Single Snapshot",
-          "link": "snapshots/get_a_single_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Pool ID for a Snapshot",
-          "link": "snapshots/relationship_-_get_card_pool_id_for_a_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id/relationships/card_pool",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Card Pool for a Snapshot",
-          "link": "snapshots/relationship_-_get_card_pool_for_a_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id/card_pool",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Format ID for a Snapshot",
-          "link": "snapshots/relationship_-_get_format_id_for_a_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id/relationships/format",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Format for a Snapshot",
-          "link": "snapshots/relationship_-_get_format_for_a_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id/format",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Restriction ID for a Snapshot",
-          "link": "snapshots/relationship_-_get_restriction_id_for_a_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id/relationships/restriction",
-          "method": "get"
-        },
-        {
-          "description": "Relationship - Get Restriction for a Snapshot",
-          "link": "snapshots/relationship_-_get_restriction_for_a_snapshot.json",
-          "groups": "all",
-          "route": "/api/v3/public/snapshots/:id/restriction",
           "method": "get"
         }
       ]

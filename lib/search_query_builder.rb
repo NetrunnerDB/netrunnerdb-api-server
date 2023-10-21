@@ -123,6 +123,8 @@ There are 5 types of fields in the Search Filter:
       'Is the card specified on any Restriction list?'),
     FieldData.new(:boolean, both('interrupt'), ['interrupt'],
       'Does the card have an interrupt ability?'),
+    FieldData.new(:boolean, printing('is_latest_printing'), ['is_latest_printing'],
+      'Is this printing the latest printing for a card?'),
     FieldData.new(:boolean, both('is_unique'), ['is_unique', 'u'],
       'Is the card unique?'),
     FieldData.new(:boolean, both('on_encounter_effect'), ['on_encounter_effect'],
