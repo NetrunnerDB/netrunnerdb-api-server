@@ -19,7 +19,7 @@ module API
         attributes :card_type_id, :cost, :deck_limit, :display_subtypes, :card_subtype_ids, :card_subtype_names, :faction_id
         attributes :influence_cost, :influence_limit, :is_unique, :memory_cost, :minimum_deck_size
         attributes :side_id, :strength, :stripped_text, :stripped_title, :text
-        attributes :title, :trash_cost, :printing_ids, :num_printings, :restriction_ids, :in_restriction
+        attributes :title, :trash_cost, :printing_ids, :num_printings, :is_latest_printing, :restriction_ids, :in_restriction
         attributes :format_ids, :card_pool_ids, :snapshot_ids
         attributes :card_cycle_ids, :card_set_ids, :attribution
         attributes :released_by, :printings_released_by, :designed_by
@@ -65,7 +65,7 @@ module API
         # Card attribute filters
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
         filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost, :influence_limit
-        filters :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique
+        filters :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique, :is_latest_printing
 
         filter :search, apply: ->(records, value, _options) {
           query_builder = PrintingSearchQueryBuilder.new(value[0])
