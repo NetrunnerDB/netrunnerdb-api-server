@@ -59,6 +59,8 @@ namespace :krakend do
             ],
             "input_headers": [
               "Authorization",
+              "Content-Length",
+              "Content-Type",
               "X-Forwarded-For",
               "X-Forwarded-Host",
               "X-Forwarded-Proto"
@@ -77,6 +79,8 @@ namespace :krakend do
             ],
             "input_headers": [
               "Authorization",
+              "Content-Length",
+              "Content-Type",
               "X-Forwarded-For",
               "X-Forwarded-Host",
               "X-Forwarded-Proto"
@@ -95,6 +99,8 @@ namespace :krakend do
           ],
           "input_headers": [
             "Authorization",
+            "Content-Length",
+            "Content-Type",
             "X-Forwarded-For",
             "X-Forwarded-Host",
             "X-Forwarded-Proto"
@@ -113,6 +119,8 @@ namespace :krakend do
           ],
           "input_headers": [
               "Authorization",
+              "Content-Length",
+              "Content-Type",
               "X-Forwarded-For",
               "X-Forwarded-Host",
               "X-Forwarded-Proto"
@@ -143,6 +151,8 @@ namespace :krakend do
       "input_query_strings" => [ "*" ],
       "input_headers": [
         "Authorization",
+        "Content-Length",
+        "Content-Type",
         "X-Forwarded-For",
         "X-Forwarded-Host",
         "X-Forwarded-Proto"
