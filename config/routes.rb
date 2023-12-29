@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         # Don't generate links or relationship routes for decks.
         jsonapi_resources :decks do
         end
-        resources :user, only: [:index]
+        jsonapi_resources :user, only: [:index, :show]
       end
       namespace :public, defaults: { format: :json } do
         jsonapi_resources :card_cycles, only: [:index, :show]

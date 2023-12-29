@@ -7,6 +7,8 @@ module API
           key_type :string
 
           paginator :none
+
+          exclude_links :default
         end
       end
     end
