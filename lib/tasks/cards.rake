@@ -254,6 +254,7 @@ namespace :cards do
         id: c['id'],
         name: c['name'],
         legacy_code: c['legacy_code'],
+        position: c['position'],
         released_by: c['released_by'],
       }
     end

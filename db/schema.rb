@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_21_162540) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_28_224447) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_21_162540) do
     t.date "date_release"
     t.string "legacy_code"
     t.string "released_by"
+    t.integer "position"
   end
 
   create_table "card_pools", id: :string, force: :cascade do |t|
