@@ -5,7 +5,7 @@ module API
         caching
         immutable
 
-        attributes :name, :date_release, :legacy_code, :card_set_ids, :first_printing_id, :released_by, :updated_at
+        attributes :name, :date_release, :legacy_code, :card_set_ids, :first_printing_id, :position, :released_by, :updated_at
         key_type :string
 
         has_many :card_sets
@@ -14,7 +14,7 @@ module API
 
         paginator :none
 
-        filters :date_release, :legacy_code, :released_by
+        filters :date_release, :legacy_code, :position, :released_by
 
         def first_printing_id
           UnifiedPrinting.where(card_cycle_id: @model.id).minimum(:id)
