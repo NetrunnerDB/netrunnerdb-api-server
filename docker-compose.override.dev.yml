@@ -2,7 +2,14 @@ version: "3.2"
 
 services:
   # service configuration for our dockerized Rails app
+
+  netrunner_cards_json:
+    build: https://github.com/NetrunnerDB/netrunner-cards-json.git#main
+
   nrdb_api_server:
+    image: registry.digitalocean.com/nsgcr/nrdb_api_server:dev
+    # build the Dockerfile next to this file, tag the built image with above image name
+    build: .
     command:
       - /bin/sh
       - -c

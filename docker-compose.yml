@@ -11,15 +11,13 @@ services:
 
   nrdb_api_server:
     restart: unless-stopped
-
+    image: registry.digitalocean.com/nsgcr/nrdb_api_server:latest
+    
     ports:
       - "3000:3000"
 
     networks:
       - backend
-
-    # use the Dockerfile next to this file
-    build: .
 
     # sources environment variable configuration for our app
     env_file: .env
