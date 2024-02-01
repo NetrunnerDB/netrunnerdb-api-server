@@ -29,9 +29,6 @@ RUN bundle config set --local path "vendor/bundle" && \
 # Precompile app assets as the final step.
 COPY . $RAILS_ROOT/
 
-RUN bundle exec rake app:update:bin
-RUN bin/rails assets:precompile
-
 
 #####################################################################
 FROM ruby:3.2.3-alpine3.19 AS final
@@ -45,7 +42,8 @@ RUN bundle config set --local path "vendor/bundle"
 COPY --from=build $RAILS_ROOT $RAILS_ROOT/
 
 EXPOSE 3000
+RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
 # Start the main process.
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["/bin/sh", "-c", "bundle exec rails server -b 0.0.0.0"]

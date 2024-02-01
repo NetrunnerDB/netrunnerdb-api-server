@@ -1,0 +1,14 @@
+version: "3.2"
+
+services:
+  # service configuration for our dockerized Rails app
+  nrdb_api_server:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        rake db:reset
+        bundle exec rails cards:import
+        bundle exec rails server -b 0.0.0.0
+    ports:
+      - "3000:3000"

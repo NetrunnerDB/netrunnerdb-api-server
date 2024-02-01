@@ -2,11 +2,20 @@ version: "3.2"
 
 services:
   # service configuration for our dockerized Rails app
+  
+  netrunner_cards_json:
+    restart: none
+    image: registry.digitalocean.com/nsgcr/netrunner-cards-json:latest
+    volumes:
+      - netrunner-cards-json:/mnt/netrunner-cards-json
+
   nrdb_api_server:
     restart: unless-stopped
 
+    ports:
+      - "3000:3000"
+
     networks:
-      - null_signal
       - backend
 
     # use the Dockerfile next to this file
@@ -20,13 +29,14 @@ services:
       POSTGRES_PASSWORD: netrunnerdb
       RAILS_ENV: $RAILS_ENV
 
-    # makes the app container aware of the DB container
-    links:
+    # starts the app container after the DB and netrunner_cards_json containers
+    depends_on:
       - db
+      - netrunner_cards_json
 
     volumes:
-      - .:/var/www/nrdb-api/
-      - ../netrunner-cards-json/:/netrunner-cards-json
+      - ./config/database.yml:/var/www/nrdb-api/config/database.yml
+      - netrunner-cards-json:/netrunner-cards-json
       - nrdb-api-logs:/var/www/nrdb-api/log
 
   # service configuration for our database
@@ -46,9 +56,8 @@ services:
 
 networks:
   backend:
-  null_signal:
-    external: true
 
 volumes:
   nrdb-api-logs:
   nrdb-api-postgres:
+  netrunner-cards-json:
