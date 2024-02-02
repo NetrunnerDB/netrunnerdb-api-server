@@ -99,7 +99,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
         
       - name: Build image 
-        run: docker build -t nsgcr/nrdb-api-server .
+        run: docker build -t registry.digitalocean.com/nsgcr/nrdb-api-server:latest .
         
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
@@ -111,14 +111,7 @@ jobs:
         
       - name: Tag image with run id
         run:
-          docker tag nsgcr/nrdb-api-server registry.digitalocean.com/nsgcr/nrdb-api-server:${{ github.run_id }}
-
-      - name: Tag image with latest
-        run:
-          docker tag nsgcr/nrdb-api-server registry.digitalocean.com/nsgcr/nrdb-api-server:latest
+          docker tag registry.digitalocean.com/nsgcr/nrdb-api-server:latest registry.digitalocean.com/nsgcr/nrdb-api-server:${{ github.run_id }}
           
-      - name: Push run id tag to DO Container Registry 
-        run: docker push registry.digitalocean.com/nsgcr/nrdb-api-server:${{ github.run_id }}
-      
-      - name: Push latest tag to DO Container Registry 
-        run: docker push registry.digitalocean.com/nsgcr/nrdb-api-server:latest
+      - name: Push image to DO Container Registry 
+        run: docker push registry.digitalocean.com/nsgcr/nrdb-api-server:${{ github.run_id }} && docker push registry.digitalocean.com/nsgcr/nrdb-api-server:latest
