@@ -26,7 +26,6 @@ COPY Gemfile Gemfile.lock $RAILS_ROOT/
 RUN bundle config set --local path "vendor/bundle" && \
   bundle install --jobs 4 --retry 3
 
-# Precompile app assets as the final step.
 COPY . $RAILS_ROOT/
 
 

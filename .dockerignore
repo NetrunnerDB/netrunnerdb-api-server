@@ -18,3 +18,4 @@
 /.yarn-integrity
 /app/assets/builds/*
 !/app/assets/builds/.keep
+/docker-compose*
