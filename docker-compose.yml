@@ -6,12 +6,15 @@ services:
   netrunner_cards_json:
     restart: none
     image: registry.digitalocean.com/nsgcr/netrunner-cards-json:latest
+    build: https://github.com/NetrunnerDB/netrunner-cards-json.git#main
     volumes:
       - netrunner-cards-json:/mnt/netrunner-cards-json
 
   nrdb_api_server:
     restart: unless-stopped
-    image: registry.digitalocean.com/nsgcr/nrdb_api_server:latest
+    image: registry.digitalocean.com/nsgcr/nrdb-api-server:latest
+    # build the Dockerfile next to this file, tag the built image with above image name
+    build: .
     
     ports:
       - "3000:3000"
