@@ -1,0 +1,12 @@
+version: "3.2"
+
+services:
+
+  nrdb_api_server:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        rake db:reset
+        bundle exec rails cards:import
+        bundle exec rails server -b 0.0.0.0

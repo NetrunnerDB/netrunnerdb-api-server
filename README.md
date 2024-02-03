@@ -16,17 +16,17 @@ This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-jso
 
 ```
 echo "RAILS_ENV=development" > .env
-# This will not be needed if you have already created this network.
-docker network create null_signal
-docker compose build
 cp config/database.example.yml config/database.yml
-docker compose up -d db
-# Wait until docker compose logs db | tail shows 'database system is ready to accept connections'
-docker compose run nrdb_api_server rake db:reset
-docker compose up -d
-# Import the card data from the netrunner-cards-json repo
-docker compose exec nrdb_api_server rails cards:import
+docker compose -f docker-compose.yml -f docker-compose.override.init.yml up -d
 ```
+Wait until `docker compose logs nrdb_api_server | tail` shows `Listening on http://0.0.0.0:3000`.
+
+Test that `http://localhost:3000/api/docs/` loads in your browser. Afterwords,
+
+```
+docker compose up -d
+```
+Is enough to spin up the containers, unless you want to restart the db from scratch (use the above example with init.yml)
 
 To run tests in your docker container, you will need to override the environment, like so:
 ```

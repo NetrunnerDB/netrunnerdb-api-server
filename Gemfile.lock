@@ -96,10 +96,7 @@ GEM
       i18n (>= 1.8.11, < 2)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.24.2-aarch64-linux)
-    google-protobuf (3.24.2-arm64-darwin)
-    google-protobuf (3.24.2-x86_64-darwin)
-    google-protobuf (3.24.2-x86_64-linux)
+    google-protobuf (3.25.2)
     googleapis-common-protos-types (1.8.0)
       google-protobuf (~> 3.18)
     i18n (1.14.1)
@@ -125,6 +122,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.5)
     minitest (5.19.0)
     msgpack (1.7.2)
     mustache (1.1.1)
@@ -138,13 +136,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.15.4-aarch64-linux)
-      racc (~> 1.4)
-    nokogiri (1.15.4-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.16.1)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     opentelemetry-api (1.2.2)
     opentelemetry-common (0.20.0)
@@ -344,7 +337,7 @@ GEM
     pg (1.5.3)
     puma (5.6.8)
       nio4r (~> 2.0)
-    racc (1.7.1)
+    racc (1.7.3)
     rack (2.2.8)
     rack-cors (2.0.1)
       rack (>= 2.0.0)
@@ -438,6 +431,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  ruby
   universal-darwin-20
   x86_64-linux
 
@@ -450,8 +444,10 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
+  google-protobuf
   jsonapi-resources
   jwt
+  nokogiri
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all
   opentelemetry-sdk

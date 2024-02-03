@@ -1,6 +1,10 @@
-FROM ruby:3.1
+# Inspired by https://dennmart.com/articles/building-lean-docker-images-for-rails-apps/
 
-RUN apt-get update -qq && apt-get install -y postgresql-client
+#####################################################################
+FROM ruby:3.2.3-alpine3.19 AS build
+
+RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client build-base libpq-dev tzdata \
+  && rm -rf /var/cache/apk/*
 
 RUN gem install rails
 
@@ -13,17 +17,33 @@ RUN mkdir -p $RAILS_ROOT/tmp/pids
 # Set our working directory inside the image
 WORKDIR $RAILS_ROOT
 
-# throw errors if Gemfile has been modified since Gemfile.lock
+# Throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
 
-RUN pwd
+COPY Gemfile Gemfile.lock $RAILS_ROOT/
 
-COPY Gemfile Gemfile.lock ./
+# Install gems into the vendor/bundle directory in the workspace.
+RUN bundle config set --local path "vendor/bundle" && \
+  bundle config set force_ruby_platform true && \
+  bundle install --jobs 4 --retry 3
 
-RUN bundle install
+COPY . $RAILS_ROOT/
 
-ENTRYPOINT ["./entrypoint.sh"]
+
+#####################################################################
+FROM ruby:3.2.3-alpine3.19 AS final
+
+RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client tzdata \
+  && rm -rf /var/cache/apk/*
+
+ENV RAILS_ROOT /var/www/nrdb-api
+WORKDIR $RAILS_ROOT
+RUN bundle config set --local path "vendor/bundle"
+COPY --from=build $RAILS_ROOT $RAILS_ROOT/
+
 EXPOSE 3000
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
 
 # Start the main process.
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["/bin/sh", "-c", "bundle exec rails server -b 0.0.0.0"]

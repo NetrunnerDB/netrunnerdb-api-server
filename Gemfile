@@ -3,6 +3,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "~> 3.1"
 
+# Gems that have trouble with native packages on alpine.
+gem 'google-protobuf', force_ruby_platform: true
+gem 'nokogiri', force_ruby_platform: true
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", ">= 7.0.7.1"
 
