@@ -3,7 +3,7 @@
 #####################################################################
 FROM ruby:3.2.3-alpine3.19 AS build
 
-RUN apk -U upgrade && apk add --no-cache postgresql-client build-base libpq-dev tzdata \
+RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client build-base libpq-dev tzdata \
   && rm -rf /var/cache/apk/*
 
 RUN gem install rails
@@ -24,6 +24,7 @@ COPY Gemfile Gemfile.lock $RAILS_ROOT/
 
 # Install gems into the vendor/bundle directory in the workspace.
 RUN bundle config set --local path "vendor/bundle" && \
+  bundle config set force_ruby_platform true && \
   bundle install --jobs 4 --retry 3
 
 COPY . $RAILS_ROOT/
@@ -32,7 +33,7 @@ COPY . $RAILS_ROOT/
 #####################################################################
 FROM ruby:3.2.3-alpine3.19 AS final
 
-RUN apk -U upgrade && apk add --no-cache postgresql-client tzdata \
+RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client tzdata \
   && rm -rf /var/cache/apk/*
 
 ENV RAILS_ROOT /var/www/nrdb-api
