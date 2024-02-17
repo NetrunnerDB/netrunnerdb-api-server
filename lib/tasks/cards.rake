@@ -351,7 +351,7 @@ namespace :cards do
       printings = Printing.all
       printings.each { |printing|
         if printing.display_illustrators then
-          printing.display_illustrators.split(', ').each { |i|
+          printing.display_illustrators.split(/\s*[,\&]\s*/).each { |i|
             illustrators.add(i)
             num_its += 1
             illustrators_to_printings << {
