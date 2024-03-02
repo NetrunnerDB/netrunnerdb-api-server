@@ -41,7 +41,7 @@ gem "bootsnap", require: false
 
 gem 'rack', '~> 2.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem "rack-cors"
+gem "rack-cors", '2.0.0'
 
 # Used for our import of the card data.
 gem "activerecord-import"
