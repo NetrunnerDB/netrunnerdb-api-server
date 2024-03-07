@@ -22,7 +22,7 @@ module API
         attributes :title, :trash_cost, :printing_ids, :num_printings, :is_latest_printing, :restriction_ids, :in_restriction
         attributes :format_ids, :card_pool_ids, :snapshot_ids
         attributes :card_cycle_ids, :card_set_ids, :attribution
-        attributes :released_by, :printings_released_by, :designed_by
+        attributes :released_by, :printings_released_by, :designed_by, :pronouns
 
         # Synthesized attributes
         attributes :card_abilities, :images, :latest_printing_id, :restrictions
