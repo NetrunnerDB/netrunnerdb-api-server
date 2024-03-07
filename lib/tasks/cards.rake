@@ -99,6 +99,7 @@ namespace :cards do
         influence_limit: card["influence_limit"],
         memory_cost: card["memory_cost"],
         minimum_deck_size: card["minimum_deck_size"],
+        pronouns: card["pronouns"],
         title: card["title"],
         stripped_title: card["stripped_title"],
         stripped_text: card["stripped_text"],

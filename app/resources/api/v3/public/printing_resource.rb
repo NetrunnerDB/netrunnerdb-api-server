@@ -22,7 +22,7 @@ module API
         attributes :title, :trash_cost, :printing_ids, :num_printings, :is_latest_printing, :restriction_ids, :in_restriction
         attributes :format_ids, :card_pool_ids, :snapshot_ids
         attributes :card_cycle_ids, :card_set_ids, :attribution
-        attributes :released_by, :printings_released_by, :designed_by
+        attributes :released_by, :printings_released_by, :designed_by, :pronouns
 
         # Synthesized attributes
         attributes :card_abilities, :images, :latest_printing_id, :restrictions
@@ -66,7 +66,8 @@ module API
         filters :title, :card_type_id, :side_id, :faction_id, :advancement_requirement
         filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost, :influence_limit
         filters :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique, :is_latest_printing
-
+        filters :pronouns 
+        
         filter :search, apply: ->(records, value, _options) {
           query_builder = PrintingSearchQueryBuilder.new(value[0])
           if query_builder.parse_error.nil?
