@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_06_072723) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_06_181616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -132,6 +132,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_06_072723) do
     t.text "card_id", null: false
     t.text "card_subtype_id", null: false
     t.index ["card_id", "card_subtype_id"], name: "index_cards_card_subtypes_on_card_id_and_subtype_id"
+  end
+
+  create_table "decklists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.boolean "follows_basic_deckbuilding_rules", default: true, null: false
+    t.string "identity_card_id", null: false
+    t.string "side_id", null: false
+    t.string "name", null: false
+    t.string "notes", default: "", null: false
+    t.string "tags", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tags"], name: "index_decklists_on_tags", using: :gin
+  end
+
+  create_table "decklists_cards", id: false, force: :cascade do |t|
+    t.uuid "decklist_id", null: false
+    t.string "card_id", null: false
+    t.integer "quantity", null: false
+    t.index ["decklist_id", "card_id"], name: "index_decklists_cards_on_decklist_id_and_card_id", unique: true
   end
 
   create_table "decks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -299,6 +319,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_06_072723) do
   add_foreign_key "cards", "sides"
   add_foreign_key "cards_card_subtypes", "card_subtypes"
   add_foreign_key "cards_card_subtypes", "cards"
+  add_foreign_key "decklists", "cards", column: "identity_card_id"
+  add_foreign_key "decklists", "sides"
+  add_foreign_key "decklists_cards", "cards"
+  add_foreign_key "decklists_cards", "decklists"
   add_foreign_key "decks", "cards", column: "identity_card_id"
   add_foreign_key "decks", "sides"
   add_foreign_key "decks", "users"
