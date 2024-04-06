@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         jsonapi_resources :card_subtypes, only: [:index, :show]
         jsonapi_resources :card_types, only: [:index, :show]
         jsonapi_resources :cards, only: [:index, :show]
+        jsonapi_resources :decklists, only: [:index, :show]
         jsonapi_resources :factions, only: [:index, :show]
         jsonapi_resources :formats, only: [:index, :show]
         jsonapi_resources :illustrators, only: [:index, :show]
