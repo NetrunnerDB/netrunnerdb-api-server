@@ -100,6 +100,8 @@ namespace :cards do
         memory_cost: card["memory_cost"],
         minimum_deck_size: card["minimum_deck_size"],
         pronouns: card["pronouns"],
+        pronunciation_approximation: card["pronunciation_approx"],
+        pronunciation_ipa: card["pronunciation_ipa"],
         title: card["title"],
         stripped_title: card["stripped_title"],
         stripped_text: card["stripped_text"],

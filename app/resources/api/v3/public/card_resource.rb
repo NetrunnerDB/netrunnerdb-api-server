@@ -14,7 +14,7 @@ module API
         attributes :card_subtype_ids, :display_subtypes, :attribution, :updated_at
         attributes :format_ids, :card_pool_ids, :snapshot_ids, :card_cycle_ids, :card_set_ids
         attributes :designed_by, :printings_released_by
-        attributes :pronouns
+        attributes :pronouns, :pronunciation_approximation, :pronunciation_ipa
 
         # Synthesized attributes
         attributes :card_abilities, :latest_printing_id, :restrictions
