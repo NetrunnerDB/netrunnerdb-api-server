@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_06_181616) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_12_220325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -122,6 +122,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_181616) do
     t.string "attribution"
     t.string "designed_by"
     t.string "pronouns"
+    t.string "pronunciation_approximation"
+    t.string "pronunciation_ipa"
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
@@ -508,6 +510,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_181616) do
       c.memory_cost,
       c.minimum_deck_size,
       c.pronouns,
+      c.pronunciation_approximation,
+      c.pronunciation_ipa,
       c.strength,
       c.stripped_text,
       c.text,
@@ -700,6 +704,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_181616) do
       c.on_encounter_effect,
       c.performs_trace,
       c.pronouns,
+      c.pronunciation_approximation,
+      c.pronunciation_ipa,
       c.recurring_credits_provided,
       c.side_id,
       c.strength,
