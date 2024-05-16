@@ -80,6 +80,7 @@ GEM
     apitome (0.3.1)
       kramdown
       railties
+    ast (2.4.2)
     base64 (0.2.0)
     bigdecimal (3.1.6)
     bootsnap (1.16.0)
@@ -117,6 +118,7 @@ GEM
     io-console (0.6.0)
     irb (1.7.4)
       reline (>= 0.3.6)
+    json (2.7.2)
     jsonapi-resources (0.10.7)
       activerecord (>= 4.1)
       concurrent-ruby
@@ -124,6 +126,7 @@ GEM
     jwt (2.7.1)
     kramdown (2.4.0)
       rexml
+    language_server-protocol (3.17.0.3)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -346,6 +349,10 @@ GEM
       opentelemetry-semantic_conventions
     opentelemetry-semantic_conventions (1.10.0)
       opentelemetry-api (~> 1.0)
+    parallel (1.24.0)
+    parser (3.3.1.0)
+      ast (~> 2.4.1)
+      racc
     parslet (2.0.0)
     pg (1.5.3)
     puma (5.6.8)
@@ -390,7 +397,9 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
+    rainbow (3.1.1)
     rake (13.1.0)
+    regexp_parser (2.9.2)
     reline (0.3.8)
       io-console (~> 0.5)
     rexml (3.2.6)
@@ -419,6 +428,36 @@ GEM
       activesupport (>= 3.0.0)
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0)
+    rubocop (1.63.5)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
+      parallel (~> 1.10)
+      parser (>= 3.3.0.2)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.31.3)
+      parser (>= 3.3.1.0)
+    rubocop-capybara (2.20.0)
+      rubocop (~> 1.41)
+    rubocop-factory_bot (2.25.1)
+      rubocop (~> 1.41)
+    rubocop-rails (2.24.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.33.0, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
+    rubocop-rspec (2.29.2)
+      rubocop (~> 1.40)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
+      rubocop-rspec_rails (~> 2.28)
+    rubocop-rspec_rails (2.28.3)
+      rubocop (~> 1.40)
+    ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     scenic (1.7.0)
       activerecord (>= 4.0.0)
@@ -443,6 +482,7 @@ GEM
     timeout (0.4.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unicode-display_width (2.5.0)
     webrick (1.8.1)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -479,6 +519,11 @@ DEPENDENCIES
   rails (>= 7.0.7.1)
   rspec-rails
   rspec_api_documentation
+  rubocop
+  rubocop-factory_bot
+  rubocop-rails
+  rubocop-rspec
+  rubocop-rspec_rails
   scenic
   simplecov
   simplecov-cobertura
