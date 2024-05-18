@@ -66,7 +66,7 @@
                 ],
                 "ruby.format": "rubocop",
                 "rubocop.yjitEnabled": false,
-                "editor.formatOnSave": true
+                "editor.formatOnSave": false 
             },
             "extensions": [
                 "IBM.output-colorizer",
