@@ -4,12 +4,18 @@ require "rails/all"
 
 require "sprockets/railtie"
 
+# TODO(plural): See if there is a different solution here.
+# Requied by Graphiti but not included in their for top-level Gem for some reason.
+require 'ostruct'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module NrdbApi
   class Application < Rails::Application
+    routes.default_url_options[:host] = ENV.fetch('HOST', 'http://localhost:3000')
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 

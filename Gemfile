@@ -47,6 +47,18 @@ gem "rack-cors", '2.0.0'
 gem "activerecord-import"
 
 # Base for our API.
+# Trying out Graphiti
+gem 'graphiti', '~> 1.2'
+gem 'graphiti-rails', '~> 0.2'
+gem 'vandal_ui', '~> 0.4'
+gem 'kaminari', '~> 1.0'
+gem 'responders'
+gem 'ostruct'
+group :development, :test do
+  gem 'graphiti_spec_helpers'
+end
+
+# We're moving away from this one.
 gem 'jsonapi-resources'
 
 # Views
