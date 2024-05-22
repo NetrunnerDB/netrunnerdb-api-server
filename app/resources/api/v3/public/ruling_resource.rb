@@ -5,7 +5,8 @@ module API
         caching
         immutable
 
-        attributes :card_id, :nsg_rules_team_verified, :question, :answer, :text_ruling, :updated_at
+        attributes :card_id, :nsg_rules_team_verified
+        attributes :question, :answer, :text_ruling, :updated_at
 
         paginator :none
 

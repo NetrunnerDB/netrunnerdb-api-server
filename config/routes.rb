@@ -3,9 +3,11 @@
 Rails.application.routes.draw do
   root to: redirect('/api/docs/', status: 302)
 
-  scope path: ApplicationResource.endpoint_namespace, defaults: { format: :jsonapi } do
+  scope path: ApplicationResource.endpoint_namespace,
+        defaults: { format: :jsonapi },
+        constraints: { format: :jsonapi } do
     resources :card_cycles, only: %i[index show]
-    # resources :card_pools, only: [:index, :show]
+    resources :card_pools, only: [:index, :show]
     resources :card_set_types, only: %i[index show]
     resources :card_sets, only: %i[index show]
     resources :card_subtypes, only: %i[index show]
@@ -13,13 +15,13 @@ Rails.application.routes.draw do
     resources :cards, only: [:index, :show]
     # resources :decklists, only: [:index, :show]
     resources :factions, only: %i[index show]
-    # resources :formats, only: [:index, :show]
-    # resources :illustrators, only: [:index, :show]
+    resources :formats, only: [:index, :show]
+    resources :illustrators, only: [:index, :show]
     # resources :printings, only: [:index, :show]
-    # resources :restrictions, only: [:index, :show]
-    # resources :rulings, only: [:index]
+    resources :restrictions, only: [:index, :show]
+    resources :rulings, only: [:index]
     resources :sides, only: %i[index show]
-    # resources :snapshots, only: [:index, :show]
+    resources :snapshots, only: %i[index show]
   end
 
   # namespace :api do
