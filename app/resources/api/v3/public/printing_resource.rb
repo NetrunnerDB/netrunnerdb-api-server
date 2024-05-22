@@ -67,7 +67,7 @@ module API
         filters :agenda_points, :base_link, :cost, :deck_limit, :influence_cost, :influence_limit
         filters :memory_cost, :minimum_deck_size, :strength, :trash_cost, :is_unique, :is_latest_printing
         filters :pronouns, :pronunciation_approximation, :pronunciation_ipa
-        
+
         filter :search, apply: ->(records, value, _options) {
           query_builder = PrintingSearchQueryBuilder.new(value[0])
           if query_builder.parse_error.nil?

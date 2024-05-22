@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     resources :factions, only: %i[index show]
     resources :formats, only: [:index, :show]
     resources :illustrators, only: [:index, :show]
-    # resources :printings, only: [:index, :show]
+    resources :printings, only: [:index, :show]
     resources :restrictions, only: [:index, :show]
     resources :rulings, only: [:index]
     resources :sides, only: %i[index show]
