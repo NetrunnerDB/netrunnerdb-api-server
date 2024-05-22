@@ -5,9 +5,13 @@ module API
         key_type :uuid
 
         attributes :user_id, :follows_basic_deckbuilding_rules, :identity_card_id,
-            :name, :notes, :tags, :side_id, :created_at, :updated_at
+                   :name, :notes, :tags, :side_id, :created_at, :updated_at
         # Computed attributes
         attributes :faction_id, :cards, :num_cards, :influence_spent
+
+        has_one :identity_card, class_name: 'Card',
+                                foreign_key: 'identity_card_id'
+        has_many :cards, class_name: 'Card', foreign_key: 'decklist_cards'
 
         # While the Deck model has a relation for cards, we always want to return the
         # map of card ids to quantities with the deck as an attribute.
@@ -16,7 +20,7 @@ module API
           @model.decklist_cards.each do |c|
             cards[c.card_id] = c.quantity
           end
-          return cards
+          cards
         end
 
         def num_cards
@@ -43,9 +47,9 @@ module API
           end
           id = Card.find(@model.identity_card_id)
           @model.cards
-            .filter{|c| c.faction_id != id.faction_id}
-            .map{|c| c.influence_cost.nil? ? 0 : (c.influence_cost * qty[c.id])}
-            .sum
+                .filter { |c| c.faction_id != id.faction_id }
+                .map { |c| c.influence_cost.nil? ? 0 : (c.influence_cost * qty[c.id]) }
+                .sum
         end
       end
     end
