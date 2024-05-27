@@ -20,9 +20,10 @@ class CardSetResource < ApplicationResource
   attribute :released_by, :string
   attribute :updated_at, :datetime
 
-  has_many :cards
-  # has_many :printings, relation_name: :unified_printings
-
   belongs_to :card_cycle
   belongs_to :card_set_type
+
+  # TODO(plural): Sort out the cards relationship
+  # has_many :cards, relation_name: :unified_cards
+  has_many :printings
 end

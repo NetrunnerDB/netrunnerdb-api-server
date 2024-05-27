@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Public Resource for CardPool objects.
 class CardPoolResource < ApplicationResource
   primary_endpoint '/card_pools', %i[index show]
 
@@ -14,5 +17,5 @@ class CardPoolResource < ApplicationResource
   has_many :card_cycles
   has_many :card_sets
   has_many :cards, relation_name: :unified_cards
-  # has_many :snapshots
+  has_many :snapshots
 end

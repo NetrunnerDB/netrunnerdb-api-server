@@ -20,7 +20,8 @@ class DecklistResource < ApplicationResource
     id&.faction_id
   end
 
-  attribute :cards, :hash do
+  attribute :card_slots, :hash do
+    Rails.logger.error 'asdf'
     cards = {}
     @object.decklist_cards.each do |c|
       cards[c.card_id] = c.quantity
@@ -40,6 +41,7 @@ class DecklistResource < ApplicationResource
     @object.decklist_cards.each do |c|
       qty[c.card_id] = c.quantity
     end
+    Rails.logger.info format('qty is %s', qty.inspect)
     id = Card.find(@object.identity_card_id)
     @object.cards
            .filter { |c| c.faction_id != id.faction_id }
@@ -48,13 +50,19 @@ class DecklistResource < ApplicationResource
   end
 
   belongs_to :side
-  # RedundantForeignKey disabled because the relationship link will use
-  # the decklist id instead of the faction id without it.
-  belongs_to :faction, foreign_key: :faction_id # rubocop:disable Rails/RedundantForeignKey
+  belongs_to :faction do
+    link do |decklist|
+      helpers = Rails.application.routes.url_helpers
+      helpers.factions_url(params: { filter: { id: decklist.faction_id } })
+    end
+  end
 
-  belongs_to :identity_card, resource: CardResource, foreign_key: :identity_card_id
+  belongs_to :identity_card, resource: CardResource do #, foreign_key: :identity_card_id do
+    link do |decklist|
+      helpers = Rails.application.routes.url_helpers
+      helpers.cards_url(params: { filter: { id: decklist.identity_card_id } })
+    end
+  end
 
-  # has_many :card_sets
-  # has_many :cards
-  # has_many :printings
+  many_to_many :cards
 end

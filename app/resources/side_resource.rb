@@ -11,5 +11,5 @@ class SideResource < ApplicationResource
   has_many :factions
   has_many :card_types
   has_many :cards
-  # has_many :printings
+  has_many :printings
 end

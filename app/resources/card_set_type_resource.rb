@@ -10,5 +10,4 @@ class CardSetTypeResource < ApplicationResource
   attribute :updated_at, :datetime
 
   has_many :card_sets
-  # paginator :none
 end

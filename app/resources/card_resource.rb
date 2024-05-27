@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Public resource for UnifiedCard objects.
 class CardResource < ApplicationResource
   primary_endpoint '/cards', %i[index show]
 
@@ -57,7 +58,7 @@ class CardResource < ApplicationResource
       x = p.split('=')
       m[x[0]] = x[1].to_i
     end
-    return m
+    m
   end
 
   attribute :restrictions, :hash do
@@ -76,5 +77,10 @@ class CardResource < ApplicationResource
   belongs_to :side
   belongs_to :faction
   belongs_to :card_type
-  # has_many :card_subtypes
+  has_many :card_subtypes do
+    link do |card|
+      helpers = Rails.application.routes.url_helpers
+      helpers.card_subtypes_url(params: { filter: { id: card.card_subtype_ids.join(',') } })
+    end
+  end
 end
