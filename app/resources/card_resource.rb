@@ -50,7 +50,25 @@ class CardResource < ApplicationResource
   attribute :pronunciation_ipa, :string
 
   # Synthesized attributes
-  #  attributes :card_abilities, :latest_printing_id, :restrictions
+  attribute :card_abilities, :hash
+  def packed_restriction_to_map(packed)
+    m = {}
+    packed.each do |p|
+      x = p.split('=')
+      m[x[0]] = x[1].to_i
+    end
+    return m
+  end
+
+  attribute :restrictions, :hash do
+    {
+      banned: @object.restrictions_banned,
+      global_penalty: @object.restrictions_global_penalty,
+      points: packed_restriction_to_map(@object.restrictions_points),
+      restricted: @object.restrictions_restricted,
+      universal_faction_cost: packed_restriction_to_map(@object.restrictions_universal_faction_cost)
+    }
+  end
   attribute :latest_printing_id, :string do
     @object.printing_ids[0]
   end

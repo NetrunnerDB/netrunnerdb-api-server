@@ -90,8 +90,13 @@ class PrintingResource < ApplicationResource
     @object.printing_ids[0]
   end
 
+  belongs_to :card
+  belongs_to :card_cycle
+  belongs_to :card_set
   belongs_to :side
   belongs_to :faction
   belongs_to :card_type
+  # TODO(plural): Fix these relationships.
+  # has_many :illustrators
   # has_many :card_subtypes
 end

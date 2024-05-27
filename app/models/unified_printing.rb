@@ -9,10 +9,11 @@ class UnifiedPrinting < ApplicationRecord
     :foreign_key => :card_id
   belongs_to :card
   belongs_to :card_set
-  has_one :faction, :through => :card
-  has_one :card_cycle, :through => :card_set
-  has_one :card_type, :through => :card
-  has_one :side, :through => :card
+  belongs_to :faction
+  # has_one :faction, :through => :card
+  # has_one :card_cycle #, :through => :card_set
+  belongs_to :card_type
+  belongs_to :side
   has_many :illustrator_printings, primary_key: :id, foreign_key: :printing_id
   has_many :illustrators, :through => :illustrator_printings
 
