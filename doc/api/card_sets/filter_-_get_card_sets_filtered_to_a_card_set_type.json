@@ -33,11 +33,11 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n\n  ]\n}",
+      "response_body": "{\n  \"data\": [\n\n  ],\n  \"meta\": {\n  }\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json"
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
-      "response_content_type": "application/vnd.api+json",
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_sets?filter[card_set_type_id]=%3Acard_set_type_id\" -X GET "
     }
   ]

@@ -1,16 +1,16 @@
 {
-  "resource": "Card Sets",
+  "resource": "Card Subtypes",
   "resource_explanation": null,
   "http_method": "GET",
-  "route": "/api/v3/public/card_sets?filter[card_cycle_id]=:card_cycle_id",
-  "description": "Filter - Get Card Sets filtered to a Card Cycle",
+  "route": "/api/v3/public/card_subtypes/:id",
+  "description": "Get A Single Card Subtype",
   "explanation": null,
   "parameters": [
     {
       "type": "string",
       "required": true,
-      "name": "card_cycle_id",
-      "description": "Card cycle"
+      "name": "id",
+      "description": "Id"
     }
   ],
   "response_fields": [
@@ -19,26 +19,23 @@
   "requests": [
     {
       "request_method": "GET",
-      "request_path": "/api/v3/public/card_sets?filter[card_cycle_id]=%3Acard_cycle_id",
+      "request_path": "/api/v3/public/card_subtypes/code_gate",
       "request_body": null,
       "request_headers": {
         "Content-Type": "application/json",
         "Host": "api-preview.netrunnerdb.com"
       },
       "request_query_parameters": {
-        "filter": {
-          "card_cycle_id": ":card_cycle_id"
-        }
       },
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n\n  ],\n  \"meta\": {\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"code_gate\",\n    \"type\": \"card_subtypes\",\n    \"attributes\": {\n      \"name\": \"Code Gate\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/code_gate\"\n    }\n  },\n  \"meta\": {\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
       "response_content_type": "application/vnd.api+json; charset=utf-8",
-      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_sets?filter[card_cycle_id]=%3Acard_cycle_id\" -X GET "
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_subtypes/code_gate\" -X GET "
     }
   ]
 }

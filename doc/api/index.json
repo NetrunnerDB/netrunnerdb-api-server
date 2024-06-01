@@ -10,6 +10,13 @@
           "groups": "all",
           "route": "/api/v3/public/card_cycles",
           "method": "get"
+        },
+        {
+          "description": "Get A Single Card Cycle",
+          "link": "card_cycles/get_a_single_card_cycle.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_cycles/:id",
+          "method": "get"
         }
       ]
     },
@@ -23,6 +30,13 @@
           "groups": "all",
           "route": "/api/v3/public/card_pools",
           "method": "get"
+        },
+        {
+          "description": "Get A Single Card Pool",
+          "link": "card_pools/get_a_single_card_pool.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_pools/:id",
+          "method": "get"
         }
       ]
     },
@@ -35,6 +49,13 @@
           "link": "card_set_types/all_card_set_types.json",
           "groups": "all",
           "route": "/api/v3/public/card_set_types",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Set Type",
+          "link": "card_set_types/get_a_single_card_set_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_set_types/:id",
           "method": "get"
         }
       ]
@@ -63,6 +84,13 @@
           "groups": "all",
           "route": "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id",
           "method": "get"
+        },
+        {
+          "description": "Get A Single Card Set",
+          "link": "card_sets/get_a_single_card_set.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_sets/:id",
+          "method": "get"
         }
       ]
     },
@@ -75,6 +103,13 @@
           "link": "card_subtypes/all_card_subtypes.json",
           "groups": "all",
           "route": "/api/v3/public/card_subtypes",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Card Subtype",
+          "link": "card_subtypes/get_a_single_card_subtype.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_subtypes/:id",
           "method": "get"
         }
       ]
@@ -96,6 +131,20 @@
           "groups": "all",
           "route": "/api/v3/public/card_types?filter[side_id]=:side_id",
           "method": "get"
+        },
+        {
+          "description": "Get A Single Card Type",
+          "link": "card_types/get_a_single_card_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_types/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Cards for a Card Type",
+          "link": "card_types/relationship_-_get_cards_for_a_card_type.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards?filter[card_type_id]=:id",
+          "method": "get"
         }
       ]
     },
@@ -111,10 +160,10 @@
           "method": "get"
         },
         {
-          "description": "Filter - Card Search Operator",
-          "link": "cards/filter_-_card_search_operator.json",
+          "description": "Get A Single Card",
+          "link": "cards/get_a_single_card.json",
           "groups": "all",
-          "route": "/api/v3/public/cards?filter[search]=:query",
+          "route": "/api/v3/public/cards/:id",
           "method": "get"
         }
       ]
@@ -143,6 +192,34 @@
           "groups": "all",
           "route": "/api/v3/public/factions?filter[is_mini]=:is_mini",
           "method": "get"
+        },
+        {
+          "description": "Get A Single Faction",
+          "link": "factions/get_a_single_faction.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Cards for a Faction",
+          "link": "factions/relationship_-_get_cards_for_a_faction.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards?filter[faction_id]=:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for a Faction",
+          "link": "factions/relationship_-_get_printings_for_a_faction.json",
+          "groups": "all",
+          "route": "/api/v3/public/printings?filter[faction_id]=:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Side for a Faction",
+          "link": "factions/relationship_-_get_side_for_a_faction.json",
+          "groups": "all",
+          "route": "/api/v3/public/sides/:id",
+          "method": "get"
         }
       ]
     },
@@ -156,6 +233,13 @@
           "groups": "all",
           "route": "/api/v3/public/formats",
           "method": "get"
+        },
+        {
+          "description": "Get A Single Format",
+          "link": "formats/get_a_single_format.json",
+          "groups": "all",
+          "route": "/api/v3/public/formats/:id",
+          "method": "get"
         }
       ]
     },
@@ -168,6 +252,20 @@
           "link": "illustrators/all_illustrators.json",
           "groups": "all",
           "route": "/api/v3/public/illustrators",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Illustrator",
+          "link": "illustrators/get_a_single_illustrator.json",
+          "groups": "all",
+          "route": "/api/v3/public/illustrators/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for an Illustrator",
+          "link": "illustrators/relationship_-_get_printings_for_an_illustrator.json",
+          "groups": "all",
+          "route": "/api/v3/public/printings?filter[illustrator_id]=:id",
           "method": "get"
         }
       ]
@@ -184,17 +282,10 @@
           "method": "get"
         },
         {
-          "description": "Filter - Distinct Cards",
-          "link": "printings/filter_-_distinct_cards.json",
+          "description": "Get A Single Printing",
+          "link": "printings/get_a_single_printing.json",
           "groups": "all",
-          "route": "/api/v3/public/printings?filter[distinct_cards]",
-          "method": "get"
-        },
-        {
-          "description": "Filter - Printing Search Operator",
-          "link": "printings/filter_-_printing_search_operator.json",
-          "groups": "all",
-          "route": "/api/v3/public/printings?filter[search]=:query",
+          "route": "/api/v3/public/printings/:id",
           "method": "get"
         }
       ]
@@ -208,6 +299,13 @@
           "link": "restrictions/all_restrictions.json",
           "groups": "all",
           "route": "/api/v3/public/restrictions",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Restriction",
+          "link": "restrictions/get_a_single_restriction.json",
+          "groups": "all",
+          "route": "/api/v3/public/restrictions/:id",
           "method": "get"
         }
       ]
@@ -249,6 +347,41 @@
           "groups": "all",
           "route": "/api/v3/public/sides",
           "method": "get"
+        },
+        {
+          "description": "Get A Single side",
+          "link": "sides/get_a_single_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/sides/:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Card Types for a Side",
+          "link": "sides/relationship_-_get_card_types_for_a_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/card_types?filter[side_id]=:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Cards for a Side",
+          "link": "sides/relationship_-_get_cards_for_a_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/cards?filter[side_id]=:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Factions for a Side",
+          "link": "sides/relationship_-_get_factions_for_a_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/factions?filter[side_id]=:id",
+          "method": "get"
+        },
+        {
+          "description": "Relationship - Get Printings for a Side",
+          "link": "sides/relationship_-_get_printings_for_a_side.json",
+          "groups": "all",
+          "route": "/api/v3/public/printings?filter[side_id]=:id",
+          "method": "get"
         }
       ]
     },
@@ -275,6 +408,13 @@
           "link": "snapshots/filter_-_get_snapshots_filtered_by_format_id.json",
           "groups": "all",
           "route": "/api/v3/public/snapshots?filter[format_id]=:format_id",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Snapshot",
+          "link": "snapshots/get_a_single_snapshot.json",
+          "groups": "all",
+          "route": "/api/v3/public/snapshots/:id",
           "method": "get"
         }
       ]

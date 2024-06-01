@@ -1,16 +1,16 @@
 {
-  "resource": "Factions",
+  "resource": "Sides",
   "resource_explanation": null,
   "http_method": "GET",
-  "route": "/api/v3/public/factions?filter[side_id]=:side_id",
-  "description": "Filter - Get Factions for a single Side",
+  "route": "/api/v3/public/factions?filter[side_id]=:id",
+  "description": "Relationship - Get Factions for a Side",
   "explanation": null,
   "parameters": [
     {
       "type": "string",
       "required": true,
-      "name": "side_id",
-      "description": "Side"
+      "name": "id",
+      "description": "Id"
     }
   ],
   "response_fields": [

@@ -1,0 +1,41 @@
+{
+  "resource": "Factions",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v3/public/sides/:id",
+  "description": "Relationship - Get Side for a Faction",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/sides/runner",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"runner\",\n    \"type\": \"sides\",\n    \"attributes\": {\n      \"name\": \"Runner\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"factions\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/factions?filter[side_id]=runner\"\n        }\n      },\n      \"card_types\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/card_types?filter[side_id]=runner\"\n        }\n      },\n      \"cards\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/cards?filter[side_id]=runner\"\n        }\n      },\n      \"printings\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/printings?filter[side_id]=runner\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/sides/runner\"\n    }\n  },\n  \"meta\": {\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
+      },
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/sides/runner\" -X GET "
+    }
+  ]
+}
