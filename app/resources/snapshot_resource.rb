@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Public resource for Snapshot objects.
 class SnapshotResource < ApplicationResource
   primary_endpoint '/snapshots', %i[index show]
 
@@ -20,7 +23,7 @@ class SnapshotResource < ApplicationResource
 
   belongs_to :format
   belongs_to :card_pool
-#  belongs_to :restriction
+  #  belongs_to :restriction
 
   has_many :card_cycles
   has_many :card_sets

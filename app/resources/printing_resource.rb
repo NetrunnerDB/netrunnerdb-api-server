@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Public resource for Printing objects.
 class PrintingResource < ApplicationResource
   primary_endpoint '/printings', %i[index show]
 

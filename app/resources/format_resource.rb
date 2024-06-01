@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Public resource for Format objects.
 class FormatResource < ApplicationResource
   primary_endpoint '/formats', %i[index show]
 
