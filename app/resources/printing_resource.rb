@@ -90,6 +90,12 @@ class PrintingResource < ApplicationResource
     @object.printing_ids[0]
   end
 
+  filter :distinct_cards, :boolean do
+    eq do |scope, value|
+      value ? scope.where('id = printing_ids[1]') : scope
+    end
+  end
+
   filter :search, :string, single: true do
     eq do |scope, value|
       query_builder = PrintingSearchQueryBuilder.new(value)

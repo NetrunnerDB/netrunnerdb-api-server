@@ -38,9 +38,10 @@ resource 'Printings' do
     end
   end
 
-  # get "/api/v3/public/printings?filter[distinct_cards]" do
-  #   example_request "Filter - Distinct Cards" do
-  #     expect(status).to eq 200
-  #   end
-  # end
+  get '/api/v3/public/printings?filter[distinct_cards]=true' do
+    example_request 'Filter - Distinct Cards' do
+      explanation 'The distinct_cards filter will return only the latest printing of each card.'
+      expect(status).to eq 200
+    end
+  end
 end
