@@ -13,9 +13,7 @@ class CardSetResource < ApplicationResource
   attribute :legacy_code, :string
   attribute :first_printing_id, :string do
     first_printing = UnifiedPrinting.find_by(card_set_id: @object.id, position_in_set: 1)
-    return if first_printing.nil?
-
-    first_printing.id
+    first_printing&.id
   end
   attribute :released_by, :string
   attribute :updated_at, :datetime
