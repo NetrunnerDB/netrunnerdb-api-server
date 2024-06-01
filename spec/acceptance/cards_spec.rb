@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Cards" do
-  header "Content-Type", "application/json"
-  header "Host", "api-preview.netrunnerdb.com"
+resource 'Cards' do
+  header 'Content-Type', 'application/json'
+  header 'Host', 'api-preview.netrunnerdb.com'
 
-  get "/api/v3/public/cards" do
-    example_request "All Cards" do
+  get '/api/v3/public/cards' do
+    example_request 'All Cards' do
       expect(status).to eq 200
     end
   end
 
-  get "/api/v3/public/cards/:id" do
+  get '/api/v3/public/cards/:id' do
     parameter :id, type: :string, required: true
 
     let(:id) { 'hedge_fund' }
-    example_request "Get A Single Card" do
+    example_request 'Get A Single Card' do
       expect(status).to eq 200
     end
   end

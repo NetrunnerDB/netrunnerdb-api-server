@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Printings" do
-  header "Content-Type", "application/json"
-  header "Host", "api-preview.netrunnerdb.com"
+resource 'Printings' do
+  header 'Content-Type', 'application/json'
+  header 'Host', 'api-preview.netrunnerdb.com'
 
-  get "/api/v3/public/printings" do
-    example_request "All Printings" do
+  get '/api/v3/public/printings' do
+    example_request 'All Printings' do
       expect(status).to eq 200
     end
   end
 
-  get "/api/v3/public/printings/:id" do
+  get '/api/v3/public/printings/:id' do
     parameter :id, type: :string, required: true
 
     let(:id) { '01056' }
-    example_request "Get A Single Printing" do
+    example_request 'Get A Single Printing' do
       expect(status).to eq 200
     end
   end
@@ -38,5 +40,4 @@ resource "Printings" do
   #     expect(status).to eq 200
   #   end
   # end
-
 end
