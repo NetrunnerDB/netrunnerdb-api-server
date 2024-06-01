@@ -74,6 +74,20 @@ class CardResource < ApplicationResource
     @object.printing_ids[0]
   end
 
+  filter :search, :string, single: true do
+    eq do |scope, value|
+      query_builder = CardSearchQueryBuilder.new(value)
+      if query_builder.parse_error.nil?
+        scope.left_joins(query_builder.left_joins)
+             .where(query_builder.where, *query_builder.where_values)
+             .distinct
+      else
+        raise JSONAPI::Exceptions::BadRequest,
+              format('Invalid search query: [%s] / %s', value[0], query_builder.parse_error)
+      end
+    end
+  end
+
   belongs_to :side
   belongs_to :faction
   belongs_to :card_type

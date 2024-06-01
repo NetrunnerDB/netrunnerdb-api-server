@@ -304,6 +304,7 @@ There are 5 types of fields in the Search Filter:
       # Generate SQL query and parameters from AST
       # This has the side effect of adding the SQL parameters to @where_values
       @where_values = []
+      # TODO(plural): Capture any exceptions in here and return them as well formatted errors.
       @where = transform.apply(@parse_tree).construct_clause(@where_values, fields)
 
       # TODO(plural): build in explicit support for requirements
