@@ -20,16 +20,7 @@ resource "Sides" do
     end
   end
 
-  get "/api/v3/public/sides/:id/relationships/card_types" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'corp' }
-    example_request "Relationship - Get Card Type IDs for a Side" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/sides/:id/card_types" do
+  get "/api/v3/public/card_types?filter[side_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -38,16 +29,7 @@ resource "Sides" do
     end
   end
 
-  get "/api/v3/public/sides/:id/relationships/factions" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'runner' }
-    example_request "Relationship - Get Faction IDs for a Side" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/sides/:id/factions" do
+  get "/api/v3/public/factions?filter[side_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'runner' }
@@ -56,16 +38,7 @@ resource "Sides" do
     end
   end
 
-  get "/api/v3/public/sides/:id/relationships/cards" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'corp' }
-    example_request "Relationship - Get Card IDs for a Side" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/sides/:id/cards" do
+  get "/api/v3/public/cards?filter[side_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }
@@ -74,16 +47,7 @@ resource "Sides" do
     end
   end
 
-  get "/api/v3/public/sides/:id/relationships/printings" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'corp' }
-    example_request "Relationship - Get Printing IDs for a Side" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/sides/:id/printings" do
+  get "/api/v3/public/printings?filter[side_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'corp' }

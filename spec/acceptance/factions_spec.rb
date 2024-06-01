@@ -38,34 +38,16 @@ resource "Factions" do
     end
   end
 
-  get "/api/v3/public/factions/:id/relationships/side" do
+  get "/api/v3/public/sides/:id" do
     parameter :id, type: :string, required: true
 
-    let(:id) { 'weyland_consortium' }
-    example_request "Relationship - Get Side ID for a Faction" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/factions/:id/side" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'weyland_consortium' }
+    let(:id) { 'runner' }
     example_request "Relationship - Get Side for a Faction" do
       expect(status).to eq 200
     end
   end
 
-  get "/api/v3/public/factions/:id/relationships/cards" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'neutral_runner' }
-    example_request "Relationship - Get Card Ids for a Faction" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/factions/:id/cards" do
+  get "/api/v3/public/cards?filter[faction_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'neutral_runner' }
@@ -74,16 +56,7 @@ resource "Factions" do
     end
   end
 
-  get "/api/v3/public/factions/:id/relationships/printings" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'neutral_corp' }
-    example_request "Relationship - Get Printing Ids for a Faction" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/factions/:id/printings" do
+  get "/api/v3/public/printings?filter[faction_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'neutral_corp' }

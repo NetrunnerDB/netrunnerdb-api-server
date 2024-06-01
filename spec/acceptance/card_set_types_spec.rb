@@ -20,21 +20,4 @@ resource "Card Set Types" do
     end
   end
 
-  get "/api/v3/public/card_set_types/:id/relationships/card_sets" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'booster_pack' }
-    example_request "Relationship - Get Card Set IDs for a Card Set Type" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/card_set_types/:id/card_sets" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'booster_pack' }
-    example_request "Relationship - Get Card Sets for a Card Set Type" do
-      expect(status).to eq 200
-    end
-  end
 end

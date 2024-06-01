@@ -20,39 +20,4 @@ resource "Card Subtypes" do
     end
   end
 
-  get "/api/v3/public/card_subtypes/:id/relationships/cards" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'advertisement' }
-    example_request "Relationship - Get Card IDs for a Card Subtype" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/card_subtypes/:id/cards" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'advertisement' }
-    example_request "Relationship - Get Cards for a Card Subtype" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/card_subtypes/:id/relationships/printings" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'advertisement' }
-    example_request "Relationship - Get Printing IDs for a Card Subtype" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/card_subtypes/:id/printings" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'advertisement' }
-    example_request "Relationship - Get Printings for a Card Subtype" do
-      expect(status).to eq 200
-    end
-  end
 end

@@ -20,16 +20,7 @@ resource "Illustrators" do
     end
   end
 
-  get "/api/v3/public/illustrators/:id/relationships/printings" do
-    parameter :id, type: :string, required: true
-
-    let(:id) { 'tom_of_netrunner' }
-    example_request "Relationship - Get Printing IDs for an Illustrator" do
-      expect(status).to eq 200
-    end
-  end
-
-  get "/api/v3/public/illustrators/:id/printings" do
+  get "/api/v3/public/printings?filter[illustrator_id]=:id" do
     parameter :id, type: :string, required: true
 
     let(:id) { 'tom_of_netrunner' }
