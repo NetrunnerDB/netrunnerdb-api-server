@@ -25,7 +25,12 @@ Rails.application.routes.draw do
     post :validate_deck, to: 'validate_deck#index'
   end
 
-  # namespace :api do
+  scope path: PrivateApplicationResource.endpoint_namespace,
+        defaults: { format: :jsonapi },
+        constraints: { format: :jsonapi } do
+    resources :user, only: %i[index]
+  end
+   # namespace :api do
   #   namespace :v3 do
   #     namespace :private, defaults: { format: :json } do
   #       # Don't generate links or relationship routes for decks.
