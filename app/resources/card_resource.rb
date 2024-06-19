@@ -97,4 +97,6 @@ class CardResource < ApplicationResource
       helpers.card_subtypes_url(params: { filter: { id: card.card_subtype_ids.join(',') } })
     end
   end
+
+  has_many :rulings
 end
