@@ -3,6 +3,7 @@
 # Public resource for CardSet object.
 class CardSetResource < ApplicationResource
   primary_endpoint '/card_sets', %i[index show]
+  self.default_page_size = 1000
 
   attribute :id, :string
   attribute :name, :string

@@ -4,6 +4,8 @@
 class CardCycleResource < ApplicationResource
   primary_endpoint '/card_cycles', %i[index show]
 
+  self.default_page_size = 1000
+
   attribute :id, :string
   attribute :name, :string
   attribute :date_release, :date
