@@ -43,6 +43,9 @@ You can find the full list of routes here:
 
 API Documentation will be available at `http://localhost:3000/api/docs/`.
 
+Run `RAILS_ENV=test bundle exec rails db:reset` with `docker compose run` or in a
+shell in the container to load the fixture data for the tests.
+
 To re-generate API documentation (in test environment to ensure minimal changes) run:
 ```
 docker compose run -e RAILS_ENV=test nrdb_api_server bundle exec rake docs:generate
