@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_12_220325) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_22_192959) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -220,6 +220,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_12_220325) do
     t.datetime "updated_at", null: false
     t.integer "position_in_set"
     t.string "released_by"
+  end
+
+  create_table "printings_card_subtypes", id: false, force: :cascade do |t|
+    t.text "printing_id", null: false
+    t.text "card_subtype_id", null: false
+    t.index ["printing_id", "card_subtype_id"], name: "index_printings_card_subtypes_on_card_id_and_subtype_id"
   end
 
   create_table "restrictions", id: :string, force: :cascade do |t|
