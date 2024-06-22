@@ -29,6 +29,7 @@ class PrintingResource < ApplicationResource
   attribute :card_type_id, :string
   attribute :side_id, :string
   attribute :faction_id, :string
+
   attribute :advancement_requirement, :string do
     @object.advancement_requirement == -1 ? 'X' : @object.advancement_requirement
   end
@@ -85,11 +86,47 @@ class PrintingResource < ApplicationResource
   attribute :images, :hash do
     images(@object.id)
   end
-  # Synthesized attributes
-  #  attributes :card_abilities, :latest_printing_id, :restrictions
+
+  attribute :card_abilitites, :hash do
+    {
+      additional_cost: @object.additional_cost,
+      advanceable: @object.advanceable,
+      gains_subroutines: @object.gains_subroutines,
+      interrupt: @object.interrupt,
+      link_provided: @object.link_provided,
+      mu_provided: @object.mu_provided,
+      num_printed_subroutines: @object.num_printed_subroutines,
+      on_encounter_effect: @object.on_encounter_effect,
+      performs_trace: @object.performs_trace,
+      recurring_credits_provided: @object.recurring_credits_provided,
+      trash_ability: @object.trash_ability,
+    }
+  end
+
   attribute :latest_printing_id, :string do
     @object.printing_ids[0]
   end
+
+  def packed_restriction_to_map(packed)
+    m = {}
+    packed.each do |p|
+      x = p.split('=')
+      m[x[0]] = x[1].to_i
+    end
+    return m
+  end
+
+  attribute :restrictions, :hash do
+    {
+      banned: @object.restrictions_banned,
+      global_penalty: @object.restrictions_global_penalty,
+      points: packed_restriction_to_map(@object.restrictions_points),
+      restricted: @object.restrictions_restricted,
+      universal_faction_cost: packed_restriction_to_map(@object.restrictions_universal_faction_cost)
+    }
+  end
+
+    34123
 
   filter :distinct_cards, :boolean do
     eq do |scope, value|
@@ -114,10 +151,14 @@ class PrintingResource < ApplicationResource
   belongs_to :card
   belongs_to :card_cycle
   belongs_to :card_set
-  belongs_to :side
-  belongs_to :faction
   belongs_to :card_type
-  # TODO(plural): Fix these relationships.
-  # has_many :illustrators
-  # has_many :card_subtypes
+  belongs_to :faction
+  belongs_to :side
+
+  many_to_many :illustrators do
+    link do |p|
+      helpers = Rails.application.routes.url_helpers
+      helpers.illustrators_url(params: { filter: { id: p.illustrator_ids.join(',') } })
+    end
+  end
 end
