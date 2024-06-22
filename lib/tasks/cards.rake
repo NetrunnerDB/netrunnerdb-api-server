@@ -214,6 +214,43 @@ namespace :cards do
     }
   end
 
+  # This assumes that cards and card subtypes have already been loaded.
+  def import_printing_subtypes()
+    printing_id_to_card_subtype_id = []
+    Card.all.each { |c|
+      c.printing_ids.each { |p|
+        c.card_subtype_ids.each { |s|
+          printing_id_to_card_subtype_id << [p, s]
+        }
+      }
+    }
+
+    # Use a transaction since we are completely replacing the mapping table.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing printing -> subtype mappings'
+      unless ActiveRecord::Base.connection.delete("DELETE FROM printings_card_subtypes")
+        puts 'Hit an error while deleting card -> subtype mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      num_assoc = 0
+      printing_id_to_card_subtype_id.each_slice(250) { |m|
+        num_assoc += m.length
+        puts '  %d printing -> subtype associations' % num_assoc
+        sql = 'INSERT INTO printings_card_subtypes (printing_id, card_subtype_id) VALUES '
+        vals = []
+        m.each { |m|
+         vals << "('%s', '%s')" % [m[0], m[1]]
+        }
+        sql << vals.join(', ')
+        unless ActiveRecord::Base.connection.execute(sql)
+          puts 'Hit an error while inserting card -> subtype mappings. rolling back.'
+          raise ActiveRecord::Rollback
+        end
+      }
+    end
+  end
+
   # We don't reload JSON files in here because we have already saved all the cards
   # with their subtypes fields and can parse from there.
   def import_card_subtypes(cards)
@@ -772,6 +809,9 @@ namespace :cards do
 
     puts 'Importing Printings...'
     import_printings(printings_json)
+
+    puts 'Importing Subtypes for Printings...'
+    import_printing_subtypes()
 
     puts 'Importing Illustrators...'
     import_illustrators()

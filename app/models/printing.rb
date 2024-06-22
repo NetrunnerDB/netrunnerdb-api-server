@@ -7,6 +7,8 @@ class Printing < ApplicationRecord
   has_one :faction, :through => :card
   has_one :card_cycle, :through => :card_set
   has_one :card_type, :through => :card
+  has_many :printing_card_subtypes
+  has_many :card_subtypes, :through => :printing_card_subtypes
   has_one :side, :through => :card
   has_many :illustrator_printings
   has_many :illustrators, :through => :illustrator_printings
