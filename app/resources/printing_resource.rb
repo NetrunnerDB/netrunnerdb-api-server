@@ -147,23 +147,37 @@ class PrintingResource < ApplicationResource
   end
 
   belongs_to :card
-  belongs_to :card_cycle
+  belongs_to :card_cycle do
+    link do |p|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, p.card_cycle_ids.join(',')]
+    end
+  end
   belongs_to :card_set
-  belongs_to :card_type
-  belongs_to :faction
-  belongs_to :side
+  belongs_to :card_type do
+    link do |p|
+      '%s/%s' % [Rails.application.routes.url_helpers.card_types_url, p.card_type_id]
+    end
+  end
+  belongs_to :faction do
+    link do |p|
+      '%s/%s' % [Rails.application.routes.url_helpers.factions_url, p.faction_id]
+    end
+  end
+  belongs_to :side do
+    link do |p|
+      '%s/%s' % [Rails.application.routes.url_helpers.sides_url, p.side_id]
+    end
+  end
 
   many_to_many :card_subtypes do
-    link do |card|
-      helpers = Rails.application.routes.url_helpers
-      helpers.card_subtypes_url(params: { filter: { id: card.card_subtype_ids.join(',') } })
+    link do |p|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, p.card_subtype_ids.join(',')]
     end
   end
 
   many_to_many :illustrators do
     link do |p|
-      helpers = Rails.application.routes.url_helpers
-      helpers.illustrators_url(params: { filter: { id: p.illustrator_ids.join(',') } })
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.illustrators_url, p.illustrator_ids.join(',')]
     end
   end
 end
