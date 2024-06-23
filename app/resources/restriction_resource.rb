@@ -8,6 +8,7 @@ class RestrictionResource < ApplicationResource
   attribute :name, :string
   attribute :date_start, :date
   attribute :point_limit, :integer
+  attribute :format_id, :string
   attribute :verdicts, :hash do
     verdicts(@object)
   end
@@ -26,4 +27,7 @@ class RestrictionResource < ApplicationResource
       'global_penalty': obj.global_penalty_cards.pluck(:card_id),
       'points': obj.points_cards.pluck(:card_id, :value).to_h }
   end
+
+  belongs_to :format
+  # TODO(plural): Expand relationships for restriction.
 end

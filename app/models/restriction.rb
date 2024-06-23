@@ -3,6 +3,8 @@
 class Restriction < ApplicationRecord
   has_many :snapshots
 
+  belongs_to :format
+
   has_one :restriction_card_banned
   has_many :banned_cards, :through => :restriction_card_banned, :source => :card
 

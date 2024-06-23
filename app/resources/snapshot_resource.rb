@@ -23,10 +23,9 @@ class SnapshotResource < ApplicationResource
 
   belongs_to :format
   belongs_to :card_pool
-  #  belongs_to :restriction
 
-  has_many :card_cycles
-  has_many :card_sets
-
+  # TODO(plural): Fix cycle, set, and restriction relationships.
+  # has_many :card_cycles
+  # has_many :card_sets
   # has_many :restrictions
 end
