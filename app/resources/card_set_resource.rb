@@ -22,7 +22,8 @@ class CardSetResource < ApplicationResource
   belongs_to :card_cycle
   belongs_to :card_set_type
 
-  # TODO(plural): Sort out the cards relationship
+  # TODO(plural): Add working card relationship
   # has_many :cards, relation_name: :unified_cards
+
   has_many :printings
 end
