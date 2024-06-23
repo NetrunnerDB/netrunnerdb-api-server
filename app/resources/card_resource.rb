@@ -91,7 +91,7 @@ class CardResource < ApplicationResource
   belongs_to :side
   belongs_to :faction
   belongs_to :card_type
-  has_many :card_subtypes do
+  many_to_many :card_subtypes do
     link do |card|
       helpers = Rails.application.routes.url_helpers
       helpers.card_subtypes_url(params: { filter: { id: card.card_subtype_ids.join(',') } })

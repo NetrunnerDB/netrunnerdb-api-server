@@ -53,8 +53,8 @@ class PrintingResource < ApplicationResource
   attribute :text, :string
   attribute :trash_cost, :integer
   attribute :is_unique, :boolean
-#  attribute :card_subtype_ids, :array_of_strings
-#  attribute :card_subtype_names, :array_of_strings
+  attribute :card_subtype_ids, :array_of_strings
+  attribute :card_subtype_names, :array_of_strings
   attribute :display_subtypes, :string
   attribute :attribution, :string
   attribute :format_ids, :array_of_strings
@@ -126,8 +126,6 @@ class PrintingResource < ApplicationResource
     }
   end
 
-    34123
-
   filter :distinct_cards, :boolean do
     eq do |scope, value|
       value ? scope.where('id = printing_ids[1]') : scope
@@ -155,7 +153,7 @@ class PrintingResource < ApplicationResource
   belongs_to :faction
   belongs_to :side
 
-  has_many :card_subtypes do
+  many_to_many :card_subtypes do
     link do |card|
       helpers = Rails.application.routes.url_helpers
       helpers.card_subtypes_url(params: { filter: { id: card.card_subtype_ids.join(',') } })
