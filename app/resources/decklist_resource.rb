@@ -28,7 +28,7 @@ class DecklistResource < ApplicationResource
 
   attribute :card_slots, :hash do
     cards = {}
-    @object.decklist_cards.each do |c|
+    @object.decklist_cards.order(:card_id).each do |c|
       cards[c.card_id] = c.quantity
     end
     cards
