@@ -21,7 +21,6 @@ class DecklistResource < ApplicationResource
   end
 
   attribute :card_slots, :hash do
-    Rails.logger.error 'asdf'
     cards = {}
     @object.decklist_cards.each do |c|
       cards[c.card_id] = c.quantity
