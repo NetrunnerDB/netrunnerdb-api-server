@@ -88,6 +88,16 @@ class CardResource < ApplicationResource
     end
   end
 
+  has_many :card_cycles do
+    link do |c|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_ids.join(',')]
+    end
+  end
+  has_many :card_sets do
+    link do |c|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_sets_url, c.card_set_ids.join(',')]
+    end
+  end
   many_to_many :card_subtypes do
     link do |c|
       '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, c.card_subtype_ids.join(',')]
