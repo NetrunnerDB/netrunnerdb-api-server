@@ -21,7 +21,7 @@ class FormatResource < ApplicationResource
   end
   attribute :updated_at, :datetime
 
-  # has_many :card_pools
-  # has_many :snapshots
-  # has_many :restrictions
+  has_many :card_pools
+  has_many :snapshots
+  has_many :restrictions
 end
