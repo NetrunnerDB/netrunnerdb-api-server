@@ -13,6 +13,6 @@ class FactionResource < ApplicationResource
 
   belongs_to :side
   has_many :cards
-  # TODO(plural): Add decklist relationship
+  has_many :decklists
   has_many :printings
 end

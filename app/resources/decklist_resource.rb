@@ -15,9 +15,15 @@ class DecklistResource < ApplicationResource
   attribute :created_at, :datetime
   attribute :updated_at, :datetime
 
-  attribute :faction_id, :string do
+  attribute :faction_id, :string, filterable: true do
     id = Card.find(@object.identity_card_id)
     id&.faction_id
+  end
+
+  filter :faction_id, :string do
+    eq do |scope, value|
+      scope.by_faction(value)
+    end
   end
 
   attribute :card_slots, :hash do
