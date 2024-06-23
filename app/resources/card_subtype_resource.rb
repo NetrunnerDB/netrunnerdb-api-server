@@ -9,15 +9,13 @@ class CardSubtypeResource < ApplicationResource
   attribute :updated_at, :datetime
 
   many_to_many :cards do
-    link do |p|
-      helpers = Rails.application.routes.url_helpers
-      helpers.cards_url(params: { filter: { card_subtype_id: p.id } })
+    link do |t|
+      '%s?filter[card_subtype_id]=%s' % [Rails.application.routes.url_helpers.cards_url, t.id]
     end
   end
   many_to_many :printings do
-    link do |p|
-      helpers = Rails.application.routes.url_helpers
-      helpers.printings_url(params: { filter: { card_subtype_id: p.id } })
+    link do |t|
+      '%s?filter[card_subtype_id]=%s' % [Rails.application.routes.url_helpers.printings_url, t.id]
     end
   end
 end
