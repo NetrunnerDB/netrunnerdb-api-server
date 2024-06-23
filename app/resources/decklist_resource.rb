@@ -52,15 +52,13 @@ class DecklistResource < ApplicationResource
   belongs_to :side
   belongs_to :faction do
     link do |decklist|
-      helpers = Rails.application.routes.url_helpers
-      helpers.factions_url(params: { filter: { id: decklist.faction_id } })
+      '%s/%s' % [ Rails.application.routes.url_helpers.factions_url, decklist.faction_id ]
     end
   end
 
   belongs_to :identity_card, resource: CardResource do #, foreign_key: :identity_card_id do
     link do |decklist|
-      helpers = Rails.application.routes.url_helpers
-      helpers.cards_url(params: { filter: { id: decklist.identity_card_id } })
+      '%s/%s' % [ Rails.application.routes.url_helpers.cards_url, decklist.identity_card_id ]
     end
   end
 

@@ -13,9 +13,26 @@ class CardPoolResource < ApplicationResource
     @object.cards.length
   end
 
-  has_one :format
-  has_many :card_cycles
-  has_many :card_sets
-  has_many :cards, relation_name: :unified_cards
-  has_many :snapshots
+  has_one :format do
+    link do |c|
+      '%s/%s' % [Rails.application.routes.url_helpers.formats_url, c.format_id]
+    end
+  end
+  has_many :card_cycles do
+    link do |c|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_ids.join(',')]
+    end
+  end
+  has_many :card_sets do
+    link do |c|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_sets_url, c.card_set_ids.join(',')]
+    end
+  end
+  # Make a working cards relationship
+  # has_many :cards, relation_name: :unified_cards
+  has_many :snapshots do
+    link do |c|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.snapshots_url, c.snapshot_ids.join(',')]
+    end
+  end
 end
