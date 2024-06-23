@@ -88,14 +88,18 @@ class CardResource < ApplicationResource
     end
   end
 
-  belongs_to :side
-  belongs_to :faction
+  many_to_many :card_subtypes do
+    link do |c|
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, c.card_subtype_ids.join(',')]
+    end
+  end
   belongs_to :card_type
- many_to_many :card_subtypes do
-   link do |c|
-    '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, c.card_subtype_ids.join(',')]
-   end
- end
-
+  belongs_to :faction
+  has_many :printings do
+    link do |c|
+      '%s?filter[card_id]=%s' % [Rails.application.routes.url_helpers.printings_url, c.id]
+    end
+  end
   has_many :rulings
+  belongs_to :side
 end
