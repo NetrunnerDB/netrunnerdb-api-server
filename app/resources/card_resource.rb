@@ -112,7 +112,8 @@ class CardResource < ApplicationResource
   end
   many_to_many :card_subtypes do
     link do |c|
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, c.card_subtype_ids.join(',')]
+      card_subtype_ids = c.card_subtype_ids.empty? ? 'none' : c.card_subtype_ids.join(',')
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, card_subtype_ids]
     end
   end
   belongs_to :card_type
