@@ -20,7 +20,8 @@ class CardPoolResource < ApplicationResource
   end
   has_many :card_cycles do
     link do |c|
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_ids.join(',')]
+      card_cycle_ids = c.card_cycle_ids.empty? ? 'none' : c.card_cycle_ids.join(',')
+      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, card_cycle_ids]
     end
   end
   has_many :card_sets do
