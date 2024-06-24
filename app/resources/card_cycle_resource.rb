@@ -19,7 +19,6 @@ class CardCycleResource < ApplicationResource
   attribute :updated_at, :datetime
 
   has_many :card_sets
-  # TODO(plural): Add working card relationship
-  # has_many :cards, relation_name: :unified_cards
+  has_many :cards, relation_name: :unified_cards
   has_many :printings
 end

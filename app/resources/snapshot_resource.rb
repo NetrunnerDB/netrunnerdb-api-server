@@ -22,10 +22,15 @@ class SnapshotResource < ApplicationResource
   attribute :updated_at, :datetime
 
   belongs_to :format
-  belongs_to :card_pool
-
-  # TODO(plural): Fix cycle, set, and restriction relationships.
-  # has_many :card_cycles
-  # has_many :card_sets
-  # has_many :restrictions
+  has_one :card_pool do
+    link do |s|
+      '%s/%s' % [Rails.application.routes.url_helpers.card_pools_url, s.card_pool_id]
+    end
+  end
+  has_one :restriction do
+    link do |s|
+      restriction_id = s.restriction_id || 'none'
+      '%s/%s' % [Rails.application.routes.url_helpers.restrictions_url, restriction_id]
+    end
+  end
 end

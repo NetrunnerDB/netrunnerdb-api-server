@@ -64,7 +64,6 @@ class PrintingResource < ApplicationResource
   attribute :card_set_ids, :array_of_strings
   attribute :designed_by, :string
   attribute :released_by, :string
-  # TODO(plural): is printings_released_by needed?
   attribute :printings_released_by, :string
   attribute :pronouns, :string
   attribute :pronunciation_approximation, :string

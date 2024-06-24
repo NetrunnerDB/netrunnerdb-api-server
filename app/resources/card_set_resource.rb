@@ -19,11 +19,14 @@ class CardSetResource < ApplicationResource
   attribute :released_by, :string
   attribute :updated_at, :datetime
 
-  belongs_to :card_cycle
+  belongs_to :card_cycle do
+    link do |c|
+      '%s/%s' % [Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_id]
+    end
+  end
   belongs_to :card_set_type
 
-  # TODO(plural): Add working card relationship
-  # has_many :cards, relation_name: :unified_cards
+  has_many :cards, relation_name: :unified_cards
 
   has_many :printings
 end

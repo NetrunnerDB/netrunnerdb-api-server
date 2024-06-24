@@ -74,6 +74,18 @@ class CardResource < ApplicationResource
     @object.printing_ids[0]
   end
 
+  filter :card_cycle_id, :string do
+    eq do |scope, value|
+      scope.by_card_cycle(value)
+    end
+  end
+
+  filter :card_set_id, :string do
+    eq do |scope, value|
+      scope.by_card_set(value)
+    end
+  end
+
   filter :search, :string, single: true do
     eq do |scope, value|
       query_builder = CardSearchQueryBuilder.new(value)

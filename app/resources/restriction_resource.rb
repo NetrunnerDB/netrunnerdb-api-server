@@ -29,5 +29,4 @@ class RestrictionResource < ApplicationResource
   end
 
   belongs_to :format
-  # TODO(plural): Expand relationships for restriction.
 end
