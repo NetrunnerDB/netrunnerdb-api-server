@@ -7,6 +7,21 @@ resource 'Printings' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Printing resources have the following relationships for their records.
+
+    * Card
+    * Card Cycle
+    * Card Set
+    * Card Subtypes
+    * Card Type
+    * Faction
+    * Illustrators
+    * Side
+  HEREDOC
+
   get '/api/v3/public/printings' do
     example_request 'All Printings' do
       expect(status).to eq 200

@@ -7,6 +7,18 @@ resource 'Sides' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Side resources have the following relationships for their records.
+
+    * Card Types
+    * Cards
+    * Decklists
+    * Factions
+    * Printings
+  HEREDOC
+
   get '/api/v3/public/sides' do
     example_request 'All Sides' do
       expect(status).to eq 200

@@ -2,7 +2,7 @@
   "resources": [
     {
       "name": "Card Cycles",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard Cycle resources have the following relationships for their records.\n\n* Card Sets\n* Cards\n* Printings\n",
       "examples": [
         {
           "description": "All Card Cycles",
@@ -22,7 +22,7 @@
     },
     {
       "name": "Card Pools",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard Pool resources have the following relationships for their records.\n\n* Card Cycles\n* Card Sets\n* Format\n* Snapshots\n",
       "examples": [
         {
           "description": "All Card Pools",
@@ -42,7 +42,7 @@
     },
     {
       "name": "Card Set Types",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard Set Type resources have the following relationships for their records.\n\n* Card Sets\n",
       "examples": [
         {
           "description": "All Card Set Types",
@@ -62,7 +62,7 @@
     },
     {
       "name": "Card Sets",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard Set resources have the following relationships for their records.\n\n* Card Cycle\n* Card Set Type\n* Cards\n* Printings\n",
       "examples": [
         {
           "description": "All Card Sets",
@@ -96,7 +96,7 @@
     },
     {
       "name": "Card Subtypes",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard Subtype resources have the following relationships for their records.\n\n* Cards\n* Printings\n",
       "examples": [
         {
           "description": "All Card Subtypes",
@@ -116,7 +116,7 @@
     },
     {
       "name": "Card Types",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard Type resources have the following relationships for their records.\n\n* Cards\n* Printings\n* Side\n",
       "examples": [
         {
           "description": "All Card Types",
@@ -150,7 +150,7 @@
     },
     {
       "name": "Cards",
-      "explanation": null,
+      "explanation": "## Relationships\n\nCard resources have the following relationships for their records.\n\n* Card Cycles\n* Card Sets\n* Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)\n* Card Type\n* Faction\n* Printings\n* Rulings\n* Side\n",
       "examples": [
         {
           "description": "All Cards",
@@ -177,7 +177,7 @@
     },
     {
       "name": "Factions",
-      "explanation": null,
+      "explanation": "## Relationships\n\nFaction resources have the following relationships for their records.\n\n* Cards\n* Decklists\n* Printings\n* Side\n",
       "examples": [
         {
           "description": "All Factions",
@@ -232,7 +232,7 @@
     },
     {
       "name": "Formats",
-      "explanation": null,
+      "explanation": "## Relationships\n\nFormat resources have the following relationships for their records.\n\n* Card Pools\n* Snapshots\n* Restrictions\n",
       "examples": [
         {
           "description": "All Formats",
@@ -252,7 +252,7 @@
     },
     {
       "name": "Illustrators",
-      "explanation": null,
+      "explanation": "## Relationships\n\nIllustrator resources have the following relationships for their records.\n\n* Printings\n",
       "examples": [
         {
           "description": "All Illustrators",
@@ -279,7 +279,7 @@
     },
     {
       "name": "Printings",
-      "explanation": null,
+      "explanation": "## Relationships\n\nPrinting resources have the following relationships for their records.\n\n* Card\n* Card Cycle\n* Card Set\n* Card Subtypes\n* Card Type\n* Faction\n* Illustrators\n* Side\n",
       "examples": [
         {
           "description": "All Printings",
@@ -313,7 +313,7 @@
     },
     {
       "name": "Restrictions",
-      "explanation": null,
+      "explanation": "## Relationships\n\nRestriction resources have the following relationships for their records.\n\n* Format\n",
       "examples": [
         {
           "description": "All Restrictions",
@@ -333,7 +333,7 @@
     },
     {
       "name": "Rulings",
-      "explanation": null,
+      "explanation": "## Relationships\n\nRuling resources have the following relationships for their records.\n\n* Card\n",
       "examples": [
         {
           "description": "All Rulings",
@@ -360,7 +360,7 @@
     },
     {
       "name": "Sides",
-      "explanation": null,
+      "explanation": "## Relationships\n\nSide resources have the following relationships for their records.\n\n* Card Types\n* Cards\n* Decklists\n* Factions\n* Printings\n",
       "examples": [
         {
           "description": "All Sides",
@@ -408,7 +408,7 @@
     },
     {
       "name": "Snapshots",
-      "explanation": null,
+      "explanation": "## Relationships\n\nSnapshot resources have the following relationships for their records.\n\n* Card Pool\n* Format\n* Restriction\n",
       "examples": [
         {
           "description": "All Snapshots",

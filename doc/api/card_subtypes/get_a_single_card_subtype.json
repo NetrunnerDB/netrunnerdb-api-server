@@ -1,6 +1,6 @@
 {
   "resource": "Card Subtypes",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nCard Subtype resources have the following relationships for their records.\n\n* Cards\n* Printings\n",
   "http_method": "GET",
   "route": "/api/v3/public/card_subtypes/:id",
   "description": "Get A Single Card Subtype",
@@ -30,7 +30,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"code_gate\",\n    \"type\": \"card_subtypes\",\n    \"attributes\": {\n      \"name\": \"Code Gate\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/code_gate\"\n    }\n  },\n  \"meta\": {\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"code_gate\",\n    \"type\": \"card_subtypes\",\n    \"attributes\": {\n      \"name\": \"Code Gate\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"cards\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/cards?filter[card_subtype_id]=code_gate\"\n        }\n      },\n      \"printings\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/printings?filter[card_subtype_id]=code_gate\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/code_gate\"\n    }\n  },\n  \"meta\": {\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json; charset=utf-8"
       },

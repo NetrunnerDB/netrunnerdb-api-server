@@ -1,6 +1,6 @@
 {
   "resource": "Illustrators",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nIllustrator resources have the following relationships for their records.\n\n* Printings\n",
   "http_method": "GET",
   "route": "/api/v3/public/illustrators/:id",
   "description": "Get A Single Illustrator",

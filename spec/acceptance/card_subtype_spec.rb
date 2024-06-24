@@ -7,6 +7,15 @@ resource 'Card Subtypes' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Card Subtype resources have the following relationships for their records.
+
+    * Cards
+    * Printings
+  HEREDOC
+
   get '/api/v3/public/card_subtypes' do
     example_request 'All Card Subtypes' do
       expect(status).to eq 200

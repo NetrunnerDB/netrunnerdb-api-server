@@ -1,6 +1,6 @@
 {
   "resource": "Rulings",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nRuling resources have the following relationships for their records.\n\n* Card\n",
   "http_method": "GET",
   "route": "/api/v3/public/rulings",
   "description": "All Rulings",

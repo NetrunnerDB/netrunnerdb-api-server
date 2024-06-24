@@ -7,6 +7,14 @@ resource 'Rulings' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Ruling resources have the following relationships for their records.
+
+    * Card
+  HEREDOC
+
   get '/api/v3/public/rulings' do
     example_request 'All Rulings' do
       expect(status).to eq 200

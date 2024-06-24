@@ -7,6 +7,17 @@ resource 'Factions' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Faction resources have the following relationships for their records.
+
+    * Cards
+    * Decklists
+    * Printings
+    * Side
+  HEREDOC
+
   get '/api/v3/public/factions' do
     example_request 'All Factions' do
       expect(status).to eq 200

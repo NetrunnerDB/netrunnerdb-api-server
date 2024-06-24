@@ -1,6 +1,6 @@
 {
   "resource": "Card Set Types",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nCard Set Type resources have the following relationships for their records.\n\n* Card Sets\n",
   "http_method": "GET",
   "route": "/api/v3/public/card_set_types/:id",
   "description": "Get A Single Card Set Type",

@@ -7,6 +7,17 @@ resource 'Card Sets' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Card Set resources have the following relationships for their records.
+
+    * Card Cycle
+    * Card Set Type
+    * Cards
+    * Printings
+  HEREDOC
+
   get '/api/v3/public/card_sets' do
     example_request 'All Card Sets' do
       expect(status).to eq 200

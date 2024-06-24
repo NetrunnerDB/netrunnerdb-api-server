@@ -7,6 +7,16 @@ resource 'Formats' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
+  explanation <<~HEREDOC
+    ## Relationships
+
+    Format resources have the following relationships for their records.
+
+    * Card Pools
+    * Snapshots
+    * Restrictions
+  HEREDOC
+
   get '/api/v3/public/formats' do
     example_request 'All Formats' do
       expect(status).to eq 200
