@@ -12,5 +12,4 @@ class PrivateApplicationResource < Graphiti::Resource
   # Default to the public endpoint namespace.
   self.endpoint_namespace = '/api/v3/private'
   self.autolink = true
-  link(:self) { |resource| "#{endpoint[:url]}/#{resource.id}" } if endpoint[:actions].include?(:show)
 end
