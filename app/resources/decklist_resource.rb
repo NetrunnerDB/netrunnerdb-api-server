@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Public resource for CardCycle objects.
+# Public resource for Decklist objects.
 class DecklistResource < ApplicationResource
   primary_endpoint '/decklists', %i[index show]
 
