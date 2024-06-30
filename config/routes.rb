@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         defaults: { format: :jsonapi },
         constraints: { format: :jsonapi } do
     resources :user, only: %i[index]
+    resources :decks
   end
    # namespace :api do
   #   namespace :v3 do
