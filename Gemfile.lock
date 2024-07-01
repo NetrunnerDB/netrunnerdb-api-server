@@ -533,7 +533,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
-    vandal_ui (0.4.5)
     webrick (1.8.1)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -585,7 +584,6 @@ DEPENDENCIES
   simplecov-cobertura
   sprockets-rails
   tzinfo-data
-  vandal_ui (~> 0.4)
 
 RUBY VERSION
    ruby 3.1.4p223
