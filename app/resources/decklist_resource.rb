@@ -55,6 +55,7 @@ class DecklistResource < ApplicationResource
   end
 
   belongs_to :side
+  # TODO(plural): Fix the faction relationship so includes work for it.
   belongs_to :faction do
     link do |decklist|
       '%s/%s' % [ Rails.application.routes.url_helpers.factions_url, decklist.faction_id ]
