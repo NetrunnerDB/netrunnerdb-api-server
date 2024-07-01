@@ -1,6 +1,6 @@
 {
   "resource": "Rulings",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nRuling resources have the following relationships for their records.\n\n* Card\n",
   "http_method": "GET",
   "route": "/api/v3/public/rulings?filter[nsg_rules_team_verified]=:nsg_rules_team_verified",
   "description": "Filter - Get NSG Rules Team Verified Rulings",
@@ -33,11 +33,11 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n\n  ]\n}",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"147388388\",\n      \"type\": \"rulings\",\n      \"attributes\": {\n        \"card_id\": \"sure_gamble\",\n        \"nsg_rules_team_verified\": true,\n        \"question\": \"is the runner required to include this in their deck?\",\n        \"answer\": \"nah. you do you.\",\n        \"text_ruling\": null,\n        \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n      },\n      \"relationships\": {\n        \"card\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/cards/sure_gamble\"\n          }\n        }\n      },\n      \"links\": {\n        \"self\": \"http://localhost:3000/api/v3/public/rulings/147388388\"\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://localhost:3000/api/v3/public/rulings?filter%5Bnsg_rules_team_verified%5D=true&page%5Bnumber%5D=1&page%5Bsize%5D=20\",\n    \"first\": \"http://localhost:3000/api/v3/public/rulings?filter%5Bnsg_rules_team_verified%5D=true&page%5Bnumber%5D=1&page%5Bsize%5D=20\",\n    \"last\": \"http://localhost:3000/api/v3/public/rulings?filter%5Bnsg_rules_team_verified%5D=true&page%5Bnumber%5D=1&page%5Bsize%5D=20\"\n  },\n  \"meta\": {\n  }\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json"
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
-      "response_content_type": "application/vnd.api+json",
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/rulings?filter[nsg_rules_team_verified]=true\" -X GET "
     }
   ]

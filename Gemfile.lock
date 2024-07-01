@@ -100,6 +100,21 @@ GEM
     diff-lcs (1.5.0)
     docile (1.4.0)
     drb (2.2.1)
+    dry-core (1.0.1)
+      concurrent-ruby (~> 1.0)
+      zeitwerk (~> 2.6)
+    dry-inflector (1.0.0)
+    dry-logic (1.5.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-types (1.7.2)
+      bigdecimal (~> 3.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
     erubi (1.12.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -113,17 +128,44 @@ GEM
     google-protobuf (3.25.2)
     googleapis-common-protos-types (1.8.0)
       google-protobuf (~> 3.18)
+    graphiti (1.7.1)
+      activesupport (>= 5.2)
+      concurrent-ruby (~> 1.0)
+      dry-types (>= 0.15.0, < 2.0)
+      graphiti_errors (~> 1.1.0)
+      jsonapi-renderer (~> 0.2, >= 0.2.2)
+      jsonapi-serializable (~> 0.3.0)
+    graphiti-rails (0.4.0)
+      graphiti (~> 1.2)
+      railties (>= 5.0)
+      rescue_registry (~> 1.0)
+    graphiti_errors (1.1.2)
+      jsonapi-serializable (~> 0.1)
+    graphiti_spec_helpers (1.1.0)
+      graphiti (>= 1.0.alpha.1)
+      rspec (~> 3.0)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
     irb (1.7.4)
       reline (>= 0.3.6)
     json (2.7.2)
-    jsonapi-resources (0.10.7)
-      activerecord (>= 4.1)
-      concurrent-ruby
-      railties (>= 4.1)
+    jsonapi-renderer (0.2.2)
+    jsonapi-serializable (0.3.1)
+      jsonapi-renderer (~> 0.2.0)
     jwt (2.7.1)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     kramdown (2.4.0)
       rexml
     language_server-protocol (3.17.0.3)
@@ -349,6 +391,7 @@ GEM
       opentelemetry-semantic_conventions
     opentelemetry-semantic_conventions (1.10.0)
       opentelemetry-api (~> 1.0)
+    ostruct (0.6.0)
     parallel (1.24.0)
     parser (3.3.1.0)
       ast (~> 2.4.1)
@@ -402,6 +445,11 @@ GEM
     regexp_parser (2.9.2)
     reline (0.3.8)
       io-console (~> 0.5)
+    rescue_registry (1.0.0)
+      activesupport (>= 5.0)
+    responders (3.1.1)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.2.8)
       strscan (>= 3.0.9)
     rspec (3.12.0)
@@ -507,18 +555,23 @@ DEPENDENCIES
   factory_bot_rails
   faker
   google-protobuf
-  jsonapi-resources
+  graphiti (~> 1.2)
+  graphiti-rails (~> 0.2)
+  graphiti_spec_helpers
   jwt
+  kaminari (~> 1.0)
   nokogiri
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all
   opentelemetry-sdk
+  ostruct
   parslet
   pg (~> 1.1)
   puma (~> 5.6)
   rack (~> 2.2)
   rack-cors (= 2.0.0)
   rails (>= 7.0.7.1)
+  responders
   rspec-rails
   rspec_api_documentation
   rubocop

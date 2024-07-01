@@ -1,6 +1,6 @@
 {
   "resource": "Card Sets",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nCard Set resources have the following relationships for their records.\n\n* Card Cycle\n* Card Set Type\n* Cards\n* Printings\n",
   "http_method": "GET",
   "route": "/api/v3/public/card_sets?filter[card_set_type_id]=:card_set_type_id",
   "description": "Filter - Get Card Sets filtered to a Card Set Type",
@@ -33,11 +33,11 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n\n  ]\n}",
+      "response_body": "{\n  \"data\": [\n\n  ],\n  \"meta\": {\n  }\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json"
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
-      "response_content_type": "application/vnd.api+json",
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_sets?filter[card_set_type_id]=%3Acard_set_type_id\" -X GET "
     }
   ]

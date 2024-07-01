@@ -1,23 +1,35 @@
 class UnifiedCard < ApplicationRecord
-    include CardAbilities
+  include CardAbilities
 
-    self.primary_key = :id
+  self.primary_key = :id
 
-    belongs_to :faction
-    belongs_to :side
-    belongs_to :card_type
+  belongs_to :card_type
+  belongs_to :faction
+  belongs_to :side
 
-    has_many :card_card_subtypes,
-      :primary_key => :id,
-      :foreign_key => :card_id
+  scope :by_card_cycle, ->(card_cycle_id) {
+    where(id: UnifiedPrinting.select(:card_id).where(card_cycle_id: card_cycle_id))
+  }
+  scope :by_card_set, ->(card_set_id) {
+    where(id: UnifiedPrinting.select(:card_id).where(card_set_id: card_set_id))
+  }
 
-    has_many :card_subtypes, :through => :card_card_subtypes
+  has_many :card_card_subtypes,
+           primary_key: :id,
+           foreign_key: :card_id
 
-    has_many :unified_printings,
-      :primary_key => :id,
-      :foreign_key => :card_id
+  has_many :card_subtypes, through: :card_card_subtypes
 
-    has_many :rulings,
-      :primary_key => :id,
-      :foreign_key => :card_id
+  has_many :unified_printings,
+           primary_key: :id,
+           foreign_key: :card_id
+
+  has_many :card_cycles, through: :unified_printings
+
+  has_many :rulings,
+           primary_key: :id,
+           foreign_key: :card_id
+
+  has_many :decklist_cards, primary_key: :id, foreign_key: :card_id
+  has_many :decklists, through: :decklist_cards, primary_key: :id, foreign_key: :card_id
 end

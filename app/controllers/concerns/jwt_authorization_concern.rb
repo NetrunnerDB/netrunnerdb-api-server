@@ -12,6 +12,10 @@ require 'jwt'
 module JwtAuthorizationConcern
   extend ActiveSupport::Concern
 
+  def current_user
+    @current_user
+  end
+
   included do
     before_action :check_token
   end
@@ -36,19 +40,12 @@ module JwtAuthorizationConcern
             get_or_insert_user(jwt['preferred_username'])
           end
         rescue JWT::DecodeError
+          Rails.logger.error "JWT decode error: #{$!}"
         end
       end
     end
-    if jwt.nil?
-      # This format is a proper JSON::API error message.
-      return render json: {
-        :errors => [{
-          :title => "Unauthorized",
-          :detail => "The request does not contain proper authorization for this resource.",
-          :code => "401",
-          :status => "401"
-        }]}, :status => :unauthorized
-    end
+    raise ApplicationController::UnauthenticatedError if jwt.nil?
+
     @auth_token_payload = jwt
   end
 

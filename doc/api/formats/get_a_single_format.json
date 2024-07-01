@@ -1,0 +1,41 @@
+{
+  "resource": "Formats",
+  "resource_explanation": "## Relationships\n\nFormat resources have the following relationships for their records.\n\n* Card Pools\n* Snapshots\n* Restrictions\n",
+  "http_method": "GET",
+  "route": "/api/v3/public/formats/:id",
+  "description": "Get A Single Format",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/formats/startup",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"startup\",\n    \"type\": \"formats\",\n    \"attributes\": {\n      \"name\": \"Startup\",\n      \"active_snapshot_id\": \"startup_02\",\n      \"snapshot_ids\": [\n        \"startup_01\",\n        \"startup_02\"\n      ],\n      \"restriction_ids\": [\n\n      ],\n      \"active_card_pool_id\": \"startup_02\",\n      \"active_restriction_id\": null,\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"card_pools\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/card_pools?filter[format_id]=startup\"\n        }\n      },\n      \"snapshots\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/snapshots?filter[format_id]=startup\"\n        }\n      },\n      \"restrictions\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/restrictions?filter[format_id]=startup\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/formats/startup\"\n    }\n  },\n  \"meta\": {\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
+      },
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/formats/startup\" -X GET "
+    }
+  ]
+}

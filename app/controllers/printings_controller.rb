@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+# Controller for the Printing resource.
+class PrintingsController < ApplicationController
+  def index
+    printings = PrintingResource.all(params)
+
+    respond_with(printings)
+  end
+
+  def show
+    printing = PrintingResource.find(params)
+    respond_with(printing)
+  end
+end

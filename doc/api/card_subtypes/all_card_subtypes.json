@@ -1,6 +1,6 @@
 {
   "resource": "Card Subtypes",
-  "resource_explanation": null,
+  "resource_explanation": "## Relationships\n\nCard Subtype resources have the following relationships for their records.\n\n* Cards\n* Printings\n",
   "http_method": "GET",
   "route": "/api/v3/public/card_subtypes",
   "description": "All Card Subtypes",
@@ -25,11 +25,11 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n\n  ]\n}",
+      "response_body": "{\n  \"data\": [\n    {\n      \"id\": \"advertisement\",\n      \"type\": \"card_subtypes\",\n      \"attributes\": {\n        \"name\": \"Advertisement\",\n        \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n      },\n      \"relationships\": {\n        \"cards\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/cards?filter[card_subtype_id]=advertisement\"\n          }\n        },\n        \"printings\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/printings?filter[card_subtype_id]=advertisement\"\n          }\n        }\n      },\n      \"links\": {\n        \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/advertisement\"\n      }\n    },\n    {\n      \"id\": \"code_gate\",\n      \"type\": \"card_subtypes\",\n      \"attributes\": {\n        \"name\": \"Code Gate\",\n        \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n      },\n      \"relationships\": {\n        \"cards\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/cards?filter[card_subtype_id]=code_gate\"\n          }\n        },\n        \"printings\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/printings?filter[card_subtype_id]=code_gate\"\n          }\n        }\n      },\n      \"links\": {\n        \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/code_gate\"\n      }\n    },\n    {\n      \"id\": \"next\",\n      \"type\": \"card_subtypes\",\n      \"attributes\": {\n        \"name\": \"Next\",\n        \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n      },\n      \"relationships\": {\n        \"cards\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/cards?filter[card_subtype_id]=next\"\n          }\n        },\n        \"printings\": {\n          \"links\": {\n            \"related\": \"http://localhost:3000/api/v3/public/printings?filter[card_subtype_id]=next\"\n          }\n        }\n      },\n      \"links\": {\n        \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/next\"\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://localhost:3000/api/v3/public/card_subtypes?page%5Bnumber%5D=1&page%5Bsize%5D=20\",\n    \"first\": \"http://localhost:3000/api/v3/public/card_subtypes?page%5Bnumber%5D=1&page%5Bsize%5D=20\",\n    \"last\": \"http://localhost:3000/api/v3/public/card_subtypes?page%5Bnumber%5D=1&page%5Bsize%5D=20\"\n  },\n  \"meta\": {\n  }\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json"
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
-      "response_content_type": "application/vnd.api+json",
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_subtypes\" -X GET "
     }
   ]

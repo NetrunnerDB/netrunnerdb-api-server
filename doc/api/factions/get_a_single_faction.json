@@ -1,0 +1,41 @@
+{
+  "resource": "Factions",
+  "resource_explanation": "## Relationships\n\nFaction resources have the following relationships for their records.\n\n* Cards\n* Decklists\n* Printings\n* Side\n",
+  "http_method": "GET",
+  "route": "/api/v3/public/factions/:id",
+  "description": "Get A Single Faction",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/factions/weyland_consortium",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnerdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"weyland_consortium\",\n    \"type\": \"factions\",\n    \"attributes\": {\n      \"name\": \"Weyland Consortium\",\n      \"description\": null,\n      \"is_mini\": false,\n      \"side_id\": \"corp\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"side\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/sides/corp\"\n        }\n      },\n      \"cards\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/cards?filter[faction_id]=weyland_consortium\"\n        }\n      },\n      \"decklists\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/decklists?filter[faction_id]=weyland_consortium\"\n        }\n      },\n      \"printings\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/printings?filter[faction_id]=weyland_consortium\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/factions/weyland_consortium\"\n    }\n  },\n  \"meta\": {\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
+      },
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/factions/weyland_consortium\" -X GET "
+    }
+  ]
+}
