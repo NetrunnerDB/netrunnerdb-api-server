@@ -151,10 +151,6 @@ GEM
       reline (>= 0.3.6)
     json (2.7.2)
     jsonapi-renderer (0.2.2)
-    jsonapi-resources (0.10.7)
-      activerecord (>= 4.1)
-      concurrent-ruby
-      railties (>= 4.1)
     jsonapi-serializable (0.3.1)
       jsonapi-renderer (~> 0.2.0)
     jwt (2.7.1)
@@ -563,7 +559,6 @@ DEPENDENCIES
   graphiti (~> 1.2)
   graphiti-rails (~> 0.2)
   graphiti_spec_helpers
-  jsonapi-resources
   jwt
   kaminari (~> 1.0)
   nokogiri

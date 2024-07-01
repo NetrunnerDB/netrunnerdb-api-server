@@ -58,9 +58,6 @@ group :development, :test do
   gem 'graphiti_spec_helpers'
 end
 
-# We're moving away from this one.
-gem 'jsonapi-resources'
-
 # Views
 gem 'scenic'
 
