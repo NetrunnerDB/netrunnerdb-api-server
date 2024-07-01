@@ -46,7 +46,6 @@ class DecklistResource < ApplicationResource
     @object.decklist_cards.each do |c|
       qty[c.card_id] = c.quantity
     end
-    Rails.logger.info format('qty is %s', qty.inspect)
     id = Card.find(@object.identity_card_id)
     @object.cards
            .filter { |c| c.faction_id != id.faction_id }
