@@ -19,8 +19,6 @@ class DecksController < ApplicationController
   def create
     # Use the incoming parameters, but build the actual object against the model directly.
 
-    # Force the current timestamp for updated_at.
-    # params[:data][:attributes][:updated_at] = Time.now.utc.to_formatted_s(:iso8601)
     new_deck = Deck.new
     new_deck.user = current_user
     attributes = params[:data][:attributes]
