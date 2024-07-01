@@ -58,7 +58,9 @@ class DeckResource < PrivateApplicationResource
   # belongs_to :user
 
   belongs_to :side
-  belongs_to :faction do
+  # The rubocop warning is disabled because this relationship won't work without the foreign_key
+  # explicitly set, presumably because this is a delegated field on the model.
+  belongs_to :faction, foreign_key: :faction_id do # rubocop:disable Rails/RedundantForeignKey
     link do |decklist|
       '%s/%s' % [ Rails.application.routes.url_helpers.factions_url, decklist.faction_id ]
     end
@@ -67,8 +69,8 @@ class DeckResource < PrivateApplicationResource
   # The rubocop warning is disabled because this relationship won't work
   # without it because there is no identity_card table.
   belongs_to :identity_card, resource: CardResource, foreign_key: :identity_card_id do # rubocop:disable Rails/RedundantForeignKey
-    link do |decklist|
-      '%s/%s' % [ Rails.application.routes.url_helpers.cards_url, decklist.identity_card_id ]
+    link do |deck|
+      '%s/%s' % [ Rails.application.routes.url_helpers.cards_url, deck.identity_card_id ]
     end
   end
 
