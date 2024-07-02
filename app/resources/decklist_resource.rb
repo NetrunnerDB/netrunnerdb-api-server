@@ -26,6 +26,16 @@ class DecklistResource < ApplicationResource
     end
   end
 
+  # Will return decklists where all cards specified are present.
+  filter :card_id, :string do
+    eq do |scope, card_ids|
+      scope.joins(:decklist_cards)
+           .where(decklist_cards: { card_id: card_ids })
+           .group('decklists.id')
+           .having('COUNT(DISTINCT decklist_cards.card_id) = ?', card_ids.length)
+    end
+  end
+
   attribute :card_slots, :hash do
     cards = {}
     @object.decklist_cards.order(:card_id).each do |c|
@@ -54,14 +64,18 @@ class DecklistResource < ApplicationResource
   end
 
   belongs_to :side
-  # TODO(plural): Fix the faction relationship so includes work for it.
-  belongs_to :faction do
+
+  # The rubocop warning is disabled because this relationship won't work without the foreign_key
+  # explicitly set, presumably because this is a delegated field on the model.
+  belongs_to :faction, foreign_key: :faction_id do # rubocop:disable Rails/RedundantForeignKey
     link do |decklist|
       '%s/%s' % [ Rails.application.routes.url_helpers.factions_url, decklist.faction_id ]
     end
   end
 
-  belongs_to :identity_card, resource: CardResource do #, foreign_key: :identity_card_id do
+  # The rubocop warning is disabled because this relationship won't work
+  # without it because there is no identity_card table.
+  belongs_to :identity_card, resource: CardResource, foreign_key: :identity_card_id do # rubocop:disable Rails/RedundantForeignKey
     link do |decklist|
       '%s/%s' % [ Rails.application.routes.url_helpers.cards_url, decklist.identity_card_id ]
     end

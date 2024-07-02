@@ -125,4 +125,10 @@ class CardResource < ApplicationResource
   end
   has_many :rulings
   belongs_to :side
+
+  many_to_many :decklists do
+    link do |c|
+      '%s?filter[card_id]=%s' % [Rails.application.routes.url_helpers.decklists_url, c.id]
+    end
+  end
 end

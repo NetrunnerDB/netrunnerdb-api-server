@@ -30,6 +30,11 @@ class UnifiedCard < ApplicationRecord
            primary_key: :id,
            foreign_key: :card_id
 
+  # Private decks
+  has_many :deck_cards, primary_key: :id, foreign_key: :card_id
+  has_many :decks, through: :deck_cards, primary_key: :id, foreign_key: :card_id
+
+  # Public decklists
   has_many :decklist_cards, primary_key: :id, foreign_key: :card_id
   has_many :decklists, through: :decklist_cards, primary_key: :id, foreign_key: :card_id
 end
