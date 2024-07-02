@@ -26,6 +26,16 @@ class DecklistResource < ApplicationResource
     end
   end
 
+  # Will return decklists where all cards specified are present.
+  filter :card_id, :string do
+    eq do |scope, card_ids|
+      scope.joins(:decklist_cards)
+           .where(decklist_cards: { card_id: card_ids })
+           .group('decklists.id')
+           .having('COUNT(DISTINCT decklist_cards.card_id) = ?', card_ids.length)
+    end
+  end
+
   attribute :card_slots, :hash do
     cards = {}
     @object.decklist_cards.order(:card_id).each do |c|
