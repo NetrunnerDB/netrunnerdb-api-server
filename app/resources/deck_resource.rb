@@ -28,14 +28,14 @@ class DeckResource < PrivateApplicationResource
 
   attribute :card_slots, :hash do
     cards = {}
-    @object.card_slots.order(:card_id).each do |c|
+    @object.deck_cards.order(:card_id).each do |c|
       cards[c.card_id] = c.quantity
     end
     cards
   end
 
   attribute :num_cards, :integer do
-    @object.card_slots.map(&:quantity).sum
+    @object.deck_cards.map(&:quantity).sum
   end
 
   # This is the basic definition, but does not take restriction modifications
@@ -43,7 +43,7 @@ class DeckResource < PrivateApplicationResource
   # be removed in favor of snapshot-specific calculations.
   attribute :influence_spent, :integer do
     qty = {}
-    @object.card_slots.each do |c|
+    @object.deck_cards.each do |c|
       qty[c.card_id] = c.quantity
     end
     Rails.logger.info format('qty is %s', qty.inspect)
@@ -74,6 +74,5 @@ class DeckResource < PrivateApplicationResource
     end
   end
 
-  # TODO(plural): Fix card relationship.
-  # many_to_many :cards
+  many_to_many :cards
 end

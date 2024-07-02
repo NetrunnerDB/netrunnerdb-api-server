@@ -13,6 +13,6 @@ class Deck < ApplicationRecord
   }
   has_one :faction, through: :identity_card
 
-  has_many :card_slots, class_name: 'DeckCard'
-  has_many :cards, class_name: 'UnifiedCard', through: :card_slots
+  has_many :deck_cards
+  has_many :cards, class_name: 'UnifiedCard', through: :deck_cards
 end
