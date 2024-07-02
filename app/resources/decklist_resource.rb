@@ -28,14 +28,14 @@ class DecklistResource < ApplicationResource
 
   attribute :card_slots, :hash do
     cards = {}
-    @object.card_slots.order(:card_id).each do |c|
+    @object.decklist_cards.order(:card_id).each do |c|
       cards[c.card_id] = c.quantity
     end
     cards
   end
 
   attribute :num_cards, :integer do
-    @object.card_slots.map(&:quantity).sum
+    @object.decklist_cards.map(&:quantity).sum
   end
 
   # This is the basic definition, but does not take restriction modifications
@@ -43,7 +43,7 @@ class DecklistResource < ApplicationResource
   # be removed in favor of snapshot-specific calculations.
   attribute :influence_spent, :integer do
     qty = {}
-    @object.card_slots.each do |c|
+    @object.decklist_cards.each do |c|
       qty[c.card_id] = c.quantity
     end
     id = Card.find(@object.identity_card_id)
@@ -71,6 +71,5 @@ class DecklistResource < ApplicationResource
     end
   end
 
-  # TODO(plural): Fix cards relationship
-  # has_many :cards
+  many_to_many :cards
 end

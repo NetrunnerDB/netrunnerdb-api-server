@@ -13,6 +13,6 @@ class Decklist < ApplicationRecord
   }
   has_one :faction, through: :identity_card
 
-  has_many :card_slots, class_name: 'DecklistCard'
-  has_many :cards, class_name: 'UnifiedCard', through: :card_slots
+  has_many :decklist_cards
+  has_many :cards, class_name: 'UnifiedCard', through: :decklist_cards
 end

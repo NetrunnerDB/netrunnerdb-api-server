@@ -125,4 +125,6 @@ class CardResource < ApplicationResource
   end
   has_many :rulings
   belongs_to :side
+
+  many_to_many :decklists
 end
