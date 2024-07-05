@@ -63,3 +63,8 @@ runner_card_7:
   card_id: logic_bomb
   quantity: 1
 
+runner_card_8:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: pennyshaver
+  quantity: 3
+

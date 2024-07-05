@@ -49,3 +49,185 @@ adonis_campaign_core_set:
   date_release: 2012-09-06
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+asa_group_security_through_vigilance:
+  id: "01057"
+  card_id: asa_group_security_through_vigilance
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 58
+  position_in_set: 58
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+armand_geist_walker_tech_lord:
+  id: "01058"
+  card_id: armand_geist_walker_tech_lord
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+ikawah_project:
+  id: "01059"
+  card_id: ikawah_project
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+project_vitruvius:
+  id: "01060"
+  card_id: project_vitruvius
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+luminal_transubstantiation:
+  id: "01061"
+  card_id: luminal_transubstantiation
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+rashida_jaheem:
+  id: "01062"
+  card_id: rashida_jaheem
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+hedge_fund:
+  id: "01063"
+  card_id: hedge_fund
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+sure_gamble:
+  id: "01064"
+  card_id: sure_gamble
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+the_class_act:
+  id: "01065"
+  card_id: the_class_act
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+pinhole_threading:
+  id: "01066"
+  card_id: pinhole_threading
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+networking:
+  id: "01067"
+  card_id: networking
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+stargate:
+  id: "01068"
+  card_id: stargate
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+jailbreak:
+  id: "01069"
+  card_id: jailbreak
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+logic_bomb:
+  id: "01070"
+  card_id: logic_bomb
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+pennyshaver:
+  id: "01071"
+  card_id: pennyshaver
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 57
+  position_in_set: 57
+  quantity: 3
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+
