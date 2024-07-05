@@ -16,6 +16,7 @@ resource 'Cards' do
     * Card Sets
     * Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)
     * Card Type
+    * Decklists
     * Faction
     * Printings
     * Rulings

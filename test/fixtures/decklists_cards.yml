@@ -1,0 +1,70 @@
+corp_card_1:
+  decklist_id: 11111111-1111-1111-1111-111111111111
+  card_id: adonis_campaign
+  quantity: 3
+
+corp_card_2:
+  decklist_id: 11111111-1111-1111-1111-111111111111
+  card_id: ikawah_project
+  quantity: 3
+
+corp_card_3:
+  decklist_id: 11111111-1111-1111-1111-111111111111
+  card_id: project_vitruvius
+  quantity: 3
+
+corp_card_4:
+  decklist_id: 11111111-1111-1111-1111-111111111111
+  card_id: luminal_transubstantiation
+  quantity: 1
+
+corp_card_5:
+  decklist_id: 11111111-1111-1111-1111-111111111111
+  card_id: rashida_jaheem
+  quantity: 3
+
+corp_card_6:
+  decklist_id: 11111111-1111-1111-1111-111111111111
+  card_id: hedge_fund
+  quantity: 3
+
+runner_card_1:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: sure_gamble
+  quantity: 3
+
+runner_card_2:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: the_class_act
+  quantity: 2
+
+runner_card_3:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: pinhole_threading
+  quantity: 3
+
+runner_card_4:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: networking
+  quantity: 3
+
+runner_card_5:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: stargate
+  quantity: 2
+
+runner_card_6:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: jailbreak
+  quantity: 3
+
+runner_card_7:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: logic_bomb
+  quantity: 1
+
+runner_card_8:
+  decklist_id: 22222222-2222-2222-2222-222222222222
+  card_id: pennyshaver
+  quantity: 3
+
