@@ -87,7 +87,7 @@ namespace :cards do
 
     new_cards = []
     cards.each do |card|
-      new_card = Card.new(
+      new_card = RawCard.new(
         id: card["id"],
         card_type_id: card["card_type_id"],
         side_id: card["side_id"],
@@ -210,14 +210,14 @@ namespace :cards do
     new_cards.each_slice(250) { |s|
       num_cards += s.length
       puts '  %d cards' % num_cards
-      Card.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      RawCard.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
     }
   end
 
   # This assumes that cards and card subtypes have already been loaded.
   def import_printing_subtypes()
     printing_id_to_card_subtype_id = []
-    Card.all.each { |c|
+    RawCard.all.each { |c|
       c.printing_ids.each { |p|
         c.card_subtype_ids.each { |s|
           printing_id_to_card_subtype_id << [p, s]

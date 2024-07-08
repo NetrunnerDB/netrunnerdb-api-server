@@ -3,7 +3,7 @@ class Deck < ApplicationRecord
   belongs_to :side
 
   has_one :identity_card,
-          class_name: 'UnifiedCard',
+          class_name: 'Card',
           foreign_key: 'id',
           primary_key: 'identity_card_id'
 
@@ -14,5 +14,5 @@ class Deck < ApplicationRecord
   has_one :faction, through: :identity_card
 
   has_many :deck_cards
-  has_many :cards, class_name: 'UnifiedCard', through: :deck_cards
+  has_many :cards, through: :deck_cards
 end
