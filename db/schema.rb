@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_22_192959) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_12_005953) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -281,6 +281,31 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_192959) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "review_comments", force: :cascade do |t|
+    t.text "body"
+    t.string "username"
+    t.bigint "review_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["review_id"], name: "index_review_comments_on_review_id"
+  end
+
+  create_table "review_votes", force: :cascade do |t|
+    t.string "username"
+    t.bigint "review_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["review_id"], name: "index_review_votes_on_review_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "ruling"
+    t.string "username"
+    t.text "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "rulings", force: :cascade do |t|
     t.string "card_id", null: false
     t.string "question"
@@ -352,6 +377,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_192959) do
   add_foreign_key "restrictions_cards_restricted", "restrictions"
   add_foreign_key "restrictions_cards_universal_faction_cost", "cards"
   add_foreign_key "restrictions_cards_universal_faction_cost", "restrictions"
+  add_foreign_key "review_comments", "reviews"
+  add_foreign_key "review_votes", "reviews"
+  add_foreign_key "reviews", "cards"
   add_foreign_key "rulings", "cards"
   add_foreign_key "snapshots", "card_pools"
   add_foreign_key "snapshots", "formats"

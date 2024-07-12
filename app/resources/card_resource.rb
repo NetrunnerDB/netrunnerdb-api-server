@@ -102,33 +102,34 @@ class CardResource < ApplicationResource
 
   has_many :card_cycles do
     link do |c|
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_ids.join(',')]
+      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_ids.join(','))
     end
   end
   has_many :card_sets do
     link do |c|
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_sets_url, c.card_set_ids.join(',')]
+      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_sets_url, c.card_set_ids.join(','))
     end
   end
   many_to_many :card_subtypes do
     link do |c|
       card_subtype_ids = c.card_subtype_ids.empty? ? 'none' : c.card_subtype_ids.join(',')
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_subtypes_url, card_subtype_ids]
+      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_subtypes_url, card_subtype_ids)
     end
   end
   belongs_to :card_type
   belongs_to :faction
   has_many :printings do
     link do |c|
-      '%s?filter[card_id]=%s' % [Rails.application.routes.url_helpers.printings_url, c.id]
+      format('%s?filter[card_id]=%s', Rails.application.routes.url_helpers.printings_url, c.id)
     end
   end
   has_many :rulings
+  has_many :reviews
   belongs_to :side
 
   many_to_many :decklists do
     link do |c|
-      '%s?filter[card_id]=%s' % [Rails.application.routes.url_helpers.decklists_url, c.id]
+      format('%s?filter[card_id]=%s', Rails.application.routes.url_helpers.decklists_url, c.id)
     end
   end
 end
