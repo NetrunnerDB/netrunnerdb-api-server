@@ -33,7 +33,7 @@ namespace :import_decklists do
       printing_to_card[printing.id] = printing.card_id
     end
 
-    cards = UnifiedCard.all
+    cards = Card.all
     cards_by_id = {}
     cards.each do |card|
       cards_by_id[card.id] = card
