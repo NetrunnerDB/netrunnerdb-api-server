@@ -26,7 +26,7 @@ class CardSetResource < ApplicationResource
   end
   belongs_to :card_set_type
 
-  many_to_many :cards, relation_name: :unified_cards, :through => :printings
-
   has_many :printings
+
+  many_to_many :cards, through: :printings
 end

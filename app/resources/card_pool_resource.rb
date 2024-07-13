@@ -13,7 +13,7 @@ class CardPoolResource < ApplicationResource
     @object.cards.length
   end
 
-  has_one :format do
+  belongs_to :format do
     link do |c|
       '%s/%s' % [Rails.application.routes.url_helpers.formats_url, c.format_id]
     end
@@ -30,7 +30,7 @@ class CardPoolResource < ApplicationResource
     end
   end
   # Make a working cards relationship
-  # has_many :cards, relation_name: :unified_cards
+  # has_many :cards
   has_many :snapshots do
     link do |c|
       '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.snapshots_url, c.snapshot_ids.join(',')]

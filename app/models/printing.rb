@@ -14,14 +14,12 @@ class Printing < ApplicationRecord
   has_one :card_type, through: :card
 
   has_many :printing_card_subtypes,
-           primary_key: :id,
-           foreign_key: :printing_id
+           primary_key: :id
   has_many :card_subtypes, through: :printing_card_subtypes
 
   has_one :side, through: :card
   has_many :illustrator_printings,
-           primary_key: :id,
-           foreign_key: :printing_id
+           primary_key: :id
   has_many :illustrators, through: :illustrator_printings
 
   has_many :unified_restrictions,

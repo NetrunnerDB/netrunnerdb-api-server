@@ -6,13 +6,11 @@ class CardPool < ApplicationRecord
   has_many :card_pool_card_sets
   has_many :card_sets, :through => :card_pool_card_sets
   has_many :card_pool_cards
-  has_many :cards, :through => :card_pool_cards
-  has_many :unified_cards, :through => :card_pool_cards, primary_key: :card_id, foreign_key: :id
+  has_many :raw_cards, :through => :card_pool_cards
+  has_many :cards, :through => :card_pool_cards, primary_key: :card_id, foreign_key: :id
   has_many :snapshots
 
-  belongs_to :format,
-    :primary_key => :id,
-    :foreign_key => :format_id
+  belongs_to :format
 
   validates :name, uniqueness: true
 end
