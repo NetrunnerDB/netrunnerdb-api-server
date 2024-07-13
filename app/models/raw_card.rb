@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-# This is a simple model object to hold the direct imports from the JSON only.
+# Simple model based on direct import of rhte Card records from JSON data.
+# This should not be used except for the importer and as the base data for the
+# UnifiedCard materialized view.
 class RawCard < ApplicationRecord
   self.table_name = 'cards'
 
@@ -9,8 +11,8 @@ class RawCard < ApplicationRecord
   belongs_to :card_type
   has_many :card_card_subtypes, foreign_key: :card_id, primary_key: :id
   has_many :card_subtypes, :through => :card_card_subtypes
+  has_many :raw_printings, foreign_key: :card_id, primary_key: :id
   has_many :printings, foreign_key: :card_id, primary_key: :id
-  has_many :unified_printings
   has_many :card_pool_cards
   has_many :card_pools, :through => :card_pool_cards
   has_many :restriction_card_banned

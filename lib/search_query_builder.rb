@@ -75,7 +75,7 @@ There are 5 types of fields in the Search Filter:
 
   EOM
 
-  # Since UnifiedPrinting contains so much of UnifiedCard, centralize the field
+  # Since UnifiedSprinting contains so much of Card, centralize the field
   # definitions with an indication of if they apply to one or both.
   # The documentation string here will be passed on to the generated API docs as well.
   # Note: this does not yet have arrays of name fields supported due to complications with
