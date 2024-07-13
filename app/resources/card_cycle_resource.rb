@@ -19,6 +19,10 @@ class CardCycleResource < ApplicationResource
   attribute :updated_at, :datetime
 
   has_many :card_sets
-  has_many :cards, relation_name: :unified_cards
-  has_many :printings
+  has_many :printings, relation_name: :unified_printings
+  many_to_many :cards, through: :printings do
+    link do |c|
+      '%s?filter[card_cycle_id]=%s' % [Rails.application.routes.url_helpers.cards_url, c.id]
+    end
+  end
 end

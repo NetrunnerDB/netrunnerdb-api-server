@@ -22,11 +22,12 @@ class Card < ApplicationRecord
 
   has_many :card_subtypes, through: :card_card_subtypes
 
-  has_many :unified_printings,
+  has_many :printings,
+           class_name: 'UnifiedPrinting',
            primary_key: :id,
            foreign_key: :card_id
 
-  has_many :card_cycles, through: :unified_printings
+  has_many :card_cycles, through: :printings
 
   has_many :rulings,
            primary_key: :id,

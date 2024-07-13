@@ -4,9 +4,6 @@ class UnifiedPrinting < ApplicationRecord
   self.primary_key = :id
 
   belongs_to :side
-  belongs_to :unified_card,
-             primary_key: :id,
-             foreign_key: :card_id
   belongs_to :card
   belongs_to :card_set
 

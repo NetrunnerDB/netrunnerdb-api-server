@@ -9,7 +9,7 @@ class Decklist < ApplicationRecord
 
   delegate :faction_id, to: :identity_card
   scope :by_faction, lambda { |faction_id|
-    joins(:identity_card).where(cards: { faction_id: faction_id })
+    joins(:identity_card).where(unified_cards: { faction_id: faction_id })
   }
   has_one :faction, through: :identity_card
 
