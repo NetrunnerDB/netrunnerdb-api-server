@@ -345,7 +345,7 @@ namespace :cards do
 
     new_printings = []
     printings.each { |printing|
-      new_printings << Printing.new(
+      new_printings << RawPrinting.new(
         id: printing["id"],
         flavor: printing["flavor"],
         display_illustrators: printing["illustrator"],
@@ -362,7 +362,7 @@ namespace :cards do
     new_printings.each_slice(250) { |s|
       num_printings += s.length
       puts '  %d printings' % num_printings
-      Printing.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      RawPrinting.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
     }
 
     # Use ROW_NUMBER() to identify the position of each printing in the each set.
@@ -388,7 +388,7 @@ namespace :cards do
       illustrators_to_printings = []
       illustrator_num_printings = {}
       num_its = 0
-      printings = Printing.all
+      printings = RawPrinting.all
       printings.each { |printing|
         if printing.display_illustrators then
           printing.display_illustrators.split(/\s*[,\&]\s*/).each { |i|
