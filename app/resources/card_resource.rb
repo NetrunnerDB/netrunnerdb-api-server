@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-# Public resource for UnifiedCard objects.
+# Public resource for Card objects.
 class CardResource < ApplicationResource
   primary_endpoint '/cards', %i[index show]
-
-  self.model = UnifiedCard
 
   attribute :id, :string
   attribute :stripped_title, :string

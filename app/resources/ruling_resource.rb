@@ -11,5 +11,5 @@ class RulingResource < ApplicationResource
   attribute :text_ruling, :string
   attribute :updated_at, :datetime
 
-  belongs_to :card, relation_name: :unified_card
+  belongs_to :card
 end

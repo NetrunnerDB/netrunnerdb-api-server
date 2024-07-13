@@ -3,5 +3,4 @@
 class CardType < ApplicationRecord
   belongs_to :side
   has_many :cards
-  has_many :unified_cards
 end

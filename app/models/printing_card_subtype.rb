@@ -5,6 +5,4 @@ class PrintingCardSubtype < ApplicationRecord
 
   belongs_to :printing
   belongs_to :card_subtype
-  belongs_to :unified_printing,
-             foreign_key: :printing_id
 end

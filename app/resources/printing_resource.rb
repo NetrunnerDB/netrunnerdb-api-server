@@ -4,8 +4,6 @@
 class PrintingResource < ApplicationResource
   primary_endpoint '/printings', %i[index show]
 
-  self.model = UnifiedPrinting
-
   attribute :id, :string
   attribute :card_id, :string
   attribute :card_cycle_id, :string

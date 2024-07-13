@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class DeckValidatorTest < ActiveSupport::TestCase
   def setup
     @empty_deck = {}

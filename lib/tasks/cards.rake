@@ -87,7 +87,7 @@ namespace :cards do
 
     new_cards = []
     cards.each do |card|
-      new_card = Card.new(
+      new_card = RawCard.new(
         id: card["id"],
         card_type_id: card["card_type_id"],
         side_id: card["side_id"],
@@ -210,14 +210,14 @@ namespace :cards do
     new_cards.each_slice(250) { |s|
       num_cards += s.length
       puts '  %d cards' % num_cards
-      Card.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      RawCard.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
     }
   end
 
   # This assumes that cards and card subtypes have already been loaded.
   def import_printing_subtypes()
     printing_id_to_card_subtype_id = []
-    Card.all.each { |c|
+    RawCard.all.each { |c|
       c.printing_ids.each { |p|
         c.card_subtype_ids.each { |s|
           printing_id_to_card_subtype_id << [p, s]
@@ -345,7 +345,7 @@ namespace :cards do
 
     new_printings = []
     printings.each { |printing|
-      new_printings << Printing.new(
+      new_printings << RawPrinting.new(
         id: printing["id"],
         flavor: printing["flavor"],
         display_illustrators: printing["illustrator"],
@@ -362,7 +362,7 @@ namespace :cards do
     new_printings.each_slice(250) { |s|
       num_printings += s.length
       puts '  %d printings' % num_printings
-      Printing.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
+      RawPrinting.import s, on_duplicate_key_update: { conflict_target: [ :id ], columns: :all }
     }
 
     # Use ROW_NUMBER() to identify the position of each printing in the each set.
@@ -388,7 +388,7 @@ namespace :cards do
       illustrators_to_printings = []
       illustrator_num_printings = {}
       num_its = 0
-      printings = Printing.all
+      printings = RawPrinting.all
       printings.each { |printing|
         if printing.display_illustrators then
           printing.display_illustrators.split(/\s*[,\&]\s*/).each { |i|
