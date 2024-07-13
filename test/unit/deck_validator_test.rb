@@ -742,7 +742,6 @@ class DeckValidatorTest < ActiveSupport::TestCase
     v = DeckValidator.new(deck)
     assert !v.is_valid?
     assert_equal v.validations.size, deck['validations'].size
-    puts v.validations[0].inspect
     assert_includes v.validations[0].errors, 'Card `trieste_model_bioroids` is banned in restriction `standard_banlist`.'
   end
 

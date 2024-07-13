@@ -198,7 +198,6 @@ class DeckValidator
   def load_cards_from_deck
     # Populate @cards by retrieving cards specified in the deck.
     Card.where(id: [@deck['identity_card_id']] + @deck['cards'].keys).each {|c| @cards[c.id] = c}
-    puts 'Loaded %d cards from deck.' % @cards.size
   end
 
   def load_formats_from_deck
