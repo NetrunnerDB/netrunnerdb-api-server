@@ -40,8 +40,6 @@ RSpec.describe SnapshotResource, type: :resource do
     end
   end
 
-  # Format, card pool, restriction
-
   describe 'sideloading' do
     def check_included_for_id(snapshot_id, include_value, resource_type, id)
       params[:filter] = { id: { eq: snapshot_id } }
