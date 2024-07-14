@@ -13,4 +13,11 @@ class CardSet < ApplicationRecord
   has_many :printings
   has_many :raw_cards, through: :raw_printings, source: :raw_card
   has_many :cards, through: :printings
+
+  has_many :card_pool_card_sets
+  has_many :card_pools, through: :card_pool_card_sets
+
+  scope :by_card_pool, lambda { |card_pool_id|
+    where(id: CardPoolCardSet.select(:card_set_id).where(card_pool_id:).distinct)
+  }
 end

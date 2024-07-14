@@ -74,5 +74,14 @@ RSpec.describe CardCycleResource, type: :resource do
         check_included_for_id(borealis.id, 'printings', steelskin.id)
       end
     end
+
+    describe 'include card pools' do
+      let!(:borealis) { CardCycle.find('borealis') }
+      let!(:card_pool) { CardPool.find('startup_02') }
+
+      it 'works' do
+        check_included_for_id(borealis.id, 'card_pools', card_pool.id)
+      end
+    end
   end
 end
