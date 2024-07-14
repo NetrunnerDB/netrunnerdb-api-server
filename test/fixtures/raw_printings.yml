@@ -1361,7 +1361,7 @@ spin_doctor:
 steelskin_scarring:
   id: "21166"
   card_id: steelskin_scarring
-  card_set_id: core
+  card_set_id: midnight_sun
   display_illustrators: "Tom of Netrunner"
   position: 152
   position_in_set: 152

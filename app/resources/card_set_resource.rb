@@ -12,16 +12,14 @@ class CardSetResource < ApplicationResource
   attribute :card_cycle_id, :string
   attribute :card_set_type_id, :string
   attribute :legacy_code, :string
-  attribute :first_printing_id, :string do
-    first_printing = Printing.find_by(card_set_id: @object.id, position_in_set: 1)
-    first_printing&.id
-  end
+  attribute :position, :integer
+  attribute :first_printing_id, :string
   attribute :released_by, :string
   attribute :updated_at, :datetime
 
   belongs_to :card_cycle do
     link do |c|
-      '%s/%s' % [Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_id]
+      format('%s/%s', Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_id)
     end
   end
   belongs_to :card_set_type
