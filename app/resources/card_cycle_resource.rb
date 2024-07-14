@@ -22,7 +22,15 @@ class CardCycleResource < ApplicationResource
   has_many :printings
   many_to_many :cards, through: :printings do
     link do |c|
-      '%s?filter[card_cycle_id]=%s' % [Rails.application.routes.url_helpers.cards_url, c.id]
+      format('%s?filter[card_cycle_id]=%s', Rails.application.routes.url_helpers.cards_url, c.id)
+    end
+  end
+
+  many_to_many :card_pools
+
+  filter :card_pool_id, :string do
+    eq do |scope, card_pool_ids|
+      scope.by_card_pool(card_pool_ids)
     end
   end
 end
