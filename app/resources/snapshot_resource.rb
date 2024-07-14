@@ -22,15 +22,7 @@ class SnapshotResource < ApplicationResource
   attribute :updated_at, :datetime
 
   belongs_to :format
-  has_one :card_pool do
-    link do |s|
-      '%s/%s' % [Rails.application.routes.url_helpers.card_pools_url, s.card_pool_id]
-    end
-  end
-  has_one :restriction do
-    link do |s|
-      restriction_id = s.restriction_id || 'none'
-      '%s/%s' % [Rails.application.routes.url_helpers.restrictions_url, restriction_id]
-    end
-  end
+
+  belongs_to :card_pool
+  belongs_to :restriction
 end
