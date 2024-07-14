@@ -9,24 +9,12 @@ class RestrictionResource < ApplicationResource
   attribute :date_start, :date
   attribute :point_limit, :integer
   attribute :format_id, :string
-  attribute :verdicts, :hash do
-    verdicts(@object)
-  end
+  attribute :verdicts, :hash
   attribute :banned_subtypes, :array_of_strings do
     @object.banned_subtypes.pluck(:card_subtype_id)
   end
-  attribute :size, :integer do
-    verdicts(@object).map { | (_, v)| v.length() }.sum
-  end
+  attribute :size, :integer
   attribute :updated_at, :datetime
-
-  def verdicts(obj)
-    { 'banned': obj.banned_cards.pluck(:card_id),
-      'restricted': obj.restricted_cards.pluck(:card_id),
-      'universal_faction_cost': obj.universal_faction_cost_cards.pluck(:card_id, :value).to_h,
-      'global_penalty': obj.global_penalty_cards.pluck(:card_id),
-      'points': obj.points_cards.pluck(:card_id, :value).to_h }
-  end
 
   belongs_to :format
 end

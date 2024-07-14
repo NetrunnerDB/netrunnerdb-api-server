@@ -1,3 +1,9 @@
+academic:
+  id: academic
+  name: Academic
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 advertisement:
   id: advertisement
   name: Advertisement
@@ -7,6 +13,12 @@ advertisement:
 code_gate:
   id: code_gate
   name: Code Gate
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+current:
+  id: current
+  name: Current
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 

@@ -1,0 +1,12 @@
+academic:
+  restriction_id: standard_banlist
+  card_subtype_id: academic
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+current:
+  restriction_id: standard_banlist
+  card_subtype_id: current
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
