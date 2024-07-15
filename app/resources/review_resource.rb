@@ -22,5 +22,16 @@ class ReviewResource < ApplicationResource
     end
   end
 
-  has_many :comments, resource: ReviewCommentResource
+  attribute :comments, :array do
+    @object.comments.map do |comment|
+      {
+        id: comment.id,
+        body: comment.body,
+        user: comment.username,
+        created_at: comment.created_at,
+        updated_at: comment.updated_at
+      }
+    end
+  end
+  # has_many :comments, resource: ReviewCommentResource
 end
