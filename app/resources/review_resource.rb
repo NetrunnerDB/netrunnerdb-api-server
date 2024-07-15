@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
 class ReviewResource < ApplicationResource
-  primary_endpoint '/resources', %i[index show]
+  primary_endpoint '/reviews', %i[index show]
 
   self.model = Review
 
   attribute :id, :string
   attribute :username, :string
+  attribute :ruling, :string
   attribute :card, :string do
     @object.card.title
   end
   attribute :created_at, :datetime
   attribute :updated_at, :datetime
   attribute :votes, :integer
+
+  filter :card, :string do
+    eq do |scope, value|
+      card = Card.find(value) # N+1?
+      scope.where(card:)
+    end
+  end
+
+  has_many :comments, resource: ReviewCommentResource
 end
