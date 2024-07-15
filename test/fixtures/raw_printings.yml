@@ -154,6 +154,7 @@ the_class_act:
   position: 57
   position_in_set: 57
   quantity: 3
+  released_by: null_signal_games
   date_release: 2012-09-06
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
