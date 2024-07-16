@@ -32,28 +32,32 @@ namespace :reviews do
         r = Review.new
         r.card = card
         r.username = username
-        r.ruling = rev_body
+        r.body = rev_body
         r.created_at = DateTime.parse(review['date_create'])
         r.updated_at = DateTime.parse(review['date_update'])
         r.save!
 
         # Hack for votes: generate filler entries in the join table
-        review['votes'].times do
-          vote = ReviewVote.new
-          vote.username = 'TBD_Future_Problem'
-          vote.review = r
-          vote.save!
+        ReviewVote.transaction do
+          review['votes'].times do
+            vote = ReviewVote.new
+            vote.username = 'TBD_Future_Problem'
+            vote.review = r
+            vote.save!
+          end
         end
 
         # Generate Comments for each deck
-        comments.each do |comment|
-          c = ReviewComment.new
-          c.username = comment['user']
-          c.body = comment['comment']
-          c.review = r
-          c.created_at = comment['date_create']
-          c.updated_at = comment['date_update']
-          c.save!
+        ReviewComment.transaction do
+          comments.each do |comment|
+            c = ReviewComment.new
+            c.username = comment['user']
+            c.body = comment['comment']
+            c.review = r
+            c.created_at = comment['date_create']
+            c.updated_at = comment['date_update']
+            c.save!
+          end
         end
       else
         puts "Missing Card entry with title: #{card_name}"

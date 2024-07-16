@@ -7,20 +7,16 @@ class ReviewResource < ApplicationResource
 
   attribute :id, :string
   attribute :username, :string
-  attribute :ruling, :string
+  attribute :body, :string
   attribute :card, :string do
     @object.card.title
   end
+  attribute :card_id, :string
   attribute :created_at, :datetime
   attribute :updated_at, :datetime
   attribute :votes, :integer
 
-  filter :card, :string do
-    eq do |scope, value|
-      card = Card.find(value) # N+1?
-      scope.where(card:)
-    end
-  end
+  belongs_to :card
 
   attribute :comments, :array do
     @object.comments.map do |comment|
