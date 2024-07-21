@@ -14,7 +14,9 @@ resource 'Card Pools' do
 
     * Card Cycles
     * Card Sets
+    * Cards
     * Format
+    * Printings
     * Snapshots
   EXPLANATION
 
