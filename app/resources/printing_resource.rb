@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Public resource for Printing objects.
-class PrintingResource < ApplicationResource
+class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   primary_endpoint '/printings', %i[index show]
   self.default_page_size = 1000
 
@@ -89,7 +89,7 @@ class PrintingResource < ApplicationResource
              .distinct
       else
         raise JSONAPI::Exceptions::BadRequest,
-              format('Invalid search query: [%s] / %s', value[0], query_builder.parse_error)
+              format('Invalid search query: [%<query>s] / %<error>s', query: value[0], error: query_builder.parse_error)
       end
     end
   end
@@ -97,7 +97,7 @@ class PrintingResource < ApplicationResource
   belongs_to :card
   belongs_to :card_cycle do
     link do |p|
-      format('%s/%s', Rails.application.routes.url_helpers.card_cycles_url, p.card_cycle_id)
+      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.card_cycles_url, id: p.card_cycle_id)
     end
   end
   belongs_to :card_set
@@ -105,19 +105,21 @@ class PrintingResource < ApplicationResource
   belongs_to :faction
   belongs_to :side do
     link do |p|
-      format('%s/%s', Rails.application.routes.url_helpers.sides_url, p.side_id)
+      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.sides_url, id: p.side_id)
     end
   end
 
   many_to_many :card_subtypes do
     link do |p|
-      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_subtypes_url, p.card_subtype_ids.join(','))
+      format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_subtypes_url,
+                                           ids: p.card_subtype_ids.join(','))
     end
   end
 
   many_to_many :illustrators do
     link do |p|
-      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.illustrators_url, p.illustrator_ids.join(','))
+      format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.illustrators_url,
+                                           ids: p.illustrator_ids.join(','))
     end
   end
 
@@ -126,7 +128,7 @@ class PrintingResource < ApplicationResource
       CardPool.by_printing_ids(printings.map(&:id))
     end
     link do |p|
-      format('%s?filter[printing_id]=%s', Rails.application.routes.url_helpers.card_pools_url, p.id)
+      format('%<url>s?filter[printing_id]=%<id>s', url: Rails.application.routes.url_helpers.card_pools_url, id: p.id)
     end
   end
 end

@@ -19,7 +19,7 @@ class CardSetResource < ApplicationResource
 
   belongs_to :card_cycle do
     link do |c|
-      format('%s/%s', Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_id)
+      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.card_cycles_url, id: c.card_cycle_id)
     end
   end
   belongs_to :card_set_type

@@ -62,7 +62,7 @@ class DeckResource < PrivateApplicationResource
   # explicitly set, presumably because this is a delegated field on the model.
   belongs_to :faction, foreign_key: :faction_id do # rubocop:disable Rails/RedundantForeignKey
     link do |decklist|
-      '%s/%s' % [ Rails.application.routes.url_helpers.factions_url, decklist.faction_id ]
+      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.factions_url, id: decklist.faction_id)
     end
   end
 
@@ -70,7 +70,7 @@ class DeckResource < PrivateApplicationResource
   # without it because there is no identity_card table.
   belongs_to :identity_card, resource: CardResource, foreign_key: :identity_card_id do # rubocop:disable Rails/RedundantForeignKey
     link do |deck|
-      '%s/%s' % [ Rails.application.routes.url_helpers.cards_url, deck.identity_card_id ]
+      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.cards_url, id: deck.identity_card_id)
     end
   end
 

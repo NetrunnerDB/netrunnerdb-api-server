@@ -11,12 +11,12 @@ class UserResource < PrivateApplicationResource
 
   has_many :decks do
     link do |user|
-      '%s?filter[user_id]=%s' % [Rails.application.routes.url_helpers.decks_url, user.id]
+      format('%<url>s?filter[user_id]=%<id>s', url: Rails.application.routes.url_helpers.decks_url, id: user.id)
     end
   end
   has_many :decklists do
     link do |user|
-      '%s?filter[user_id]=%s' % [Rails.application.routes.url_helpers.decklists_url, user.id]
+      format('%<url>s?filter[user_id]=%<id>s', url: Rails.application.routes.url_helpers.decklists_url, id: user.id)
     end
   end
 end
