@@ -8,13 +8,13 @@
     // Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
         "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-            "packages": "libpq-dev, libvips" // For pg gem
+            "packages": "libpq-dev, libvips, postgresql-client" // Postgres tool support
         },
         "ghcr.io/devcontainers/features/git:1": {
             "version": "latest"
         },
         "ghcr.io/devcontainers/features/ruby:1": {
-            "version": "3.1" // Change to match Ruby version from Gemfile 
+            "version": "3.1" // Change to match Ruby version from Gemfile
         },
         "ghcr.io/devcontainers/features/node:1": {
             "version": 19 // Change Node version as required
@@ -40,6 +40,7 @@
                 "emmet.includeLanguages": {
                     "erb": "html"
                 },
+                // Keep database, username, and passsword values in sync with config/database.yml
                 "sqltools.connections": [
                     {
                         "name": "Rails Development Database",
@@ -47,7 +48,6 @@
                         "previewLimit": 50,
                         "server": "db",
                         "port": 5432,
-                        // Keep this updated to match config/database.yml
                         "database": "nrdb_api_development",
                         "username": "postgres",
                         "password": "postgres"
@@ -58,7 +58,6 @@
                         "previewLimit": 50,
                         "server": "db",
                         "port": 5432,
-                        // Keep this updated to match config/database.yml
                         "database": "nrdb_api_test",
                         "username": "postgres",
                         "password": "postgres"
@@ -66,27 +65,26 @@
                 ],
                 "ruby.format": "rubocop",
                 "rubocop.yjitEnabled": false,
-                "editor.formatOnSave": false 
+                "editor.formatOnSave": false
             },
             "extensions": [
-                "IBM.output-colorizer",
                 "aki77.rails-db-schema",
                 "bung87.rails",
                 "bung87.vscode-gemfile",
                 "connorshea.vscode-ruby-test-adapter",
                 "eamodio.gitlens",
+                "github.vscode-github-actions",
                 "hbenl.vscode-test-explorer",
+                "IBM.output-colorizer",
                 "iliazeus.vscode-ansi",
                 "manuelpuyol.erb-linter",
                 "ms-azuretools.vscode-docker",
-                "mtxr.sqltools",
                 "mtxr.sqltools-driver-pg",
+                "mtxr.sqltools",
                 "rubocop.vscode-rubocop",
                 "vscode-icons-team.vscode-icons",
                 "waderyan.gitblame"
             ]
         }
     },
-    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-    // "remoteUser": "root"
 }

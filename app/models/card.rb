@@ -36,6 +36,9 @@ class Card < ApplicationRecord
   has_many :card_card_subtypes,
            primary_key: :id
 
+  has_many :card_pool_cards
+  has_many :card_pools, through: :card_pool_cards
+
   has_many :card_subtypes, through: :card_card_subtypes
 
   has_many :raw_printings,

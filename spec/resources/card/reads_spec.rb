@@ -166,5 +166,14 @@ RSpec.describe CardResource, type: :resource do
         check_included_for_id(card.id, 'side', 'sides', side.id)
       end
     end
+
+    describe 'include card_pools' do
+      let!(:card) { Card.find('border_control') }
+      let!(:card_pool) { CardPool.find('eternal_01') }
+
+      it 'works' do
+        check_included_for_id(card.id, 'card_pools', 'card_pools', card_pool.id)
+      end
+    end
   end
 end

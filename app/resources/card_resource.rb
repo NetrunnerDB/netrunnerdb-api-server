@@ -113,4 +113,6 @@ class CardResource < ApplicationResource
       format('%s?filter[card_id]=%s', Rails.application.routes.url_helpers.decklists_url, c.id)
     end
   end
+
+  many_to_many :card_pools
 end

@@ -85,5 +85,23 @@ RSpec.describe CardPoolResource, type: :resource do
         check_included_for_id(card_pool.id, 'snapshots', 'snapshots', snapshot.id)
       end
     end
+
+    describe 'include cards' do
+      let!(:card_pool) { CardPool.find('eternal_01') }
+      let!(:card) { Card.find('border_control') }
+
+      it 'works' do
+        check_included_for_id(card_pool.id, 'cards', 'cards', card.id)
+      end
+    end
+
+    describe 'include cards' do
+      let!(:card_pool) { CardPool.find('eternal_01') }
+      let!(:printing) { Printing.find(Card.find('border_control').latest_printing_id) }
+
+      it 'works' do
+        check_included_for_id(card_pool.id, 'printings', 'printings', printing.id)
+      end
+    end
   end
 end

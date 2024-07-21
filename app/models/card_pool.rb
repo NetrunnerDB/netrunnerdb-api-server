@@ -8,6 +8,7 @@ class CardPool < ApplicationRecord
   has_many :card_pool_cards
   has_many :raw_cards, through: :card_pool_cards
   has_many :cards, through: :card_pool_cards, primary_key: :card_id, foreign_key: :id
+  has_many :printings, through: :card_pool_cards, primary_key: :card_id, foreign_key: :card_id
   has_many :snapshots
 
   belongs_to :format
@@ -17,4 +18,8 @@ class CardPool < ApplicationRecord
   end
 
   validates :name, uniqueness: true
+
+  scope :by_printing_ids, lambda { |printing_ids|
+    joins(:card_pool_cards).joins(:printings).where(unified_printings: { id: printing_ids }).distinct
+  }
 end
