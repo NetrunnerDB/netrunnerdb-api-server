@@ -10,12 +10,13 @@ class CardSubtypeResource < ApplicationResource
 
   many_to_many :cards do
     link do |t|
-      '%s?filter[card_subtype_id]=%s' % [Rails.application.routes.url_helpers.cards_url, t.id]
+      format('%<url>s?filter[card_subtype_id]=%<id>s', url: Rails.application.routes.url_helpers.cards_url, id: t.id)
     end
   end
   many_to_many :printings do
     link do |t|
-      '%s?filter[card_subtype_id]=%s' % [Rails.application.routes.url_helpers.printings_url, t.id]
+      format('%<url>s?filter[card_subtype_id]=%<id>s', url: Rails.application.routes.url_helpers.printings_url,
+                                                       id: t.id)
     end
   end
 end

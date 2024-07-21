@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Public resource for Card objects.
-class CardResource < ApplicationResource
+class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   primary_endpoint '/cards', %i[index show]
 
   self.default_page_size = 1000
@@ -77,32 +77,36 @@ class CardResource < ApplicationResource
              .distinct
       else
         raise JSONAPI::Exceptions::BadRequest,
-              format('Invalid search query: [%s] / %s', value[0], query_builder.parse_error)
+              format('Invalid search query: [%<query>s] / %<error>s', query: value[0],
+                                                                      error: query_builder.parse_error)
       end
     end
   end
 
   many_to_many :card_cycles do
     link do |c|
-      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_cycles_url, c.card_cycle_ids.join(','))
+      format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_cycles_url,
+                                           ids: c.card_cycle_ids.join(','))
     end
   end
   many_to_many :card_sets do
     link do |c|
-      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_sets_url, c.card_set_ids.join(','))
+      format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_sets_url,
+                                           ids: c.card_set_ids.join(','))
     end
   end
   many_to_many :card_subtypes do
     link do |c|
       card_subtype_ids = c.card_subtype_ids.empty? ? 'none' : c.card_subtype_ids.join(',')
-      format('%s?filter[id]=%s', Rails.application.routes.url_helpers.card_subtypes_url, card_subtype_ids)
+      format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_subtypes_url,
+                                           ids: card_subtype_ids)
     end
   end
   belongs_to :card_type
   belongs_to :faction
   has_many :printings do
     link do |c|
-      format('%s?filter[card_id]=%s', Rails.application.routes.url_helpers.printings_url, c.id)
+      format('%<url>s?filter[card_id]=%<id>s', url: Rails.application.routes.url_helpers.printings_url, id: c.id)
     end
   end
   has_many :rulings
@@ -110,7 +114,7 @@ class CardResource < ApplicationResource
 
   many_to_many :decklists do
     link do |c|
-      format('%s?filter[card_id]=%s', Rails.application.routes.url_helpers.decklists_url, c.id)
+      format('%<url>s?filter[card_id]=%<id>s', url: Rails.application.routes.url_helpers.decklists_url, id: c.id)
     end
   end
 
