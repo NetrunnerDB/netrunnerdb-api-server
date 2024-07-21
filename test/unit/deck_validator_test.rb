@@ -505,7 +505,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     assert_equal v.validations.size, deck['validations'].size
     assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors,
-                    'Decks may not include multiple identities.  Identity card `armand_geist_walker_tech_lord` is not allowed.'
+                    'Decks may not include multiple identities.  Identity card `armand_geist_walker_tech_lord` is not allowed.' # rubocop:disable Layout/LineLength
   end
 
   def test_too_much_program_influence_professor
@@ -583,7 +583,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     assert_equal v.validations.size, @ampere_too_many_agendas_from_one_faction['validations'].size
     assert_not v.validations[0].valid?, 'Basic deckbuilding validation fails.'
     assert_includes v.validations[0].errors,
-                    'Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present.'
+                    'Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present.' # rubocop:disable Layout/LineLength
   end
 
   def test_mismatched_side_corp_id
@@ -685,8 +685,8 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     v = DeckValidator.new(deck)
     assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
-    # TODO: Update validation to explicitly set valid? to false and have the validator set it to true as a literal iff valid.
-    # assert v.validations[0].valid?
+    # TODO: Update validation to explicitly set valid? to false
+    # and have the validator set it to true as a literal iff valid.
     assert_includes v.errors, 'Format `magic_the_gathering` does not exist.'
   end
 
@@ -739,7 +739,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
       spin_doctor
       tollbooth
     ].each do |c|
-      assert_includes v.validations[0].errors, 'Card `%s` is not present in Card Pool `standard_02`.' % c
+      assert_includes v.validations[0].errors, "Card `#{c}` is not present in Card Pool `standard_02`."
     end
   end
 
@@ -768,7 +768,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
-                    'Deck has too many cards marked restricted in restriction `standard_restricted`: send_a_message, trieste_model_bioroids.'
+                    'Deck has too many cards marked restricted in restriction `standard_restricted`: send_a_message, trieste_model_bioroids.' # rubocop:disable Layout/LineLength
   end
 
   def test_global_penalty_reduces_influence
@@ -782,7 +782,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
-                    'Influence limit for Asa Group: Security Through Vigilance is 13 after Global Penalty applied from restriction `standard_global_penalty`, but deck has spent 2 influence from tyr (2).'
+                    'Influence limit for Asa Group: Security Through Vigilance is 13 after Global Penalty applied from restriction `standard_global_penalty`, but deck has spent 2 influence from tyr (2).' # rubocop:disable Layout/LineLength
   end
 
   def test_universal_influence
@@ -796,7 +796,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
-                    'Influence limit for Asa Group: Security Through Vigilance is 15, but after Universal Influence applied from restriction `standard_universal_faction_cost`, deck has spent 24 influence from punitive_counterstrike (9).'
+                    'Influence limit for Asa Group: Security Through Vigilance is 15, but after Universal Influence applied from restriction `standard_universal_faction_cost`, deck has spent 24 influence from punitive_counterstrike (9).' # rubocop:disable Layout/LineLength
   end
 
   def test_over_eternal_points_limit
@@ -810,7 +810,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
-                    'Deck has too many points (9) for eternal restriction `eternal_points_list`: send_a_message (3), punitive_counterstrike (3), tyr (3).'
+                    'Deck has too many points (9) for eternal restriction `eternal_points_list`: send_a_message (3), punitive_counterstrike (3), tyr (3).' # rubocop:disable Layout/LineLength
   end
 
   # Mumba Temple costs 0 instead of 2 influence if the deck has >= 15 ice
