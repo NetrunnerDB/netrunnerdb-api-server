@@ -7,7 +7,7 @@ resource 'Cards' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Card resources have the following relationships for their records.
@@ -21,7 +21,7 @@ resource 'Cards' do
     * Printings
     * Rulings
     * Side
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/cards' do
     example_request 'All Cards' do
@@ -43,12 +43,15 @@ resource 'Cards' do
 
     # TODO(plural): Enforce sort order by type and primary field name.
     fields = CardSearchQueryBuilder.fields.map do |x|
-      format('* **%s**: Type: %s%s', x.keywords.join(', '), x.type.to_s,
-             x.documentation.nil? ? '' : "\n  * %s" % x.documentation)
+      format('* **%<keywords>s**: Type: %<type>s%<documentation>s',
+             keywords: x.keywords.join(', '),
+             type: x.type.to_s,
+             documentation: x.documentation.nil? ? '' : "\n  * #{x.documentation}")
     end
     let(:query) { 'gamble' }
     example_request 'Filter - Card Search Operator' do
-      explanation format("%s\n### Fields and their types\n%s", SearchQueryBuilder.search_filter_docs, fields.join("\n"))
+      explanation format("%<docs>s\n### Fields and their types\n%<fields>s",
+                         docs: SearchQueryBuilder.search_filter_docs, fields: fields.join("\n"))
 
       expect(status).to eq 200
     end

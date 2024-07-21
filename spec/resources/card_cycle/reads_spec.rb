@@ -6,7 +6,7 @@ RSpec.describe CardCycleResource, type: :resource do
   describe 'serialization' do
     let!(:borealis) { CardCycle.find('borealis') }
 
-    it 'works' do
+    it 'fields match' do
       params[:filter] = { id: { eq: borealis.id } }
       render
       data = jsonapi_data[0]

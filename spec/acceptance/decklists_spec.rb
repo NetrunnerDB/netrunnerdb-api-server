@@ -7,7 +7,7 @@ resource 'Decklists' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     Decklists are published decks from users.
 
     ## Relationships
@@ -19,7 +19,7 @@ resource 'Decklists' do
     * Identity Card
     * Cards
 
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/decklists' do
     example_request 'All Decklists' do
@@ -40,12 +40,12 @@ resource 'Decklists' do
     parameter :card_id, type: :string, required: true
 
     example_request 'Filter - Get decklists containing all supplied Card ids' do
-      explanation <<~EOM
+      explanation <<~EXPLANATION
         The card_id filter can accept a single card_id or a comma-separated list of card ids.
 
         If multiple card ids are supplied, the decklist must contain all of the
         cards to be included in the results.
-      EOM
+      EXPLANATION
 
       expect(status).to eq 200
     end

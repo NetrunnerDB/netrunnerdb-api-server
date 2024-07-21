@@ -14,3 +14,11 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Rails/HasManyOrHasOneDependent:
   Enabled: false
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/ExampleWording:
+  Enabled: false
+RSpec/FilePath:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false

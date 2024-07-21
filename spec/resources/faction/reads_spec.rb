@@ -84,6 +84,5 @@ RSpec.describe FactionResource, type: :resource do
         check_included_for_id(faction.id, 'side', 'sides', corp.id)
       end
     end
-
   end
 end

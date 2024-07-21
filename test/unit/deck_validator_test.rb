@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class DeckValidatorTest < ActiveSupport::TestCase
-  def setup
+class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/ClassLength
+  def setup # rubocop:disable Metrics/MethodLength
     @empty_deck = {}
 
     # Using => format to ensure that all keys remain strings, like we get in the web app.
@@ -406,7 +408,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     new_deck
   end
 
-  def test_validation_without_basic_deckbuilding_rules
+  def test_validation_without_basic_deckbuilding_rules_corp
     v = DeckValidator.new(@good_asa_without_basic_deckbuilding_validations)
     assert v.valid?
     assert_equal 0, v.errors.size
@@ -415,7 +417,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_equal 0, v.validations[0].errors.size
   end
 
-  def test_validation_without_basic_deckbuilding_rules
+  def test_validation_without_basic_deckbuilding_rules_runner
     v = DeckValidator.new(@bad_ken_without_basic_deckbuilding_rules)
     assert v.valid?
     assert_equal 0, v.errors.size
@@ -473,7 +475,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
   def test_valid_is_idempotent
     # Errors won't keep accumulating if valid? is called repeatedly.
     v = DeckValidator.new(@too_much_program_influence_professor)
-    [0, 1, 2, 3, 4, 5].each do |i|
+    6.times do
       assert_not v.valid?
       assert_equal 0, v.errors.size
       assert_equal v.validations.size, @too_much_program_influence_professor['validations'].size
@@ -490,7 +492,7 @@ class DeckValidatorTest < ActiveSupport::TestCase
     assert_equal v.validations.size, deck['validations'].size
     assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors,
-                    'Decks may not include multiple identities.  Identity card `asa_group_security_through_vigilance` is not allowed.'
+                    'Decks may not include multiple identities.  Identity card `asa_group_security_through_vigilance` is not allowed.' # rubocop:disable Layout/LineLength
   end
 
   def test_runner_identities_are_not_valid_cards_for_basic_deckbuilding
