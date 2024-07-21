@@ -1,38 +1,24 @@
+# frozen_string_literal: true
+
 # A class to hold specifications and results from validations.
 class DeckValidation
-  attr_reader :basic_deckbuilding_rules
-  attr_reader :label
-  attr_reader :errors
-  attr_reader :format_id
-  attr_reader :restriction_id
-  attr_reader :card_pool_id
-  attr_reader :snapshot_id
+  attr_reader :basic_deckbuilding_rules, :label, :errors, :format_id, :restriction_id, :card_pool_id, :snapshot_id
 
   def initialize(validation_hash)
     @label = nil
-    if validation_hash.has_key?('label')
-      @label = validation_hash['label']
-    end
+    @label = validation_hash['label'] if validation_hash.key?('label')
     @basic_deckbuilding_rules = false
-    if validation_hash.has_key?('basic_deckbuilding_rules')
+    if validation_hash.key?('basic_deckbuilding_rules')
       @basic_deckbuilding_rules = validation_hash['basic_deckbuilding_rules']
     end
     @format_id = nil
-    if validation_hash.has_key?('format_id')
-      @format_id = validation_hash['format_id']
-    end
+    @format_id = validation_hash['format_id'] if validation_hash.key?('format_id')
     @restriction_id = nil
-    if validation_hash.has_key?('restriction_id')
-      @restriction_id = validation_hash['restriction_id']
-    end
+    @restriction_id = validation_hash['restriction_id'] if validation_hash.key?('restriction_id')
     @card_pool_id = nil
-    if validation_hash.has_key?('card_pool_id')
-      @card_pool_id = validation_hash['card_pool_id']
-    end
+    @card_pool_id = validation_hash['card_pool_id'] if validation_hash.key?('card_pool_id')
     @snapshot_id = nil
-    if validation_hash.has_key?('snapshot_id')
-      @snapshot_id = validation_hash['snapshot_id']
-    end
+    @snapshot_id = validation_hash['snapshot_id'] if validation_hash.key?('snapshot_id')
 
     expand_implied_ids
 
@@ -40,41 +26,29 @@ class DeckValidation
   end
 
   def expand_implied_ids
-    if !@snapshot_id.nil? and (@format_id.nil? or @card_pool_id.nil? or @restriction_id.nil?)
+    if !@snapshot_id.nil? && (@format_id.nil? || @card_pool_id.nil? || @restriction_id.nil?)
       if Snapshot.exists?(@snapshot_id)
         snapshot = Snapshot.find(@snapshot_id)
-        if @format_id.nil?
-          @format_id = snapshot.format_id
-        end
-        if @card_pool_id.nil?
-          @card_pool_id = snapshot.card_pool_id
-        end
-        if @restriction_id.nil?
-          @restriction_id = snapshot.restriction_id
-        end
+        @format_id = snapshot.format_id if @format_id.nil?
+        @card_pool_id = snapshot.card_pool_id if @card_pool_id.nil?
+        @restriction_id = snapshot.restriction_id if @restriction_id.nil?
       end
-    elsif !@format_id.nil? and (@snapshot_id.nil? or @card_pool_id.nil? or @restriction_id.nil?)
+    elsif !@format_id.nil? && (@snapshot_id.nil? || @card_pool_id.nil? || @restriction_id.nil?)
       if Format.exists?(@format_id)
         format = Format.find(@format_id)
-        if @snapshot_id.nil?
-          @snapshot_id = format.active_snapshot_id
-        end
+        @snapshot_id = format.active_snapshot_id if @snapshot_id.nil?
         active_snapshot = format.snapshot
-        if !active_snapshot.nil?
-          if @card_pool_id.nil?
-            @card_pool_id = active_snapshot.card_pool_id
-          end
-          if @restriction_id.nil?
-            @restriction_id = active_snapshot.restriction_id
-          end
+        unless active_snapshot.nil?
+          @card_pool_id = active_snapshot.card_pool_id if @card_pool_id.nil? # rubocop:disable Metrics/BlockNesting
+          @restriction_id = active_snapshot.restriction_id if @restriction_id.nil? # rubocop:disable Metrics/BlockNesting
         end
       end
-    elsif !@card_pool_id.nil? and @format_id.nil?
+    elsif !@card_pool_id.nil? && @format_id.nil?
       if CardPool.exists?(@card_pool_id)
         card_pool = CardPool.find(@card_pool_id)
         @format_id = card_pool.format_id
       end
-    elsif !@restriction_id.nil? and @format_id.nil?
+    elsif !@restriction_id.nil? && @format_id.nil?
       if Restriction.exists?(@restriction_id)
         restriction = Restriction.find(@restriction_id)
         @format_id = restriction.format_id
@@ -82,11 +56,11 @@ class DeckValidation
     end
   end
 
-  def add_error(e)
-    @errors << e
+  def add_error(error)
+    @errors << error
   end
 
-  def is_valid?
-    return @errors.size == 0
+  def valid?
+    @errors.empty?
   end
 end

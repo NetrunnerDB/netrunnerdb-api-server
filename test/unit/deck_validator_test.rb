@@ -410,73 +410,73 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
 
   def test_validation_without_basic_deckbuilding_rules_corp
     v = DeckValidator.new(@good_asa_without_basic_deckbuilding_validations)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_asa_without_basic_deckbuilding_validations['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_validation_without_basic_deckbuilding_rules_runner
     v = DeckValidator.new(@bad_ken_without_basic_deckbuilding_rules)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @bad_ken_without_basic_deckbuilding_rules['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_corp_side
     v = DeckValidator.new(@good_asa_group)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_asa_group['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_ampere
     v = DeckValidator.new(@good_ampere)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_ampere['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_runner_side
     v = DeckValidator.new(@good_ken)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_ken['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_nova
     v = DeckValidator.new(@good_nova)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_nova['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_good_professor
     v = DeckValidator.new(@good_professor)
-    assert v.is_valid?
+    assert v.valid?
 
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @good_professor['validations'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
-  def test_is_valid_is_idempotent
-    # Errors won't keep accumulating if is_valid? is called repeatedly.
+  def test_valid_is_idempotent
+    # Errors won't keep accumulating if valid? is called repeatedly.
     v = DeckValidator.new(@too_much_program_influence_professor)
     6.times do
-      assert_not v.is_valid?
+      assert_not v.valid?
       assert_equal 0, v.errors.size
       assert_equal v.validations.size, @too_much_program_influence_professor['validations'].size
       assert_equal 1, v.validations[0].errors.size
@@ -487,10 +487,10 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck = swap_card(@good_ampere.deep_dup, 'ark_lockdown', 'asa_group_security_through_vigilance')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, deck['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors,
                     'Decks may not include multiple identities.  Identity card `asa_group_security_through_vigilance` is not allowed.' # rubocop:disable Layout/LineLength
   end
@@ -500,36 +500,36 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['cards']['armand_geist_walker_tech_lord'] = 3
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, deck['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors,
                     'Decks may not include multiple identities.  Identity card `armand_geist_walker_tech_lord` is not allowed.' # rubocop:disable Layout/LineLength
   end
 
   def test_too_much_program_influence_professor
     v = DeckValidator.new(@too_much_program_influence_professor)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @too_much_program_influence_professor['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors,
                     'Influence limit for The Professor: Keeper of Knowledge is 1, but deck has spent 9 influence'
   end
 
   def test_case_normalization
     v = DeckValidator.new(@upper_case_asa_group)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal 0, v.errors.size
     assert_equal v.validations.size, @upper_case_asa_group['VALIDATIONS'].size
-    assert v.validations[0].is_valid?
+    assert v.validations[0].valid?
     assert_equal 0, v.validations[0].errors.size
   end
 
   def test_empty_deck_json
     v = DeckValidator.new(@empty_deck)
-    assert_not v.is_valid?, 'Empty Deck JSON fails validation'
+    assert_not v.valid?, 'Empty Deck JSON fails validation'
     assert_includes v.errors, 'Deck is missing `identity_card_id` field.'
     assert_includes v.errors, 'Deck is missing `side_id` field.'
     assert_includes v.errors, 'Deck must specify some cards.'
@@ -538,84 +538,84 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
 
   def test_missing_identity
     v = DeckValidator.new(@missing_identity)
-    assert_not v.is_valid?, 'Deck JSON missing identity fails validation'
+    assert_not v.valid?, 'Deck JSON missing identity fails validation'
     assert_includes v.errors, 'Deck is missing `identity_card_id` field.'
   end
 
   def test_missing_side
     v = DeckValidator.new(@missing_side)
-    assert_not v.is_valid?, 'Deck JSON missing side fails validation'
+    assert_not v.valid?, 'Deck JSON missing side fails validation'
     assert_includes v.errors, 'Deck is missing `side_id` field.'
   end
 
   def test_imaginary_identity
     v = DeckValidator.new(@imaginary_identity)
-    assert_not v.is_valid?, 'Deck JSON has non-existent Identity'
+    assert_not v.valid?, 'Deck JSON has non-existent Identity'
     assert_includes v.errors, '`identity_card_id` `plural` does not exist.'
   end
 
   def test_imaginary_side
     v = DeckValidator.new(@imaginary_side)
-    assert_not v.is_valid?, 'Deck JSON has non-existent side'
+    assert_not v.valid?, 'Deck JSON has non-existent side'
     assert_includes v.errors, '`side_id` `super_mega_corp` does not exist.'
   end
 
   def test_corp_deck_with_runner_card
     v = DeckValidator.new(@runner_econ_asa_group)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @runner_econ_asa_group['validations'].size
-    assert_not v.validations[0].is_valid?, 'Basic deckbuilding validation fails.'
+    assert_not v.validations[0].valid?, 'Basic deckbuilding validation fails.'
     assert_includes v.validations[0].errors, 'Card `sure_gamble` side `runner` does not match deck side `corp`'
   end
 
   def test_out_of_faction_agendas
     v = DeckValidator.new(@out_of_faction_agenda)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @out_of_faction_agenda['validations'].size
-    assert_not v.validations[0].is_valid?, 'Basic deckbuilding validation fails.'
+    assert_not v.validations[0].valid?, 'Basic deckbuilding validation fails.'
     assert_includes v.validations[0].errors,
                     'Agenda `bellona` with faction_id `nbn` is not allowed in a `haas_bioroid` deck.'
   end
 
   def test_out_of_faction_agendas_ampere
     v = DeckValidator.new(@ampere_too_many_agendas_from_one_faction)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @ampere_too_many_agendas_from_one_faction['validations'].size
-    assert_not v.validations[0].is_valid?, 'Basic deckbuilding validation fails.'
+    assert_not v.validations[0].valid?, 'Basic deckbuilding validation fails.'
     assert_includes v.validations[0].errors,
                     'Ampere decks may not include more than 2 agendas per non-neutral faction. There are 3 `nbn` agendas present.' # rubocop:disable Layout/LineLength
   end
 
   def test_mismatched_side_corp_id
     v = DeckValidator.new(@corp_econ_ken)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @corp_econ_ken['validations'].size
-    assert_not v.validations[0].is_valid?, 'Runner deck with corp card fails.'
+    assert_not v.validations[0].valid?, 'Runner deck with corp card fails.'
     assert_includes v.validations[0].errors, 'Card `hedge_fund` side `corp` does not match deck side `runner`'
   end
 
   def test_mismatched_side_runner_id
     v = DeckValidator.new(@wrong_side_geist)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @wrong_side_geist['validations'].size
-    assert_not v.validations[0].is_valid?, 'Deck with mismatched id and specified side fails'
+    assert_not v.validations[0].valid?, 'Deck with mismatched id and specified side fails'
     assert_includes v.validations[0].errors,
                     'Identity `armand_geist_walker_tech_lord` has side `runner` which does not match given side `corp`'
   end
 
   def test_not_enough_agenda_points
     v = DeckValidator.new(@not_enough_agenda_points_too_many_copies)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @not_enough_agenda_points_too_many_copies['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors, 'Deck with size 45 requires [20,21] agenda points, but deck only has 18'
   end
 
   def test_too_many_copies
     v = DeckValidator.new(@not_enough_agenda_points_too_many_copies)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @not_enough_agenda_points_too_many_copies['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors, 'Card `hedge_fund` has a deck limit of 3, but 36 copies are included.'
     assert_includes v.validations[0].errors,
                     'Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.'
@@ -623,34 +623,34 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
 
   def test_too_many_copies_ampere
     v = DeckValidator.new(@ampere_with_too_many_cards)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @ampere_with_too_many_cards['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors, 'Card `hedge_fund` has a deck limit of 1, but 2 copies are included.'
     assert_includes v.validations[0].errors, 'Card `tyr` has a deck limit of 1, but 2 copies are included.'
   end
 
   def test_too_may_copies_nova
     v = DeckValidator.new(@nova_with_too_many_cards)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @nova_with_too_many_cards['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors, 'Card `sure_gamble` has a deck limit of 1, but 2 copies are included.'
     assert_includes v.validations[0].errors, 'Card `unity` has a deck limit of 1, but 2 copies are included.'
   end
 
   def test_corp_too_much_influence
     v = DeckValidator.new(@too_much_influence_asa_group)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @too_much_influence_asa_group['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
   end
 
   def test_bad_cards
     v = DeckValidator.new(@bad_cards_asa_group)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @bad_cards_asa_group['validations'].size
     assert_includes v.errors, 'Card `foo` does not exist.'
     assert_includes v.errors, 'Card `bar` does not exist.'
@@ -673,9 +673,9 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
 
   def test_too_few_cards
     v = DeckValidator.new(@too_few_cards_asa_group)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, @too_few_cards_asa_group['validations'].size
-    assert_not v.validations[0].is_valid?
+    assert_not v.validations[0].valid?
     assert_includes v.validations[0].errors, 'Minimum deck size is 45, but deck has 3 cards.'
   end
 
@@ -683,9 +683,9 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck = @good_asa_group.deep_dup
     deck['validations'][0]['format_id'] = 'magic_the_gathering'
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
-    # TODO: Update validation to explicitly set is_valid? to false
+    # TODO: Update validation to explicitly set valid? to false
     # and have the validator set it to true as a literal iff valid.
     assert_includes v.errors, 'Format `magic_the_gathering` does not exist.'
   end
@@ -694,7 +694,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck = @good_asa_group.deep_dup
     deck['validations'][0]['card_pool_id'] = 'startup_2099'
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.errors, 'Card Pool `startup_2099` does not exist.'
   end
@@ -703,7 +703,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck = @good_asa_group.deep_dup
     deck['validations'][0]['restriction_id'] = 'standard_banlist_2034_03'
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.errors, 'Restriction `standard_banlist_2034_03` does not exist.'
   end
@@ -712,7 +712,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck = @good_asa_group.deep_dup
     deck['validations'][0]['snapshot_id'] = 'snapshot_3030'
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.errors, 'Snapshot `snapshot_3030` does not exist.'
   end
@@ -722,7 +722,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     # Test fixture standard_02 is not a full representation of standard.
     deck['validations'][0]['card_pool_id'] = 'standard_02'
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     # Ensure all invalid cards are reported as errors.
     %w[
@@ -751,7 +751,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['validations'][0].delete('snapshot_id')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Card `trieste_model_bioroids` is banned in restriction `standard_banlist`.'
@@ -765,7 +765,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['validations'][0].delete('snapshot_id')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Deck has too many cards marked restricted in restriction `standard_restricted`: send_a_message, trieste_model_bioroids.' # rubocop:disable Layout/LineLength
@@ -779,7 +779,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['validations'][0].delete('snapshot_id')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 13 after Global Penalty applied from restriction `standard_global_penalty`, but deck has spent 2 influence from tyr (2).' # rubocop:disable Layout/LineLength
@@ -793,7 +793,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['validations'][0].delete('snapshot_id')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but after Universal Influence applied from restriction `standard_universal_faction_cost`, deck has spent 24 influence from punitive_counterstrike (9).' # rubocop:disable Layout/LineLength
@@ -807,7 +807,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['validations'][0].delete('restriction_id')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Deck has too many points (9) for eternal restriction `eternal_points_list`: send_a_message (3), punitive_counterstrike (3), tyr (3).' # rubocop:disable Layout/LineLength
@@ -831,14 +831,14 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
                 'ark_lockdown'), 'ansel_1_0', 'prisec'
     )
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
 
     deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'mumba_temple')
     v = DeckValidator.new(deck)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal v.validations.size, deck['validations'].size
   end
 
@@ -848,14 +848,14 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck = swap_card(swap_card(@good_asa_group.deep_dup, 'hagen', 'mumbad_virtual_tour'), 'trieste_model_bioroids',
                      'ark_lockdown')
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
 
     deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'mumbad_virtual_tour')
     v = DeckValidator.new(deck)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal v.validations.size, deck['validations'].size
   end
 
@@ -864,7 +864,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     # Swap 3 cards for Museum of History, deck under 50 should fail.
     deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'museum_of_history')
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
@@ -873,7 +873,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['cards']['ontological_dependence'] = 1
     deck['cards']['museum_of_history'] = 3
     v = DeckValidator.new(deck)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal v.validations.size, deck['validations'].size
   end
 
@@ -882,7 +882,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     # swap 3 cards for a pad factory, no pad campaigns, should add 6 influence.
     deck = swap_card(@good_asa_group.deep_dup, 'hagen', 'pad_factory')
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 21 influence'
@@ -890,7 +890,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     # swap 3 cards for pad factory, add 3 pad campaigns, influence should be fine.
     deck = swap_card(swap_card(@good_asa_group.deep_dup, 'hagen', 'pad_factory'), 'hakarl_1_0', 'pad_campaign')
     v = DeckValidator.new(deck)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal v.validations.size, deck['validations'].size
   end
 
@@ -901,7 +901,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     deck['cards'].delete('rototurret')
 
     v = DeckValidator.new(deck)
-    assert_not v.is_valid?
+    assert_not v.valid?
     assert_equal v.validations.size, deck['validations'].size
     assert_includes v.validations[0].errors,
                     'Influence limit for Asa Group: Security Through Vigilance is 15, but deck has spent 22 influence'
@@ -909,7 +909,7 @@ class DeckValidatorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Clas
     # With 3 Afshar and 3 Punitive Counterstrike, there are 6 non-Alliance Weyland cards in the deck.
     deck['cards']['afshar'] = 3
     v = DeckValidator.new(deck)
-    assert v.is_valid?
+    assert v.valid?
     assert_equal v.validations.size, deck['validations'].size
   end
 end
