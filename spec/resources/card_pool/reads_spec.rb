@@ -95,7 +95,7 @@ RSpec.describe CardPoolResource, type: :resource do
       end
     end
 
-    describe 'include cards' do
+    describe 'include printings' do
       let!(:card_pool) { CardPool.find('eternal_01') }
       let!(:printing) { Printing.find(Card.find('border_control').latest_printing_id) }
 

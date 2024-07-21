@@ -1,8 +1,10 @@
-ENV["RAILS_ENV"] ||= "test"
-require_relative "../config/environment"
-require "rails/test_help"
+# frozen_string_literal: true
 
-require "simplecov"
+ENV['RAILS_ENV'] ||= 'test'
+require_relative '../config/environment'
+require 'rails/test_help'
+
+require 'simplecov'
 require 'simplecov-cobertura'
 SimpleCov.coverage_dir 'coverage/unit'
 SimpleCov.enable_coverage :branch
@@ -17,12 +19,14 @@ SimpleCov.start do
   add_group 'Libraries', 'lib'
 end
 
-class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
+module ActiveSupport
+  class TestCase
+    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+    fixtures :all
 
-  # Add more helper methods to be used by all tests here...
-  Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
-  Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
-  Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
+    # Add more helper methods to be used by all tests here...
+    Scenic.database.refresh_materialized_view(:unified_restrictions, concurrently: false, cascade: false)
+    Scenic.database.refresh_materialized_view(:unified_cards, concurrently: false, cascade: false)
+    Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
+  end
 end

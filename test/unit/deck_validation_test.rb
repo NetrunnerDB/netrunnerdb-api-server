@@ -1,23 +1,25 @@
+# frozen_string_literal: true
+
 class DeckValidationTest < ActiveSupport::TestCase
   def setup
     @empty_validation = {
-        'label' => 'empty',
+      'label' => 'empty'
     }
     @snapshot_only = {
-        'label' => 'expand snapshot',
-        'snapshot_id' => 'standard_02',
+      'label' => 'expand snapshot',
+      'snapshot_id' => 'standard_02'
     }
     @format_only = {
-        'label' => 'expand format',
-        'format_id' => 'standard',
+      'label' => 'expand format',
+      'format_id' => 'standard'
     }
     @card_pool_only = {
-        'label' => 'expand card_pool',
-        'card_pool_id' => 'startup_02',
+      'label' => 'expand card_pool',
+      'card_pool_id' => 'startup_02'
     }
     @restriction_only = {
-        'label' => 'expand restriction',
-        'restriction_id' => 'standard_banlist',
+      'label' => 'expand restriction',
+      'restriction_id' => 'standard_banlist'
     }
   end
 

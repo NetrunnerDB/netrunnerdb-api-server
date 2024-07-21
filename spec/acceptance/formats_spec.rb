@@ -7,7 +7,7 @@ resource 'Formats' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Format resources have the following relationships for their records.
@@ -15,7 +15,7 @@ resource 'Formats' do
     * Card Pools
     * Snapshots
     * Restrictions
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/formats' do
     example_request 'All Formats' do
