@@ -14,7 +14,7 @@
             "version": "latest"
         },
         "ghcr.io/devcontainers/features/ruby:1": {
-            "version": "3.1" // Change to match Ruby version from Gemfile 
+            "version": "3.1" // Change to match Ruby version from Gemfile
         },
         "ghcr.io/devcontainers/features/node:1": {
             "version": 19 // Change Node version as required
@@ -66,7 +66,7 @@
                 ],
                 "ruby.format": "rubocop",
                 "rubocop.yjitEnabled": false,
-                "editor.formatOnSave": false 
+                "editor.formatOnSave": false
             },
             "extensions": [
                 "IBM.output-colorizer",

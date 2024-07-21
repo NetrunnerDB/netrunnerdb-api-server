@@ -17,6 +17,12 @@ class CardPoolResource < ApplicationResource
   has_many :snapshots
 
   # TODO(plural): Add working relationships for cards and printings.
-  # has_many :cards
-  # has_many :printings
+  many_to_many :cards
+  many_to_many :printings
+
+  filter :printing_id, :string do
+    eq do |scope, value|
+      scope.by_printing_ids(value)
+    end
+  end
 end

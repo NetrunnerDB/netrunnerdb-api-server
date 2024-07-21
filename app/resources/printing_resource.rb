@@ -120,4 +120,13 @@ class PrintingResource < ApplicationResource
       format('%s?filter[id]=%s', Rails.application.routes.url_helpers.illustrators_url, p.illustrator_ids.join(','))
     end
   end
+
+  many_to_many :card_pools do
+    assign do |printings, _card_pools|
+      CardPool.by_printing_ids(printings.map(&:id))
+    end
+    link do |p|
+      format('%s?filter[printing_id]=%s', Rails.application.routes.url_helpers.card_pools_url, p.id)
+    end
+  end
 end

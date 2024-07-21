@@ -173,5 +173,14 @@ RSpec.describe PrintingResource, type: :resource do
         check_included_for_id(printing.id, 'side', 'sides', side.id)
       end
     end
+
+    describe 'include card_pools' do
+      let!(:printing) { Printing.find(Card.find('border_control').latest_printing_id) }
+      let!(:card_pool) { CardPool.find('eternal_01') }
+
+      it 'works' do
+        check_included_for_id(printing.id, 'card_pools', 'card_pools', card_pool.id)
+      end
+    end
   end
 end
