@@ -450,6 +450,7 @@ class SearchQueryBuilder # rubocop:disable Metrics/ClassLength
       when :date
         value.downcase!
         if ['now'].include?(value)
+          # TODO(plural): Ensure all time zone handling is consistent.
           @value = Time.zone.now.strftime('%Y-%m-%d')
         elsif !value.match?(/\d{4}-\d{2}-\d{2}|\d{8}/)
           raise format(
