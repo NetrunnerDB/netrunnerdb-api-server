@@ -21,11 +21,13 @@ namespace :reviews do
   end
 
   def purge_tables
+    # Only do this in a transaction
     puts 'Purging Review Tables'
     ReviewVote.delete_all
     ReviewComment.delete_all
     Review.delete_all
   end
+
   task import: :environment do
     puts 'Importing Reviews from NetrunnerDB Classic'
     reviews_body = retrieve_reviews
@@ -41,7 +43,7 @@ namespace :reviews do
         if card
           r = Review.new
           r.card = card
-          r.username = username
+          r.user_id = username
           r.body = rev_body
           r.created_at = DateTime.parse(review['date_create'])
           r.updated_at = DateTime.parse(review['date_update'])
@@ -51,7 +53,7 @@ namespace :reviews do
           ReviewVote.transaction do
             review['votes'].times do
               vote = ReviewVote.new
-              vote.username = 'TBD_Future_Problem'
+              vote.user_id = 'TBD_Future_Problem'
               vote.review = r
               vote.save!
             end
@@ -61,7 +63,7 @@ namespace :reviews do
           ReviewComment.transaction do
             comments.each do |comment|
               c = ReviewComment.new
-              c.username = comment['user']
+              c.user_id = comment['user']
               c.body = comment['comment']
               c.review = r
               c.created_at = comment['date_create']

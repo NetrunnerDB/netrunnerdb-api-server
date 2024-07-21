@@ -6,7 +6,9 @@ class ReviewResource < ApplicationResource
   self.model = Review
 
   attribute :id, :string
-  attribute :username, :string
+  attribute :username, :string do
+    @object.user_id
+  end
   attribute :body, :string
   attribute :card, :string do
     @object.card.title
@@ -23,7 +25,7 @@ class ReviewResource < ApplicationResource
       {
         id: comment.id,
         body: comment.body,
-        user: comment.username,
+        user: comment.user_id,
         created_at: comment.created_at,
         updated_at: comment.updated_at
       }
