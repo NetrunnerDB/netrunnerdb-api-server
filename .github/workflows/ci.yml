@@ -111,17 +111,9 @@ jobs:
       - name: Log in to DO Container Registry
         run: doctl registry login --expiry-seconds 600
 
-      - name: Tag image with run id
-        if: github.ref == 'refs/heads/main'
-        run: docker tag $IMAGENAME:${{ github.run_id }}
-
-      - name: Tag image with latest if main branch
-        if: github.ref == 'refs/heads/main'
-        run: docker tag $IMAGENAME:latest
-
-      - name: Tag image with release tag if release branch
-        if: github.event_name == 'release'
-        run: docker tag $IMAGENAME:release-${{ github.ref_name }}
-
-      - name: Push image to DO Container Registry
-        run: docker push $IMAGENAME:${{ github.run_id }} && docker push $IMAGENAME:latest
+      - name: Tag image and publish image
+        env:
+          IMAGETAG: ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref_name }}
+        run: |
+          docker tag $IMAGETAG $IMAGENAME:${{ github.run_id }}
+          docker push $IMAGENAME:${{ github.run_id }} && docker push $IMAGETAG
