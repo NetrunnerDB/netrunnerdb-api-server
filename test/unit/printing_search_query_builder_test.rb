@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'minitest/autorun'
 require 'parslet/convenience'
 
-class PrintingSearchQueryBuilderTest < Minitest::Test
+class PrintingSearchQueryBuilderTest < Minitest::Test # rubocop:disable Metrics/ClassLength
   def test_simple_successful_query
-    input = %Q{x:trash}
+    input = %(x:trash)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -13,7 +15,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_simple_successful_query_with_multiple_terms
-    input = %Q{x:trash cost:3}
+    input = %(x:trash cost:3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -23,7 +25,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_numeric_field_not_equal
-    input = %Q{trash_cost!3}
+    input = %(trash_cost!3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -33,7 +35,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_numeric_field_less_than
-    input = %Q{trash_cost<3}
+    input = %(trash_cost<3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -43,7 +45,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_numeric_field_less_than_equal_to
-    input = %Q{trash_cost<=3}
+    input = %(trash_cost<=3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -53,7 +55,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_numeric_field_greater_than
-    input = %Q{trash_cost>3}
+    input = %(trash_cost>3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -63,7 +65,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_numeric_field_greater_than_equal_to
-    input = %Q{trash_cost>=3}
+    input = %(trash_cost>=3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -73,7 +75,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_string_field_not_like
-    input = %Q{title!sure}
+    input = %(title!sure)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -84,32 +86,32 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
 
   def test_boolean_field_bad_operators
     bad_operators = ['<', '<=', '>', '>=']
-    bad_operators.each {|op|
-      input = 'is_unique%strue' % op
+    bad_operators.each do |op|
+      input = "is_unique#{op}true"
       begin
-        builder = PrintingSearchQueryBuilder.new(input)
-        refute(true, 'parser unexpectedly passed')
+        PrintingSearchQueryBuilder.new(input)
+        assert_not(true, 'parser unexpectedly passed')
       rescue RuntimeError => e
-        assert_equal 'Invalid boolean operator "%s"' % op, e.message
+        assert_equal "Invalid boolean operator \"#{op}\"", e.message
       end
-    }
+    end
   end
 
   def test_string_field_bad_operators
     bad_operators = ['<', '<=', '>', '>=']
-    bad_operators.each {|op|
-      input = 'title%ssure' % op
+    bad_operators.each do |op|
+      input = "title#{op}sure"
       begin
-        builder = PrintingSearchQueryBuilder.new(input)
-        refute(true, 'parser unexpectedly passed')
+        PrintingSearchQueryBuilder.new(input)
+        assert_not(true, 'parser unexpectedly passed')
       rescue RuntimeError => e
-        assert_equal 'Invalid string operator "%s"' % op, e.message
+        assert_equal "Invalid string operator \"#{op}\"", e.message
       end
-    }
+    end
   end
 
   def test_bare_word
-    input = %Q{diversion}
+    input = %(diversion)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -119,7 +121,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_bare_word_negated
-    input = %Q{!diversion}
+    input = %(!diversion)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -129,7 +131,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_quoted_string_negated
-    input = %Q{!"diversion of funds"}
+    input = %(!"diversion of funds")
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -139,16 +141,16 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_bad_query_bad_operator
-    input = %Q{'asdfasdf'}
+    input = %('asdfasdf')
     begin
-      builder = PrintingSearchQueryBuilder.new(input + ':bleargh')
+      PrintingSearchQueryBuilder.new("#{input}:bleargh")
     rescue RuntimeError => e
-      assert_equal 'Unknown keyword "%s"' % input, e.message
+      assert_equal "Unknown keyword \"#{input}\"", e.message
     end
   end
 
   def test_is_banned_no_restriction_specified
-    input = %Q{is_banned:true}
+    input = %(is_banned:true)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -158,7 +160,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_is_restricted_no_restriction_specified
-    input = %Q{is_restricted:true}
+    input = %(is_restricted:true)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -168,7 +170,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_has_global_penalty_no_restriction_specified
-    input = %Q{has_global_penalty:true}
+    input = %(has_global_penalty:true)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -178,37 +180,40 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_is_banned_restriction_specified
-    input = %Q{is_banned:true restriction_id:ban_list_foo}
+    input = %(is_banned:true restriction_id:ban_list_foo)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal '(? = ANY(unified_printings.restrictions_banned)) AND  (? = ANY(unified_printings.restriction_ids))', builder.where.strip
-    assert_equal ['true', 'ban_list_foo'], builder.where_values
+    assert_equal '(? = ANY(unified_printings.restrictions_banned)) AND  (? = ANY(unified_printings.restriction_ids))',
+                 builder.where.strip
+    assert_equal %w[true ban_list_foo], builder.where_values
     assert_equal [], builder.left_joins
   end
 
   def test_is_restricted_restriction_specified
-    input = %Q{is_restricted:true restriction_id:ban_list_foo}
+    input = %(is_restricted:true restriction_id:ban_list_foo)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal '(? = ANY(unified_printings.restrictions_restricted)) AND  (? = ANY(unified_printings.restriction_ids))', builder.where.strip
-    assert_equal ['true', 'ban_list_foo'], builder.where_values
+    assert_equal '(? = ANY(unified_printings.restrictions_restricted)) AND  (? = ANY(unified_printings.restriction_ids))', # rubocop:disable Layout/LineLength
+                 builder.where.strip
+    assert_equal %w[true ban_list_foo], builder.where_values
     assert_equal [], builder.left_joins
   end
 
   def test_has_global_penalty_restriction_specified
-    input = %Q{has_global_penalty:true restriction_id:ban_list_foo}
+    input = %(has_global_penalty:true restriction_id:ban_list_foo)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
-    assert_equal '(? = ANY(unified_printings.restrictions_global_penalty)) AND  (? = ANY(unified_printings.restriction_ids))', builder.where.strip
-    assert_equal ['true', 'ban_list_foo'], builder.where_values
+    assert_equal '(? = ANY(unified_printings.restrictions_global_penalty)) AND  (? = ANY(unified_printings.restriction_ids))', # rubocop:disable Layout/LineLength
+                 builder.where.strip
+    assert_equal %w[true ban_list_foo], builder.where_values
     assert_equal [], builder.left_joins
   end
 
   def test_eternal_points
-    input = %Q{eternal_points:eternal_restriction_id-3}
+    input = %(eternal_points:eternal_restriction_id-3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -218,7 +223,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_universal_faction_cost
-    input = %Q{universal_faction_cost:3}
+    input = %(universal_faction_cost:3)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -228,7 +233,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_card_pool
-    input = %Q{card_pool:best_pool}
+    input = %(card_pool:best_pool)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -238,25 +243,25 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_bad_boolean_value
-    input = %Q{additional_cost:nah}
+    input = %(additional_cost:nah)
     begin
-      builder = PrintingSearchQueryBuilder.new(input)
+      PrintingSearchQueryBuilder.new(input)
     rescue RuntimeError => e
       assert_equal 'Invalid value "nah" for boolean field "additional_cost"', e.message
     end
   end
 
   def test_bad_numeric_value
-    input = %Q{trash_cost:"too damn high"}
+    input = %(trash_cost:"too damn high")
     begin
-      builder = PrintingSearchQueryBuilder.new(input)
+      PrintingSearchQueryBuilder.new(input)
     rescue RuntimeError => e
       assert_equal 'Invalid value "too damn high" for integer field "trash_cost"', e.message
     end
   end
 
   def test_release_date_full
-    input = %Q{release_date:2022-07-22}
+    input = %(release_date:2022-07-22)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -266,7 +271,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_release_date_short
-    input = %Q{r>=20220722}
+    input = %(r>=20220722)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -276,16 +281,17 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_bad_date_value
-    input = %Q{release_date:Jul-22-2022}
+    input = %(release_date:Jul-22-2022)
     begin
-      builder = PrintingSearchQueryBuilder.new(input)
+      PrintingSearchQueryBuilder.new(input)
     rescue RuntimeError => e
-      assert_equal 'Invalid value "jul-22-2022" for date field "release_date" - only YYYY-MM-DD or YYYYMMDD are supported.', e.message
+      assert_equal 'Invalid value "jul-22-2022" for date field "release_date" - only YYYY-MM-DD or YYYYMMDD are supported.', # rubocop:disable Layout/LineLength
+                   e.message
     end
   end
 
   def test_illustrator_full
-    input = %Q{illustrator:Zeilinger}
+    input = %(illustrator:Zeilinger)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -295,7 +301,7 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_illustrator_short
-    input = %Q{i!Zeilinger}
+    input = %(i!Zeilinger)
     builder = PrintingSearchQueryBuilder.new(input)
 
     assert_nil builder.parse_error
@@ -305,20 +311,21 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_designed_by
-    input = %Q{designed_by:best_org}
+    input = %(designed_by:best_org)
     builders = [
-      {:builder => CardSearchQueryBuilder.new(input), :table => 'cards'},
-      {:builder => PrintingSearchQueryBuilder.new(input), :table => 'printings'}]
+      { builder: CardSearchQueryBuilder.new(input), table: 'cards' },
+      { builder: PrintingSearchQueryBuilder.new(input), table: 'printings' }
+    ]
     builders.each do |b|
       assert_nil b[:builder].parse_error
-      assert_equal 'lower(unified_%s.designed_by) LIKE ?' % b[:table], b[:builder].where.strip
+      assert_equal "lower(unified_#{b[:table]}.designed_by) LIKE ?", b[:builder].where.strip
       assert_equal ['%best_org%'], b[:builder].where_values
       assert_equal [], b[:builder].left_joins
     end
   end
 
   def test_released_by
-    input = %Q{released_by:best_org}
+    input = %(released_by:best_org)
     builder = PrintingSearchQueryBuilder.new(input)
     assert_nil builder.parse_error
     assert_equal 'lower(unified_printings.released_by) LIKE ?', builder.where.strip
@@ -327,16 +334,16 @@ class PrintingSearchQueryBuilderTest < Minitest::Test
   end
 
   def test_printings_released_by
-    input = %Q{printings_released_by:best_org}
+    input = %(printings_released_by:best_org)
     builders = [
-      {:builder => CardSearchQueryBuilder.new(input), :table => 'cards'},
-      {:builder => PrintingSearchQueryBuilder.new(input), :table => 'printings'}]
+      { builder: CardSearchQueryBuilder.new(input), table: 'cards' },
+      { builder: PrintingSearchQueryBuilder.new(input), table: 'printings' }
+    ]
     builders.each do |b|
       assert_nil b[:builder].parse_error
-      assert_equal '(? = ANY(unified_%s.printings_released_by))' % b[:table], b[:builder].where.strip
+      assert_equal "(? = ANY(unified_#{b[:table]}.printings_released_by))", b[:builder].where.strip
       assert_equal ['best_org'], b[:builder].where_values
       assert_equal [], b[:builder].left_joins
     end
   end
-
 end

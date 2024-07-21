@@ -7,7 +7,7 @@ resource 'Factions' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Faction resources have the following relationships for their records.
@@ -16,7 +16,7 @@ resource 'Factions' do
     * Decklists
     * Printings
     * Side
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/factions' do
     example_request 'All Factions' do

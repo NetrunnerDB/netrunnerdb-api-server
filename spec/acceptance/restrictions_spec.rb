@@ -7,13 +7,13 @@ resource 'Restrictions' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Restriction resources have the following relationships for their records.
 
     * Format
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/restrictions' do
     example_request 'All Restrictions' do

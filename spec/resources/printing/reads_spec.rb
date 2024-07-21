@@ -82,7 +82,6 @@ RSpec.describe PrintingResource, type: :resource do
 
       it 'filters to id' do
         render
-        data = jsonapi_data[0]
         expect(d.map(&:rawid)).to eq([printing.id])
       end
     end

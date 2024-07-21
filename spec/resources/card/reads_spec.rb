@@ -6,7 +6,7 @@ RSpec.describe CardResource, type: :resource do
   describe 'serialization' do
     let!(:card) { Card.find('the_class_act') }
 
-    it 'works' do
+    it 'fields match' do
       params[:filter] = { id: { eq: card.id } }
       render
 
@@ -90,7 +90,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('steelskin_scarring') }
       let!(:card_cycle) { CardCycle.find('borealis') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'card_cycles', 'card_cycles', card_cycle.id)
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('steelskin_scarring') }
       let!(:card_set) { CardSet.find('midnight_sun') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'card_sets', 'card_sets', card_set.id)
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('adonis_campaign') }
       let!(:card_subtype) { CardSubtype.find('advertisement') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'card_subtypes', 'card_subtypes', card_subtype.id)
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('send_a_message') }
       let!(:card_type) { CardType.find('agenda') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'card_type', 'card_types', card_type.id)
       end
     end
@@ -126,7 +126,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('pinhole_threading') }
       let!(:decklist) { Decklist.find('22222222-2222-2222-2222-222222222222') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'decklists', 'decklists', decklist.id)
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('surveyor') }
       let!(:faction) { Faction.find('weyland_consortium') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'faction', 'factions', faction.id)
       end
     end
@@ -144,7 +144,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('hostile_takeover') }
       let!(:printing) { Printing.find('21132') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'printings', 'printings', printing.id)
       end
     end
@@ -153,7 +153,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('hedge_fund') }
       let!(:ruling) { Ruling.find(1) }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'rulings', 'rulings', ruling.id.to_s)
       end
     end
@@ -162,7 +162,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('urban_renewal') }
       let!(:side) { Side.find('corp') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'side', 'sides', side.id)
       end
     end
@@ -171,7 +171,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:card) { Card.find('border_control') }
       let!(:card_pool) { CardPool.find('eternal_01') }
 
-      it 'works' do
+      it 'is properly included' do
         check_included_for_id(card.id, 'card_pools', 'card_pools', card_pool.id)
       end
     end
