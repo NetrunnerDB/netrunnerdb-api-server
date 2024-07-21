@@ -5,10 +5,6 @@
 # This is a readonly model based on the unified_restrictions table that pre-joins
 # useful restriction information into a single record.
 class UnifiedRestriction < ApplicationRecord
-  def readonly?
-    true
-  end
-
   belongs_to :format
   belongs_to :snapshot
   belongs_to :card_pool

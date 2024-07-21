@@ -5,10 +5,6 @@
 # This uses the unified_printings table because it pre-joins the useful data from related tables.
 # These records are immutable since they are sourced from a materialized view.
 class Printing < ApplicationRecord
-  def readonly?
-    true
-  end
-
   include CardAbilities
 
   self.table_name = 'unified_printings'

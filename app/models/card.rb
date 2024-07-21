@@ -5,10 +5,6 @@
 # This uses the unified_cards table because it pre-joins the useful data from related tables.
 # These records are immutable since they are sourced from a materialized view.
 class Card < ApplicationRecord
-  def readonly?
-    true
-  end
-
   self.table_name = 'unified_cards'
   include CardAbilities
 
