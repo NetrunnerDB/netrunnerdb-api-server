@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
+# Model for decks_cards join table.
 class DeckCard < ApplicationRecord
-  self.table_name = "decks_cards"
+  self.table_name = 'decks_cards'
 
   belongs_to :deck,
-    :primary_key => :id,
-    :foreign_key => :deck_id,
-    :inverse_of => :card_slots,
-    :touch => true
+             primary_key: :id,
+             inverse_of: :card_slots,
+             touch: true
   belongs_to :card,
-    :primary_key => :id,
-    :foreign_key => :card_id
- end
+             primary_key: :id
+end

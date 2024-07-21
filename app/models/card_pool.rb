@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Model for Card Pool objects.
 class CardPool < ApplicationRecord
   has_many :card_pool_card_cycles
   has_many :card_cycles, through: :card_pool_card_cycles

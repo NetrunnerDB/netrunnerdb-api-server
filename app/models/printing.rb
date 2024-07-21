@@ -1,3 +1,9 @@
+# frozen_string_literal: true
+
+# Model for Printing objects.
+#
+# This uses the unified_printings table because it pre-joins the useful data from related tables.
+# These records are immutable since they are sourced from a materialized view.
 class Printing < ApplicationRecord
   include CardAbilities
 
@@ -21,10 +27,12 @@ class Printing < ApplicationRecord
            primary_key: :id
   has_many :illustrators, through: :illustrator_printings
 
-  has_many :unified_restrictions,
+  # TODO(plural): Add restriction to printing relationships and remove disabled lint check.
+  has_many :unified_restrictions, # rubocop:disable Rails/InverseOf
            primary_key: :card_id,
            foreign_key: :card_id
   has_many :card_pool_cards,
+           inverse_of: :printings,
            primary_key: :card_id,
            foreign_key: :card_id
   has_many :card_pools, through: :card_pool_cards
@@ -54,10 +62,10 @@ class Printing < ApplicationRecord
   def nrdb_classic_images
     url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
     {
-      'tiny' => format('%s/tiny/%s.jpg', url_prefix, id),
-      'small' => format('%s/small/%s.jpg', url_prefix, id),
-      'medium' => format('%s/medium/%s.jpg', url_prefix, id),
-      'large' => format('%s/large/%s.jpg', url_prefix, id)
+      'tiny' => format('%<url_prefix>s/tiny/%<printing_id>s.jpg', url_prefix:, printing_id: id),
+      'small' => format('%<url_prefix>s/small/%<printing_id>s.jpg', url_prefix:, printing_id: id),
+      'medium' => format('%<url_prefix>s/medium/%<printing_id>s.jpg', url_prefix:, printing_id: id),
+      'large' => format('%<url_prefix>s/large/%<printing_id>s.jpg', url_prefix:, printing_id: id)
     }
   end
 

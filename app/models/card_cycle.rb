@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Model for card_cycles table.
 class CardCycle < ApplicationRecord
   has_many :card_sets
   has_many :printings

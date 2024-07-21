@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Model for Card Set objects.
 class CardSet < ApplicationRecord
   belongs_to :card_cycle
   belongs_to :card_set_type

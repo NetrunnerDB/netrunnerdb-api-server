@@ -6,6 +6,7 @@ class IllustratorPrinting < ApplicationRecord
 
   belongs_to :illustrator
   belongs_to :raw_printing,
+             inverse_of: :illustrator_printings,
              primary_key: :id,
              foreign_key: :printing_id
   belongs_to :printing

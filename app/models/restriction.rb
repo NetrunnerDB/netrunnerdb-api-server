@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Model for Restriction objects.
 class Restriction < ApplicationRecord
   has_many :snapshots
 
