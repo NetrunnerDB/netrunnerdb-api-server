@@ -1,8 +1,13 @@
+# frozen_string_literal: true
+
+# Model for Deck objects.
+#
+# Decks are private, unpublished decklists that belong to a user.
 class Deck < ApplicationRecord
   belongs_to :user
   belongs_to :side
 
-  has_one :identity_card,
+  has_one :identity_card, # rubocop:disable Rails/InverseOf
           class_name: 'Card',
           foreign_key: 'id',
           primary_key: 'identity_card_id'

@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+# Model for Decklist objects.
+#
+# Decklists are the public, published decklists owned by various users.
 class Decklist < ApplicationRecord
   # TODO(plural): Add a relationship to a public user object.
   belongs_to :side

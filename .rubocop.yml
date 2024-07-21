@@ -3,3 +3,9 @@ require:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-rspec_rails
+
+Metrics/MethodLength:
+  Max: 100
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
