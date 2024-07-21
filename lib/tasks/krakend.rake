@@ -10,6 +10,7 @@ namespace :krakend do # rubocop:disable Metrics/BlockLength
     # Base config, including API documentation endpoints.
     {
       'version' => 3,
+      'content_type' => 'application/vnd.api+json',
       'name' => 'NRDB v3 API',
       'timeout' => '5s',
       'output_encoding' => 'json',
