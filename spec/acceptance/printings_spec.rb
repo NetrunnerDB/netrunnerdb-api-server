@@ -14,6 +14,7 @@ resource 'Printings' do
 
     * Card
     * Card Cycle
+    * Card Pools
     * Card Set
     * Card Subtypes
     * Card Type

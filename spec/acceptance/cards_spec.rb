@@ -13,6 +13,7 @@ resource 'Cards' do
     Card resources have the following relationships for their records.
 
     * Card Cycles
+    * Card Pools
     * Card Sets
     * Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)
     * Card Type

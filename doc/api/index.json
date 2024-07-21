@@ -22,7 +22,7 @@
     },
     {
       "name": "Card Pools",
-      "explanation": "## Relationships\n\nCard Pool resources have the following relationships for their records.\n\n* Card Cycles\n* Card Sets\n* Format\n* Snapshots\n",
+      "explanation": "## Relationships\n\nCard Pool resources have the following relationships for their records.\n\n* Card Cycles\n* Card Sets\n* Cards\n* Format\n* Printings\n* Snapshots\n",
       "examples": [
         {
           "description": "All Card Pools",
@@ -150,7 +150,7 @@
     },
     {
       "name": "Cards",
-      "explanation": "## Relationships\n\nCard resources have the following relationships for their records.\n\n* Card Cycles\n* Card Sets\n* Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)\n* Card Type\n* Decklists\n* Faction\n* Printings\n* Rulings\n* Side\n",
+      "explanation": "## Relationships\n\nCard resources have the following relationships for their records.\n\n* Card Cycles\n* Card Pools\n* Card Sets\n* Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)\n* Card Type\n* Decklists\n* Faction\n* Printings\n* Rulings\n* Side\n",
       "examples": [
         {
           "description": "All Cards",
@@ -313,7 +313,7 @@
     },
     {
       "name": "Printings",
-      "explanation": "## Relationships\n\nPrinting resources have the following relationships for their records.\n\n* Card\n* Card Cycle\n* Card Set\n* Card Subtypes\n* Card Type\n* Faction\n* Illustrators\n* Side\n",
+      "explanation": "## Relationships\n\nPrinting resources have the following relationships for their records.\n\n* Card\n* Card Cycle\n* Card Pools\n* Card Set\n* Card Subtypes\n* Card Type\n* Faction\n* Illustrators\n* Side\n",
       "examples": [
         {
           "description": "All Printings",
