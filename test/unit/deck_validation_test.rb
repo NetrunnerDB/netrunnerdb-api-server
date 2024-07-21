@@ -1,23 +1,23 @@
 class DeckValidationTest < ActiveSupport::TestCase
   def setup
     @empty_validation = {
-        'label' => 'empty',
+      'label' => 'empty'
     }
     @snapshot_only = {
-        'label' => 'expand snapshot',
-        'snapshot_id' => 'standard_02',
+      'label' => 'expand snapshot',
+      'snapshot_id' => 'standard_02'
     }
     @format_only = {
-        'label' => 'expand format',
-        'format_id' => 'standard',
+      'label' => 'expand format',
+      'format_id' => 'standard'
     }
     @card_pool_only = {
-        'label' => 'expand card_pool',
-        'card_pool_id' => 'startup_02',
+      'label' => 'expand card_pool',
+      'card_pool_id' => 'startup_02'
     }
     @restriction_only = {
-        'label' => 'expand restriction',
-        'restriction_id' => 'standard_banlist',
+      'label' => 'expand restriction',
+      'restriction_id' => 'standard_banlist'
     }
   end
 
@@ -29,7 +29,7 @@ class DeckValidationTest < ActiveSupport::TestCase
     assert v.card_pool_id.nil?
     assert v.restriction_id.nil?
     assert v.snapshot_id.nil?
-    assert v.is_valid?
+    assert v.valid?
   end
 
   def test_expand_snapshot
@@ -40,7 +40,7 @@ class DeckValidationTest < ActiveSupport::TestCase
     assert_equal 'standard_02', v.card_pool_id
     assert_equal 'standard_banlist', v.restriction_id
     assert_equal 'standard_02', v.snapshot_id
-    assert v.is_valid?
+    assert v.valid?
   end
 
   def test_expand_format
@@ -51,7 +51,7 @@ class DeckValidationTest < ActiveSupport::TestCase
     assert_equal 'standard_02', v.card_pool_id
     assert_equal 'standard_banlist', v.restriction_id
     assert_equal 'standard_02', v.snapshot_id
-    assert v.is_valid?
+    assert v.valid?
   end
 
   def test_expand_card_pool
@@ -62,7 +62,7 @@ class DeckValidationTest < ActiveSupport::TestCase
     assert_equal 'startup_02', v.card_pool_id
     assert v.restriction_id.nil?
     assert v.snapshot_id.nil?
-    assert v.is_valid?
+    assert v.valid?
   end
 
   def test_expand_restriction
@@ -73,6 +73,6 @@ class DeckValidationTest < ActiveSupport::TestCase
     assert_equal 'standard_banlist', v.restriction_id
     assert v.card_pool_id.nil?
     assert v.snapshot_id.nil?
-    assert v.is_valid?
+    assert v.valid?
   end
 end
