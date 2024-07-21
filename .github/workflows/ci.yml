@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  release:
+    types: [published]
   workflow_dispatch:
 
 env:
@@ -86,6 +88,8 @@ jobs:
 
   build_and_push:
     name: Build docker image
+    if: (github.ref == 'refs/heads/main') || (github.event_name == 'release')
+
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
@@ -100,19 +104,15 @@ jobs:
         run: docker build -t $IMAGENAME:latest .
 
       - name: Install doctl
-        if: github.ref == 'refs/heads/main'
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Log in to DO Container Registry
-        if: github.ref == 'refs/heads/main'
         run: doctl registry login --expiry-seconds 600
 
       - name: Tag image with run id
-        if: github.ref == 'refs/heads/main'
         run: docker tag $IMAGENAME:latest $IMAGENAME:${{ github.run_id }}
 
       - name: Push image to DO Container Registry
-        if: github.ref == 'refs/heads/main'
         run: docker push $IMAGENAME:${{ github.run_id }} && docker push $IMAGENAME:latest
