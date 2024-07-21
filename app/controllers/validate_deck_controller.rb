@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Controller for the validate_deck endpoint.
+#
+# This controller takes in a deck and a list of validations to run and
+# returns the results for each requested validation.
 class ValidateDeckController < ApplicationController
   def index
     out = params[:data]
@@ -14,14 +18,16 @@ class ValidateDeckController < ApplicationController
       return render json: {
         errors: [{
           title: 'Invalid request',
-          detail: "Valid requests must be of the form `{'data': { 'attributes': { 'identity_card_id': 'foo', 'side_id': 'bar', 'cards': { }, 'validations': [] } }}`. Extra fields are allowed.",
+          detail: "Valid requests must be of the form `{'data': { 'attributes': { 'identity_card_id': 'foo', \
+              'side_id': 'bar', 'cards': { }, 'validations': [] } }}`. Extra fields are allowed.",
           code: '400',
           status: '400'
         }]
       }, status: :bad_request
     end
 
-    # Deck validation takes in a simple datastructure, so construct it instead of passing around ActionController::Parameters
+    # Deck validation takes in a simple datastructure,
+    # so construct it instead of passing around ActionController::Parameters
     deck = {
       'identity_card_id' => params[:data][:attributes][:identity_card_id],
       'side_id' => params[:data][:attributes][:side_id],
