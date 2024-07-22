@@ -2,7 +2,7 @@ require 'json'
 require 'net/http'
 require 'optparse'
 require 'uri'
-
+require 'reverse_markdown'
 namespace :reviews do
   desc 'Imports review from NRDBc, currently storing usernames as strings instead of references'
 
@@ -36,7 +36,7 @@ namespace :reviews do
       puts 'Starting import'
       reviews_body['data'].each do |review|
         card_name = review['title']
-        rev_body = review['ruling']
+        rev_body = ReverseMarkdown.convert review['ruling']
         username = review['user']
         comments = review['comments']
         card = Card.find_by(title: card_name)
@@ -64,7 +64,7 @@ namespace :reviews do
             comments.each do |comment|
               c = ReviewComment.new
               c.user_id = comment['user']
-              c.body = comment['comment']
+              c.body = ReverseMarkdown.convert comment['comment']
               c.review = r
               c.created_at = comment['date_create']
               c.updated_at = comment['date_update']

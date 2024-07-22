@@ -69,6 +69,9 @@ gem 'opentelemetry-sdk'
 gem 'opentelemetry-exporter-otlp'
 gem 'opentelemetry-instrumentation-all'
 
+# for review imports from NRDBc
+gem 'reverse_markdown'
+
 group :development, :test do
   gem "brakeman", "~> 5.2"
   gem "bundler-audit", "~> 0.9.0"

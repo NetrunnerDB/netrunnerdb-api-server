@@ -450,6 +450,8 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.8)
       strscan (>= 3.0.9)
     rspec (3.12.0)
@@ -572,6 +574,7 @@ DEPENDENCIES
   rack-cors (= 2.0.0)
   rails (>= 7.0.7.1)
   responders
+  reverse_markdown
   rspec-rails
   rspec_api_documentation
   rubocop
