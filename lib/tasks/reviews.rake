@@ -6,6 +6,16 @@ require 'reverse_markdown'
 namespace :reviews do
   desc 'Imports review from NRDBc, currently storing usernames as strings instead of references'
 
+  def text_to_id(t)
+    t.downcase
+     .unicode_normalize(:nfd)
+     .gsub(/\P{ASCII}/, '')
+     .gsub(/'s(\p{Space}|\z)/, 's\1')
+     .split(/[\p{Space}\p{Punct}]+/)
+     .reject { |s| s&.strip&.empty? }
+     .join('_')
+  end
+
   def retrieve_reviews
     url = URI('https://netrunnerdb.com/api/2.0/public/reviews')
 
@@ -17,11 +27,12 @@ namespace :reviews do
 
     return JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
 
-    raise "Failed to retrieve decklists! Status code: #{response.code}"
+    raise "Failed to retrieve reviews! Status code: #{response.code}"
   end
 
   def purge_tables
     # Only do this in a transaction
+    assert Review.connection.transaction_open?
     puts 'Purging Review Tables'
     ReviewVote.delete_all
     ReviewComment.delete_all
@@ -31,6 +42,8 @@ namespace :reviews do
   task import: :environment do
     puts 'Importing Reviews from NetrunnerDB Classic'
     reviews_body = retrieve_reviews
+
+    card_ids = Card.all.pluck(:id).to_set
     Review.transaction do
       purge_tables
       puts 'Starting import'
@@ -39,10 +52,11 @@ namespace :reviews do
         rev_body = ReverseMarkdown.convert review['ruling']
         username = review['user']
         comments = review['comments']
-        card = Card.find_by(title: card_name)
-        if card
+
+        card_id = text_to_id(card_name)
+        if card_ids.include? card_id
           r = Review.new
-          r.card = card
+          r.card = card_id
           r.user_id = username
           r.body = rev_body
           r.created_at = DateTime.parse(review['date_create'])

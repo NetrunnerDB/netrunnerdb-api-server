@@ -31,5 +31,4 @@ class ReviewResource < ApplicationResource
       }
     end
   end
-  # has_many :comments, resource: ReviewCommentResource
 end
