@@ -37,9 +37,9 @@ class DecksController < ApplicationController
       new_deck.card_slots.create(card_id:, quantity:)
     end
 
-    simplified_params = {data: { id: new_deck.id, type: 'decks' } }
+    simplified_params = { data: { id: new_deck.id, type: 'decks' } }
     deck = DeckResource.find(simplified_params)
-    render jsonapi: deck, status: 201
+    render jsonapi: deck, status: :created
   end
 
   def update
@@ -54,12 +54,15 @@ class DecksController < ApplicationController
       deck = Deck.find(deck_resource.data.id)
 
       deck.identity_card_id = attributes.key?(:identity_card_id) ? attributes[:identity_card_id] : deck.identity_card_id
-      deck.side_id = attributes.has_key?(:side_id) ? attributes[:side_id] : deck.side_id
-      deck.follows_basic_deckbuilding_rules = attributes.key?(:follows_basic_deckbuilding_rules) ?
-          attributes[:follows_basic_deckbuilding_rules] : deck.follows_basic_deckbuilding_rules
-      deck.name = attributes.has_key?(:name) ? attributes[:name] : deck.name
-      deck.notes = attributes.has_key?(:notes) ? attributes[:notes] : deck.notes
-      deck.tags = attributes.has_key?(:tags) ? attributes[:tags] : deck.tags
+      deck.side_id = attributes.key?(:side_id) ? attributes[:side_id] : deck.side_id
+      deck.follows_basic_deckbuilding_rules = if attributes.key?(:follows_basic_deckbuilding_rules)
+                                                attributes[:follows_basic_deckbuilding_rules]
+                                              else
+                                                deck.follows_basic_deckbuilding_rules
+                                              end
+      deck.name = attributes.key?(:name) ? attributes[:name] : deck.name
+      deck.notes = attributes.key?(:notes) ? attributes[:notes] : deck.notes
+      deck.tags = attributes.key?(:tags) ? attributes[:tags] : deck.tags
       deck.updated_at = Time.now.utc.to_formatted_s(:iso8601)
 
       card_slots.each do |card_id, quantity|
@@ -80,7 +83,7 @@ class DecksController < ApplicationController
     deck = DeckResource.find(params)
 
     if deck.destroy
-      render jsonapi: { meta: {} }, status: 200
+      render jsonapi: { meta: {} }, status: :ok
     else
       render jsonapi_errors: deck
     end

@@ -9,5 +9,5 @@ class IllustratorResource < ApplicationResource
   attribute :num_printings, :integer
   attribute :updated_at, :datetime
 
-  many_to_many :printings
+  many_to_many :printings, relation_name: :printings
 end

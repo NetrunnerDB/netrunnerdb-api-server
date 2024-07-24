@@ -7,7 +7,7 @@ resource 'Card Sets' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Card Set resources have the following relationships for their records.
@@ -16,7 +16,7 @@ resource 'Card Sets' do
     * Card Set Type
     * Cards
     * Printings
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/card_sets' do
     example_request 'All Card Sets' do

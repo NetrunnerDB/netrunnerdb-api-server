@@ -7,7 +7,7 @@ resource 'Sides' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Side resources have the following relationships for their records.
@@ -17,7 +17,7 @@ resource 'Sides' do
     * Decklists
     * Factions
     * Printings
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/sides' do
     example_request 'All Sides' do

@@ -7,7 +7,7 @@ resource 'Snapshots' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Snapshot resources have the following relationships for their records.
@@ -15,7 +15,7 @@ resource 'Snapshots' do
     * Card Pool
     * Format
     * Restriction
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/snapshots' do
     example_request 'All Snapshots' do

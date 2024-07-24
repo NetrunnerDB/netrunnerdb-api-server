@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'English'
 require 'jwt'
 
 # Inspects the HTTP Authorization header for a Bearer JWT token and
@@ -29,18 +32,18 @@ module JwtAuthorizationConcern
     jwt = nil
 
     auth_header = request.headers['Authorization']
-    if !auth_header.nil?
+    unless auth_header.nil?
       m = auth_header.match(/^Bearer (.*)$/)
       if m && m.captures.length == 1
         # TODO(plural): Update this to validate the JWT more when we settle on an ID provider & API gateway.
         begin
           decoded_token = JWT.decode m.captures[0], nil, false
-          if decoded_token[0].has_key?('preferred_username')
+          if decoded_token[0].key?('preferred_username')
             jwt = decoded_token[0]
             get_or_insert_user(jwt['preferred_username'])
           end
         rescue JWT::DecodeError
-          Rails.logger.error "JWT decode error: #{$!}"
+          Rails.logger.error "JWT decode error: #{$ERROR_INFO}"
         end
       end
     end

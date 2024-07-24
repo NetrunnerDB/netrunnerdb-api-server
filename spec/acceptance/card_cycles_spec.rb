@@ -7,7 +7,7 @@ resource 'Card Cycles' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Card Cycle resources have the following relationships for their records.
@@ -15,7 +15,7 @@ resource 'Card Cycles' do
     * Card Sets
     * Cards
     * Printings
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/card_cycles' do
     example_request 'All Card Cycles' do

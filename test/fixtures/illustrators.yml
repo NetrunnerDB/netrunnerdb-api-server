@@ -1,6 +1,6 @@
-good_drawers:
-  id: good_drawers
-  name: "Good Drawers"
+good_drawer:
+  id: good_drawer
+  name: "Good Drawer"
   num_printings: 1
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

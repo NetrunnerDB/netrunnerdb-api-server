@@ -9,31 +9,20 @@ class CardPoolResource < ApplicationResource
   attribute :format_id, :string
   attribute :card_cycle_ids, :array_of_strings
   attribute :updated_at, :datetime
-  attribute :num_cards, :integer do
-    @object.cards.length
-  end
+  attribute :num_cards, :integer
 
-  has_one :format do
-    link do |c|
-      '%s/%s' % [Rails.application.routes.url_helpers.formats_url, c.format_id]
-    end
-  end
-  has_many :card_cycles do
-    link do |c|
-      card_cycle_ids = c.card_cycle_ids.empty? ? 'none' : c.card_cycle_ids.join(',')
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_cycles_url, card_cycle_ids]
-    end
-  end
-  has_many :card_sets do
-    link do |c|
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.card_sets_url, c.card_set_ids.join(',')]
-    end
-  end
-  # Make a working cards relationship
-  # has_many :cards, relation_name: :unified_cards
-  has_many :snapshots do
-    link do |c|
-      '%s?filter[id]=%s' % [Rails.application.routes.url_helpers.snapshots_url, c.snapshot_ids.join(',')]
+  belongs_to :format
+  many_to_many :card_cycles
+  many_to_many :card_sets
+  has_many :snapshots
+
+  # TODO(plural): Add working relationships for cards and printings.
+  many_to_many :cards
+  many_to_many :printings
+
+  filter :printing_id, :string do
+    eq do |scope, value|
+      scope.by_printing_ids(value)
     end
   end
 end
