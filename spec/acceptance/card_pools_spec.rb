@@ -7,16 +7,18 @@ resource 'Card Pools' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Card Pool resources have the following relationships for their records.
 
     * Card Cycles
     * Card Sets
+    * Cards
     * Format
+    * Printings
     * Snapshots
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/card_pools' do
     example_request 'All Card Pools' do

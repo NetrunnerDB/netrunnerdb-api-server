@@ -1,3 +1,11 @@
 adonis_campaign:
   card_id: "adonis_campaign"
   card_subtype_id: "advertisement"
+
+bukhgalter_icebreaker:
+  card_id: "bukhgalter"
+  card_subtype_id: "icebreaker"
+
+bukhgalter_killer:
+  card_id: "bukhgalter"
+  card_subtype_id: "killer"

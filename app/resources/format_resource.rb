@@ -13,12 +13,8 @@ class FormatResource < ApplicationResource
   attribute :restriction_ids, :array_of_strings do
     @object.restrictions.sort_by(&:date_start).map(&:id)
   end
-  attribute :active_card_pool_id, :string do
-    @object.snapshots.find_by(active: true).card_pool_id
-  end
-  attribute :active_restriction_id, :string do
-    @object.snapshots.find_by(active: true).restriction_id
-  end
+  attribute :active_card_pool_id, :string
+  attribute :active_restriction_id, :string
   attribute :updated_at, :datetime
 
   has_many :card_pools

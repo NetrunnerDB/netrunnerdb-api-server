@@ -1,33 +1,38 @@
+# frozen_string_literal: true
+
 require 'parslet'
 
+# Search grammer parser for NRDB search query syntax.
+#
+# This provides an AST to inspect, if valid, but SearchQueryBuilder turns this into SQL.
 class SearchParser < Parslet::Parser
   rule(:spaces) { match('\s').repeat(1) }
   rule(:spaces?) { spaces.maybe }
 
   rule(:quoted_string) { double_quoted_string | single_quoted_string }
-  rule(:double_quoted_string) {
+  rule(:double_quoted_string) do
     str('"') >> (
       str('"').absent? >> any
     ).repeat.as(:string) >> str('"')
-  }
-  rule(:single_quoted_string) {
+  end
+  rule(:single_quoted_string) do
     str("'") >> (
       str("'").absent? >> any
     ).repeat.as(:string) >> str("'")
-  }
+  end
 
-  rule(:bare_string) {
+  rule(:bare_string) do
     match('[!\w-]').repeat(1).as(:string)
-  }
+  end
   rule(:string) { quoted_string | bare_string }
 
-  rule(:regex) { # /(((\\\/)|\\)[^\/])*/
+  rule(:regex) do # /(((\\\/)|\\)[^\/])*/
     str('/') >> (
       (str('\\/') |
       str('\\')) |
       match('[^/]')
     ).repeat.as(:regex) >> str('/')
-  }
+  end
 
   rule(:keyword) { match('[_a-z]').repeat(1) }
 
@@ -45,10 +50,10 @@ class SearchParser < Parslet::Parser
   rule(:bracketed) { str('(') >> expr.as(:bracketed) >> str(')') }
 
   rule(:ands) { (unary >> conjunction.repeat).as(:ands) }
-  rule(:conjunction) {
+  rule(:conjunction) do
     (spaces >> str('and') >> spaces >> unary) |
-    (spaces >> str('or ').absent? >> unary)
-  }
+      (spaces >> str('or ').absent? >> unary)
+  end
 
   rule(:ors) { (ands >> disjunction.repeat).as(:ors) }
   rule(:disjunction) { spaces >> str('or') >> spaces >> ands }

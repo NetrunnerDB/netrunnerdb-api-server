@@ -7,13 +7,13 @@ resource 'Illustrators' do
   header 'Content-Type', 'application/json'
   header 'Host', 'api-preview.netrunnerdb.com'
 
-  explanation <<~HEREDOC
+  explanation <<~EXPLANATION
     ## Relationships
 
     Illustrator resources have the following relationships for their records.
 
     * Printings
-  HEREDOC
+  EXPLANATION
 
   get '/api/v3/public/illustrators' do
     example_request 'All Illustrators' do
