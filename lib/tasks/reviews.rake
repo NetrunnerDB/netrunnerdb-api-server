@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'net/http'
 require 'optparse'
@@ -6,14 +8,14 @@ require 'reverse_markdown'
 namespace :reviews do
   desc 'Imports review from NRDBc, currently storing usernames as strings instead of references'
 
-  def text_to_id(t)
-    t.downcase
-     .unicode_normalize(:nfd)
-     .gsub(/\P{ASCII}/, '')
-     .gsub(/'s(\p{Space}|\z)/, 's\1')
-     .split(/[\p{Space}\p{Punct}]+/)
-     .reject { |s| s&.strip&.empty? }
-     .join('_')
+  def text_to_id(text)
+    text.downcase
+        .unicode_normalize(:nfd)
+        .gsub(/\P{ASCII}/, '')
+        .gsub(/'s(\p{Space}|\z)/, 's\1')
+        .split(/[\p{Space}\p{Punct}]+/)
+        .reject { |s| s&.strip&.empty? }
+        .join('_')
   end
 
   def retrieve_reviews

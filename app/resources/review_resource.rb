@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Resource for the Review object (currently imported from NRDBc)
 class ReviewResource < ApplicationResource
   primary_endpoint '/reviews', %i[index show]
 
