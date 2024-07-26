@@ -34,7 +34,8 @@ namespace :reviews do
 
   def purge_tables
     # Only do this in a transaction
-    assert Review.connection.transaction_open?
+    raise 'Called DB purge outside of a transaction!' unless Review.connection.transaction_open?
+
     puts 'Purging Review Tables'
     ReviewVote.delete_all
     ReviewComment.delete_all
@@ -58,7 +59,7 @@ namespace :reviews do
         card_id = text_to_id(card_name)
         if card_ids.include? card_id
           r = Review.new
-          r.card = card_id
+          r.card_id = card_id
           r.user_id = username
           r.body = rev_body
           r.created_at = DateTime.parse(review['date_create'])
