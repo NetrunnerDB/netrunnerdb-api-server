@@ -14,8 +14,8 @@ RSpec.describe ReviewResource, type: :resource do
       expect(data.id).to eq(review.id)
       expect(data.username).to eq(review.user_id)
       expect(data.votes).to eq(review.review_votes.length)
-      expect(data.created_at).to eq(decklist.created_at.strftime('%Y-%m-%dT%H:%M:%S%:z'))
-      expect(data.updated_at).to eq(decklist.updated_at.strftime('%Y-%m-%dT%H:%M:%S%:z'))
+      expect(data.created_at).to eq(review.created_at.strftime('%Y-%m-%dT%H:%M:%S%:z'))
+      expect(data.updated_at).to eq(review.updated_at.strftime('%Y-%m-%dT%H:%M:%S%:z'))
       expect(data.jsonapi_type).to eq('reviews')
     end
   end
