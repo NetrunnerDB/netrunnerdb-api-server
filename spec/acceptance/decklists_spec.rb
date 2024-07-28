@@ -16,7 +16,6 @@ resource 'Decklists' do
 
     * Side
     * Faction
-    * Identity Card
     * Cards
 
   EXPLANATION
