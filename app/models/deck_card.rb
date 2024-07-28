@@ -6,7 +6,7 @@ class DeckCard < ApplicationRecord
 
   belongs_to :deck,
              primary_key: :id,
-             inverse_of: :card_slots,
+             inverse_of: :deck_cards,
              touch: true
   belongs_to :card,
              primary_key: :id

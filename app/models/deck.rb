@@ -21,4 +21,16 @@ class Deck < ApplicationRecord
 
   has_many :deck_cards
   has_many :cards, through: :deck_cards
+
+  def card_slots
+    deck_cards.order(:card_id).each_with_object({}) { |c, h| h[c.card_id] = c.quantity }
+  end
+
+  def num_cards
+    deck_cards
+      # Exclude identity
+      .reject { |c| c.card_id == identity_card_id }
+      .map(&:quantity).sum
+  end
+
 end

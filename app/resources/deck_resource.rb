@@ -26,17 +26,8 @@ class DeckResource < PrivateApplicationResource
     end
   end
 
-  attribute :card_slots, :hash do
-    cards = {}
-    @object.deck_cards.order(:card_id).each do |c|
-      cards[c.card_id] = c.quantity
-    end
-    cards
-  end
-
-  attribute :num_cards, :integer do
-    @object.deck_cards.map(&:quantity).sum
-  end
+  attribute :card_slots, :hash
+  attribute :num_cards, :integer
 
   # This is the basic definition, but does not take restriction modifications
   # into account. Leaving this here as an example for now, but it will need to
@@ -63,14 +54,6 @@ class DeckResource < PrivateApplicationResource
   belongs_to :faction, foreign_key: :faction_id do # rubocop:disable Rails/RedundantForeignKey
     link do |decklist|
       format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.factions_url, id: decklist.faction_id)
-    end
-  end
-
-  # The rubocop warning is disabled because this relationship won't work
-  # without it because there is no identity_card table.
-  belongs_to :identity_card, resource: CardResource, foreign_key: :identity_card_id do # rubocop:disable Rails/RedundantForeignKey
-    link do |deck|
-      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.cards_url, id: deck.identity_card_id)
     end
   end
 
