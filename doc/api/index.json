@@ -177,7 +177,7 @@
     },
     {
       "name": "Decklists",
-      "explanation": "Decklists are published decks from users.\n\n## Relationships\n\nDecklist resources have the following relationships for their records.\n\n* Side\n* Faction\n* Identity Card\n* Cards\n\n",
+      "explanation": "Decklists are published decks from users.\n\n## Relationships\n\nDecklist resources have the following relationships for their records.\n\n* Side\n* Faction\n* Cards\n\n",
       "examples": [
         {
           "description": "All Decklists",
