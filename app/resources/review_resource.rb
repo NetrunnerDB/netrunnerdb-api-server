@@ -4,8 +4,6 @@
 class ReviewResource < ApplicationResource
   primary_endpoint '/reviews', %i[index show]
 
-  self.model = Review
-
   attribute :id, :integer
   attribute :username, :string do
     @object.user_id

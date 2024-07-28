@@ -45,4 +45,28 @@ RSpec.describe ReviewResource, type: :resource do
       end
     end
   end
+
+  describe 'sideloading' do
+    def check_included_for_id(object_id, include_type, resource_type, sideloaded_id)
+      params[:filter] = { id: { eq: object_id } }
+      params[:include] = include_type
+      render
+
+      included = jsonapi_included[0]
+      expect(included.jsonapi_type).to eq(resource_type)
+
+      ids = []
+      jsonapi_included.map { |i| ids << i.id.to_s }
+      expect(ids).to include(sideloaded_id)
+    end
+
+    describe 'includes card' do
+      let!(:endurance) { Card.find('endurance') }
+      let!(:endurance_review) { Review.find(1) }
+
+      it 'works' do
+        check_included_for_id(endurance_review.id, 'card', 'cards', endurance.id)
+      end
+    end
+  end
 end
