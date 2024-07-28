@@ -12,3 +12,8 @@ plural:
   id: plural
   created_at: <%= Time.utc(2023, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2023, 12, 8, 12, 0).to_fs(:db) %>
+
+stwyde:
+  id: stwyde
+  created_at: <%= Time.utc(2023, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2023, 12, 8, 12, 0).to_fs(:db) %>

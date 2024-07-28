@@ -6,7 +6,7 @@ class ReviewResource < ApplicationResource
 
   self.model = Review
 
-  attribute :id, :string
+  attribute :id, :integer
   attribute :username, :string do
     @object.user_id
   end
