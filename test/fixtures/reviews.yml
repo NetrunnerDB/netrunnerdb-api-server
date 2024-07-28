@@ -1,6 +1,6 @@
-boat_review: 
+boat_review:
   id: 1
-  body: "This might be the most poorly balanced card I've ever seen. Imagine an icebreaker that isn't a program, can be installed on turn 1 or 2 for 8 credits, has the ability break any type of ice for no credit cost, can use this ability as soon as it's installed and can repeatedly replenish its own ability to break any kind of ice just for a run being successful. Oh and it gives you 2 chips as well. Sure I mean why not. The card might as well just read "The runner now has infinite credits. Have fun." I just started playing this game again and I honestly already want to quit if this is the kind of balance I can come to expect."
+  body: "This might be the most poorly balanced card I've ever seen. Imagine an icebreaker that isn't a program, can be installed on turn 1 or 2 for 8 credits, has the ability break any type of ice for no credit cost, can use this ability as soon as it's installed and can repeatedly replenish its own ability to break any kind of ice just for a run being successful. Oh and it gives you 2 chips as well. Sure I mean why not. The card might as well just read 'The runner now has infinite credits. Have fun.' I just started playing this game again and I honestly already want to quit if this is the kind of balance I can come to expect."
   card_id: endurance
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
