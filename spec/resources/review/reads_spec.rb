@@ -12,7 +12,7 @@ RSpec.describe ReviewResource, type: :resource do
 
       data = jsonapi_data[0]
       expect(data.id).to eq(review.id)
-      expect(data.user_id).to eq(review.user_id)
+      expect(data.username).to eq(review.user_id)
       expect(data.votes).to eq(review.review_votes.length)
       expect(data.created_at).to eq(decklist.created_at.strftime('%Y-%m-%dT%H:%M:%S%:z'))
       expect(data.updated_at).to eq(decklist.updated_at.strftime('%Y-%m-%dT%H:%M:%S%:z'))
@@ -30,7 +30,7 @@ RSpec.describe ReviewResource, type: :resource do
 
       it 'filters to id' do
         render
-        expect(r.map(&:id)).to eq([review.id])
+        expect(d.map(&:id)).to eq([review.id])
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe ReviewResource, type: :resource do
 
       it 'filters on card_id' do
         render
-        expect(r.map(&:id)).to eq([review.id])
+        expect(d.map(&:id)).to eq([review.id])
       end
     end
   end
