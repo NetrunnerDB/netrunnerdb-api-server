@@ -50,13 +50,5 @@ class DecklistResource < ApplicationResource
     end
   end
 
-  # The rubocop warning is disabled because this relationship won't work
-  # without it because there is no identity_card table.
-  belongs_to :identity_card, resource: CardResource, foreign_key: :identity_card_id do # rubocop:disable Rails/RedundantForeignKey
-    link do |decklist|
-      format('%<url>s/%<id>s', url: Rails.application.routes.url_helpers.cards_url, id: decklist.identity_card_id)
-    end
-  end
-
   many_to_many :cards
 end

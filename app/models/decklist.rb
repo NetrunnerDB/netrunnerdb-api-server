@@ -27,7 +27,10 @@ class Decklist < ApplicationRecord
   end
 
   def num_cards
-    decklist_cards.map(&:quantity).sum
+    decklist_cards
+      # Exclude identity
+      .reject { |c| c.card_id == identity_card_id }
+      .map(&:quantity).sum
   end
 
   # TODO(plural): Extract this out to share between public and private decklists.
@@ -37,6 +40,8 @@ class Decklist < ApplicationRecord
   def influence_spent
     qty = decklist_cards.each_with_object({}) { |c, h| h[c.card_id] = c.quantity }
     cards
+      # Exclude identity
+      .reject { |c| c.id == identity_card.id }
       .filter { |c| c.faction_id != identity_card.faction_id }
       .map { |c| c.influence_cost.nil? ? 0 : (c.influence_cost * qty[c.id]) }
       .sum

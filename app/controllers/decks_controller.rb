@@ -17,6 +17,8 @@ class DecksController < ApplicationController
   end
 
   def create
+    # TODO(plural): Wrap all of this in a transaction.
+
     # Use the incoming parameters, but build the actual object against the model directly.
 
     new_deck = Deck.new
@@ -33,8 +35,9 @@ class DecksController < ApplicationController
     # TODO(plural): Flesh out nice error messages.
     raise ApplicationController::BadDeckError, 'There was an error creating your deck.' unless new_deck.save
 
+    new_deck.deck_cards.create(card_id: new_deck.identity_card_id, quantity: 1)
     card_slots.each do |card_id, quantity|
-      new_deck.card_slots.create(card_id:, quantity:)
+      new_deck.deck_cards.create(card_id:, quantity:)
     end
 
     simplified_params = { data: { id: new_deck.id, type: 'decks' } }

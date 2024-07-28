@@ -76,15 +76,6 @@ RSpec.describe DecklistResource, type: :resource do
       end
     end
 
-    describe 'include identity card' do
-      let!(:decklist) { Decklist.find('11111111-1111-1111-1111-111111111111') }
-      let!(:card) { Card.find('asa_group_security_through_vigilance') }
-
-      it 'works' do
-        check_included_for_id(decklist.id, 'identity_card', 'cards', card.id)
-      end
-    end
-
     describe 'include cards' do
       let!(:decklist) { Decklist.find('22222222-2222-2222-2222-222222222222') }
       let!(:card) { Card.find('the_class_act') }

@@ -65,6 +65,7 @@ namespace :import_decklists do # rubocop:disable Metrics/BlockLength
 
       # To allow overwriting, clear out the existing cards.
       d.decklist_cards.delete_all
+      d.decklist_cards << d.decklist_cards.build(card_id: d.identity_card_id, quantity: 1)
       decklist['cards'].each do |printing_id, quantity|
         card = cards_by_id[printing_to_card[printing_id]]
         # Do not write identity cards to the decklist_cards table.
