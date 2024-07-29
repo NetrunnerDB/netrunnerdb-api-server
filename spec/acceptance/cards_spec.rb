@@ -20,6 +20,7 @@ resource 'Cards' do
     * Decklists
     * Faction
     * Printings
+    * Reviews
     * Rulings
     * Side
   EXPLANATION

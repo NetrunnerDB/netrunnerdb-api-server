@@ -110,6 +110,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
     end
   end
   has_many :rulings
+  has_many :reviews
   belongs_to :side
 
   many_to_many :decklists do

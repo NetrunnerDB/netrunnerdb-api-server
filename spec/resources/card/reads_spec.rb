@@ -149,6 +149,15 @@ RSpec.describe CardResource, type: :resource do
       end
     end
 
+    describe 'include reviews' do
+      let!(:card) { Card.find('endurance') }
+      let!(:review) { Review.find(1) }
+
+      it 'is properly included' do
+        check_included_for_id(card.id, 'reviews', 'reviews', review.id.to_s)
+      end
+    end
+
     describe 'include rulings' do
       let!(:card) { Card.find('hedge_fund') }
       let!(:ruling) { Ruling.find(1) }

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :illustrators, only: %i[index show]
     resources :printings, only: %i[index show]
     resources :restrictions, only: %i[index show]
+    resources :reviews, only: %i[index show]
     resources :rulings, only: %i[index show]
     resources :sides, only: %i[index show]
     resources :snapshots, only: %i[index show]

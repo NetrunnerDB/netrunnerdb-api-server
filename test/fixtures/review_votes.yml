@@ -1,0 +1,11 @@
+formicary_vote_one:
+  user_id: stwyde
+  review_id: 2
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
+formicary_vote_two:
+  user_id: locks
+  review_id: 2
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

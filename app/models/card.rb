@@ -49,6 +49,7 @@ class Card < ApplicationRecord
            class_name: 'RawPrinting',
            primary_key: :id
 
+  has_many :reviews
   has_many :printings,
            primary_key: :id
 

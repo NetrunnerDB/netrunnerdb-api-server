@@ -1,0 +1,6 @@
+endurance_review_comment: 
+  body: "How can I edit my comment lol"
+  review_id: 1
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  user_id: stwyde
