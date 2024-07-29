@@ -154,7 +154,7 @@ RSpec.describe CardResource, type: :resource do
       let!(:review) { Review.find(1) }
 
       it 'is properly included' do
-        check_included_for_id(card.id, 'reviews', 'reviews', review.id)
+        check_included_for_id(card.id, 'reviews', 'reviews', review.id.to_s)
       end
     end
 
