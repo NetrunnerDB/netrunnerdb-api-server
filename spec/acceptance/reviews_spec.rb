@@ -8,12 +8,9 @@ resource 'Reviews' do
   header 'Host', 'api-preview.netrunnderdb.com'
 
   explanation <<~EXPLANATION
-    Card reviews have the following relationships
+    Card reviews have the following relationship
 
     * Card
-    * User
-    * Review Comments
-    * Review Votes
   EXPLANATION
 
   get '/api/v3/public/reviews' do
