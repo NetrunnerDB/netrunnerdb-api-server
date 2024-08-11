@@ -1,19 +1,20 @@
 services:
   # service configuration for our dockerized Rails app
-  
+
   netrunner_cards_json:
     restart: none
-    image: registry.digitalocean.com/nsgcr/netrunner-cards-json:latest
+    image: registry.digitalocean.com/nsgcr/netrunner-cards-json:${JSON_DATA_VERSION:-latest}
     build: https://github.com/NetrunnerDB/netrunner-cards-json.git#main
     volumes:
       - netrunner-cards-json:/mnt/netrunner-cards-json
 
   nrdb_api_server:
     restart: unless-stopped
-    image: registry.digitalocean.com/nsgcr/nrdb-api-server:latest
+    # Will use the latest image by default, but can be overridden with the API_SERVER_VERSION env var.
+    image: registry.digitalocean.com/nsgcr/nrdb-api-server:${API_SERVER_VERSION:-latest}
     # build the Dockerfile next to this file, tag the built image with above image name
     build: .
-    
+
     ports:
       - "3000:3000"
 
