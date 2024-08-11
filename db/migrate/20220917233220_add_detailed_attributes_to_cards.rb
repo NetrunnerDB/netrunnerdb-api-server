@@ -2,7 +2,7 @@
 
 class AddDetailedAttributesToCards < ActiveRecord::Migration[7.0] # rubocop:disable Style/Documentation
   def change
-    add_column :cards, :additional_cost, :bool, default: false # rubocop:disable Rails/BulkChangeTable
+    add_column :cards, :additional_cost, :bool, default: false
     add_column :cards, :advanceable, :bool, default: false
     add_column :cards, :gains_subroutines, :bool, default: false
     add_column :cards, :interrupt, :bool, default: false
