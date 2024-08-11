@@ -18,7 +18,8 @@ class CardPool < ApplicationRecord
     cards.size
   end
 
-  validates :name, uniqueness: true
+  # TODO(plural): Add an index for this uniqueness constraint.
+  validates :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   scope :by_printing_ids, lambda { |printing_ids|
     joins(:card_pool_cards).joins(:printings).where(unified_printings: { id: printing_ids }).distinct

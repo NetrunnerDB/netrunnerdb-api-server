@@ -2,7 +2,7 @@
 
 require 'optparse'
 
-namespace :cards do # rubocop:disable Metrics/BlockLength
+namespace :cards do
   desc 'import card data - json_dir defaults to /netrunner-cards-json/v2/ if not specified.'
 
   def text_to_id(text)
@@ -89,7 +89,7 @@ namespace :cards do # rubocop:disable Metrics/BlockLength
     subtypes = CardSubtype.all.index_by(&:id)
 
     new_cards = []
-    cards.each do |card| # rubocop:disable Metrics/BlockLength
+    cards.each do |card|
       new_card = RawCard.new(
         id: card['id'],
         card_type_id: card['card_type_id'],
@@ -380,7 +380,7 @@ namespace :cards do # rubocop:disable Metrics/BlockLength
 
   def import_illustrators
     # Use a transaction since we are deleting the illustrator and mapping tables.
-    ActiveRecord::Base.transaction do # rubocop:disable Metrics/BlockLength
+    ActiveRecord::Base.transaction do
       puts 'Clear out existing illustrator -> printing mappings'
       unless ActiveRecord::Base.connection.delete('DELETE FROM illustrators_printings')
         puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
@@ -625,7 +625,7 @@ namespace :cards do # rubocop:disable Metrics/BlockLength
     universal_faction_cost = []
     global_penalty = []
     points = []
-    restrictions.each do |r| # rubocop:disable Metrics/BlockLength
+    restrictions.each do |r|
       # Banned cards
       r['banned']&.each do |card|
         banned << RestrictionCardBanned.new(
@@ -674,7 +674,7 @@ namespace :cards do # rubocop:disable Metrics/BlockLength
     end
 
     # Use a transaction since we are deleting all the restriction mapping tables.
-    ActiveRecord::Base.transaction do # rubocop:disable Metrics/BlockLength
+    ActiveRecord::Base.transaction do
       puts '  Clear out existing restriction -> card mappings'
       unless ActiveRecord::Base.connection.delete('DELETE FROM restrictions_cards_banned')
         puts 'Hit an error while deleting banned cards mappings. Rolling back.'
@@ -779,7 +779,7 @@ namespace :cards do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  task :import, [:json_dir] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :import, [:json_dir] => [:environment] do |_t, args|
     args.with_defaults(json_dir: '/netrunner-cards-json/v2/')
 
     puts 'Import card data...'

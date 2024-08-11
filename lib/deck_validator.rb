@@ -72,7 +72,7 @@ class DeckValidator # rubocop:disable Metrics/ClassLength
         load_restrictions_from_deck
         load_snapshots_from_deck
         if all_ids_exist?
-          @validations.each do |v| # rubocop:disable Metrics/BlockLength
+          @validations.each do |v|
             if v.basic_deckbuilding_rules
               check_basic_deckbuilding_rules.each do |e|
                 v.add_error(e)
