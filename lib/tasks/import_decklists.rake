@@ -5,7 +5,7 @@ require 'net/http'
 require 'optparse'
 require 'uri'
 
-namespace :import_decklists do # rubocop:disable Metrics/BlockLength
+namespace :import_decklists do
   desc 'import card data - json_dir defaults to /netrunner-cards-json/v2/ if not specified.'
 
   def retrieve_decklists(date)
@@ -22,7 +22,7 @@ namespace :import_decklists do # rubocop:disable Metrics/BlockLength
     raise "Failed to retrieve decklists! Status code: #{response.code}"
   end
 
-  task :import, [:date] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :import, [:date] => [:environment] do |_t, args|
     args.with_defaults(date: '/netrunner-cards-json/v2/')
 
     puts "Import decklists for date #{args[:date]}..."

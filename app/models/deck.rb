@@ -32,5 +32,4 @@ class Deck < ApplicationRecord
       .reject { |c| c.card_id == identity_card_id }
       .map(&:quantity).sum
   end
-
 end

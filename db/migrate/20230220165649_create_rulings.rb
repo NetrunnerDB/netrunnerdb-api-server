@@ -1,4 +1,6 @@
-class CreateRulings < ActiveRecord::Migration[7.0]
+# frozen_string_literal: true
+
+class CreateRulings < ActiveRecord::Migration[7.0] # rubocop:disable Style/Documentation
   def change
     create_table :rulings do |t|
       t.string :card_id, null: false

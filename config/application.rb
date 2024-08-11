@@ -1,8 +1,10 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
 
-require "sprockets/railtie"
+require 'rails/all'
+
+require 'sprockets/railtie'
 
 # TODO(plural): See if there is a different solution here.
 # Requied by Graphiti but not included in their for top-level Gem for some reason.
@@ -13,7 +15,7 @@ require 'ostruct'
 Bundler.require(*Rails.groups)
 
 module NrdbApi
-  class Application < Rails::Application
+  class Application < Rails::Application # rubocop:disable Style/Documentation
     routes.default_url_options[:host] = ENV.fetch('HOST', 'http://localhost:3000')
 
     # Initialize configuration defaults for originally generated Rails version.
@@ -25,7 +27,7 @@ module NrdbApi
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    config.eager_load_paths << Rails.root.join("lib")
+    config.eager_load_paths << Rails.root.join('lib')
 
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.

@@ -25,5 +25,6 @@ class Format < ApplicationRecord
     s.restriction_id
   end
 
-  validates :name, uniqueness: true
+  # TODO(plural): Add an index for this uniqueness constraint.
+  validates :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 end

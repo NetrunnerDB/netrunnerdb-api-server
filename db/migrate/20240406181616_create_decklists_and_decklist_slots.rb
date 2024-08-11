@@ -1,4 +1,6 @@
-class CreateDecklistsAndDecklistSlots < ActiveRecord::Migration[7.0]
+# frozen_string_literal: true
+
+class CreateDecklistsAndDecklistSlots < ActiveRecord::Migration[7.0] # rubocop:disable Style/Documentation
   def change
     # ID will be a UUID
     create_table :decklists, id: :uuid do |t|
@@ -23,7 +25,7 @@ class CreateDecklistsAndDecklistSlots < ActiveRecord::Migration[7.0]
       t.string :card_id, null: false
       t.integer :quantity, null: false
 
-      t.index [:decklist_id, :card_id], unique: true, name: "index_decklists_cards_on_decklist_id_and_card_id"
+      t.index %i[decklist_id card_id], unique: true, name: 'index_decklists_cards_on_decklist_id_and_card_id'
       t.foreign_key :decklists
       t.foreign_key :cards
     end

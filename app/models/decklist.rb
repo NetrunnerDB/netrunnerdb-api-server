@@ -7,7 +7,7 @@ class Decklist < ApplicationRecord
   # TODO(plural): Add a relationship to a public user object.
   belongs_to :side
 
-  has_one :identity_card,
+  has_one :identity_card, # rubocop:disable Rails/InverseOf
           class_name: 'Card',
           foreign_key: 'id',
           primary_key: 'identity_card_id'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Be sure to restart your server when you modify this file.
 
 # Avoid CORS issues when API is called from the frontend app.
@@ -5,12 +7,13 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
-Rails.application.config.middleware.insert_after ActionDispatch::Static, Rack::Cors, debug: true, :logger => Rails.logger do
+Rails.application.config.middleware.insert_after ActionDispatch::Static, Rack::Cors, debug: true,
+                                                                                     logger: Rails.logger do
   allow do
-    origins "*"
+    origins '*'
 
-    resource "*",
-      headers: :any,
-      methods: [:get, :options, :head]
+    resource '*',
+             headers: :any,
+             methods: %i[get options head]
   end
 end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Model for reviews of cards.
 class Review < ApplicationRecord
   belongs_to :card
   has_many :review_comments

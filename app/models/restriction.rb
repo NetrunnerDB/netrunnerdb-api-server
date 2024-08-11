@@ -24,7 +24,8 @@ class Restriction < ApplicationRecord
   has_one :restriction_card_subtype_banned
   has_many :banned_subtypes, through: :restriction_card_subtype_banned, source: :card_subtype
 
-  validates :name, uniqueness: true
+  # TODO(plural): Add an index for this uniqueness constraint.
+  validates :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   # TODO(plural): Make date_start a proper date type.
 
