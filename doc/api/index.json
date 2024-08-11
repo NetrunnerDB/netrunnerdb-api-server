@@ -150,7 +150,7 @@
     },
     {
       "name": "Cards",
-      "explanation": "## Relationships\n\nCard resources have the following relationships for their records.\n\n* Card Cycles\n* Card Pools\n* Card Sets\n* Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)\n* Card Type\n* Decklists\n* Faction\n* Printings\n* Rulings\n* Side\n",
+      "explanation": "## Relationships\n\nCard resources have the following relationships for their records.\n\n* Card Cycles\n* Card Pools\n* Card Sets\n* Card Subtypes (if not present, the relationship link will filter for a 'none' value and return an empty set)\n* Card Type\n* Decklists\n* Faction\n* Printings\n* Reviews\n* Rulings\n* Side\n",
       "examples": [
         {
           "description": "All Cards",
@@ -361,6 +361,33 @@
           "link": "restrictions/get_a_single_restriction.json",
           "groups": "all",
           "route": "/api/v3/public/restrictions/:id",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "explanation": "Card reviews have the following relationships\n\n* Card\n",
+      "examples": [
+        {
+          "description": "All Reviews",
+          "link": "reviews/all_reviews.json",
+          "groups": "all",
+          "route": "/api/v3/public/reviews",
+          "method": "get"
+        },
+        {
+          "description": "Filter on a single card id",
+          "link": "reviews/filter_on_a_single_card_id.json",
+          "groups": "all",
+          "route": "/api/v3/public/reviews?filter[card_id]=:query",
+          "method": "get"
+        },
+        {
+          "description": "Get A Single Review",
+          "link": "reviews/get_a_single_review.json",
+          "groups": "all",
+          "route": "/api/v3/public/reviews/:id",
           "method": "get"
         }
       ]

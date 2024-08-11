@@ -1,0 +1,41 @@
+{
+  "resource": "Reviews",
+  "resource_explanation": "Card reviews have the following relationships\n\n* Card\n",
+  "http_method": "GET",
+  "route": "/api/v3/public/reviews/:id",
+  "description": "Get A Single Review",
+  "explanation": null,
+  "parameters": [
+    {
+      "type": "string",
+      "required": true,
+      "name": "id",
+      "description": "Id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v3/public/reviews/1",
+      "request_body": null,
+      "request_headers": {
+        "Content-Type": "application/json",
+        "Host": "api-preview.netrunnderdb.com"
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/json",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"reviews\",\n    \"attributes\": {\n      \"username\": \"plural\",\n      \"body\": \"This might be the most poorly balanced card I've ever seen. Imagine an icebreaker that isn't a program, can be installed on turn 1 or 2 for 8 credits, has the ability break any type of ice for no credit cost, can use this ability as soon as it's installed and can repeatedly replenish its own ability to break any kind of ice just for a run being successful. Oh and it gives you 2 chips as well. Sure I mean why not. The card might as well just read 'The runner now has infinite credits. Have fun.' I just started playing this game again and I honestly already want to quit if this is the kind of balance I can come to expect.\",\n      \"card\": \"Endurance\",\n      \"card_id\": \"endurance\",\n      \"created_at\": \"2022-12-08T12:00:00+00:00\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\",\n      \"votes\": 0,\n      \"comments\": [\n        {\n          \"id\": 586794857,\n          \"body\": \"How can I edit my comment lol\",\n          \"user\": \"stwyde\",\n          \"created_at\": \"2022-12-08T12:00:00.000Z\",\n          \"updated_at\": \"2022-12-08T12:00:00.000Z\"\n        }\n      ]\n    },\n    \"relationships\": {\n      \"card\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/cards/endurance\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/reviews/1\"\n    }\n  },\n  \"meta\": {\n  }\n}",
+      "response_headers": {
+        "Content-Type": "application/vnd.api+json; charset=utf-8"
+      },
+      "response_content_type": "application/vnd.api+json; charset=utf-8",
+      "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/reviews/1\" -X GET "
+    }
+  ]
+}
