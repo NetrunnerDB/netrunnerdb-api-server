@@ -3,7 +3,8 @@
 # Controller for the Snapshot resource.
 class SnapshotsController < ApplicationController
   def index
-    snapshots = SnapshotResource.all(params)
+    base_scope = Snapshot.includes(:card_pool, :cards, :restriction)
+    snapshots = SnapshotResource.all(params, base_scope)
 
     respond_with(snapshots)
   end

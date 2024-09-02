@@ -3,7 +3,8 @@
 # Controller for the CardPool resource.
 class CardPoolsController < ApplicationController
   def index
-    card_pools = CardPoolResource.all(params)
+    base_scope = CardPool.includes(:cards)
+    card_pools = CardPoolResource.all(params, base_scope)
     respond_with(card_pools)
   end
 
