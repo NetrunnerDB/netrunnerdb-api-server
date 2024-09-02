@@ -87,6 +87,9 @@ GEM
       msgpack (~> 1.2)
     brakeman (5.4.1)
     builder (3.2.4)
+    bullet (7.2.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
@@ -535,6 +538,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
+    uniform_notifier (1.16.0)
     webrick (1.8.1)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -552,6 +556,7 @@ DEPENDENCIES
   apitome
   bootsnap
   brakeman (~> 5.2)
+  bullet
   bundler-audit (~> 0.9.0)
   debug
   factory_bot_rails
