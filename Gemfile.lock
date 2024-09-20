@@ -128,7 +128,7 @@ GEM
       i18n (>= 1.8.11, < 2)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.2)
+    google-protobuf (3.25.5)
     googleapis-common-protos-types (1.8.0)
       google-protobuf (~> 3.18)
     graphiti (1.7.1)
