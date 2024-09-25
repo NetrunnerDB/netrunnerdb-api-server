@@ -401,7 +401,7 @@ GEM
       racc
     parslet (2.0.0)
     pg (1.5.3)
-    puma (5.6.9)
+    puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.0)
     rack (2.2.8.1)
@@ -574,7 +574,7 @@ DEPENDENCIES
   ostruct
   parslet
   pg (~> 1.1)
-  puma (~> 5.6)
+  puma (~> 6.4)
   rack (~> 2.2)
   rack-cors (= 2.0.0)
   rails (>= 7.0.7.1)
