@@ -16,7 +16,7 @@ gem 'rails', '>= 7.0.7.1'
 gem 'pg', '~> 1.1'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.4'
 
 gem 'parslet'
 
