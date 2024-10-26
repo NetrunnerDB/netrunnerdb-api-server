@@ -60,8 +60,14 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   attribute :format_ids, :array_of_strings
   attribute :card_pool_ids, :array_of_strings
   attribute :snapshot_ids, :array_of_strings
-  attribute :card_cycle_ids, :array_of_strings
-  attribute :card_set_ids, :array_of_strings
+  attribute :card_cycle_ids, :array_of_strings do
+    @object.card_cycle_ids_in_database
+  end
+  attribute :card_cycle_names, :array_of_strings
+  attribute :card_set_ids, :array_of_strings do
+    @object.card_set_ids_in_database
+  end
+  attribute :card_set_names, :array_of_strings
   attribute :designed_by, :string
   attribute :released_by, :string
   attribute :printings_released_by, :array_of_strings

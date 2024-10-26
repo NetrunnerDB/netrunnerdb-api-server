@@ -28,7 +28,9 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :memory_cost, :integer
   attribute :minimum_deck_size, :integer
   attribute :num_printings, :integer
-  attribute :printing_ids, :array_of_strings
+  attribute :printing_ids, :array_of_strings do
+    @object.printing_ids_in_database
+  end
   attribute :date_release, :date
   attribute :restriction_ids, :array_of_strings
   attribute :strength, :integer
@@ -43,8 +45,14 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :format_ids, :array_of_strings
   attribute :card_pool_ids, :array_of_strings
   attribute :snapshot_ids, :array_of_strings
-  attribute :card_cycle_ids, :array_of_strings
-  attribute :card_set_ids, :array_of_strings
+  attribute :card_cycle_ids, :array_of_strings do
+    @object.card_cycle_ids_in_database
+  end
+  attribute :card_cycle_names, :array_of_strings
+  attribute :card_set_ids, :array_of_strings do
+    @object.card_set_ids_in_database
+  end
+  attribute :card_set_names, :array_of_strings
   attribute :designed_by, :string
   attribute :printings_released_by, :array_of_strings
   attribute :pronouns, :string
