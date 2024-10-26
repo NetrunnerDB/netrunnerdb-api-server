@@ -11,7 +11,7 @@ class Card < ApplicationRecord
   self.primary_key = :id
 
   def latest_printing_id
-    printing_ids[0]
+    printing_ids_in_database[0]
   rescue StandardError
     nil
   end
