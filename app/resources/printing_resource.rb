@@ -14,7 +14,9 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
 
   attribute :flavor, :string
   attribute :display_illustrators, :string
-  attribute :illustrator_ids, :array_of_strings
+  attribute :illustrator_ids, :array_of_strings do
+    @object.illustrator_ids_in_database
+  end
   attribute :illustrator_names, :array_of_strings
 
   attribute :position, :integer
@@ -53,12 +55,16 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   attribute :text, :string
   attribute :trash_cost, :integer
   attribute :is_unique, :boolean
-  attribute :card_subtype_ids, :array_of_strings
+  attribute :card_subtype_ids, :array_of_strings do
+    @object.card_subtype_ids_in_database
+  end
   attribute :card_subtype_names, :array_of_strings
   attribute :display_subtypes, :string
   attribute :attribution, :string
   attribute :format_ids, :array_of_strings
-  attribute :card_pool_ids, :array_of_strings
+  attribute :card_pool_ids, :array_of_strings do
+    @object.card_pool_ids_in_database
+  end
   attribute :snapshot_ids, :array_of_strings
   attribute :card_cycle_ids, :array_of_strings do
     @object.card_cycle_ids_in_database
@@ -118,14 +124,14 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   many_to_many :card_subtypes do
     link do |p|
       format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_subtypes_url,
-                                           ids: p.card_subtype_ids.join(','))
+                                           ids: p.card_subtype_ids_in_database.join(','))
     end
   end
 
   many_to_many :illustrators do
     link do |p|
       format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.illustrators_url,
-                                           ids: p.illustrator_ids.join(','))
+                                           ids: p.illustrator_ids_in_database.join(','))
     end
   end
 

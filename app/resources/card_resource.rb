@@ -38,12 +38,16 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :text, :string
   attribute :trash_cost, :integer
   attribute :is_unique, :boolean
-  attribute :card_subtype_ids, :array_of_strings
+  attribute :card_subtype_ids, :array_of_strings do
+    @object.card_subtype_ids_in_database
+  end
   attribute :display_subtypes, :string
   attribute :attribution, :string
   attribute :updated_at, :datetime
   attribute :format_ids, :array_of_strings
-  attribute :card_pool_ids, :array_of_strings
+  attribute :card_pool_ids, :array_of_strings do
+    @object.card_pool_ids_in_database
+  end
   attribute :snapshot_ids, :array_of_strings
   attribute :card_cycle_ids, :array_of_strings do
     @object.card_cycle_ids_in_database
@@ -94,18 +98,18 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   many_to_many :card_cycles do
     link do |c|
       format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_cycles_url,
-                                           ids: c.card_cycle_ids.join(','))
+                                           ids: c.card_cycle_ids_in_database.join(','))
     end
   end
   many_to_many :card_sets do
     link do |c|
       format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_sets_url,
-                                           ids: c.card_set_ids.join(','))
+                                           ids: c.card_set_ids_in_database.join(','))
     end
   end
   many_to_many :card_subtypes do
     link do |c|
-      card_subtype_ids = c.card_subtype_ids.empty? ? 'none' : c.card_subtype_ids.join(',')
+      card_subtype_ids = c.card_subtype_ids_in_database.empty? ? 'none' : c.card_subtype_ids_in_database.join(',')
       format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.card_subtypes_url,
                                            ids: card_subtype_ids)
     end
