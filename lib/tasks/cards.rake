@@ -742,7 +742,7 @@ namespace :cards do
           card_pool_id: s['card_pool_id'],
           date_start: s['date_start'],
           restriction_id: s['restriction_id'],
-          active: !s['active'].nil?
+          active: s['active'].nil? ? false : s['active']
         )
       end
     end
