@@ -45,32 +45,34 @@ namespace :import_decklists do
                   username: decklist['user_name'],
                   uuid: decklist['uuid'])
 
-      d = Decklist.find_or_initialize_by(id: decklist['uuid'])
-      d.name = decklist['name']
-      d.user_id = decklist['user_name']
+      ActiveRecord::Base.transaction do
+        d = Decklist.find_or_initialize_by(id: decklist['uuid'])
+        d.name = decklist['name']
+        d.user_id = decklist['user_name']
 
-      d.created_at = DateTime.parse(decklist['date_creation'])
-      d.updated_at = DateTime.parse(decklist['date_update'])
-      d.notes = decklist['description']
+        d.created_at = DateTime.parse(decklist['date_creation'])
+        d.updated_at = DateTime.parse(decklist['date_update'])
+        d.notes = decklist['description']
 
-      decklist['cards'].each_key do |printing_id|
-        card = cards_by_id[printing_to_card[printing_id]]
-        if %w[corp_identity runner_identity].include?(card.card_type_id)
-          d.identity_card_id = card.id
-          d.side_id = card.side_id
+        decklist['cards'].each_key do |printing_id|
+          card = cards_by_id[printing_to_card[printing_id]]
+          if %w[corp_identity runner_identity].include?(card.card_type_id)
+            d.identity_card_id = card.id
+            d.side_id = card.side_id
+          end
         end
-      end
 
-      d.save!
+        d.save!
 
-      # To allow overwriting, clear out the existing cards.
-      d.decklist_cards.delete_all
-      d.decklist_cards << d.decklist_cards.build(card_id: d.identity_card_id, quantity: 1)
-      decklist['cards'].each do |printing_id, quantity|
-        card = cards_by_id[printing_to_card[printing_id]]
-        # Do not write identity cards to the decklist_cards table.
-        unless %w[corp_identity runner_identity].include?(card.card_type_id)
-          d.decklist_cards << d.decklist_cards.build(card_id: printing_to_card[printing_id], quantity:)
+        # To allow overwriting, clear out the existing cards.
+        d.decklist_cards.delete_all
+        d.decklist_cards << d.decklist_cards.build(card_id: d.identity_card_id, quantity: 1)
+        decklist['cards'].each do |printing_id, quantity|
+          card = cards_by_id[printing_to_card[printing_id]]
+          # Do not write identity cards to the decklist_cards table.
+          unless %w[corp_identity runner_identity].include?(card.card_type_id)
+            d.decklist_cards << d.decklist_cards.build(card_id: printing_to_card[printing_id], quantity:)
+          end
         end
       end
     end
