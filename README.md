@@ -10,13 +10,30 @@ Public API functionality will be implemented first as v3 of the existing NRDB AP
 
 ## Dependencies
 
-This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-json
+This depends on the data from https://github.com/NetrunnerDB/netrunner-cards-json.
+
+The netrunner-cards-json is expected to be next to the folder with this
+repository and accessible at `../netrunner-cards-json` to the application.
+
+## For dev in VS Code.
+
+This repository has a devcontainer setup.  If you open this folder in VS Code it should prompt
+you to use the devcontainer.
 
 ## For local dev with docker
+
+If you have a device with apple silicon, do the following first (adapt the
+platform based on your device and error message):
+
+```
+export DOCKER_DEFAULT_PLATFORM=linux/arm64/v8
+```
 
 ```
 echo "RAILS_ENV=development" > .env
 cp config/database.example.yml config/database.yml
+docker network create null_signal
+docker compose build
 docker compose -f docker-compose.yml -f docker-compose.override.init.yml up -d
 ```
 Wait until `docker compose logs nrdb_api_server | tail` shows `Listening on http://0.0.0.0:3000`.

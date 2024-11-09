@@ -5,6 +5,6 @@ services:
       - /bin/sh
       - -c
       - |
-        rake db:reset
+        bundle exec rake db:reset
         bundle exec rails cards:import
         bundle exec rails server -b 0.0.0.0
