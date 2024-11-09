@@ -17,8 +17,13 @@ repository and accessible at `../netrunner-cards-json` to the application.
 
 ## For dev in VS Code.
 
-This repository has a devcontainer setup.  If you open this folder in VS Code it should prompt
-you to use the devcontainer.
+This repository has a Devcontainer setup. To use it, first copy the database.yml file.
+
+```
+cp config/database.example.yml config/database.yml
+```
+
+If you open this folder in VS Code it should prompt you to use the devcontainer.
 
 ## For local dev with docker
 
