@@ -5,6 +5,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   primary_endpoint '/cards', %i[index show]
 
   self.default_page_size = 1000
+  self.max_page_size = 10_000
 
   attribute :id, :string
   attribute :stripped_title, :string

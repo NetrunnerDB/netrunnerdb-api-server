@@ -4,6 +4,7 @@
 class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   primary_endpoint '/printings', %i[index show]
   self.default_page_size = 1000
+  self.max_page_size = 10_000
 
   attribute :id, :string
   attribute :card_id, :string
