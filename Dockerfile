@@ -31,7 +31,7 @@ COPY . $RAILS_ROOT/
 
 
 #####################################################################
-FROM ruby:3.2.3-alpine3.19 AS final
+FROM ruby:3.3.6-alpine3.20 AS final
 
 RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client tzdata \
   && rm -rf /var/cache/apk/*
