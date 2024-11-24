@@ -3,6 +3,7 @@
 # Controller for the Snapshot resource.
 class SnapshotsController < ApplicationController
   def index
+    add_total_stat(params)
     base_scope = Snapshot.includes(:card_pool)
     snapshots = SnapshotResource.all(params, base_scope)
 

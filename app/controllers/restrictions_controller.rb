@@ -3,6 +3,7 @@
 # Controller for the Restriction resource.
 class RestrictionsController < ApplicationController
   def index
+    add_total_stat(params)
     restrictions = RestrictionResource.all(params)
 
     respond_with(restrictions)
