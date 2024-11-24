@@ -4,8 +4,7 @@
 class CardPoolsController < ApplicationController
   def index
     add_total_stat(params)
-    base_scope = CardPool.includes(:cards)
-    card_pools = CardPoolResource.all(params, base_scope)
+    card_pools = CardPoolResource.all(params)
     respond_with(card_pools)
   end
 
