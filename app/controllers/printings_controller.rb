@@ -3,6 +3,7 @@
 # Controller for the Printing resource.
 class PrintingsController < ApplicationController
   def index
+    add_total_stat(params)
     printings = PrintingResource.all(params)
 
     respond_with(printings)

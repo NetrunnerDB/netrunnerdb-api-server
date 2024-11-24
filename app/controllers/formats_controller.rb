@@ -3,6 +3,7 @@
 # Controller for the Format resource.
 class FormatsController < ApplicationController
   def index
+    add_total_stat(params)
     base_scope = Format.includes(:restrictions, :snapshots)
     formats = FormatResource.all(params, base_scope)
     respond_with(formats)

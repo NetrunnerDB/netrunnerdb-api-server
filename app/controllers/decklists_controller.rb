@@ -3,6 +3,7 @@
 # Controller for the decklist resource.
 class DecklistsController < ApplicationController
   def index
+    add_total_stat(params)
     base_scope = Decklist.includes(:identity_card, :cards)
     decklists = DecklistResource.all(params, base_scope)
     respond_with(decklists)

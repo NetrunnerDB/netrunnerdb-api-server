@@ -3,6 +3,7 @@
 # Controller for the CardSetType resource.
 class CardSetTypesController < ApplicationController
   def index
+    add_total_stat(params)
     card_set_types = CardSetTypeResource.all(params)
     respond_with(card_set_types)
   end
