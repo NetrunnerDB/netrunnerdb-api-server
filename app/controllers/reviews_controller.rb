@@ -3,6 +3,7 @@
 # Controller for the Review resource.
 class ReviewsController < ApplicationController
   def index
+    add_total_stat(params)
     base_scope = Review.includes(:card, :review_comments, :review_votes)
     reviews = ReviewResource.all(params, base_scope)
     respond_with(reviews)

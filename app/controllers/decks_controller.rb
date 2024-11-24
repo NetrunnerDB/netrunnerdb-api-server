@@ -5,6 +5,7 @@ class DecksController < ApplicationController
   include JwtAuthorizationConcern
 
   def index
+    add_total_stat(params)
     base_scope = Deck.where(user_id: @current_user.id)
     params[:filter].delete(:user_id) if params.include?(:filter)
     decks = DeckResource.all(params, base_scope)

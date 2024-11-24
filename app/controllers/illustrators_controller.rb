@@ -3,6 +3,7 @@
 # Controller for the Illustrator resource.
 class IllustratorsController < ApplicationController
   def index
+    add_total_stat(params)
     illustrators = IllustratorResource.all(params)
     respond_with(illustrators)
   end

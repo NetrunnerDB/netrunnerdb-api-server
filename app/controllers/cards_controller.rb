@@ -3,6 +3,7 @@
 # Controller for the Card resource.
 class CardsController < ApplicationController
   def index
+    add_total_stat(params)
     cards = CardResource.all(params)
     respond_with(cards)
   end

@@ -3,6 +3,7 @@
 # Controller for the Faction resource.
 class FactionsController < ApplicationController
   def index
+    add_total_stat(params)
     factions = FactionResource.all(params)
     respond_with(factions)
   end

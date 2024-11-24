@@ -3,6 +3,7 @@
 # Controller for the CardSubtype resource.
 class CardSubtypesController < ApplicationController
   def index
+    add_total_stat(params)
     card_subtypes = CardSubtypeResource.all(params)
     respond_with(card_subtypes)
   end

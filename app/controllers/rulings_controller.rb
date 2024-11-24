@@ -3,6 +3,7 @@
 # Controller for the Ruling resource.
 class RulingsController < ApplicationController
   def index
+    add_total_stat(params)
     rulings = RulingResource.all(params)
 
     respond_with(rulings)
