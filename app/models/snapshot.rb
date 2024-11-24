@@ -11,6 +11,6 @@ class Snapshot < ApplicationRecord
 
   # TODO(plural): Convert date_start to a real date field.
   def num_cards
-    cards.length
+    cards.count
   end
 end
