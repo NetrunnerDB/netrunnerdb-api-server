@@ -418,6 +418,13 @@ class SearchQueryBuilder # rubocop:disable Metrics/ClassLength
   end
 
   NodeLiteral = Struct.new(:value, :is_regex) do
+    # Do a transformation from unicode to plain ascii for string matching.
+    def strip_text(text)
+      text.downcase
+          .unicode_normalize(:nfd)
+          .gsub(/\P{ASCII}/, '')
+    end
+
     def construct_clause(parameters, context)
       # Only accept regex values for string fields
       if (context.field.type != :string) && !is_regex.nil?
@@ -478,7 +485,7 @@ class SearchQueryBuilder # rubocop:disable Metrics/ClassLength
         parameters << if is_regex
                         value
                       else
-                        format('%%%<value>s%%', value: value.downcase)
+                        format('%%%<value>s%%', value: strip_text(value))
                       end
         format('lower(%<sql>s) %<operator>s ?', sql: context.field.sql, operator: sql_operator)
 
