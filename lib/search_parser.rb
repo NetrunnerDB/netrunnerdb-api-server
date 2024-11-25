@@ -6,7 +6,7 @@ require 'parslet'
 #
 # This provides an AST to inspect, if valid, but SearchQueryBuilder turns this into SQL.
 class SearchParser < Parslet::Parser
-  rule(:spaces) { match('\s').repeat(1) }
+  rule(:spaces) { match('\p{Space Separator}').repeat(1) }
   rule(:spaces?) { spaces.maybe }
 
   rule(:quoted_string) { double_quoted_string | single_quoted_string }
@@ -22,7 +22,7 @@ class SearchParser < Parslet::Parser
   end
 
   rule(:bare_string) do
-    match('[!\w-]').repeat(1).as(:string)
+    match('[-!_\p{Letter}\p{Number}]').repeat(1).as(:string)
   end
   rule(:string) { quoted_string | bare_string }
 
