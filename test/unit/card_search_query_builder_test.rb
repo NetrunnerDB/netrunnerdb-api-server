@@ -140,6 +140,16 @@ class CardSearchQueryBuilderTest < Minitest::Test # rubocop:disable Metrics/Clas
     assert_equal [], builder.left_joins
   end
 
+  def test_unicode_stripped_for_query
+    input = %("Chaos Theory: Wünderkind")
+    builder = CardSearchQueryBuilder.new(input)
+
+    assert_nil builder.parse_error
+    assert_equal 'lower(unified_cards.stripped_title) LIKE ?', builder.where
+    assert_equal ['%chaos theory: wunderkind%'], builder.where_values
+    assert_equal [], builder.left_joins
+  end
+
   def test_bad_query_bad_operator
     input = %('asdfasdf')
     begin
