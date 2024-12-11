@@ -39,8 +39,8 @@ class DeckValidation
         @snapshot_id = format.active_snapshot_id if @snapshot_id.nil?
         active_snapshot = format.snapshot
         unless active_snapshot.nil?
-          @card_pool_id = active_snapshot.card_pool_id if @card_pool_id.nil? # rubocop:disable Metrics/BlockNesting
-          @restriction_id = active_snapshot.restriction_id if @restriction_id.nil? # rubocop:disable Metrics/BlockNesting
+          @card_pool_id = active_snapshot.card_pool_id if @card_pool_id.nil?
+          @restriction_id = active_snapshot.restriction_id if @restriction_id.nil?
         end
       end
     elsif !@card_pool_id.nil? && @format_id.nil?
