@@ -175,7 +175,7 @@ namespace :cards do
         new_card.num_printed_subroutines = num_printed_subroutines
       end
 
-      if new_card.text&.include?(' can be advanced') && new_card.text&.match("#{new_card.title} can be advanced")
+      if new_card.text&.include?(' can be advanced') && new_card.text.match("#{new_card.title} can be advanced")
         new_card.advanceable = true
       end
 
