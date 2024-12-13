@@ -3,6 +3,7 @@
 # Public resource for Printing objects.
 class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   primary_endpoint '/printings', %i[index show]
+  self.attributes_writable_by_default = false
   self.default_page_size = 1000
   self.max_page_size = 10_000
 
@@ -130,6 +131,10 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   end
 
   many_to_many :illustrators do
+    assign_each do |printing, illustrators|
+      illustrators.select { |i| printing.illustrator_ids_in_database.include?(i.id) }
+    end
+
     link do |p|
       format('%<url>s?filter[id]=%<ids>s', url: Rails.application.routes.url_helpers.illustrators_url,
                                            ids: p.illustrator_ids_in_database.join(','))

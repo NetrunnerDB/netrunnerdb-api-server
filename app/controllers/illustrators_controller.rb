@@ -4,7 +4,11 @@
 class IllustratorsController < ApplicationController
   def index
     add_total_stat(params)
-    illustrators = IllustratorResource.all(params)
+    base_scope = Illustrator
+    if params.include?('include') && params[:include].include?('printings')
+      base_scope = Illustrator.includes(%i[printings])
+    end
+    illustrators = IllustratorResource.all(params, base_scope)
     respond_with(illustrators)
   end
 
