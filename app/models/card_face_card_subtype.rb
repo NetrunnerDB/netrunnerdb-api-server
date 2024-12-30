@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Join model connecting CardFace objects to CardSubtype objects.
 class CardFaceCardSubtype < ApplicationRecord
   self.table_name = 'card_faces_card_subtypes'
 

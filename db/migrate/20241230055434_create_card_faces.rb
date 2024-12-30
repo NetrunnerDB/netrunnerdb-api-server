@@ -1,4 +1,6 @@
-class CreateCardFaces < ActiveRecord::Migration[7.1]
+# frozen_string_literal: true
+
+class CreateCardFaces < ActiveRecord::Migration[7.1] # rubocop:disable Style/Documentation
   def change
     create_table :card_faces, primary_key: %i[card_id face_index] do |t|
       t.string :card_id, null: false
