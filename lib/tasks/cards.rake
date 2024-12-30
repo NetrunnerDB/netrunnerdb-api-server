@@ -113,7 +113,8 @@ namespace :cards do
         is_unique: card['is_unique'],
         display_subtypes: flatten_subtypes(subtypes, card['subtypes']),
         attribution: card['attribution'],
-        designed_by: card['designed_by']
+        designed_by: card['designed_by'],
+        layout_id: card.key?('layout_id') ? card['layout_id'] : 'normal'
       )
       if card.key?('cost')
         new_card.cost = (card['cost'].nil? ? -1 : card['cost'])
@@ -206,6 +207,75 @@ namespace :cards do
       num_cards += s.length
       puts "  #{num_cards} cards"
       RawCard.import s, on_duplicate_key_update: { conflict_target: [:id], columns: :all }
+    end
+  end
+
+  def import_card_faces(cards)
+    # Use a transaction since we are deleting the card_faces and card_faces_card_subtypes tables completely.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing card face -> card subtype mappings'
+      unless ActiveRecord::Base.connection.delete('DELETE FROM card_faces_card_subtypes')
+        puts 'Hit an error while deleting card face -> card subtype mappings. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      puts '  Clear out existing card faces'
+      unless ActiveRecord::Base.connection.delete('DELETE FROM card_faces')
+        puts 'Hit an error while deleting card faces. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      subtypes = CardSubtype.all.index_by(&:id)
+
+      cards.each do |card|
+        # Only generate faces for cards with multiple faces
+        next if !card.key?('layout_id') || card['layout_id'].nil? || card['layout_id'] == 'normal'
+
+        # The first face of a card is just the main Card object and we do not make a CardFace for it.
+        # The rest of the faces are generated from the explicitly-defined faces of the card.
+        # Missing attributes are assumed to be unchanged.
+        i = 0
+        card['faces'].each do |face|
+          i += 1
+          face_subtypes = face.key?('subtypes') ? face['subtypes'] : card['subtypes']
+          # There aren't enough cards with multiple faces to worry about optimizing inserts for them.
+          new_face = CardFace.new(
+            card_id: card['id'],
+            face_index: i
+          )
+          new_face.base_link = face['base_link'] if face.key?('base_link')
+          display_subtypes = []
+          if face.key?('subtypes')
+            face['subtypes'].each do |s|
+              unless subtypes.key?(s)
+                puts "subtype #{s} is invalid for card face for #{new_face.card_id}"
+                raise ActiveRecord::Rollback
+              end
+              display_subtypes << subtypes[s].name
+            end
+          end
+          new_face.display_subtypes = display_subtypes.join(' - ') if face.key?('subtypes')
+          new_face.stripped_text = face['stripped_text'] if face.key?('stripped_text')
+          new_face.stripped_title = face['stripped_title'] if face.key?('stripped_title')
+          new_face.text = face['text'] if face.key?('text')
+          new_face.title = face['title'] if face.key?('title')
+
+          new_face.save
+
+          next if face_subtypes.nil?
+
+          face_subtypes.each do |s|
+            puts "Adding subtype #{s} to face #{i} of card #{new_face.card_id}"
+            cfcs = CardFaceCardSubtype.new(
+              card_id: new_face.card_id,
+              face_index: i,
+              card_subtype_id: s
+            )
+            puts cfcs.inspect
+            cfcs.save
+          end
+        end
+      end
     end
   end
 
@@ -381,13 +451,13 @@ namespace :cards do
   def import_illustrators
     # Use a transaction since we are deleting the illustrator and mapping tables.
     ActiveRecord::Base.transaction do
-      puts 'Clear out existing illustrator -> printing mappings'
+      puts '  Clear out existing illustrator -> printing mappings'
       unless ActiveRecord::Base.connection.delete('DELETE FROM illustrators_printings')
         puts 'Hit an error while deleting illustrator -> printing mappings. rolling back.'
         raise ActiveRecord::Rollback
       end
 
-      puts 'Clear out existing illustrators'
+      puts '  Clear out existing illustrators'
       unless ActiveRecord::Base.connection.delete('DELETE FROM illustrators')
         puts 'Hit an error while deleting illustrators. rolling back.'
         raise ActiveRecord::Rollback
@@ -820,6 +890,9 @@ namespace :cards do
 
     puts 'Importing Subtypes for Cards...'
     import_card_subtypes(cards_json)
+
+    puts 'Importing Card Faces...'
+    import_card_faces(cards_json)
 
     puts 'Importing Printings...'
     import_printings(printings_json)
