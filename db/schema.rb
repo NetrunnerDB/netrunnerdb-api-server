@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_31_043910) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_31_061440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -823,7 +823,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_043910) do
               COALESCE(s.snapshot_ids, (ARRAY[]::text[])::character varying[]) AS snapshot_ids,
               crd.date_release,
               c.designed_by,
-              pr.releasers AS printings_released_by
+              pr.releasers AS printings_released_by,
+              c.layout_id
              FROM ((((((((((((((((cards c
                JOIN card_printing_ids p ON (((c.id)::text = p.card_id)))
                JOIN card_cycles_summary ccs ON (((c.id)::text = (ccs.id)::text)))
@@ -841,7 +842,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_043910) do
                LEFT JOIN card_pool_ids cpc ON (((c.id)::text = cpc.card_id)))
                LEFT JOIN snapshot_ids s ON (((c.id)::text = s.card_id)))
                LEFT JOIN card_release_dates crd ON (((c.id)::text = crd.card_id)))
-            GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release, pr.releasers
+            GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.layout_id, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release, pr.releasers
           )
    SELECT u.id,
       u.title,
@@ -904,6 +905,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_043910) do
       u.date_release,
       u.designed_by,
       u.printings_released_by,
+      u.layout_id,
       COALESCE(array_length(faces.face_index, 1), 0) AS num_extra_faces,
       faces.face_index AS face_indices,
       faces.base_link AS faces_base_link,
