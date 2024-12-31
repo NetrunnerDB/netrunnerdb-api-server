@@ -63,6 +63,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :pronouns, :string
   attribute :pronunciation_approximation, :string
   attribute :pronunciation_ipa, :string
+  attribute :layout_id, :string
 
   # Extra face fields
   attribute :num_extra_faces, :integer
