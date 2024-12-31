@@ -64,6 +64,31 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :pronunciation_approximation, :string
   attribute :pronunciation_ipa, :string
 
+  # Extra face fields
+  attribute :num_extra_faces, :integer
+
+  attribute :faces, :array do
+    faces = []
+
+    unless @object.num_extra_faces.zero?
+      @object.face_indices.each do |index|
+        f = { index: }
+        f[:base_link] = @object.faces_base_link[index - 1] if @object.faces_base_link[index - 1]
+        if @object.faces_display_subtypes[index - 1]
+          f[:display_subtypes] =
+            @object.faces_display_subtypes[index - 1]
+        end
+        f[:card_subtype_ids] = @object.faces_card_subtype_ids[index - 1] if @object.faces_card_subtype_ids[index - 1]
+        f[:stripped_text] = @object.faces_stripped_text[index - 1] if @object.faces_stripped_text[index - 1]
+        f[:stripped_title] = @object.faces_stripped_title[index - 1] if @object.faces_stripped_title[index - 1]
+        f[:text] = @object.faces_text[index - 1] if @object.faces_text[index - 1]
+        f[:title] = @object.faces_title[index - 1] if @object.faces_title[index - 1]
+        faces << f
+      end
+    end
+    faces
+  end
+
   # Synthesized attributes
   attribute :card_abilities, :hash
   attribute :restrictions, :hash
