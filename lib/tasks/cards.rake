@@ -237,7 +237,7 @@ namespace :cards do
         i = 0
         card['faces'].each do |face|
           i += 1
-          face_subtypes = face.key?('subtypes') ? face['subtypes'] : card['subtypes']
+          face_subtypes = face.key?('subtypes') ? face['subtypes'] : []
           # There aren't enough cards with multiple faces to worry about optimizing inserts for them.
           new_face = CardFace.new(
             card_id: card['id'],
