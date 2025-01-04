@@ -1,0 +1,11 @@
+hoshikio_face_0:
+  card_id: hoshiko_shiro_untold_protagonist
+  face_index: 0
+  base_link : 1
+  display_subtypes: "Digital"
+  stripped_text: "When your turn begins, draw 1 card and lose 1 credit. When your turn ends, if you did not access any cards this turn, flip this identity."
+  stripped_title: "Hoshiko Shiro: Mahou Shoujo"
+  text: "When your turn begins, draw 1 card and lose 1[credit].\nWhen your turn ends, if you did not access any cards this turn, flip this identity."
+  title: "Hoshiko Shiro: Mahou Shoujo"
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>

@@ -13,9 +13,7 @@
       "description": "Nsg rules team verified"
     }
   ],
-  "response_fields": [
-
-  ],
+  "response_fields": [],
   "requests": [
     {
       "request_method": "GET",

@@ -13,9 +13,7 @@
       "description": "Id"
     }
   ],
-  "response_fields": [
-
-  ],
+  "response_fields": [],
   "requests": [
     {
       "request_method": "GET",
@@ -25,12 +23,11 @@
         "Content-Type": "application/json",
         "Host": "api-preview.netrunnerdb.com"
       },
-      "request_query_parameters": {
-      },
+      "request_query_parameters": {},
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"startup_02\",\n    \"type\": \"snapshots\",\n    \"attributes\": {\n      \"format_id\": \"startup\",\n      \"active\": true,\n      \"card_cycle_ids\": [\n        \"core\",\n        \"borealis\"\n      ],\n      \"card_set_ids\": [\n        \"midnight_sun\",\n        \"parhelion\"\n      ],\n      \"card_pool_id\": \"startup_02\",\n      \"restriction_id\": null,\n      \"num_cards\": 4,\n      \"date_start\": \"2022-09-01\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"format\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/formats/startup\"\n        }\n      },\n      \"card_pool\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/card_pools/startup_02\"\n        }\n      },\n      \"restriction\": {\n        \"links\": {\n          \"related\": null\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/snapshots/startup_02\"\n    }\n  },\n  \"meta\": {\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"startup_02\",\n    \"type\": \"snapshots\",\n    \"attributes\": {\n      \"format_id\": \"startup\",\n      \"active\": true,\n      \"card_cycle_ids\": [\n        \"core\",\n        \"borealis\"\n      ],\n      \"card_set_ids\": [\n        \"midnight_sun\",\n        \"parhelion\"\n      ],\n      \"card_pool_id\": \"startup_02\",\n      \"restriction_id\": null,\n      \"num_cards\": 4,\n      \"date_start\": \"2022-09-01\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"format\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/formats/startup\"\n        }\n      },\n      \"card_pool\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/card_pools/startup_02\"\n        }\n      },\n      \"restriction\": {\n        \"links\": {\n          \"related\": null\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/snapshots/startup_02\"\n    }\n  },\n  \"meta\": {}\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
