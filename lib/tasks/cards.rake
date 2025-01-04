@@ -236,7 +236,6 @@ namespace :cards do
         # Missing attributes are assumed to be unchanged.
         i = 0
         card['faces'].each do |face|
-          i += 1
           face_subtypes = face.key?('subtypes') ? face['subtypes'] : []
           # There aren't enough cards with multiple faces to worry about optimizing inserts for them.
           new_face = CardFace.new(
@@ -274,6 +273,7 @@ namespace :cards do
             puts cfcs.inspect
             cfcs.save
           end
+          i += 1
         end
       end
     end
