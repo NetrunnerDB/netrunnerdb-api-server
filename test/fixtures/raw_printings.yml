@@ -231,6 +231,19 @@ pennyshaver:
   created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
   updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
 
+hoshiko_shiro_untold_protagonist:
+  id: "01072"
+  card_id: hoshiko_shiro_untold_protagonist
+  card_set_id: core
+  display_illustrators: "Tom of Netrunner"
+  position: 58
+  position_in_set: 58
+  quantity: 1
+  released_by: null_signal_games
+  date_release: 2012-09-06
+  created_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+  updated_at: <%= Time.utc(2022, 12, 8, 12, 0).to_fs(:db) %>
+
 aeneas_informant:
   id: "21072"
   card_id: aeneas_informant

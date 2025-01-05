@@ -9,3 +9,7 @@ bukhgalter_icebreaker:
 bukhgalter_killer:
   card_id: "bukhgalter"
   card_subtype_id: "killer"
+
+hoshiko_natural:
+  card_id: "hoshiko_shiro_untold_protagonist"
+  card_subtype_id: "natural"

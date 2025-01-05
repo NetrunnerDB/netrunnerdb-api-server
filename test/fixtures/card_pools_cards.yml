@@ -6,6 +6,10 @@ standard_01_hedge_fund:
   card_id: hedge_fund
   card_pool_id: standard_01
 
+standard_01_hosh:
+  card_id: hoshiko_shiro_untold_protagonist
+  card_pool_id: standard_01
+
 standard_01_sure_gamble:
   card_id: sure_gamble
   card_pool_id: standard_01
