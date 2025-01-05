@@ -88,6 +88,30 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   attribute :latest_printing_id, :string
   attribute :restrictions, :hash
 
+  # Extra face fields
+  attribute :num_extra_faces, :integer
+
+  attribute :faces, :array do
+    faces = []
+
+    unless @object.num_extra_faces.zero?
+      @object.face_indices.each do |index|
+        f = { index: }
+        f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
+        f[:copy_quantity] = @object.faces_copy_quantity[index] if @object.faces_copy_quantity[index]
+        f[:flavor] = @object.faces_flavor[index] if @object.faces_flavor[index]
+        f[:display_subtypes] = @object.faces_display_subtypes[index] if @object.faces_display_subtypes[index]
+        f[:card_subtype_ids] = @object.faces_card_subtype_ids[index].compact if @object.faces_card_subtype_ids[index]
+        f[:stripped_text] = @object.faces_stripped_text[index] if @object.faces_stripped_text[index]
+        f[:stripped_title] = @object.faces_stripped_title[index] if @object.faces_stripped_title[index]
+        f[:text] = @object.faces_text[index] if @object.faces_text[index]
+        f[:title] = @object.faces_title[index] if @object.faces_title[index]
+        faces << f
+      end
+    end
+    faces
+  end
+
   filter :distinct_cards, :boolean do
     eq do |scope, value|
       value ? scope.where('id = printing_ids[1]') : scope
