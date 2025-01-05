@@ -72,6 +72,21 @@ RSpec.describe PrintingResource, type: :resource do
     end
   end
 
+  describe 'flip_card' do
+    let!(:printing) { Printing.find('01072') }
+
+    it 'works' do
+      params[:filter] = { id: { eq: printing.id } }
+      render
+
+      data = jsonapi_data[0]
+      expect(data.num_extra_faces).to eq(printing.num_extra_faces)
+      expect(data.faces[0][:display_subtypes]).to eq(printing.faces_display_subtypes[0])
+      expect(data.faces[0][:flavor]).to eq(printing.faces_flavor[0])
+      expect(data.faces[0][:copy_quantity]).to eq(printing.faces_copy_quantity[0])
+    end
+  end
+
   describe 'filtering' do
     let!(:printing) { Printing.find('21180') }
 
