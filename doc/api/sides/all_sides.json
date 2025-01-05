@@ -5,12 +5,8 @@
   "route": "/api/v3/public/sides",
   "description": "All Sides",
   "explanation": null,
-  "parameters": [
-
-  ],
-  "response_fields": [
-
-  ],
+  "parameters": [],
+  "response_fields": [],
   "requests": [
     {
       "request_method": "GET",
@@ -20,8 +16,7 @@
         "Content-Type": "application/json",
         "Host": "api-preview.netrunnerdb.com"
       },
-      "request_query_parameters": {
-      },
+      "request_query_parameters": {},
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",

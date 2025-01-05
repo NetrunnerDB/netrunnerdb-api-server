@@ -57,6 +57,19 @@ RSpec.describe CardResource, type: :resource do
     end
   end
 
+  describe 'multiple_faces' do
+    let!(:card) { Card.find('hoshiko_shiro_untold_protagonist') }
+
+    it 'fields match' do
+      params[:filter] = { id: { eq: card.id } }
+      render
+
+      data = jsonapi_data[0]
+      expect(data.num_extra_faces).to eq(card.num_extra_faces)
+      expect(data.faces[0][:display_subtypes]).to eq(card.faces_display_subtypes[0])
+    end
+  end
+
   describe 'filtering' do
     let!(:card) { Card.find('pennyshaver') }
 

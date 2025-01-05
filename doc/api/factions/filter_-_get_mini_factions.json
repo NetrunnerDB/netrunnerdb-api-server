@@ -13,9 +13,7 @@
       "description": "Is mini"
     }
   ],
-  "response_fields": [
-
-  ],
+  "response_fields": [],
   "requests": [
     {
       "request_method": "GET",

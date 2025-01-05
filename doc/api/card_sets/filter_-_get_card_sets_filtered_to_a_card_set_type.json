@@ -13,9 +13,7 @@
       "description": "Card set type"
     }
   ],
-  "response_fields": [
-
-  ],
+  "response_fields": [],
   "requests": [
     {
       "request_method": "GET",
@@ -33,7 +31,7 @@
       "request_content_type": "application/json",
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": [\n\n  ],\n  \"meta\": {\n    \"stats\": {\n      \"total\": {\n        \"count\": 0\n      }\n    }\n  }\n}",
+      "response_body": "{\n  \"data\": [],\n  \"meta\": {\n    \"stats\": {\n      \"total\": {\n        \"count\": 0\n      }\n    }\n  }\n}",
       "response_headers": {
         "Content-Type": "application/vnd.api+json; charset=utf-8"
       },
