@@ -499,6 +499,39 @@ namespace :cards do
     end
   end
 
+  def import_printing_faces(printings)
+    # Use a transaction since we are deleting the card_faces and card_faces_card_subtypes tables completely.
+    ActiveRecord::Base.transaction do
+      puts '  Clear out existing printing faces'
+      unless ActiveRecord::Base.connection.delete('DELETE FROM printing_faces')
+        puts 'Hit an error while deleting printing faces. rolling back.'
+        raise ActiveRecord::Rollback
+      end
+
+      printings.each do |printing|
+        # Only generate faces for cards with multiple faces
+        next if !printing.key?('faces') || printing['faces'].empty?
+
+        # The first face of a printing is just the main Printing object and we do not make a PrintingFace for it.
+        # The rest of the faces are generated from the explicitly-defined faces of the printing.
+        # Missing attributes are assumed to be unchanged.
+        i = 0
+        printing['faces'].each do |face|
+          # There aren't enough cards with multiple faces to worry about optimizing inserts for them.
+          new_face = PrintingFace.new(
+            printing_id: printing['id'],
+            face_index: i
+          )
+          new_face.copy_quantity = face['copy_quantity'] if face.key?('copy_quantity')
+          new_face.flavor = face['flavor'] if face.key?('flavor')
+
+          new_face.save
+          i += 1
+        end
+      end
+    end
+  end
+
   def import_formats(formats_json)
     formats = []
     formats_json.each do |f|
@@ -896,6 +929,9 @@ namespace :cards do
 
     puts 'Importing Printings...'
     import_printings(printings_json)
+
+    puts 'Importing Printing Faces...'
+    import_printing_faces(printings_json)
 
     puts 'Importing Subtypes for Printings...'
     import_printing_subtypes
