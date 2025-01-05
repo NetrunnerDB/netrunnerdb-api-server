@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_05_041622) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -857,6 +857,32 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_041622) do
               array_agg(pf_1.flavor ORDER BY pf_1.face_index) AS flavor
              FROM printing_faces pf_1
             GROUP BY pf_1.printing_id
+          ), combined_face_indexes AS (
+           SELECT cf_1.card_id,
+              cf_1.face_index,
+              p.id AS printing_id,
+              NULL::text AS val,
+              NULL::integer AS int_val
+             FROM (card_faces cf_1
+               JOIN printings p ON (((cf_1.card_id)::text = p.card_id)))
+          UNION
+           SELECT c.id AS card_id,
+              pf_1.face_index,
+              pf_1.printing_id,
+              NULL::text AS val,
+              NULL::integer AS int_val
+             FROM ((printing_faces pf_1
+               JOIN printings p ON (((pf_1.printing_id)::text = (p.id)::text)))
+               JOIN cards c ON (((c.id)::text = p.card_id)))
+          ), faces_fallback AS (
+           SELECT combined_face_indexes.card_id,
+              combined_face_indexes.printing_id,
+              count(*) AS num_extra_faces,
+              array_agg(combined_face_indexes.face_index ORDER BY combined_face_indexes.face_index) AS face_index,
+              array_agg(combined_face_indexes.val ORDER BY combined_face_indexes.face_index) AS dummy_vals,
+              array_agg(combined_face_indexes.int_val ORDER BY combined_face_indexes.face_index) AS dummy_int_vals
+             FROM combined_face_indexes
+            GROUP BY combined_face_indexes.card_id, combined_face_indexes.printing_id
           ), unified AS (
            SELECT p.id,
               p.card_id,
@@ -1031,19 +1057,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_041622) do
       u.released_by,
       u.printings_released_by,
       u.layout_id,
-      COALESCE(array_length(pf.face_index, 1), COALESCE(array_length(cf.face_index, 1), 0)) AS num_extra_faces,
-      COALESCE(pf.face_index, cf.face_index) AS face_indices,
-      cf.base_link AS faces_base_link,
-      cf.display_subtypes AS faces_display_subtypes,
-      cf.card_subtype_ids AS faces_card_subtype_ids,
-      cf.stripped_text AS faces_stripped_text,
-      cf.stripped_title AS faces_stripped_title,
-      cf.text AS faces_text,
-      cf.title AS faces_title,
-      pf.copy_quantity AS faces_copy_quantity,
-      pf.flavor AS faces_flavor
-     FROM ((unified u
+      COALESCE(ff.num_extra_faces, (0)::bigint) AS num_extra_faces,
+      ff.face_index AS face_indices,
+      COALESCE(cf.base_link, ff.dummy_vals) AS faces_base_link,
+      COALESCE(cf.display_subtypes, ff.dummy_vals) AS faces_display_subtypes,
+      COALESCE(cf.card_subtype_ids, (ff.dummy_vals)::character varying[]) AS faces_card_subtype_ids,
+      COALESCE(cf.stripped_text, ff.dummy_vals) AS faces_stripped_text,
+      COALESCE(cf.stripped_title, ff.dummy_vals) AS faces_stripped_title,
+      COALESCE(cf.text, ff.dummy_vals) AS faces_text,
+      COALESCE(cf.title, ff.dummy_vals) AS faces_title,
+      COALESCE(pf.copy_quantity, ff.dummy_int_vals) AS faces_copy_quantity,
+      COALESCE(pf.flavor, ff.dummy_vals) AS faces_flavor
+     FROM (((unified u
        LEFT JOIN faces_for_cards cf ON ((u.card_id = (cf.card_id)::text)))
-       LEFT JOIN faces_for_printings pf ON (((u.id)::text = (pf.printing_id)::text)));
+       LEFT JOIN faces_for_printings pf ON (((u.id)::text = (pf.printing_id)::text)))
+       LEFT JOIN faces_fallback ff ON (((u.id)::text = (ff.printing_id)::text)));
   SQL
 end
