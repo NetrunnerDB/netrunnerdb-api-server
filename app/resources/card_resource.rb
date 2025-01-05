@@ -74,16 +74,13 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
     unless @object.num_extra_faces.zero?
       @object.face_indices.each do |index|
         f = { index: }
-        f[:base_link] = @object.faces_base_link[index - 1] if @object.faces_base_link[index - 1]
-        if @object.faces_display_subtypes[index - 1]
-          f[:display_subtypes] =
-            @object.faces_display_subtypes[index - 1]
-        end
-        f[:card_subtype_ids] = @object.faces_card_subtype_ids[index - 1] if @object.faces_card_subtype_ids[index - 1]
-        f[:stripped_text] = @object.faces_stripped_text[index - 1] if @object.faces_stripped_text[index - 1]
-        f[:stripped_title] = @object.faces_stripped_title[index - 1] if @object.faces_stripped_title[index - 1]
-        f[:text] = @object.faces_text[index - 1] if @object.faces_text[index - 1]
-        f[:title] = @object.faces_title[index - 1] if @object.faces_title[index - 1]
+        f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
+        f[:display_subtypes] = @object.faces_display_subtypes[index] if @object.faces_display_subtypes[index]
+        f[:card_subtype_ids] = @object.faces_card_subtype_ids[index] if @object.faces_card_subtype_ids[index]
+        f[:stripped_text] = @object.faces_stripped_text[index] if @object.faces_stripped_text[index]
+        f[:stripped_title] = @object.faces_stripped_title[index] if @object.faces_stripped_title[index]
+        f[:text] = @object.faces_text[index] if @object.faces_text[index]
+        f[:title] = @object.faces_title[index] if @object.faces_title[index]
         faces << f
       end
     end
