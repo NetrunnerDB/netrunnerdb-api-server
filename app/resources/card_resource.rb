@@ -76,7 +76,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
         f = { index: }
         f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
         f[:display_subtypes] = @object.faces_display_subtypes[index] if @object.faces_display_subtypes[index]
-        f[:card_subtype_ids] = @object.faces_card_subtype_ids[index] if @object.faces_card_subtype_ids[index]
+        f[:card_subtype_ids] = @object.faces_card_subtype_ids[index].compact if @object.faces_card_subtype_ids[index]
         f[:stripped_text] = @object.faces_stripped_text[index] if @object.faces_stripped_text[index]
         f[:stripped_title] = @object.faces_stripped_title[index] if @object.faces_stripped_title[index]
         f[:text] = @object.faces_text[index] if @object.faces_text[index]
