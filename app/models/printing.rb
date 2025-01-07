@@ -37,10 +37,6 @@ class Printing < ApplicationRecord
            foreign_key: :card_id
   has_many :card_pools, through: :card_pool_cards
 
-  def images
-    { 'nrdb_classic' => nrdb_classic_images }
-  end
-
   def latest_printing_id
     printing_ids[0]
   rescue StandardError
@@ -58,16 +54,6 @@ class Printing < ApplicationRecord
   end
 
   private
-
-  def nrdb_classic_images
-    url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
-    {
-      'tiny' => format('%<url_prefix>s/tiny/%<printing_id>s.jpg', url_prefix:, printing_id: id),
-      'small' => format('%<url_prefix>s/small/%<printing_id>s.jpg', url_prefix:, printing_id: id),
-      'medium' => format('%<url_prefix>s/medium/%<printing_id>s.jpg', url_prefix:, printing_id: id),
-      'large' => format('%<url_prefix>s/large/%<printing_id>s.jpg', url_prefix:, printing_id: id)
-    }
-  end
 
   def packed_restriction_to_map(packed)
     m = {}
