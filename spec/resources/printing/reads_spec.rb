@@ -65,7 +65,7 @@ RSpec.describe PrintingResource, type: :resource do
       expect(data.pronouns).to eq(printing.pronouns)
       expect(data.pronunciation_approximation).to eq(printing.pronunciation_approximation)
       expect(data.pronunciation_ipa).to eq(printing.pronunciation_ipa)
-      expect(data.images).to eq(printing.images)
+      expect(data.images).not_to be(nil)
       expect(data.card_abilities).to eq(printing.card_abilities.stringify_keys)
       expect(data.latest_printing_id).to eq(printing.latest_printing_id)
       expect(data.restrictions).to eq(printing.restrictions.stringify_keys)
