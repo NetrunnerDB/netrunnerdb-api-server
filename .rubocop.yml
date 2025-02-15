@@ -1,9 +1,8 @@
-plugins: 
- - rubocop-factory_bot
+plugins:
  - rubocop-rails
 require:
+ - rubocop-factory_bot
  - rubocop-rspec
-require:
  - rubocop-rspec_rails
 
 AllCops:
