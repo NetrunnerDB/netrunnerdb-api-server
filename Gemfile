@@ -84,6 +84,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-factory_bot'
   gem 'rubocop-rails'
+  gem 'rubocop-rake'
   gem 'rubocop-rspec'
   gem 'rubocop-rspec_rails'
   gem 'simplecov'
