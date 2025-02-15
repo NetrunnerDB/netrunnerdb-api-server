@@ -3,6 +3,7 @@
 # Public resource for Illustrator objects.
 class IllustratorResource < ApplicationResource
   primary_endpoint '/illustrators', %i[index show]
+  cache_resource expires_in: 1.week
 
   self.attributes_writable_by_default = false
 

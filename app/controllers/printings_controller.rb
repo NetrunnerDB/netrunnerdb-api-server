@@ -4,9 +4,9 @@
 class PrintingsController < ApplicationController
   def index
     add_total_stat(params)
-    printings = PrintingResource.all(params)
+    # printings = PrintingResource.all(params)
 
-    respond_with(printings)
+    respond_with(PrintingResource.all(params))
   end
 
   def show

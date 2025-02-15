@@ -1,8 +1,18 @@
 require:
-  - rubocop-factory_bot
-  - rubocop-rails
-  - rubocop-rspec
-  - rubocop-rspec_rails
+ - rubocop-factory_bot
+ - rubocop-rspec
+ - rubocop-rspec_rails
+
+plugins:
+ - rubocop-rails
+ - rubocop-rake
+
+
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'db/schema.rb'
+    - 'lib/tasks/*'
 
 Metrics/AbcSize:
   Enabled: false
@@ -25,4 +35,10 @@ RSpec/ExampleWording:
 RSpec/FilePath:
   Enabled: false
 RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/SpecFilePathFormat:
+  Enabled: false
+RSpec/NoExpectationExample:
+  Enabled: false
+Rails/Delegate:
   Enabled: false

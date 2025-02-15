@@ -6,6 +6,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   self.attributes_writable_by_default = false
   self.default_page_size = 1000
   self.max_page_size = 10_000
+  self.cache_resource expires_in: 1.week # rubocop:disable Style/RedundantSelf
 
   attribute :id, :string
   attribute :card_id, :string
