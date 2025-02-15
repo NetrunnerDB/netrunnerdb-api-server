@@ -10,7 +10,7 @@ gem 'google-protobuf', force_ruby_platform: true
 gem 'nokogiri', force_ruby_platform: true
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '>= 7.0.7.1'
+gem 'rails', '~> 7.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
@@ -49,7 +49,7 @@ gem 'rack-cors', '2.0.0'
 gem 'activerecord-import'
 
 # Base for our JSON API.
-gem 'graphiti', '~> 1.2'
+gem 'graphiti', '~> 1.7.6'
 gem 'graphiti-rails', '~> 0.2'
 gem 'kaminari', '~> 1.0'
 gem 'ostruct'
