@@ -9,8 +9,7 @@ ruby '~> 3.3.6'
 gem 'google-protobuf', force_ruby_platform: true
 gem 'nokogiri', force_ruby_platform: true
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '>= 7.0.7.1'
+gem 'rails', '~> 7'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
