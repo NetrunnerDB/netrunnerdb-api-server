@@ -209,9 +209,7 @@ class SearchQueryBuilder # rubocop:disable Metrics/ClassLength
   class << self
     attr_reader :fields
   end
-  def fields
-    self.class.fields
-  end
+  delegate :fields, to: :class
 
   # Maps operators as accepted by the parser to their SQL counterparts
   @@operators = { # rubocop:disable Style/ClassVars
