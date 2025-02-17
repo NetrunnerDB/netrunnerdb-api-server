@@ -6,7 +6,6 @@
 class RawPrinting < ApplicationRecord
   self.table_name = 'printings'
 
-  belongs_to :card
   belongs_to :card_set
   belongs_to :raw_card, inverse_of: :raw_printings, primary_key: :id, foreign_key: :card_id
   has_one :faction, through: :card

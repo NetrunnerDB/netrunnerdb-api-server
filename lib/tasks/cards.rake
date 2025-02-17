@@ -9,6 +9,7 @@ namespace :cards do
     text.downcase
         .unicode_normalize(:nfd)
         .gsub(/\P{ASCII}/, '')
+        # TODO(plural): Fix contractions to match javascript version.
         .gsub(/'s(\p{Space}|\z)/, 's\1')
         .split(/[\p{Space}\p{Punct}]+/)
         .reject { |s| s&.strip&.empty? }
@@ -264,13 +265,12 @@ namespace :cards do
           next if face_subtypes.nil?
 
           face_subtypes.each do |s|
-            puts "Adding subtype #{s} to face #{i} of card #{new_face.card_id}"
+            puts "  Adding subtype #{s} to face #{i} of card #{new_face.card_id}"
             cfcs = CardFaceCardSubtype.new(
               card_id: new_face.card_id,
               face_index: i,
               card_subtype_id: s
             )
-            puts cfcs.inspect
             cfcs.save
           end
           i += 1
@@ -407,6 +407,7 @@ namespace :cards do
   def import_printings(printings)
     card_sets = CardSet.all.index_by(&:id)
 
+    puts "Printings argument is #{printings.size}"
     new_printings = []
     printings.each do |printing|
       new_printings << RawPrinting.new(
@@ -424,10 +425,13 @@ namespace :cards do
 
     num_printings = 0
     new_printings.each_slice(250) do |s|
+      puts s.inspect
       num_printings += s.length
       puts "  #{num_printings} printings"
-      RawPrinting.import s, on_duplicate_key_update: { conflict_target: [:id], columns: :all }
+      RawPrinting.import s, on_duplicate_key_update: { conflict_target: [:id], columns: :all }, raise_error: true
     end
+
+    puts "Printings has #{RawPrinting.count} entries"
 
     # Use ROW_NUMBER() to identify the position of each printing in the each set.
     sql = <<~SQL
@@ -979,6 +983,10 @@ namespace :cards do
     puts 'Refreshing materialized view for printings...'
     Scenic.database.refresh_materialized_view(:unified_printings, concurrently: false, cascade: false)
 
+    puts "unified_cards has #{Card.all.size} records."
+    puts "unified_printings has #{Printing.all.size} records."
+    puts "unified_restrictions has #{UnifiedRestriction.all.size} records."
+    puts ''
     puts 'Done!'
   end
 end
