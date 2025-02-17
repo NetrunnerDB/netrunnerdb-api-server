@@ -34,7 +34,7 @@ class RawCard < ApplicationRecord
   # Will be all restrictions that directly reference this card in any way.
   has_many :restrictions, -> { where('unified_restrictions.in_restriction': true) }, through: :unified_restrictions
 
-  validates :name, uniqueness: true
+  validates :title, uniqueness: true
 
   def advancement_requirement
     self[:advancement_requirement] == -1 ? 'X' : self[:advancement_requirement]
