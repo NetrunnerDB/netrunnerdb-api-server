@@ -1,13 +1,16 @@
 require:
   - rubocop-factory_bot
+  - rubocop-rspec_rails
+
+plugins:
   - rubocop-rails
   - rubocop-rspec
-  - rubocop-rspec_rails
 
 AllCops:
   Exclude:
     - 'bin/*'
     - 'db/schema.rb'
+    - 'vendor/**/*'
 
 Metrics/AbcSize:
   Enabled: false
@@ -21,13 +24,13 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Rails/BulkChangeTable:
   Enabled: false
+Rails/FilePath:
+  Enabled: false
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 RSpec/ExampleLength:
   Enabled: false
 RSpec/ExampleWording:
-  Enabled: false
-RSpec/FilePath:
   Enabled: false
 RSpec/MultipleExpectations:
   Enabled: false
