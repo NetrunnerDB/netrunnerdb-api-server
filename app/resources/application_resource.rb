@@ -13,4 +13,6 @@ class ApplicationResource < Graphiti::Resource
   self.endpoint_namespace = '/api/v3/public'
   self.autolink = true
   link(:self) { |resource| "#{endpoint[:url]}/#{resource.id}" } if endpoint[:actions].include?(:show)
+  # Cache things for a week. Cache keys will update when entities are updated.
+  self.cache_resource expires_in: 1.week # rubocop:disable Style/RedundantSelf
 end
