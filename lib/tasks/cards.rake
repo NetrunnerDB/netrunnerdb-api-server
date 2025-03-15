@@ -407,7 +407,6 @@ namespace :cards do
   def import_printings(printings)
     card_sets = CardSet.all.index_by(&:id)
 
-    puts "Printings argument is #{printings.size}"
     new_printings = []
     printings.each do |printing|
       new_printings << RawPrinting.new(
@@ -425,13 +424,10 @@ namespace :cards do
 
     num_printings = 0
     new_printings.each_slice(250) do |s|
-      puts s.inspect
       num_printings += s.length
       puts "  #{num_printings} printings"
       RawPrinting.import s, on_duplicate_key_update: { conflict_target: [:id], columns: :all }, raise_error: true
     end
-
-    puts "Printings has #{RawPrinting.count} entries"
 
     # Use ROW_NUMBER() to identify the position of each printing in the each set.
     sql = <<~SQL
