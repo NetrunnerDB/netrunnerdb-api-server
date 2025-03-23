@@ -22,9 +22,9 @@ gem 'parslet'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
-gem 'rack', '~> 2.2'
+gem 'rack', '~> 3.1'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors', '2.0.0'
+gem 'rack-cors'
 
 # Used for our import of the card data.
 gem 'activerecord-import'
@@ -41,7 +41,8 @@ gem 'scenic'
 
 gem 'apitome'
 gem 'jwt'
-gem 'rspec_api_documentation'
+# Specific fork to deal with rack 3.1 compatibility issue.
+gem 'rspec_api_documentation', github: 'SchoolKeep/rspec_api_documentation', ref: '13df1ac'
 gem 'sprockets-rails'
 
 # Observability and monitoring via OpenTelemetry.
