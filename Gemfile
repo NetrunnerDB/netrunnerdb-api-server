@@ -19,26 +19,8 @@ gem 'puma', '~> 6.4'
 
 gem 'parslet'
 
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
-
-# Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
-
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
-
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
 
 gem 'rack', '~> 2.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
@@ -48,8 +30,8 @@ gem 'rack-cors', '2.0.0'
 gem 'activerecord-import'
 
 # Base for our JSON API.
-gem 'graphiti', '~> 1.2'
-gem 'graphiti-rails', '~> 0.2'
+gem 'graphiti'
+gem 'graphiti-rails'
 gem 'kaminari', '~> 1.0'
 gem 'ostruct'
 gem 'responders'
@@ -71,7 +53,7 @@ gem 'opentelemetry-sdk'
 gem 'reverse_markdown'
 
 group :development, :test do
-  gem 'brakeman', '~> 5.2'
+  gem 'brakeman'
   gem 'bullet'
   gem 'bundler-audit', '~> 0.9.0'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
