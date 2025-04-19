@@ -3,7 +3,7 @@
 #####################################################################
 FROM ruby:3.3.6-alpine3.20 AS build
 
-RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client build-base libpq-dev tzdata \
+RUN apk -U upgrade && apk add --no-cache gcompat git postgresql-client build-base libpq-dev tzdata \
   && rm -rf /var/cache/apk/*
 
 RUN gem install rails
@@ -33,7 +33,7 @@ COPY . $RAILS_ROOT/
 #####################################################################
 FROM ruby:3.3.6-alpine3.20 AS final
 
-RUN apk -U upgrade && apk add --no-cache gcompat postgresql-client tzdata \
+RUN apk -U upgrade && apk add --no-cache gcompat git postgresql-client tzdata \
   && rm -rf /var/cache/apk/*
 
 ENV RAILS_ROOT /var/www/nrdb-api
