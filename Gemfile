@@ -55,7 +55,7 @@ gem 'reverse_markdown'
 
 group :development, :test do
   gem 'brakeman'
-  # Lock to 8.0.3 because we don't have CSP middleware and the next version crashes without it. 
+  # Lock to 8.0.3 because we don't have CSP middleware and the next version crashes without it.
   gem 'bullet', '8.0.3'
   gem 'bundler-audit', '~> 0.9.0'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
