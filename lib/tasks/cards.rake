@@ -381,7 +381,7 @@ namespace :cards do
 
   def update_date_release_for_cycles
     CardCycle.all.find_each do |c|
-      c.date_release = (c.card_sets.min_by { :date_release }).date_release
+      c.date_release = c.card_sets.minimum(:date_release)
       c.save
     end
   end
