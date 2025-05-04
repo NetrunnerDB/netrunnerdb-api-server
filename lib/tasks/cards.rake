@@ -381,7 +381,13 @@ namespace :cards do
 
   def update_date_release_for_cycles
     CardCycle.all.find_each do |c|
-      c.date_release = (c.card_sets.min_by { :date_release }).date_release
+      num_non_booster_sets = c.card_sets.where.not(card_set_type_id: 'booster_pack').count
+
+      c.date_release = if num_non_booster_sets.positive?
+                         c.card_sets.where.not(card_set_type_id: 'booster_pack').minimum(:date_release)
+                       else
+                         c.card_sets.minimum(:date_release)
+                       end
       c.save
     end
   end
