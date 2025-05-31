@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.3.6'
+ruby '~> 3.3.8'
 
 # Gems that have trouble with native packages on alpine.
 gem 'google-protobuf', force_ruby_platform: true
@@ -63,12 +63,15 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'graphiti_spec_helpers'
+  gem 'pry'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-factory_bot'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
   gem 'rubocop-rspec_rails'
+  gem 'ruby-lsp-rails', require: false
+  gem 'ruby-lsp-rspec', require: false
   gem 'simplecov'
   gem 'simplecov-cobertura'
 end
