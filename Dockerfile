@@ -3,7 +3,7 @@
 #####################################################################
 FROM ruby:3.3.8-alpine3.20 AS build
 
-RUN apk -U upgrade && apk add --no-cache gcompat git postgresql-client build-base libpq-dev tzdata \
+RUN apk -U upgrade && apk add --no-cache gcompat git postgresql-client build-base libpq-dev tzdata yaml-dev \
   && rm -rf /var/cache/apk/*
 
 RUN gem install rails
