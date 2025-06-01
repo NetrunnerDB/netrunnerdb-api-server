@@ -195,7 +195,7 @@ RSpec.describe CardSearchQueryBuilder do
       let(:builder) { described_class.new('is_banned:true restriction_id:ban_list_foo') }
 
       it 'builds correct where clause' do
-        expect(builder.where.strip).to eq('(? = ANY(unified_cards.restrictions_banned)) AND  (? = ANY(unified_cards.restriction_ids))')
+        expect(builder.where.strip).to eq('(? = ANY(unified_cards.restrictions_banned)) AND  (? = ANY(unified_cards.restriction_ids))') # rubocop:disable Layout/LineLength
         expect(builder.where_values).to eq(%w[true ban_list_foo])
         expect(builder.left_joins).to eq([])
       end
@@ -205,7 +205,7 @@ RSpec.describe CardSearchQueryBuilder do
       let(:builder) { described_class.new('is_restricted:true restriction_id:ban_list_foo') }
 
       it 'builds correct where clause' do
-        expect(builder.where.strip).to eq('(? = ANY(unified_cards.restrictions_restricted)) AND  (? = ANY(unified_cards.restriction_ids))')
+        expect(builder.where.strip).to eq('(? = ANY(unified_cards.restrictions_restricted)) AND  (? = ANY(unified_cards.restriction_ids))') # rubocop:disable Layout/LineLength
         expect(builder.where_values).to eq(%w[true ban_list_foo])
         expect(builder.left_joins).to eq([])
       end
@@ -215,7 +215,7 @@ RSpec.describe CardSearchQueryBuilder do
       let(:builder) { described_class.new('has_global_penalty:true restriction_id:ban_list_foo') }
 
       it 'builds correct where clause' do
-        expect(builder.where.strip).to eq('(? = ANY(unified_cards.restrictions_global_penalty)) AND  (? = ANY(unified_cards.restriction_ids))')
+        expect(builder.where.strip).to eq('(? = ANY(unified_cards.restrictions_global_penalty)) AND  (? = ANY(unified_cards.restriction_ids))') # rubocop:disable Layout/LineLength
         expect(builder.where_values).to eq(%w[true ban_list_foo])
         expect(builder.left_joins).to eq([])
       end

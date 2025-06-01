@@ -552,7 +552,7 @@ RSpec.describe DeckValidator do # rubocop:disable RSpec/MultipleMemoizedHelpers
       expect(v.validations.size).to eq(deck['validations'].size)
       expect(v.validations[0]).not_to be_valid
       expect(v.validations[0].errors).to include(
-        'Decks may not include multiple identities.  Identity card `asa_group_security_through_vigilance` is not allowed.'
+        'Decks may not include multiple identities.  Identity card `asa_group_security_through_vigilance` is not allowed.' # rubocop:disable Layout/LineLength
       )
     end
 
@@ -664,7 +664,7 @@ RSpec.describe DeckValidator do # rubocop:disable RSpec/MultipleMemoizedHelpers
       expect(v).not_to be_valid
       expect(v.validations.size).to eq(not_enough_agenda_points_too_many_copies['validations'].size)
       expect(v.validations[0]).not_to be_valid
-      expect(v.validations[0].errors).to include('Deck with size 45 requires [20,21] agenda points, but deck only has 18')
+      expect(v.validations[0].errors).to include('Deck with size 45 requires [20,21] agenda points, but deck only has 18') # rubocop:disable Layout/LineLength
     end
 
     it 'fails validation for deck with too many copies of a card' do
@@ -673,7 +673,7 @@ RSpec.describe DeckValidator do # rubocop:disable RSpec/MultipleMemoizedHelpers
       expect(v.validations.size).to eq(not_enough_agenda_points_too_many_copies['validations'].size)
       expect(v.validations[0]).not_to be_valid
       expect(v.validations[0].errors).to include('Card `hedge_fund` has a deck limit of 3, but 36 copies are included.')
-      expect(v.validations[0].errors).to include('Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.')
+      expect(v.validations[0].errors).to include('Card `project_vitruvius` has a deck limit of 3, but 9 copies are included.') # rubocop:disable Layout/LineLength
     end
 
     it 'fails validation for ampere deck with too many copies' do
@@ -794,7 +794,7 @@ RSpec.describe DeckValidator do # rubocop:disable RSpec/MultipleMemoizedHelpers
       v = described_class.new(deck)
       expect(v).not_to be_valid
       expect(v.validations.size).to eq(deck['validations'].size)
-      expect(v.validations[0].errors).to include('Card `trieste_model_bioroids` is banned in restriction `standard_banlist`.')
+      expect(v.validations[0].errors).to include('Card `trieste_model_bioroids` is banned in restriction `standard_banlist`.') # rubocop:disable Layout/LineLength
     end
 
     it 'fails validation for too many restricted cards' do

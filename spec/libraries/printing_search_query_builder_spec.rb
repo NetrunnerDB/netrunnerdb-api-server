@@ -149,7 +149,7 @@ RSpec.describe PrintingSearchQueryBuilder do
     it 'parses is_banned with restriction' do
       builder = described_class.new('is_banned:true restriction_id:ban_list_foo')
       expect(builder.parse_error).to be_nil
-      expect(builder.where.strip).to eq('(? = ANY(unified_printings.restrictions_banned)) AND  (? = ANY(unified_printings.restriction_ids))')
+      expect(builder.where.strip).to eq('(? = ANY(unified_printings.restrictions_banned)) AND  (? = ANY(unified_printings.restriction_ids))') # rubocop:disable Layout/LineLength
       expect(builder.where_values).to eq(%w[true ban_list_foo])
       expect(builder.left_joins).to eq([])
     end
@@ -157,7 +157,7 @@ RSpec.describe PrintingSearchQueryBuilder do
     it 'parses is_restricted with restriction' do
       builder = described_class.new('is_restricted:true restriction_id:ban_list_foo')
       expect(builder.parse_error).to be_nil
-      expect(builder.where.strip).to eq('(? = ANY(unified_printings.restrictions_restricted)) AND  (? = ANY(unified_printings.restriction_ids))')
+      expect(builder.where.strip).to eq('(? = ANY(unified_printings.restrictions_restricted)) AND  (? = ANY(unified_printings.restriction_ids))') # rubocop:disable Layout/LineLength
       expect(builder.where_values).to eq(%w[true ban_list_foo])
       expect(builder.left_joins).to eq([])
     end
@@ -165,7 +165,7 @@ RSpec.describe PrintingSearchQueryBuilder do
     it 'parses has_global_penalty with restriction' do
       builder = described_class.new('has_global_penalty:true restriction_id:ban_list_foo')
       expect(builder.parse_error).to be_nil
-      expect(builder.where.strip).to eq('(? = ANY(unified_printings.restrictions_global_penalty)) AND  (? = ANY(unified_printings.restriction_ids))')
+      expect(builder.where.strip).to eq('(? = ANY(unified_printings.restrictions_global_penalty)) AND  (? = ANY(unified_printings.restriction_ids))') # rubocop:disable Layout/LineLength
       expect(builder.where_values).to eq(%w[true ban_list_foo])
       expect(builder.left_joins).to eq([])
     end
@@ -226,7 +226,7 @@ RSpec.describe PrintingSearchQueryBuilder do
       expect do
         described_class.new('release_date:Jul-22-2022')
       end.to raise_error(RuntimeError,
-                         'Invalid value "jul-22-2022" for date field "release_date" - only YYYY-MM-DD or YYYYMMDD are supported.')
+                         'Invalid value "jul-22-2022" for date field "release_date" - only YYYY-MM-DD or YYYYMMDD are supported.') # rubocop:disable Layout/LineLength
     end
 
     it 'parses illustrator full' do
