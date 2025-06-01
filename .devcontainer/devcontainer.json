@@ -83,7 +83,8 @@
                 "mtxr.sqltools-driver-pg",
                 "rubocop.vscode-rubocop",
                 "vscode-icons-team.vscode-icons",
-                "waderyan.gitblame"
+                "waderyan.gitblame",
+                "github.vscode-github-actions"
             ]
         }
     },
