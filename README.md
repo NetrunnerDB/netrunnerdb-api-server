@@ -54,7 +54,7 @@ Is enough to spin up the containers, unless you want to restart the db from scra
 To run tests in your docker container, you will need to override the environment, like so:
 
 ```sh
-docker compose exec -e RAILS_ENV=test nrdb_api_server rails test
+docker compose exec -e RAILS_ENV=test nrdb_api_server bundle exec rspec
 ```
 
 ## Getting Started
