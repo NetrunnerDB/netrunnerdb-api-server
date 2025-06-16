@@ -29,7 +29,7 @@
       "response_status_text": "OK",
       "response_body": "{\n  \"data\": {\n    \"id\": \"upgrade\",\n    \"type\": \"card_types\",\n    \"attributes\": {\n      \"name\": \"Upgrade\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"side\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/sides/corp\"\n        }\n      },\n      \"cards\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/cards?filter[card_type_id]=upgrade\"\n        }\n      },\n      \"printings\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/printings?filter[card_type_id]=upgrade\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/card_types/upgrade\"\n    }\n  },\n  \"meta\": {}\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json; charset=utf-8"
+        "content-type": "application/vnd.api+json; charset=utf-8"
       },
       "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_types/upgrade\" -X GET "

@@ -33,7 +33,7 @@
       "response_status_text": "OK",
       "response_body": "{\n  \"data\": [],\n  \"meta\": {\n    \"stats\": {\n      \"total\": {\n        \"count\": 0\n      }\n    }\n  }\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json; charset=utf-8"
+        "content-type": "application/vnd.api+json; charset=utf-8"
       },
       "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_sets?filter[card_set_type_id]=%3Acard_set_type_id\" -X GET "

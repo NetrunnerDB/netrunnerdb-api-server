@@ -29,7 +29,7 @@
       "response_status_text": "OK",
       "response_body": "{\n  \"data\": {\n    \"id\": \"ann_illustrator\",\n    \"type\": \"illustrators\",\n    \"attributes\": {\n      \"name\": \"Ann Illustrator\",\n      \"num_printings\": 1,\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"printings\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/printings?filter[illustrator_id]=ann_illustrator\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/illustrators/ann_illustrator\"\n    }\n  },\n  \"meta\": {}\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json; charset=utf-8"
+        "content-type": "application/vnd.api+json; charset=utf-8"
       },
       "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/illustrators/ann_illustrator\" -X GET "
