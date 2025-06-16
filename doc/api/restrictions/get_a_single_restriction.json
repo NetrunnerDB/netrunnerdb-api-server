@@ -29,7 +29,7 @@
       "response_status_text": "OK",
       "response_body": "{\n  \"data\": {\n    \"id\": \"standard_banlist\",\n    \"type\": \"restrictions\",\n    \"attributes\": {\n      \"name\": \"Standard Banlist 2022 Edition\",\n      \"date_start\": \"2022-01-01\",\n      \"point_limit\": null,\n      \"format_id\": \"standard\",\n      \"verdicts\": {\n        \"banned\": [\n          \"trieste_model_bioroids\"\n        ],\n        \"restricted\": [],\n        \"universal_faction_cost\": {},\n        \"global_penalty\": [],\n        \"points\": {}\n      },\n      \"banned_subtypes\": [\n        \"academic\",\n        \"current\"\n      ],\n      \"size\": 1,\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"format\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/formats/standard\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/restrictions/standard_banlist\"\n    }\n  },\n  \"meta\": {}\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json; charset=utf-8"
+        "content-type": "application/vnd.api+json; charset=utf-8"
       },
       "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/restrictions/standard_banlist\" -X GET "

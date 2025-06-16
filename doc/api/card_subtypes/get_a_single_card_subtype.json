@@ -29,7 +29,7 @@
       "response_status_text": "OK",
       "response_body": "{\n  \"data\": {\n    \"id\": \"code_gate\",\n    \"type\": \"card_subtypes\",\n    \"attributes\": {\n      \"name\": \"Code Gate\",\n      \"updated_at\": \"2022-12-08T12:00:00+00:00\"\n    },\n    \"relationships\": {\n      \"cards\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/cards?filter[card_subtype_id]=code_gate\"\n        }\n      },\n      \"printings\": {\n        \"links\": {\n          \"related\": \"http://localhost:3000/api/v3/public/printings?filter[card_subtype_id]=code_gate\"\n        }\n      }\n    },\n    \"links\": {\n      \"self\": \"http://localhost:3000/api/v3/public/card_subtypes/code_gate\"\n    }\n  },\n  \"meta\": {}\n}",
       "response_headers": {
-        "Content-Type": "application/vnd.api+json; charset=utf-8"
+        "content-type": "application/vnd.api+json; charset=utf-8"
       },
       "response_content_type": "application/vnd.api+json; charset=utf-8",
       "curl": "curl -g \"https://api-preview.netrunnerdb.com/api/v3/public/card_subtypes/code_gate\" -X GET "
