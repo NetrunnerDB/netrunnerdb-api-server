@@ -96,7 +96,7 @@ end
 require 'rspec_api_documentation/dsl'
 
 RspecApiDocumentation.configure do |config|
-  config.format = :html
+  config.format = :json
 
   config.request_headers_to_include = %w[Host Content-Type]
   config.response_headers_to_include = ['Content-Type']
