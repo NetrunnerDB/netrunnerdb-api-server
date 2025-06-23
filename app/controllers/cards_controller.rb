@@ -5,7 +5,6 @@ class CardsController < ApplicationController
   def index
     add_total_stat(params)
     cards = CardResource.all(params)
-    debugger
     respond_with(cards)
   end
 
