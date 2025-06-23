@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.3.8'
+ruby '~> 3.4.4'
 
 # Gems that have trouble with native packages on alpine.
 gem 'google-protobuf', force_ruby_platform: true

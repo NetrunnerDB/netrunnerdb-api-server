@@ -589,7 +589,7 @@ GEM
       simplecov (~> 0.19)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
-    sorbet-runtime (0.5.12196)
+    sorbet-runtime (0.5.12200)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
       logger
@@ -665,7 +665,7 @@ DEPENDENCIES
   sprockets-rails
 
 RUBY VERSION
-   ruby 3.3.8p144
+   ruby 3.4.4p34
 
 BUNDLED WITH
    2.3.26
