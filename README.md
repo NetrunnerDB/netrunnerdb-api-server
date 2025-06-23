@@ -100,6 +100,13 @@ To import decklists from NRDB Classic, use
 ```sh
 bundle exec rake import_decklists:import[2024-11-09]
 ```
+## Adding new entities
+
+To add a new entity, follow this rough process:
+
+1. Add a new migration with a command like `bundle exec rails g active_record:model CreateFoo`.
+2. Add a new resource for the model, using the files in `app/resources/` as an example.
+3. Update `config/routes.rb` to add a route for the resource.
 
 ## Adding attributes to entities
 
