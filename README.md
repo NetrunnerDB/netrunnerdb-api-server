@@ -36,15 +36,16 @@ export DOCKER_DEFAULT_PLATFORM=linux/arm64/v8
 
 ```sh
 echo "RAILS_ENV=development" > .env
+echo "PORT=3100" >> .env
 cp config/database.example.yml config/database.yml
 docker network create null_signal
 docker compose build
 docker compose -f docker-compose.yml -f docker-compose.override.init.yml up -d
 ```
 
-Wait until `docker compose logs nrdb_api_server | tail` shows `Listening on http://0.0.0.0:3000`.
+Wait until `docker compose logs nrdb_api_server | tail` shows `Listening on http://0.0.0.0:3100`.
 
-Test that `http://localhost:3000/api/docs/` loads in your browser. Afterwords,
+Test that `http://localhost:3100/api/docs/` loads in your browser. Afterwords,
 
 ```sh
 docker compose up -d
@@ -65,12 +66,12 @@ docker compose exec -e RAILS_ENV=test bundle exec rails db:seed
 ## Getting Started
 
 Once your server is running you can hit the api!
-ex. `http://localhost:3000/api/v3/public/cards/sure_gamble`
+ex. `http://localhost:3100/api/v3/public/cards/sure_gamble`
 
 You can find the full list of routes here:
-`http://localhost:3000/rails/info/routes`
+`http://localhost:3100/rails/info/routes`
 
-API Documentation will be available at `http://localhost:3000/api/docs/`.
+API Documentation will be available at `http://localhost:3100/api/docs/`.
 
 Run `RAILS_ENV=test bundle exec rails db:reset` with `docker compose run` or in a
 shell in the container to load the fixture data for the tests.
