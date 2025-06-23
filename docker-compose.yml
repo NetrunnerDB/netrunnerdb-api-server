@@ -15,9 +15,6 @@ services:
     # build the Dockerfile next to this file, tag the built image with above image name
     build: .
 
-    ports:
-      - "3000:3000"
-
     networks:
       - backend
       - null_signal
