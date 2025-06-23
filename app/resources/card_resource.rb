@@ -59,6 +59,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   end
   attribute :card_set_names, :array_of_strings
   attribute :designed_by, :string
+  attribute :narrative_text, :string
   attribute :printings_released_by, :array_of_strings
   attribute :pronouns, :string
   attribute :pronunciation_approximation, :string

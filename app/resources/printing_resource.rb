@@ -77,6 +77,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   end
   attribute :card_set_names, :array_of_strings
   attribute :designed_by, :string
+  attribute :narrative_text, :string
   attribute :released_by, :string
   attribute :printings_released_by, :array_of_strings
   attribute :pronouns, :string
@@ -186,7 +187,8 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
         'tiny' => "#{url_prefix}/tiny/#{id}#{face_suffix}.jpg",
         'small' => "#{url_prefix}/small/#{id}#{face_suffix}.jpg",
         'medium' => "#{url_prefix}/medium/#{id}#{face_suffix}.jpg",
-        'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg"
+        'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg",
+        'narrative' => "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg"
       }
     }
   end
