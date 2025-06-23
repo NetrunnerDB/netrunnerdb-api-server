@@ -1,10 +1,13 @@
 services:
 
   nrdb_api_server:
+    ports:
+      - "3100:3100"
+
     command:
       - /bin/sh
       - -c
       - |
         bundle exec rake db:reset
         bundle exec rails cards:import
-        bundle exec rails server -b 0.0.0.0
+        bundle exec rails server -b 0.0.0.0 -p 3100
