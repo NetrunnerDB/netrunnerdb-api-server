@@ -1,7 +1,7 @@
 # Inspired by https://dennmart.com/articles/building-lean-docker-images-for-rails-apps/
 
 #####################################################################
-FROM ruby:3.3.8-alpine3.20 AS build
+FROM ruby:3.4.4-alpine3.20 AS build
 
 RUN apk -U upgrade && apk add --no-cache gcompat git postgresql-client build-base libpq-dev tzdata yaml-dev \
   && rm -rf /var/cache/apk/*
@@ -31,7 +31,7 @@ COPY . $RAILS_ROOT/
 
 
 #####################################################################
-FROM ruby:3.3.8-alpine3.20 AS final
+FROM ruby:3.4.4-alpine3.20 AS final
 
 RUN apk -U upgrade && apk add --no-cache gcompat git postgresql-client tzdata \
   && rm -rf /var/cache/apk/*
