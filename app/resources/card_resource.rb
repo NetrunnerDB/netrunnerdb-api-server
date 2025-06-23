@@ -92,6 +92,9 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :card_abilities, :hash
   attribute :restrictions, :hash
   attribute :latest_printing_id, :string
+  attribute :latest_printing_images, :hash do
+    images(@object.latest_printing_id)
+  end
 
   filter :card_cycle_id, :string do
     eq do |scope, value|
