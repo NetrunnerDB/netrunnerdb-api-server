@@ -100,6 +100,24 @@ To import decklists from NRDB Classic, use
 ```sh
 bundle exec rake import_decklists:import[2024-11-09]
 ```
+## Adding new entities
+
+To add a new entity, follow this rough process:
+
+1. Add a new migration with a command like `bundle exec rails g active_record:model CreateFoo`.
+2. Add a new resource for the model, using the files in `app/resources/` as an example.
+3. Update `config/routes.rb` to add a route for the resource.
+
+## Adding attributes to entities
+
+To add attributes to entites, follow this general process:
+
+1. Add a new migration with a command like `bundle exec rails g active_record:migration AddFooToCardCycle`
+2. Update the migration to add new fields and any indexes to the tables.  See the `db/migrate/` folder for examples.
+3. If this is an attribute that needs to be updated for the Card or Printing objects, update the materialized views for those entities with the instructions below.
+4. Update the models with any needed relationships.
+5. Add the new attributes and any needed filters to the appropriate resource file in `app/resources/`.
+6. If you have changes to the `search` filter syntax for `Cards` or `Printings`, update the search query builder in `lib/search_query_builder.rb` using the `card`, `printing`, or `both` functions as appropriate for the attribute.
 
 ## Updating materialized views
 
