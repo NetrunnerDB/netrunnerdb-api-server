@@ -103,6 +103,7 @@ namespace :cards do
         influence_limit: card['influence_limit'],
         memory_cost: card['memory_cost'],
         minimum_deck_size: card['minimum_deck_size'],
+        narrative_text: card['narrative_text'],
         pronouns: card['pronouns'],
         pronunciation_approximation: card['pronunciation_approx'],
         pronunciation_ipa: card['pronunciation_ipa'],

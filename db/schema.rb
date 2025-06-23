@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -144,6 +144,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
     t.string "pronunciation_approximation"
     t.string "pronunciation_ipa"
     t.string "layout_id", default: "normal", null: false
+    t.string "narrative_text"
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
@@ -594,6 +595,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
               c.influence_limit,
               c.memory_cost,
               c.minimum_deck_size,
+              c.narrative_text,
               c.pronouns,
               c.pronunciation_approximation,
               c.pronunciation_ipa,
@@ -675,6 +677,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
       u.influence_limit,
       u.memory_cost,
       u.minimum_deck_size,
+      u.narrative_text,
       u.pronouns,
       u.pronunciation_approximation,
       u.pronunciation_ipa,
@@ -913,6 +916,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
               c.link_provided,
               c.memory_cost,
               c.mu_provided,
+              c.narrative_text,
               c.num_printed_subroutines,
               c.on_encounter_effect,
               c.performs_trace,
@@ -1011,6 +1015,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_05_055917) do
       u.memory_cost,
       u.mu_provided,
       u.num_printed_subroutines,
+      u.narrative_text,
       u.on_encounter_effect,
       u.performs_trace,
       u.pronouns,
