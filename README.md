@@ -100,3 +100,25 @@ To import decklists from NRDB Classic, use
 ```sh
 bundle exec rake import_decklists:import[2024-11-09]
 ```
+
+## Updating materialized views
+
+We use a number of materialized views to make certain things that would be large, multi-table joins into single table queries.
+
+Materialized Views:
+
+* unified_cards - powers the Card model.
+* unified_printings - powers the Printing model.
+* unified_restrictions - powers the UnifiedRestriction model.
+
+To add new fields to these models, you need to generate a new version of the view, with the following command:
+
+```shell
+bundle exec rails generate scenic:view unified_cards --materialized
+```
+
+This will create a new migration file in `db/migrate/` and a new SQL file in `db/views/` with a version number in the filename.
+
+Edit the new SQL file and run your migration as normal with `bundle exec rails db:migrate`.
+
+The materialized views are refreshed as part of the `cards:import` task.
