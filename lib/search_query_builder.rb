@@ -161,6 +161,8 @@ class SearchQueryBuilder # rubocop:disable Metrics/ClassLength
                   'The amount of memory (MU) provided by the card.'),
     FieldData.new(:integer, both('num_printed_subroutines'), ['num_printed_subroutines'],
                   'The number of printed subroutines on this card.'),
+    FieldData.new(:integer, both('minimum_deck_size'), %w[minimum_deck_size min_deck_size],
+                  'The minimum deck size required by an Identity.'),
     FieldData.new(:integer, both('num_printings'), ['num_printings'],
                   'Count of unique printings for this card.'),
     FieldData.new(:integer, printing('position'), ['position'],
