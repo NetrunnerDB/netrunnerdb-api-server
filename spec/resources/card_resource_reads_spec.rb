@@ -34,6 +34,8 @@ RSpec.describe CardResource, type: :resource do
       expect(data.influence_limit).to eq(card.influence_limit)
       expect(data.is_unique).to eq(card.is_unique)
       expect(data.latest_printing_id).to eq(card.latest_printing_id)
+      expect(data.latest_printing_images).not_to be_nil
+      expect(data.latest_printing_images['nrdb_classic']).to include('tiny', 'small', 'medium', 'large')
       expect(data.memory_cost).to eq(card.memory_cost)
       expect(data.minimum_deck_size).to eq(card.minimum_deck_size)
       expect(data.num_printings).to eq(card.num_printings)

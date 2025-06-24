@@ -92,6 +92,9 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :card_abilities, :hash
   attribute :restrictions, :hash
   attribute :latest_printing_id, :string
+  attribute :latest_printing_images, :hash do
+    images(@object.latest_printing_id)
+  end
 
   filter :card_cycle_id, :string do
     eq do |scope, value|
@@ -157,4 +160,20 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   end
 
   many_to_many :card_pools
+
+  private
+
+  def images(id, face_index = nil)
+    url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
+    face_suffix = "-#{face_index}" unless face_index.nil?
+    {
+      'nrdb_classic' => {
+        'tiny' => "#{url_prefix}/tiny/#{id}#{face_suffix}.jpg",
+        'small' => "#{url_prefix}/small/#{id}#{face_suffix}.jpg",
+        'medium' => "#{url_prefix}/medium/#{id}#{face_suffix}.jpg",
+        'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg",
+        'narrative' => "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg"
+      }
+    }
+  end
 end
