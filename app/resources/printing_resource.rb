@@ -190,7 +190,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
       'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg"
     }
 
-    image_sizes.merge!(narrative => "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg") if has_narrative_image
+    image_sizes.merge!('narrative' => "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg") if has_narrative_image
 
     {
       'nrdb_classic' => image_sizes
