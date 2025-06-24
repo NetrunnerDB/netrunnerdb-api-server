@@ -174,7 +174,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
       'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg"
     }
 
-    image_sizes.narrative = "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg" if has_narrative_image
+    image_sizes.merge!(narrative => "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg") if has_narrative_image
 
     {
       'nrdb_classic' => image_sizes
