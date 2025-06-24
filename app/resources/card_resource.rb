@@ -74,7 +74,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
 
     unless @object.num_extra_faces.zero?
       @object.face_indices.each do |index|
-        f = { index: }
+        f = { index:, images: images(@object.latest_printing_id, index) }
         f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
         f[:display_subtypes] = @object.faces_display_subtypes[index] if @object.faces_display_subtypes[index]
         f[:card_subtype_ids] = @object.faces_card_subtype_ids[index].compact if @object.faces_card_subtype_ids[index]
