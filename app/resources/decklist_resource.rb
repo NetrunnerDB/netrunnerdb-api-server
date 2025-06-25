@@ -36,6 +36,15 @@ class DecklistResource < ApplicationResource
     end
   end
 
+  # Will return decklists that do NOT contain any of the specified cards.
+  filter :exclude_card_id, :string do
+    eq do |scope, card_ids|
+      scope.left_joins(:decklist_cards)
+           .group('decklists.id')
+           .having('COUNT(CASE WHEN decklists_cards.card_id IN (?) THEN 1 END) = 0', card_ids)
+    end
+  end
+
   attribute :card_slots, :hash
   attribute :num_cards, :integer
   attribute :influence_spent, :integer
