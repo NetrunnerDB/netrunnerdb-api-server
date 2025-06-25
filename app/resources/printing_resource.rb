@@ -182,7 +182,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   def images(id, face_index = nil)
     url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
     face_suffix = "-#{face_index}" unless face_index.nil?
-    has_narrative_image = :narrative_text.presence && !face_index.nil?
+    has_narrative_image = :narrative_text.presence && face_index.nil?
     image_sizes = {
       'tiny' => "#{url_prefix}/tiny/#{id}#{face_suffix}.jpg",
       'small' => "#{url_prefix}/small/#{id}#{face_suffix}.jpg",
@@ -190,7 +190,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
       'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg"
     }
 
-    image_sizes.merge!('narrative' => "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg") if has_narrative_image
+    image_sizes['narrative'] = "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg" if has_narrative_image
 
     {
       'nrdb_classic' => image_sizes
