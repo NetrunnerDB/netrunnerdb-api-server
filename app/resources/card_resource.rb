@@ -74,7 +74,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
 
     unless @object.num_extra_faces.zero?
       @object.face_indices.each do |index|
-        f = { index:, images: images(@object.latest_printing_id, index) }
+        f = { index:, images: images(@object.latest_printing_id, face_index: index) }
         f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
         f[:display_subtypes] = @object.faces_display_subtypes[index] if @object.faces_display_subtypes[index]
         f[:card_subtype_ids] = @object.faces_card_subtype_ids[index].compact if @object.faces_card_subtype_ids[index]
@@ -93,7 +93,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :restrictions, :hash
   attribute :latest_printing_id, :string
   attribute :latest_printing_images, :hash do
-    images(@object.latest_printing_id)
+    images(@object.latest_printing_id, has_narrative_image: @object.narrative_text.present?)
   end
 
   filter :card_cycle_id, :string do
@@ -163,10 +163,9 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
 
   private
 
-  def images(id, face_index = nil)
+  def images(id, has_narrative_image: false, face_index: nil)
     url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
     face_suffix = "-#{face_index}" unless face_index.nil?
-    has_narrative_image = :narrative_text.presence && face_index.nil?
     image_sizes = {
       'tiny' => "#{url_prefix}/tiny/#{id}#{face_suffix}.jpg",
       'small' => "#{url_prefix}/small/#{id}#{face_suffix}.jpg",
