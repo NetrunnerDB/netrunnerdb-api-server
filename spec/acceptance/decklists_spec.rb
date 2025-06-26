@@ -50,6 +50,21 @@ resource 'Decklists' do
     end
   end
 
+  get '/api/v3/public/decklists?filter[exclude_card_id]=pennyshaver,stargate' do
+    parameter :exclude_card_id, type: :string, required: true
+
+    example_request 'Filter - Get decklists excluding all supplied Card ids' do
+      explanation <<~EXPLANATION
+        The exclude_card_id filter can accept a single card_id or a comma-separated list of card ids.
+
+        If multiple card ids are supplied, the decklist must NOT contain any of the
+        cards to be included in the results.
+      EXPLANATION
+
+      expect(status).to eq 200
+    end
+  end
+
   get '/api/v3/public/decklists?filter[faction_id]=:faction_id' do
     parameter :nsg_rules_team_verified, type: :boolean, required: true
 
