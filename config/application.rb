@@ -16,7 +16,7 @@ Bundler.require(*Rails.groups)
 
 module NrdbApi
   class Application < Rails::Application # rubocop:disable Style/Documentation
-    routes.default_url_options[:host] = ENV.fetch('HOST', 'http://localhost:3000')
+    routes.default_url_options[:host] = ENV.fetch('HOST', 'http://localhost:3100')
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
