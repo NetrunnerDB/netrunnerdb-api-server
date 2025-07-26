@@ -43,6 +43,26 @@ RSpec.describe DecklistResource, type: :resource do
       end
     end
 
+    context 'with card_id and faction_id combined' do
+      it 'returns a result with matching card_id and faction_id' do
+        params[:filter] = { card_id: { eq: 'pennyshaver' }, faction_id: { eq: 'criminal' } }
+        render
+        expect(d.size).to eq(1)
+      end
+
+      it 'returns no results when card_id does not match' do
+        params[:filter] = { card_id: { eq: 'pennyshaver' }, faction_id: { eq: 'shaper' } }
+        render
+        expect(d.size).to eq(0)
+      end
+
+      it 'returns a result with matching exclude_card_id and faction_id' do
+        params[:filter] = { exclude_card_id: { eq: 'pennyshaver' }, faction_id: { eq: 'shaper' } }
+        render
+        expect(d.size).to eq(1)
+      end
+    end
+
     context 'with exclude_card_id' do
       let!(:corp_decklist) { Decklist.find('11111111-1111-1111-1111-111111111111') }
       let!(:runner_decklist) { Decklist.find('22222222-2222-2222-2222-222222222222') }
@@ -76,7 +96,6 @@ RSpec.describe DecklistResource, type: :resource do
         expect(decklist_ids).to include(runner_decklist.id)
       end
     end
-  end
 
   describe 'sideloading' do
     def check_included_for_id(decklist_id, include_value, resource_type, id)
