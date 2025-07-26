@@ -50,14 +50,14 @@ RSpec.describe DecklistResource, type: :resource do
         expect(d.size).to eq(1)
       end
 
-      it 'returns no results when card_id does not match' do
+      it 'returns no results when faction_id does not match' do
         params[:filter] = { card_id: { eq: 'pennyshaver' }, faction_id: { eq: 'shaper' } }
         render
         expect(d.size).to eq(0)
       end
 
       it 'returns a result with matching exclude_card_id and faction_id' do
-        params[:filter] = { exclude_card_id: { eq: 'pennyshaver' }, faction_id: { eq: 'shaper' } }
+        params[:filter] = { exclude_card_id: { eq: 'hermes' }, faction_id: { eq: 'criminal' } }
         render
         expect(d.size).to eq(1)
       end
