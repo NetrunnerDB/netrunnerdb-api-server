@@ -96,6 +96,7 @@ RSpec.describe DecklistResource, type: :resource do
         expect(decklist_ids).to include(runner_decklist.id)
       end
     end
+  end
 
   describe 'sideloading' do
     def check_included_for_id(decklist_id, include_value, resource_type, id)
