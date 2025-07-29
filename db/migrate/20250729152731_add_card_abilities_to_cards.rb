@@ -11,4 +11,4 @@ class AddCardAbilitiesToCards < ActiveRecord::Migration[7.0] # rubocop:disable S
     add_column :cards, :score_effect, :bool, default: false
     add_column :cards, :steal_effect, :bool, default: false
   end
-end 
+end

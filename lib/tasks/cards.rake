@@ -86,7 +86,7 @@ namespace :cards do
     subtype_names.join(' - ')
   end
 
-  def import_cards(cards)
+  def import_cards(cards) # rubocop:disable Metrics/MethodLength
     subtypes = CardSubtype.all.index_by(&:id)
 
     new_cards = []
@@ -197,35 +197,27 @@ namespace :cards do
         new_card.performs_trace = true
       end
 
-      if new_card.text && (new_card.text.include?("When you install #{new_card.title}") || new_card.text.include?('When you install this') || new_card.text.include?("#{new_card.title} is installed"))
+      if new_card.text && (new_card.text.include?("When you install #{new_card.title}") || new_card.text.include?('When you install this') || new_card.text.include?("#{new_card.title} is installed")) # rubocop:disable Layout/LineLength
         new_card.install_effect = true
       end
 
-      if new_card.text && new_card.text.include?('charge')
-        new_card.charge = true
-      end
+      new_card.charge = true if new_card.text&.include?('charge')
 
-      if new_card.text && (new_card.text.include?('gain [click]'))
-        new_card.has_gain_click = true
-      end
+      new_card.has_gain_click = true if new_card.text&.include?('gain [click]')
 
-      if new_card.text && new_card.text.include?('your mark')
-        new_card.mark = true
-      end
+      new_card.mark = true if new_card.text&.include?('your mark')
 
-      if new_card.card_type_id == 'agenda' && new_card.text && (new_card.text.include?('when you score') || new_card.text.include?('When you score') || new_card.text.include?('score this agenda') || new_card.text.include?("scored or stolen"))
+      if new_card.card_type_id == 'agenda' && new_card.text && (new_card.text.include?('when you score') || new_card.text.include?('When you score') || new_card.text.include?('score this agenda') || new_card.text.include?('scored or stolen')) # rubocop:disable Layout/LineLength
         new_card.score_effect = true
       end
 
-      if new_card.card_type_id == 'agenda' && new_card.text && (new_card.text.include?('steals this agenda') || new_card.text.include?("the runner steals #{new_card.title}") || new_card.text.include?("scored or stolen"))
+      if new_card.card_type_id == 'agenda' && new_card.text && (new_card.text.include?('steals this agenda') || new_card.text.include?("the runner steals #{new_card.title}") || new_card.text.include?('scored or stolen')) # rubocop:disable Layout/LineLength
         new_card.steal_effect = true
       end
 
-      if new_card.text && (new_card.text.include?('sabotage'))
-        new_card.sabotage = true
-      end
+      new_card.sabotage = true if new_card.text&.include?('sabotage')
 
-      if new_card.text && new_card.text.include?(':')
+      if new_card.text&.include?(':')
         has_paid_ability = new_card.text.lines.any? do |line|
           line.include?(':') && !line.match?(/\[click\].*:/) && !line.match?(/Interface.*:/)
         end

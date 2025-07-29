@@ -7,4 +7,4 @@ class UpdateUnifiedCardsToVersion11 < ActiveRecord::Migration[7.2] # rubocop:dis
                 revert_to_version: 10,
                 materialized: true
   end
-end 
+end
