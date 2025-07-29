@@ -129,6 +129,8 @@ class SearchQueryBuilder # rubocop:disable Metrics/ClassLength
                   'Does the card text allow for adding or gaining subroutines?'),
     FieldData.new(:boolean, both('has_gain_click'), ['has_gain_click'],
                   'Does the card provide or gain clicks?'),
+    FieldData.new(:boolean, both('has_paid_ability'), ['has_paid_ability'],
+                  'Does the card have a paid ability?'),
     FieldData.new(:boolean, both('in_restriction'), ['in_restriction'],
                   'Is the card specified on any Restriction list?'),
     FieldData.new(:boolean, both('install_effect'), ['install_effect'],

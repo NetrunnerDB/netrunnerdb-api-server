@@ -12,6 +12,7 @@ module CardAbilities
         charge:,
         gains_subroutines:,
         has_gain_click:,
+        has_paid_ability:,
         install_effect:,
         interrupt:,
         link_provided:,

@@ -225,6 +225,13 @@ namespace :cards do
         new_card.sabotage = true
       end
 
+      if new_card.text && new_card.text.include?(':')
+        has_paid_ability = new_card.text.lines.any? do |line|
+          line.include?(':') && !line.match?(/\[click\].*:/) && !line.match?(/Interface.*:/)
+        end
+        new_card.has_paid_ability = has_paid_ability
+      end
+
       # TODO(plural): Add these in as well
       # - click_ability / click_cost
       # - [credit] - credit cost or paid ability?
