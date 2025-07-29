@@ -9,15 +9,22 @@ module CardAbilities
       {
         additional_cost:,
         advanceable:,
+        charge:,
         gains_subroutines:,
+        has_gain_click:,
+        install_effect:,
         interrupt:,
         link_provided:,
+        mark:,
         mu_provided:,
         num_printed_subroutines:,
         on_encounter_effect:,
         performs_trace:,
         recurring_credits_provided:,
         rez_effect:,
+        sabotage:,
+        score_effect:,
+        steal_effect:,
         trash_ability:
       }
     end

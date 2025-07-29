@@ -197,6 +197,34 @@ namespace :cards do
         new_card.performs_trace = true
       end
 
+      if new_card.text && (new_card.text.include?("When you install #{new_card.title}") || new_card.text.include?('When you install this') || new_card.text.include?("#{new_card.title} is installed"))
+        new_card.install_effect = true
+      end
+
+      if new_card.text && new_card.text.include?('charge')
+        new_card.charge = true
+      end
+
+      if new_card.text && (new_card.text.include?('gain [click]'))
+        new_card.has_gain_click = true
+      end
+
+      if new_card.text && new_card.text.include?('your mark')
+        new_card.mark = true
+      end
+
+      if new_card.card_type_id == 'agenda' && new_card.text && (new_card.text.include?('when you score') || new_card.text.include?('When you score') || new_card.text.include?('score this agenda') || new_card.text.include?("scored or stolen"))
+        new_card.score_effect = true
+      end
+
+      if new_card.card_type_id == 'agenda' && new_card.text && (new_card.text.include?('steals this agenda') || new_card.text.include?("the runner steals #{new_card.title}") || new_card.text.include?("scored or stolen"))
+        new_card.steal_effect = true
+      end
+
+      if new_card.text && (new_card.text.include?('sabotage'))
+        new_card.sabotage = true
+      end
+
       # TODO(plural): Add these in as well
       # - click_ability / click_cost
       # - [credit] - credit cost or paid ability?
