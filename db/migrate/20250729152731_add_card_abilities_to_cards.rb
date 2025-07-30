@@ -4,7 +4,7 @@ class AddCardAbilitiesToCards < ActiveRecord::Migration[7.2] # rubocop:disable S
   def change
     add_column :cards, :install_effect, :bool, default: false
     add_column :cards, :charge, :bool, default: false
-    add_column :cards, :has_gain_click, :bool, default: false
+    add_column :cards, :gains_click, :bool, default: false
     add_column :cards, :has_paid_ability, :bool, default: false
     add_column :cards, :mark, :bool, default: false
     add_column :cards, :sabotage, :bool, default: false

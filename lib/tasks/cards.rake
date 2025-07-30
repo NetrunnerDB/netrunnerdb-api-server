@@ -203,7 +203,7 @@ namespace :cards do
 
       new_card.charge = true if new_card.text&.include?('charge')
 
-      new_card.has_gain_click = true if new_card.text&.include?('gain [click]')
+      new_card.gains_click = true if new_card.text&.include?('gain [click]')
 
       new_card.mark = true if new_card.text&.include?('your mark')
 
