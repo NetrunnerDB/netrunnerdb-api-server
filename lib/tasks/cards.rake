@@ -217,7 +217,8 @@ namespace :cards do
            new_card.text.include?('when you score') ||
            new_card.text.include?('whenever you score') ||
            new_card.text.include?('score this agenda') ||
-           new_card.text.include?('scored or stolen')
+           new_card.text.include?('scored or stolen') ||
+           new_card.text.include?('agenda is scored')
          )
         new_card.score_effect = true
       end
@@ -226,7 +227,8 @@ namespace :cards do
          (
            new_card.text.include?('steals this agenda') ||
            new_card.text.include?("the runner steals #{new_card.title}") ||
-           new_card.text.include?('scored or stolen')
+           new_card.text.include?('scored or stolen') ||
+           new_card.text.include?('agenda is stolen')
          )
         new_card.steal_effect = true
       end
