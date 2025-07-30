@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_29_152732) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -145,14 +145,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_152732) do
     t.string "pronunciation_ipa"
     t.string "layout_id", default: "normal", null: false
     t.string "narrative_text"
-    t.boolean "install_effect", default: false
-    t.boolean "charge", default: false
-    t.boolean "has_gain_click", default: false
-    t.boolean "has_paid_ability", default: false
-    t.boolean "mark", default: false
-    t.boolean "sabotage", default: false
-    t.boolean "score_effect", default: false
-    t.boolean "steal_effect", default: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
@@ -473,6 +465,278 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_152732) do
   add_index "unified_restrictions", ["restriction_id"], name: "index_unified_restrictions_on_restriction_id"
   add_index "unified_restrictions", ["snapshot_id"], name: "index_unified_restrictions_on_snapshot_id"
 
+  create_view "unified_cards", materialized: true, sql_definition: <<-SQL
+      WITH card_cycles_summary AS (
+           SELECT c.id,
+              array_agg(cc.id ORDER BY cc.date_release DESC) AS card_cycle_ids,
+              array_agg(cc.name ORDER BY cc.date_release DESC) AS card_cycle_names
+             FROM (((cards c
+               JOIN printings p ON (((c.id)::text = p.card_id)))
+               JOIN card_sets cs ON ((p.card_set_id = (cs.id)::text)))
+               JOIN card_cycles cc ON (((cc.id)::text = cs.card_cycle_id)))
+            GROUP BY c.id
+          ), printing_releasers AS (
+           SELECT printings.card_id,
+              array_agg(DISTINCT printings.released_by ORDER BY printings.released_by) AS releasers
+             FROM printings
+            GROUP BY printings.card_id
+          ), card_sets_summary AS (
+           SELECT c.id,
+              array_agg(cs.id ORDER BY cs.date_release DESC) AS card_set_ids,
+              array_agg(cs.name ORDER BY cs.date_release DESC) AS card_set_names
+             FROM ((cards c
+               JOIN printings p ON (((c.id)::text = p.card_id)))
+               JOIN card_sets cs ON ((p.card_set_id = (cs.id)::text)))
+            GROUP BY c.id
+          ), card_subtype_ids AS (
+           SELECT cards_card_subtypes.card_id,
+              array_agg(cards_card_subtypes.card_subtype_id ORDER BY 1::integer) AS card_subtype_ids
+             FROM cards_card_subtypes
+            GROUP BY cards_card_subtypes.card_id
+          ), card_subtype_names AS (
+           SELECT ccs.card_id,
+              array_agg(lower(cs.name) ORDER BY (lower(cs.name))) AS lower_card_subtype_names,
+              array_agg(cs.name ORDER BY cs.name) AS card_subtype_names
+             FROM (cards_card_subtypes ccs
+               JOIN card_subtypes cs ON ((ccs.card_subtype_id = (cs.id)::text)))
+            GROUP BY ccs.card_id
+          ), card_printing_ids AS (
+           SELECT printings.card_id,
+              array_agg(printings.id ORDER BY printings.date_release DESC) AS printing_ids
+             FROM printings
+            GROUP BY printings.card_id
+          ), card_release_dates AS (
+           SELECT printings.card_id,
+              min(printings.date_release) AS date_release
+             FROM printings
+            GROUP BY printings.card_id
+          ), card_restriction_ids AS (
+           SELECT unified_restrictions.card_id,
+              array_agg(unified_restrictions.restriction_id ORDER BY unified_restrictions.restriction_id) AS restriction_ids
+             FROM unified_restrictions
+            WHERE unified_restrictions.in_restriction
+            GROUP BY unified_restrictions.card_id
+          ), restrictions_banned_summary AS (
+           SELECT restrictions_cards_banned.card_id,
+              array_agg(restrictions_cards_banned.restriction_id ORDER BY restrictions_cards_banned.restriction_id) AS restrictions_banned
+             FROM restrictions_cards_banned
+            GROUP BY restrictions_cards_banned.card_id
+          ), restrictions_global_penalty_summary AS (
+           SELECT restrictions_cards_global_penalty.card_id,
+              array_agg(restrictions_cards_global_penalty.restriction_id ORDER BY restrictions_cards_global_penalty.restriction_id) AS restrictions_global_penalty
+             FROM restrictions_cards_global_penalty
+            GROUP BY restrictions_cards_global_penalty.card_id
+          ), restrictions_points_summary AS (
+           SELECT restrictions_cards_points.card_id,
+              array_agg(concat(restrictions_cards_points.restriction_id, '=', (restrictions_cards_points.value)::text) ORDER BY (concat(restrictions_cards_points.restriction_id, '=', (restrictions_cards_points.value)::text))) AS restrictions_points
+             FROM restrictions_cards_points
+            GROUP BY restrictions_cards_points.card_id
+          ), restrictions_restricted_summary AS (
+           SELECT restrictions_cards_restricted.card_id,
+              array_agg(restrictions_cards_restricted.restriction_id ORDER BY restrictions_cards_restricted.restriction_id) AS restrictions_restricted
+             FROM restrictions_cards_restricted
+            GROUP BY restrictions_cards_restricted.card_id
+          ), restrictions_universal_faction_cost_summary AS (
+           SELECT restrictions_cards_universal_faction_cost.card_id,
+              array_agg(concat(restrictions_cards_universal_faction_cost.restriction_id, '=', (restrictions_cards_universal_faction_cost.value)::text) ORDER BY (concat(restrictions_cards_universal_faction_cost.restriction_id, '=', (restrictions_cards_universal_faction_cost.value)::text))) AS restrictions_universal_faction_cost
+             FROM restrictions_cards_universal_faction_cost
+            GROUP BY restrictions_cards_universal_faction_cost.card_id
+          ), format_ids AS (
+           SELECT cpc.card_id,
+              array_agg(DISTINCT s.format_id ORDER BY s.format_id) AS format_ids
+             FROM (card_pools_cards cpc
+               JOIN snapshots s ON ((cpc.card_pool_id = s.card_pool_id)))
+            GROUP BY cpc.card_id
+          ), card_pool_ids AS (
+           SELECT cpc.card_id,
+              array_agg(DISTINCT s.card_pool_id ORDER BY s.card_pool_id) AS card_pool_ids
+             FROM (card_pools_cards cpc
+               JOIN snapshots s ON ((cpc.card_pool_id = s.card_pool_id)))
+            GROUP BY cpc.card_id
+          ), snapshot_ids AS (
+           SELECT cpc.card_id,
+              array_agg(DISTINCT s.id ORDER BY s.id) AS snapshot_ids
+             FROM (card_pools_cards cpc
+               JOIN snapshots s ON ((cpc.card_pool_id = s.card_pool_id)))
+            GROUP BY cpc.card_id
+          ), subtypes_for_faces AS (
+           SELECT cf.card_id,
+              cf.face_index,
+              array_agg(cs.card_subtype_id ORDER BY cs.card_subtype_id) AS card_subtype_ids
+             FROM (card_faces cf
+               LEFT JOIN card_faces_card_subtypes cs USING (card_id, face_index))
+            GROUP BY cf.card_id, cf.face_index
+          ), faces AS (
+           SELECT cf.card_id,
+              array_agg(cf.face_index ORDER BY cf.face_index) AS face_index,
+              array_agg(cf.base_link ORDER BY cf.face_index) AS base_link,
+              array_agg(cf.display_subtypes ORDER BY cf.face_index) AS display_subtypes,
+              array_agg(COALESCE(cs.card_subtype_ids, (ARRAY[]::text[])::character varying[]) ORDER BY cs.face_index) AS card_subtype_ids,
+              array_agg(cf.stripped_text ORDER BY cf.face_index) AS stripped_text,
+              array_agg(cf.stripped_title ORDER BY cf.face_index) AS stripped_title,
+              array_agg(cf.text ORDER BY cf.face_index) AS text,
+              array_agg(cf.title ORDER BY cf.face_index) AS title
+             FROM (card_faces cf
+               LEFT JOIN subtypes_for_faces cs ON ((((cf.card_id)::text = (cs.card_id)::text) AND (cf.face_index = cs.face_index))))
+            GROUP BY cf.card_id
+          ), unified AS (
+           SELECT c.id,
+              c.title,
+              c.stripped_title,
+              c.card_type_id,
+              c.side_id,
+              c.faction_id,
+              c.advancement_requirement,
+              c.agenda_points,
+              c.base_link,
+              c.cost,
+              c.deck_limit,
+              c.influence_cost,
+              c.influence_limit,
+              c.memory_cost,
+              c.minimum_deck_size,
+              c.narrative_text,
+              c.pronouns,
+              c.pronunciation_approximation,
+              c.pronunciation_ipa,
+              c.strength,
+              c.stripped_text,
+              c.text,
+              c.trash_cost,
+              c.is_unique,
+              c.display_subtypes,
+              c.attribution,
+              c.created_at,
+              c.updated_at,
+              c.additional_cost,
+              c.advanceable,
+              c.gains_subroutines,
+              c.interrupt,
+              c.link_provided,
+              c.mu_provided,
+              c.num_printed_subroutines,
+              c.on_encounter_effect,
+              c.performs_trace,
+              c.recurring_credits_provided,
+              c.rez_effect,
+              c.trash_ability,
+              COALESCE(csi.card_subtype_ids, ARRAY[]::text[]) AS card_subtype_ids,
+              COALESCE(csn.lower_card_subtype_names, ARRAY[]::text[]) AS lower_card_subtype_names,
+              COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
+              p.printing_ids,
+              array_length(p.printing_ids, 1) AS num_printings,
+              ccs.card_cycle_ids,
+              ccs.card_cycle_names,
+              css.card_set_ids,
+              css.card_set_names,
+              COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]) AS restriction_ids,
+              (r.restriction_ids IS NOT NULL) AS in_restriction,
+              COALESCE(r_b.restrictions_banned, ARRAY[]::text[]) AS restrictions_banned,
+              COALESCE(r_g_p.restrictions_global_penalty, ARRAY[]::text[]) AS restrictions_global_penalty,
+              COALESCE(r_p.restrictions_points, ARRAY[]::text[]) AS restrictions_points,
+              COALESCE(r_r.restrictions_restricted, ARRAY[]::text[]) AS restrictions_restricted,
+              COALESCE(r_u_f_c.restrictions_universal_faction_cost, ARRAY[]::text[]) AS restrictions_universal_faction_cost,
+              COALESCE(f.format_ids, ARRAY[]::text[]) AS format_ids,
+              COALESCE(cpc.card_pool_ids, ARRAY[]::text[]) AS card_pool_ids,
+              COALESCE(s.snapshot_ids, (ARRAY[]::text[])::character varying[]) AS snapshot_ids,
+              crd.date_release,
+              c.designed_by,
+              pr.releasers AS printings_released_by,
+              c.layout_id
+             FROM ((((((((((((((((cards c
+               JOIN card_printing_ids p ON (((c.id)::text = p.card_id)))
+               JOIN card_cycles_summary ccs ON (((c.id)::text = (ccs.id)::text)))
+               JOIN card_sets_summary css ON (((c.id)::text = (css.id)::text)))
+               JOIN printing_releasers pr ON (((c.id)::text = pr.card_id)))
+               LEFT JOIN card_subtype_ids csi ON (((c.id)::text = csi.card_id)))
+               LEFT JOIN card_subtype_names csn ON (((c.id)::text = csn.card_id)))
+               LEFT JOIN card_restriction_ids r ON (((c.id)::text = (r.card_id)::text)))
+               LEFT JOIN restrictions_banned_summary r_b ON (((c.id)::text = r_b.card_id)))
+               LEFT JOIN restrictions_global_penalty_summary r_g_p ON (((c.id)::text = r_g_p.card_id)))
+               LEFT JOIN restrictions_points_summary r_p ON (((c.id)::text = r_p.card_id)))
+               LEFT JOIN restrictions_restricted_summary r_r ON (((c.id)::text = r_r.card_id)))
+               LEFT JOIN restrictions_universal_faction_cost_summary r_u_f_c ON (((c.id)::text = r_u_f_c.card_id)))
+               LEFT JOIN format_ids f ON (((c.id)::text = f.card_id)))
+               LEFT JOIN card_pool_ids cpc ON (((c.id)::text = cpc.card_id)))
+               LEFT JOIN snapshot_ids s ON (((c.id)::text = s.card_id)))
+               LEFT JOIN card_release_dates crd ON (((c.id)::text = crd.card_id)))
+            GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.layout_id, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release, pr.releasers
+          )
+   SELECT u.id,
+      u.title,
+      u.stripped_title,
+      u.card_type_id,
+      u.side_id,
+      u.faction_id,
+      u.advancement_requirement,
+      u.agenda_points,
+      u.base_link,
+      u.cost,
+      u.deck_limit,
+      u.influence_cost,
+      u.influence_limit,
+      u.memory_cost,
+      u.minimum_deck_size,
+      u.narrative_text,
+      u.pronouns,
+      u.pronunciation_approximation,
+      u.pronunciation_ipa,
+      u.strength,
+      u.stripped_text,
+      u.text,
+      u.trash_cost,
+      u.is_unique,
+      u.display_subtypes,
+      u.attribution,
+      u.created_at,
+      u.updated_at,
+      u.additional_cost,
+      u.advanceable,
+      u.gains_subroutines,
+      u.interrupt,
+      u.link_provided,
+      u.mu_provided,
+      u.num_printed_subroutines,
+      u.on_encounter_effect,
+      u.performs_trace,
+      u.recurring_credits_provided,
+      u.rez_effect,
+      u.trash_ability,
+      u.card_subtype_ids,
+      u.lower_card_subtype_names,
+      u.card_subtype_names,
+      u.printing_ids,
+      u.num_printings,
+      u.card_cycle_ids,
+      u.card_cycle_names,
+      u.card_set_ids,
+      u.card_set_names,
+      u.restriction_ids,
+      u.in_restriction,
+      u.restrictions_banned,
+      u.restrictions_global_penalty,
+      u.restrictions_points,
+      u.restrictions_restricted,
+      u.restrictions_universal_faction_cost,
+      u.format_ids,
+      u.card_pool_ids,
+      u.snapshot_ids,
+      u.date_release,
+      u.designed_by,
+      u.printings_released_by,
+      u.layout_id,
+      COALESCE(array_length(faces.face_index, 1), 0) AS num_extra_faces,
+      faces.face_index AS face_indices,
+      faces.base_link AS faces_base_link,
+      faces.display_subtypes AS faces_display_subtypes,
+      faces.card_subtype_ids AS faces_card_subtype_ids,
+      faces.stripped_text AS faces_stripped_text,
+      faces.stripped_title AS faces_stripped_title,
+      faces.text AS faces_text,
+      faces.title AS faces_title
+     FROM (unified u
+       LEFT JOIN faces ON (((u.id)::text = (faces.card_id)::text)));
+  SQL
   create_view "unified_printings", materialized: true, sql_definition: <<-SQL
       WITH card_cycles_summary AS (
            SELECT c.id,
@@ -813,293 +1077,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_152732) do
        LEFT JOIN faces_for_cards cf ON ((u.card_id = (cf.card_id)::text)))
        LEFT JOIN faces_for_printings pf ON (((u.id)::text = (pf.printing_id)::text)))
        LEFT JOIN faces_fallback ff ON (((u.id)::text = (ff.printing_id)::text)));
-  SQL
-  create_view "unified_cards", materialized: true, sql_definition: <<-SQL
-      WITH card_cycles_summary AS (
-           SELECT c.id,
-              array_agg(cc.id ORDER BY cc.date_release DESC) AS card_cycle_ids,
-              array_agg(cc.name ORDER BY cc.date_release DESC) AS card_cycle_names
-             FROM (((cards c
-               JOIN printings p ON (((c.id)::text = p.card_id)))
-               JOIN card_sets cs ON ((p.card_set_id = (cs.id)::text)))
-               JOIN card_cycles cc ON (((cc.id)::text = cs.card_cycle_id)))
-            GROUP BY c.id
-          ), printing_releasers AS (
-           SELECT printings.card_id,
-              array_agg(DISTINCT printings.released_by ORDER BY printings.released_by) AS releasers
-             FROM printings
-            GROUP BY printings.card_id
-          ), card_sets_summary AS (
-           SELECT c.id,
-              array_agg(cs.id ORDER BY cs.date_release DESC) AS card_set_ids,
-              array_agg(cs.name ORDER BY cs.date_release DESC) AS card_set_names
-             FROM ((cards c
-               JOIN printings p ON (((c.id)::text = p.card_id)))
-               JOIN card_sets cs ON ((p.card_set_id = (cs.id)::text)))
-            GROUP BY c.id
-          ), card_subtype_ids AS (
-           SELECT cards_card_subtypes.card_id,
-              array_agg(cards_card_subtypes.card_subtype_id ORDER BY 1::integer) AS card_subtype_ids
-             FROM cards_card_subtypes
-            GROUP BY cards_card_subtypes.card_id
-          ), card_subtype_names AS (
-           SELECT ccs.card_id,
-              array_agg(lower(cs.name) ORDER BY (lower(cs.name))) AS lower_card_subtype_names,
-              array_agg(cs.name ORDER BY cs.name) AS card_subtype_names
-             FROM (cards_card_subtypes ccs
-               JOIN card_subtypes cs ON ((ccs.card_subtype_id = (cs.id)::text)))
-            GROUP BY ccs.card_id
-          ), card_printing_ids AS (
-           SELECT printings.card_id,
-              array_agg(printings.id ORDER BY printings.date_release DESC) AS printing_ids
-             FROM printings
-            GROUP BY printings.card_id
-          ), card_release_dates AS (
-           SELECT printings.card_id,
-              min(printings.date_release) AS date_release
-             FROM printings
-            GROUP BY printings.card_id
-          ), card_restriction_ids AS (
-           SELECT unified_restrictions.card_id,
-              array_agg(unified_restrictions.restriction_id ORDER BY unified_restrictions.restriction_id) AS restriction_ids
-             FROM unified_restrictions
-            WHERE unified_restrictions.in_restriction
-            GROUP BY unified_restrictions.card_id
-          ), restrictions_banned_summary AS (
-           SELECT restrictions_cards_banned.card_id,
-              array_agg(restrictions_cards_banned.restriction_id ORDER BY restrictions_cards_banned.restriction_id) AS restrictions_banned
-             FROM restrictions_cards_banned
-            GROUP BY restrictions_cards_banned.card_id
-          ), restrictions_global_penalty_summary AS (
-           SELECT restrictions_cards_global_penalty.card_id,
-              array_agg(restrictions_cards_global_penalty.restriction_id ORDER BY restrictions_cards_global_penalty.restriction_id) AS restrictions_global_penalty
-             FROM restrictions_cards_global_penalty
-            GROUP BY restrictions_cards_global_penalty.card_id
-          ), restrictions_points_summary AS (
-           SELECT restrictions_cards_points.card_id,
-              array_agg(concat(restrictions_cards_points.restriction_id, '=', (restrictions_cards_points.value)::text) ORDER BY (concat(restrictions_cards_points.restriction_id, '=', (restrictions_cards_points.value)::text))) AS restrictions_points
-             FROM restrictions_cards_points
-            GROUP BY restrictions_cards_points.card_id
-          ), restrictions_restricted_summary AS (
-           SELECT restrictions_cards_restricted.card_id,
-              array_agg(restrictions_cards_restricted.restriction_id ORDER BY restrictions_cards_restricted.restriction_id) AS restrictions_restricted
-             FROM restrictions_cards_restricted
-            GROUP BY restrictions_cards_restricted.card_id
-          ), restrictions_universal_faction_cost_summary AS (
-           SELECT restrictions_cards_universal_faction_cost.card_id,
-              array_agg(concat(restrictions_cards_universal_faction_cost.restriction_id, '=', (restrictions_cards_universal_faction_cost.value)::text) ORDER BY (concat(restrictions_cards_universal_faction_cost.restriction_id, '=', (restrictions_cards_universal_faction_cost.value)::text))) AS restrictions_universal_faction_cost
-             FROM restrictions_cards_universal_faction_cost
-            GROUP BY restrictions_cards_universal_faction_cost.card_id
-          ), format_ids AS (
-           SELECT cpc.card_id,
-              array_agg(DISTINCT s.format_id ORDER BY s.format_id) AS format_ids
-             FROM (card_pools_cards cpc
-               JOIN snapshots s ON ((cpc.card_pool_id = s.card_pool_id)))
-            GROUP BY cpc.card_id
-          ), card_pool_ids AS (
-           SELECT cpc.card_id,
-              array_agg(DISTINCT s.card_pool_id ORDER BY s.card_pool_id) AS card_pool_ids
-             FROM (card_pools_cards cpc
-               JOIN snapshots s ON ((cpc.card_pool_id = s.card_pool_id)))
-            GROUP BY cpc.card_id
-          ), snapshot_ids AS (
-           SELECT cpc.card_id,
-              array_agg(DISTINCT s.id ORDER BY s.id) AS snapshot_ids
-             FROM (card_pools_cards cpc
-               JOIN snapshots s ON ((cpc.card_pool_id = s.card_pool_id)))
-            GROUP BY cpc.card_id
-          ), subtypes_for_faces AS (
-           SELECT cf.card_id,
-              cf.face_index,
-              array_agg(cs.card_subtype_id ORDER BY cs.card_subtype_id) AS card_subtype_ids
-             FROM (card_faces cf
-               LEFT JOIN card_faces_card_subtypes cs USING (card_id, face_index))
-            GROUP BY cf.card_id, cf.face_index
-          ), faces AS (
-           SELECT cf.card_id,
-              array_agg(cf.face_index ORDER BY cf.face_index) AS face_index,
-              array_agg(cf.base_link ORDER BY cf.face_index) AS base_link,
-              array_agg(cf.display_subtypes ORDER BY cf.face_index) AS display_subtypes,
-              array_agg(COALESCE(cs.card_subtype_ids, (ARRAY[]::text[])::character varying[]) ORDER BY cs.face_index) AS card_subtype_ids,
-              array_agg(cf.stripped_text ORDER BY cf.face_index) AS stripped_text,
-              array_agg(cf.stripped_title ORDER BY cf.face_index) AS stripped_title,
-              array_agg(cf.text ORDER BY cf.face_index) AS text,
-              array_agg(cf.title ORDER BY cf.face_index) AS title
-             FROM (card_faces cf
-               LEFT JOIN subtypes_for_faces cs ON ((((cf.card_id)::text = (cs.card_id)::text) AND (cf.face_index = cs.face_index))))
-            GROUP BY cf.card_id
-          ), unified AS (
-           SELECT c.id,
-              c.title,
-              c.stripped_title,
-              c.card_type_id,
-              c.side_id,
-              c.faction_id,
-              c.advancement_requirement,
-              c.agenda_points,
-              c.base_link,
-              c.cost,
-              c.deck_limit,
-              c.influence_cost,
-              c.influence_limit,
-              c.memory_cost,
-              c.minimum_deck_size,
-              c.narrative_text,
-              c.pronouns,
-              c.pronunciation_approximation,
-              c.pronunciation_ipa,
-              c.strength,
-              c.stripped_text,
-              c.text,
-              c.trash_cost,
-              c.is_unique,
-              c.display_subtypes,
-              c.attribution,
-              c.created_at,
-              c.updated_at,
-              c.additional_cost,
-              c.advanceable,
-              c.charge,
-              c.gains_subroutines,
-              c.has_gain_click,
-              c.has_paid_ability,
-              c.install_effect,
-              c.interrupt,
-              c.link_provided,
-              c.mark,
-              c.mu_provided,
-              c.num_printed_subroutines,
-              c.on_encounter_effect,
-              c.performs_trace,
-              c.recurring_credits_provided,
-              c.rez_effect,
-              c.sabotage,
-              c.score_effect,
-              c.steal_effect,
-              c.trash_ability,
-              COALESCE(csi.card_subtype_ids, ARRAY[]::text[]) AS card_subtype_ids,
-              COALESCE(csn.lower_card_subtype_names, ARRAY[]::text[]) AS lower_card_subtype_names,
-              COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
-              p.printing_ids,
-              array_length(p.printing_ids, 1) AS num_printings,
-              ccs.card_cycle_ids,
-              ccs.card_cycle_names,
-              css.card_set_ids,
-              css.card_set_names,
-              COALESCE(r.restriction_ids, (ARRAY[]::text[])::character varying[]) AS restriction_ids,
-              (r.restriction_ids IS NOT NULL) AS in_restriction,
-              COALESCE(r_b.restrictions_banned, ARRAY[]::text[]) AS restrictions_banned,
-              COALESCE(r_g_p.restrictions_global_penalty, ARRAY[]::text[]) AS restrictions_global_penalty,
-              COALESCE(r_p.restrictions_points, ARRAY[]::text[]) AS restrictions_points,
-              COALESCE(r_r.restrictions_restricted, ARRAY[]::text[]) AS restrictions_restricted,
-              COALESCE(r_u_f_c.restrictions_universal_faction_cost, ARRAY[]::text[]) AS restrictions_universal_faction_cost,
-              COALESCE(f.format_ids, ARRAY[]::text[]) AS format_ids,
-              COALESCE(cpc.card_pool_ids, ARRAY[]::text[]) AS card_pool_ids,
-              COALESCE(s.snapshot_ids, (ARRAY[]::text[])::character varying[]) AS snapshot_ids,
-              crd.date_release,
-              c.designed_by,
-              pr.releasers AS printings_released_by,
-              c.layout_id
-             FROM ((((((((((((((((cards c
-               JOIN card_printing_ids p ON (((c.id)::text = p.card_id)))
-               JOIN card_cycles_summary ccs ON (((c.id)::text = (ccs.id)::text)))
-               JOIN card_sets_summary css ON (((c.id)::text = (css.id)::text)))
-               JOIN printing_releasers pr ON (((c.id)::text = pr.card_id)))
-               LEFT JOIN card_subtype_ids csi ON (((c.id)::text = csi.card_id)))
-               LEFT JOIN card_subtype_names csn ON (((c.id)::text = csn.card_id)))
-               LEFT JOIN card_restriction_ids r ON (((c.id)::text = (r.card_id)::text)))
-               LEFT JOIN restrictions_banned_summary r_b ON (((c.id)::text = r_b.card_id)))
-               LEFT JOIN restrictions_global_penalty_summary r_g_p ON (((c.id)::text = r_g_p.card_id)))
-               LEFT JOIN restrictions_points_summary r_p ON (((c.id)::text = r_p.card_id)))
-               LEFT JOIN restrictions_restricted_summary r_r ON (((c.id)::text = r_r.card_id)))
-               LEFT JOIN restrictions_universal_faction_cost_summary r_u_f_c ON (((c.id)::text = r_u_f_c.card_id)))
-               LEFT JOIN format_ids f ON (((c.id)::text = f.card_id)))
-               LEFT JOIN card_pool_ids cpc ON (((c.id)::text = cpc.card_id)))
-               LEFT JOIN snapshot_ids s ON (((c.id)::text = s.card_id)))
-               LEFT JOIN card_release_dates crd ON (((c.id)::text = crd.card_id)))
-            GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.layout_id, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.charge, c.gains_subroutines, c.has_gain_click, c.has_paid_ability, c.install_effect, c.interrupt, c.link_provided, c.mark, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.sabotage, c.score_effect, c.steal_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release, pr.releasers
-          )
-   SELECT u.id,
-      u.title,
-      u.stripped_title,
-      u.card_type_id,
-      u.side_id,
-      u.faction_id,
-      u.advancement_requirement,
-      u.agenda_points,
-      u.base_link,
-      u.cost,
-      u.deck_limit,
-      u.influence_cost,
-      u.influence_limit,
-      u.memory_cost,
-      u.minimum_deck_size,
-      u.narrative_text,
-      u.pronouns,
-      u.pronunciation_approximation,
-      u.pronunciation_ipa,
-      u.strength,
-      u.stripped_text,
-      u.text,
-      u.trash_cost,
-      u.is_unique,
-      u.display_subtypes,
-      u.attribution,
-      u.created_at,
-      u.updated_at,
-      u.additional_cost,
-      u.advanceable,
-      u.charge,
-      u.gains_subroutines,
-      u.has_gain_click,
-      u.has_paid_ability,
-      u.install_effect,
-      u.interrupt,
-      u.link_provided,
-      u.mark,
-      u.mu_provided,
-      u.num_printed_subroutines,
-      u.on_encounter_effect,
-      u.performs_trace,
-      u.recurring_credits_provided,
-      u.rez_effect,
-      u.sabotage,
-      u.score_effect,
-      u.steal_effect,
-      u.trash_ability,
-      u.card_subtype_ids,
-      u.lower_card_subtype_names,
-      u.card_subtype_names,
-      u.printing_ids,
-      u.num_printings,
-      u.card_cycle_ids,
-      u.card_cycle_names,
-      u.card_set_ids,
-      u.card_set_names,
-      u.restriction_ids,
-      u.in_restriction,
-      u.restrictions_banned,
-      u.restrictions_global_penalty,
-      u.restrictions_points,
-      u.restrictions_restricted,
-      u.restrictions_universal_faction_cost,
-      u.format_ids,
-      u.card_pool_ids,
-      u.snapshot_ids,
-      u.date_release,
-      u.designed_by,
-      u.printings_released_by,
-      u.layout_id,
-      COALESCE(array_length(faces.face_index, 1), 0) AS num_extra_faces,
-      faces.face_index AS face_indices,
-      faces.base_link AS faces_base_link,
-      faces.display_subtypes AS faces_display_subtypes,
-      faces.card_subtype_ids AS faces_card_subtype_ids,
-      faces.stripped_text AS faces_stripped_text,
-      faces.stripped_title AS faces_stripped_title,
-      faces.text AS faces_text,
-      faces.title AS faces_title
-     FROM (unified u
-       LEFT JOIN faces ON (((u.id)::text = (faces.card_id)::text)));
   SQL
 end
