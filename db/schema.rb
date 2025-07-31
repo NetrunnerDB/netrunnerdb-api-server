@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_30_010551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -145,6 +145,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
     t.string "pronunciation_ipa"
     t.string "layout_id", default: "normal", null: false
     t.string "narrative_text"
+    t.boolean "install_effect", default: false
+    t.boolean "charge", default: false
+    t.boolean "gains_click", default: false
+    t.boolean "has_paid_ability", default: false
+    t.boolean "mark", default: false
+    t.boolean "sabotage", default: false
+    t.boolean "score_effect", default: false
+    t.boolean "steal_effect", default: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
     t.index ["faction_id"], name: "index_cards_on_faction_id"
     t.index ["side_id"], name: "index_cards_on_side_id"
@@ -620,6 +628,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
               c.recurring_credits_provided,
               c.rez_effect,
               c.trash_ability,
+              c.install_effect,
+              c.charge,
+              c.gains_click,
+              c.has_paid_ability,
+              c.mark,
+              c.sabotage,
+              c.score_effect,
+              c.steal_effect,
               COALESCE(csi.card_subtype_ids, ARRAY[]::text[]) AS card_subtype_ids,
               COALESCE(csn.lower_card_subtype_names, ARRAY[]::text[]) AS lower_card_subtype_names,
               COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
@@ -660,7 +676,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
                LEFT JOIN card_pool_ids cpc ON (((c.id)::text = cpc.card_id)))
                LEFT JOIN snapshot_ids s ON (((c.id)::text = s.card_id)))
                LEFT JOIN card_release_dates crd ON (((c.id)::text = crd.card_id)))
-            GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.layout_id, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release, pr.releasers
+            GROUP BY c.id, c.title, c.stripped_title, c.card_type_id, c.side_id, c.faction_id, c.advancement_requirement, c.agenda_points, c.base_link, c.cost, c.deck_limit, c.influence_cost, c.influence_limit, c.layout_id, c.memory_cost, c.minimum_deck_size, c.strength, c.stripped_text, c.text, c.trash_cost, c.is_unique, c.display_subtypes, c.attribution, c.created_at, c.updated_at, c.additional_cost, c.advanceable, c.gains_subroutines, c.interrupt, c.link_provided, c.mu_provided, c.num_printed_subroutines, c.on_encounter_effect, c.performs_trace, c.recurring_credits_provided, c.rez_effect, c.trash_ability, c.install_effect, c.charge, c.gains_click, c.has_paid_ability, c.mark, c.sabotage, c.score_effect, c.steal_effect, csi.card_subtype_ids, csn.lower_card_subtype_names, csn.card_subtype_names, p.printing_ids, ccs.card_cycle_ids, ccs.card_cycle_names, css.card_set_ids, css.card_set_names, r.restriction_ids, r_b.restrictions_banned, r_g_p.restrictions_global_penalty, r_p.restrictions_points, r_r.restrictions_restricted, r_u_f_c.restrictions_universal_faction_cost, f.format_ids, cpc.card_pool_ids, s.snapshot_ids, crd.date_release, pr.releasers
           )
    SELECT u.id,
       u.title,
@@ -702,6 +718,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
       u.recurring_credits_provided,
       u.rez_effect,
       u.trash_ability,
+      u.install_effect,
+      u.charge,
+      u.gains_click,
+      u.has_paid_ability,
+      u.mark,
+      u.sabotage,
+      u.score_effect,
+      u.steal_effect,
       u.card_subtype_ids,
       u.lower_card_subtype_names,
       u.card_subtype_names,
@@ -930,6 +954,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
               c.stripped_title,
               c.trash_ability,
               c.trash_cost,
+              c.install_effect,
+              c.charge,
+              c.gains_click,
+              c.has_paid_ability,
+              c.mark,
+              c.sabotage,
+              c.score_effect,
+              c.steal_effect,
               COALESCE(csi.card_subtype_ids, ARRAY[]::text[]) AS card_subtype_ids,
               COALESCE(csn.lower_card_subtype_names, ARRAY[]::text[]) AS lower_card_subtype_names,
               COALESCE(csn.card_subtype_names, ARRAY[]::text[]) AS card_subtype_names,
@@ -1028,6 +1060,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_23_035928) do
       u.stripped_title,
       u.trash_ability,
       u.trash_cost,
+      u.install_effect,
+      u.charge,
+      u.gains_click,
+      u.has_paid_ability,
+      u.mark,
+      u.sabotage,
+      u.score_effect,
+      u.steal_effect,
       u.card_subtype_ids,
       u.lower_card_subtype_names,
       u.card_subtype_names,

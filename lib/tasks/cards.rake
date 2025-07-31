@@ -86,7 +86,7 @@ namespace :cards do
     subtype_names.join(' - ')
   end
 
-  def import_cards(cards)
+  def import_cards(cards) # rubocop:disable Metrics/MethodLength
     subtypes = CardSubtype.all.index_by(&:id)
 
     new_cards = []
@@ -195,6 +195,51 @@ namespace :cards do
 
       if new_card.text && (new_card.text.match?(/trace(\[\d+| X| \d+)/i) || new_card.text.match?('<trace>'))
         new_card.performs_trace = true
+      end
+
+      if new_card.text &&
+         (
+           new_card.text.downcase.include?("when you install #{new_card.title.downcase}") ||
+           new_card.text.downcase.include?('when you install this') ||
+           new_card.text.downcase.include?("#{new_card.title.downcase} is installed")
+         )
+        new_card.install_effect = true
+      end
+
+      new_card.charge = true if new_card.text&.include?('charge')
+
+      new_card.gains_click = true if new_card.text&.include?('gain [click]')
+
+      new_card.mark = true if new_card.text&.include?('your mark')
+
+      if new_card.text &&
+         (
+           new_card.text.include?('when you score') ||
+           new_card.text.include?('whenever you score') ||
+           new_card.text.include?('score this agenda') ||
+           new_card.text.include?('scored or stolen') ||
+           new_card.text.include?('agenda is scored')
+         )
+        new_card.score_effect = true
+      end
+
+      if new_card.text &&
+         (
+           new_card.text.include?('steals this agenda') ||
+           new_card.text.include?("the runner steals #{new_card.title}") ||
+           new_card.text.include?('scored or stolen') ||
+           new_card.text.include?('agenda is stolen')
+         )
+        new_card.steal_effect = true
+      end
+
+      new_card.sabotage = true if new_card.text&.include?('sabotage')
+
+      if new_card.text&.include?(':')
+        has_paid_ability = new_card.text.lines.any? do |line|
+          line.include?(':') && !line.match?(/\[click\].*:/) && !line.match?(/Interface.*:/)
+        end
+        new_card.has_paid_ability = has_paid_ability
       end
 
       # TODO(plural): Add these in as well
