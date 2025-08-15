@@ -170,10 +170,11 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
       'tiny' => "#{url_prefix}/tiny/#{id}#{face_suffix}.jpg",
       'small' => "#{url_prefix}/small/#{id}#{face_suffix}.jpg",
       'medium' => "#{url_prefix}/medium/#{id}#{face_suffix}.jpg",
-      'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg"
+      'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg",
+      'xlarge' => "#{url_prefix}/xlarge/#{id}#{face_suffix}.webp"
     }
 
-    image_sizes['narrative'] = "#{url_prefix}/large/#{id}#{face_suffix}-narrative.jpg" if has_narrative_image
+    image_sizes['narrative'] = "#{url_prefix}/xlarge/#{id}#{face_suffix}-narrative.webp" if has_narrative_image
 
     {
       'nrdb_classic' => image_sizes
