@@ -44,6 +44,8 @@ class Printing < ApplicationRecord
   end
 
   def xlarge_image?
+    # The excluded sets were designed by FFG despite being released by NSG. We do not want to distribute high quality
+    # versions of them.
     released_by == 'null_signal_games' &&
       !%w[
         system_core_2019
