@@ -75,7 +75,9 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
     unless @object.num_extra_faces.zero?
       @object.face_indices.each do |index|
         f = { index:,
-              images: images(@object.latest_printing_id, @object.printings.last.xlarge_image?, face_index: index) }
+              images: images(@object.latest_printing_id,
+                             @object.printings.order(:date_release).reverse_order.first.xlarge_image?,
+                             face_index: index) }
         f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
         f[:display_subtypes] = @object.faces_display_subtypes[index] if @object.faces_display_subtypes[index]
         f[:card_subtype_ids] = @object.faces_card_subtype_ids[index].compact if @object.faces_card_subtype_ids[index]
@@ -94,7 +96,7 @@ class CardResource < ApplicationResource # rubocop:disable Metrics/ClassLength
   attribute :restrictions, :hash
   attribute :latest_printing_id, :string
   attribute :latest_printing_images, :hash do
-    images(@object.latest_printing_id, @object.printings.last.xlarge_image?,
+    images(@object.latest_printing_id, @object.printings.order(:date_release).reverse_order.first.xlarge_image?,
            has_narrative_image: @object.narrative_text.present?)
   end
 
