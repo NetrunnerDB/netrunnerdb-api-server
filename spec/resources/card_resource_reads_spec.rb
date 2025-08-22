@@ -72,6 +72,31 @@ RSpec.describe CardResource, type: :resource do
     end
   end
 
+  describe 'has xlarge image' do
+    let!(:card) { Card.find('hoshiko_shiro_untold_protagonist') }
+
+    it 'has xlarge image' do
+      params[:filter] = { id: { eq: card.id } }
+      render
+
+      data = jsonapi_data[0]
+      expect(data.latest_printing_images[:nrdb_classic][:xlarge]).to eq("https://card-images.netrunnerdb.com/v2/xlarge/#{card.latest_printing_id}.webp")
+      expect(data.faces[0][:images][:nrdb_classic][:xlarge]).to eq("https://card-images.netrunnerdb.com/v2/xlarge/#{card.latest_printing_id}-0.webp")
+    end
+  end
+
+  describe 'no xlarge image' do
+    let!(:card) { Card.find('adonis_campaign') }
+
+    it 'no xlarge image' do
+      params[:filter] = { id: { eq: card.id } }
+      render
+
+      data = jsonapi_data[0]
+      expect(data.latest_printing_images[:nrdb_classic][:xlarge]).to be_falsy
+    end
+  end
+
   describe 'filtering' do
     let!(:card) { Card.find('pennyshaver') }
 

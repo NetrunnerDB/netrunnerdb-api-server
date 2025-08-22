@@ -43,6 +43,18 @@ class Printing < ApplicationRecord
     nil
   end
 
+  def xlarge_image?
+    # The excluded sets were designed by FFG despite being released by NSG. We do not want to distribute high quality
+    # versions of them.
+    released_by == 'null_signal_games' &&
+      !%w[
+        system_core_2019
+        magnum_opus_reprint
+        salvaged_memories
+        system_update_2021
+      ].include?(card_set_id)
+  end
+
   def restrictions
     {
       banned: restrictions_banned,

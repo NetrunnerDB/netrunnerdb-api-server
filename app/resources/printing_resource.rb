@@ -85,7 +85,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
   attribute :pronunciation_ipa, :string
 
   attribute :images, :hash do
-    images(@object.id, has_narrative_image: @object.narrative_text.present?)
+    images(@object.id, @object.xlarge_image?, has_narrative_image: @object.narrative_text.present?)
   end
   attribute :card_abilities, :hash
   attribute :latest_printing_id, :string
@@ -99,7 +99,7 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
 
     unless @object.num_extra_faces.zero?
       @object.face_indices.each do |index|
-        f = { index:, images: images(@object.id, face_index: index) }
+        f = { index:, images: images(@object.id, @object.xlarge_image?, face_index: index) }
         f[:base_link] = @object.faces_base_link[index] if @object.faces_base_link[index]
         f[:copy_quantity] = @object.faces_copy_quantity[index] if @object.faces_copy_quantity[index]
         f[:flavor] = @object.faces_flavor[index] if @object.faces_flavor[index]
@@ -179,16 +179,16 @@ class PrintingResource < ApplicationResource # rubocop:disable Metrics/ClassLeng
 
   private
 
-  def images(id, has_narrative_image: false, face_index: nil)
+  def images(id, has_xlarge_image, has_narrative_image: false, face_index: nil)
     url_prefix = Rails.configuration.x.printing_images.nrdb_classic_prefix
     face_suffix = "-#{face_index}" unless face_index.nil?
     image_sizes = {
       'tiny' => "#{url_prefix}/tiny/#{id}#{face_suffix}.jpg",
       'small' => "#{url_prefix}/small/#{id}#{face_suffix}.jpg",
       'medium' => "#{url_prefix}/medium/#{id}#{face_suffix}.jpg",
-      'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg",
-      'xlarge' => "#{url_prefix}/xlarge/#{id}#{face_suffix}.webp"
+      'large' => "#{url_prefix}/large/#{id}#{face_suffix}.jpg"
     }
+    image_sizes[:xlarge] = "#{url_prefix}/xlarge/#{id}#{face_suffix}.webp" if has_xlarge_image
 
     image_sizes['narrative'] = "#{url_prefix}/xlarge/#{id}#{face_suffix}-narrative.webp" if has_narrative_image
 

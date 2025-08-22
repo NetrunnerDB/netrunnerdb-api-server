@@ -87,6 +87,31 @@ RSpec.describe PrintingResource, type: :resource do
     end
   end
 
+  describe 'has xlarge image' do
+    let!(:printing) { Printing.find('01072') }  # Hoshiko
+
+    it 'has xlarge image' do
+      params[:filter] = { id: { eq: printing.id } }
+      render
+
+      data = jsonapi_data[0]
+      expect(data.images[:nrdb_classic][:xlarge]).to eq("https://card-images.netrunnerdb.com/v2/xlarge/#{printing.id}.webp")
+      expect(data.faces[0][:images][:nrdb_classic][:xlarge]).to eq("https://card-images.netrunnerdb.com/v2/xlarge/#{printing.id}-0.webp")
+    end
+  end
+
+  describe 'no xlarge image' do
+    let!(:printing) { Printing.find('01056') }  # Adonis Campaign
+
+    it 'no xlarge image' do
+      params[:filter] = { id: { eq: printing.id } }
+      render
+
+      data = jsonapi_data[0]
+      expect(data.images[:nrdb_classic][:xlarge]).to be_falsy
+    end
+  end
+
   describe 'filtering' do
     let!(:printing) { Printing.find('21180') }
 
